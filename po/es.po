@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Spanish\n"
+"Project-Id-Version: Spanish $Id$\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2004-03-20 16:37-0400\n"
 "Last-Translator: Michelangelo Partipilo <mike@mcbo.com>\n"
@@ -329,4 +329,23 @@ msgstr "AHORA"
 #: event.module:119
 msgid "maintain events"
 msgstr "mantener eventos"
+
+#: event.module:737
+msgid "1 minute"
+msgid_plural "%count minutes"
+msgstr[0] "1 minuto"
+msgstr[1] "%count minutos"
+
+#: event.module:740
+msgid "1 hour"
+msgid_plural "%count hours"
+msgstr[0] "1 hora"
+msgstr[1] "%count horas"
+
+#: event.module:743
+msgid "1 day"
+msgid_plural "%count days"
+msgstr[0] "1 día"
+msgstr[1] "%count días"
+
 
