@@ -664,18 +664,16 @@ function event_search($keys) {
 }
 
 function event_query() {
+  $output = event_query_form();
   switch ($_POST['op']) {
     case t('Search'):
       $result = event_query_parse((object) $_POST['edit']);
-
       if (db_num_rows($result)) {
-        $output = theme('event_query_results', $result);
+        $output .= theme('event_query_results', $result);
       }
       else {
         drupal_set_message(t('No matches found.'));
       }
-    default:
-      $output = event_query_form();
       break;
   }
   return $output;
@@ -683,6 +681,7 @@ function event_query() {
 
 function event_query_parse($edit) {
   $fields = event_fields();
+  $query = array('n.status = 1');
 
   // Calculate timestamps if we have all the parameters.
   if (isset($edit->from['year']) && isset($edit->from['month']) && isset($edit->from['day']) && isset($edit->from['hour']) && isset($edit->from['minute'])) {
@@ -698,7 +697,7 @@ function event_query_parse($edit) {
     if (variable_get('event_timezone', '1')) {
       $str -= $GLOBALS['user']->timezone;
     }
-    $query[] = 'e.start <= '. $str; 
+    $query[] = 'e.start <= '. $str;
   }
 
   foreach ($fields as $field => $def) {
@@ -711,15 +710,15 @@ function event_query_parse($edit) {
         }
       }
       else {
-        $and[] = "e.$field LIKE '%". check_query($edit->$field) ."%'";
+        $query[] = "e.$field LIKE '%". check_query($edit->$field) ."%'";
       }
     }
   }
-  $cond = $and ? ' AND '. implode(' AND ', $and) : '';
-  $cond .= $or ? " AND (". @implode(' OR ', $or). ')' : '';
+  if ($or) {
+    $query[] = '('. implode(' OR ', $or). ')';
+  }
 
-  $sql = 'SELECT n.nid FROM {event} e INNER JOIN {node} n USING (nid) WHERE n.status = 1';
-  $sql .= $cond ? $cond : "";
+  $sql = 'SELECT n.nid FROM {event} e INNER JOIN {node} n USING (nid) WHERE '. implode(' AND ', $query);
   return db_query($sql);
 }
 
@@ -745,8 +744,9 @@ function event_query_form() {
 
 function theme_event_query_results($result) {
   while ($node = db_fetch_object($result)) {
-    return node_view(node_load($node), 1);
+    $output .= node_view(node_load($node), 1);
   }
+  return $output;
 }
 
 /* Two helper functions for upcoming events block */
