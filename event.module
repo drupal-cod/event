@@ -116,7 +116,7 @@ function event_page() {
   elseif (!arg(1)) {
     global $user;
     $time = time();
-    $result = pager_query('SELECT DISTINCT(n.nid) FROM {event} e INNER JOIN {node} n USING (nid) '. node_access_join_sql() .' WHERE '. node_access_where_sql() ." AND n.status = 1 AND e.start >= $time ORDER BY e.start", variable_get('default_nodes_main', 10));
+    $result = pager_query('SELECT DISTINCT(n.nid), e.start FROM {event} e INNER JOIN {node} n USING (nid) '. node_access_join_sql() .' WHERE '. node_access_where_sql() ." AND n.status = 1 AND e.start >= $time ORDER BY e.start", variable_get('default_nodes_main', 10));
     if (db_num_rows($result)) {
       $output = "";
       $breadcrumbs[] = t('Upcoming');
@@ -597,7 +597,7 @@ function event_calendar_data($year, $month, $day) {
       $last += $user->timezone;
     }
 
-    $result = db_query('SELECT DISTINCT(n.nid) FROM {event} e INNER JOIN {node} n USING (nid) '. node_access_join_sql() .' WHERE '. node_access_where_sql() .' AND n.status = 1 AND e.start > %d AND e.start < %d ORDER BY e.start', $first, $last);
+    $result = db_query('SELECT DISTINCT(n.nid), e.start FROM {event} e INNER JOIN {node} n USING (nid) '. node_access_join_sql() .' WHERE '. node_access_where_sql() .' AND n.status = 1 AND e.start > %d AND e.start < %d ORDER BY e.start', $first, $last);
     while ($node = db_fetch_object($result)) {
       $node = node_load($node);
       $data[$year][$month][event_format_date($node->start, 'custom', 'j')][] = $node;
