@@ -155,7 +155,7 @@ function event_load(&$node) {
 function event_view(&$node, $main = 0) {
   // This function is called by node.module when an event node is viewed. This
   // lets event.module do some processing to the node before outputting it.
-  global $theme;
+
 
   // Mess with the timestamp of the node so it shows when the event is instead.
   // Normally a bad thing, but in this case quite handy.
@@ -169,11 +169,11 @@ function event_view(&$node, $main = 0) {
   // listing on the frontpage just display the abstract.
   if ($main)
     // Output the node for the user to take a peek at it.
-    $theme->node($node, $main);
+    theme("node", $node, $main);
   else {
     $node->body = $node->body . event_view_parent($node);
     // Output the node for the user to take a peek at it.
-    $theme->node($node, $main);
+    theme("node", $node, $main);
   }
 }
 
@@ -270,22 +270,22 @@ function event_save($op, &$node) {
  * @param (int) $id node id
  */
 function event_images_add($id) {
-  global $theme;
+
   if (user_access("administer events")) {
     $form = form_file(t("Image location"), "file", 37, t("Only JPEG and PNG files are accepted."));
     $form .= form_hidden("id", $id);
     $form .= form_textfield(t("Caption"), "caption", "", 50, 50, t("Maximum 50 characters."));
     $form .= form_submit(t("Upload image"));
 
-    $theme->box(t("Image upload"), form($form, "post", 0, "enctype=\"multipart/form-data\""));
+    theme("box", t("Image upload"), form($form, "post", 0, "enctype=\"multipart/form-data\""));
   }
   else {
-    $theme->box(t("Access denied"), t("Images may only be added by event administrators. If you want to become an event administrator, write to %a and explain why.", array("%a" => variable_get(site_mail, "root@localhost"))));
+    theme("box", t("Access denied"), t("Images may only be added by event administrators. If you want to become an event administrator, write to %a and explain why.", array("%a" => variable_get(site_mail, "root@localhost"))));
   }
 }
 
 function event_image_upload() {
-  global $edit, $edit_name, $edit_type, $edit_size, $theme;
+  global $edit, $edit_name, $edit_type, $edit_size;
   if (!is_uploaded_file($edit["file"])) {
     $output = t("Error: not a file upload.");
   }
@@ -347,12 +347,12 @@ function event_image_upload() {
     node_view($node, 1);
   }
 
-  $theme->box(t("Image upload"), $output);
+  theme("box", t("Image upload"), $output);
 
 }
 
 function event_images(&$node) {
-  global $theme, $REQUEST_URI, $image, $id;
+  global $REQUEST_URI, $image, $id;
   $node->images = explode(",", $node->images);
   if (!empty($image) && !empty($node->images[$image])) {
     $image = explode("=", $node->images[$image], 2);
@@ -374,13 +374,13 @@ function event_images(&$node) {
     }
     $output .= "</tr>\n</table>\n";
   }
-  $theme->box("Images", $output);
+  theme("box", "Images", $output);
 }
 
 function event_page() {
-  global $date, $theme, $REQUEST_URI, $op, $month, $year, $meta;
+  global $date, $REQUEST_URI, $op, $month, $year, $meta;
 
-  $theme->header();
+  theme("header");
 
   if (empty($op)) {
     $op = arg(1);
@@ -440,7 +440,7 @@ function event_page() {
       if (user_access("access events")) {
         // This needs a heading function in the theme.
         // $theme->heading(t("Events in ") . t(strtr("%a", array("%a" => date("F", $first)))) . date(" Y", $first));
-        $theme->box(t("Event calendar"), form($form));
+        theme("box", t("Event calendar"), form($form));
         // Fetch event nodes for the selected month
         $result = db_query("SELECT n.*, l.*, u.name FROM node n LEFT JOIN event l ON n.nid = l.nid LEFT JOIN users u ON n.uid = u.uid WHERE ". ($meta ? "n.attributes LIKE '%". check_input($meta) ."%' AND " : "l.parent = 0 AND ") ." n.status = 1 AND l.start >= '". $first  ."' AND l.start <= '". $last ."' AND n.type = 'event' ORDER BY l.start ASC");
         if($result){
@@ -453,7 +453,7 @@ function event_page() {
         }
       }
       else {
-        $theme->box(t("Access denied"), message_access());
+        theme("box", t("Access denied"), message_access());
       }
       break;
     case t("Show"):
@@ -478,7 +478,7 @@ function event_page() {
 
       $form = $start;
 
-      $theme->box(t("Event calendar"), form($form));
+      theme("box", t("Event calendar"), form($form));
 
       if (user_access("access events")) {
         // Fetch event nodes for the selected date, or current date if none selected.
@@ -493,11 +493,11 @@ function event_page() {
         }
       }
       else {
-        $theme->box(t("Access denied"), message_access());
+        theme("box", t("Access denied"), message_access());
       }
   }
 
-  $theme->footer();
+  theme("footer");
 }
 
 function event_search($keys) {
