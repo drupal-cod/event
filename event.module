@@ -503,7 +503,7 @@ function event_display($callback, &$year, &$month, &$day, $navigation = 0, $extr
   $today = _event_mktime(0, 0, 0, _event_date('m', $time), _event_date('j', $time), _event_date('Y', $time));
 
   // Extract key data from date:
-  $month_name = t(_event_date('M', $date));
+  $month_name = _event_date('M', $date); // do not translate, used only for css
   $weeks = ceil($days / 7);
 
   // Initialize the header/week days:
@@ -623,7 +623,7 @@ function event_format_field($type, $data, $field, $nid) {
       return $data;
       break;
     case 'time':
-      return event_format_date($data, 'custom', t('M, %day', array('%day' => 'j')));
+      return event_format_date($data, 'custom', t('M, j'));
       break;
     case 'select':
       $arr = array();
