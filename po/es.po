@@ -1,12 +1,12 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Spanish $Id$\n"
-"POT-Creation-Date: \n"
-"PO-Revision-Date: 2004-03-20 16:37-0400\n"
+"Project-Id-Version: event.module Spanish: event.pot,v 1.5 2004/04/03 14:38:35 killes Exp $\\n\n"
+"POT-Creation-Date: 2004-04-03 12:24+0200\n"
+"PO-Revision-Date: 2004-04-03 15:22-0400\n"
 "Last-Translator: Michelangelo Partipilo <mike@mcbo.com>\n"
 "Language-Team: Michelangelo Partipilo <mike@mcbo.com>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: event.module:21
@@ -14,8 +14,12 @@ msgid "Lets users make events and keep calendars."
 msgstr "Permite a los usuarios crear eventos y mantener calendarios."
 
 #: event.module:23
-msgid "Events are what you think you they are. Occurrences happening an a given time and place."
-msgstr "Los eventos son lo que piensa que son. Ocurrencias que tienen lugar a una hora y en un sitio específicos."
+msgid ""
+"Events are what you think you they are. Occurrences happening at a given "
+"time and place."
+msgstr ""
+"Los eventos son lo que piensa que son. Ocurrencias que tienen lugar a una "
+"hora y en un sitio específicos."
 
 #: event.module:35
 msgid "Calendar to browse events."
@@ -46,8 +50,12 @@ msgid "Explanation or submission guidelines"
 msgstr "Explicación o lineamientos de envíos"
 
 #: event.module:57
-msgid "This text will be displayed at the top of the event submission form.  Useful for helping or instructing your users."
-msgstr "Este texto será mostrado en el tope de la forma de envío del evento. Útil para ayudar o instruir a sus usuarios."
+msgid ""
+"This text will be displayed at the top of the event submission form.  Useful "
+"for helping or instructing your users."
+msgstr ""
+"Este texto será mostrado en el tope de la forma de envío del evento. Útil "
+"para ayudar o instruir a sus usuarios."
 
 #: event.module:58
 msgid "Start of week"
@@ -79,273 +87,325 @@ msgstr "12h"
 
 #: event.module:59
 msgid "The time notation system used for entering event start times."
-msgstr "El sistema de notación temporal utilizado para ingresar el tiempo de inicio de los eventos."
+msgstr ""
+"El sistema de notación temporal utilizado para ingresar la hora de inicio de "
+"los eventos."
 
 #: event.module:60
+msgid "Timezone handling"
+msgstr "Gestión de Zona horaria"
+
+#: event.module:60
+msgid "Yes"
+msgstr "Si"
+
+#: event.module:60
+msgid "No"
+msgstr "No"
+
+#: event.module:60
+msgid ""
+"Yes: Times are saved relative to the user's timezone. No: Times are saved "
+"relative to the server's time."
+msgstr ""
+"Si: Las horas son guardadas relativas a la zona horaria del usuario. No: Las "
+"horas son guardadas relativas a la hora del servidor."
+
+#: event.module:61
 msgid "Type of overview"
 msgstr "Tipo de resumen"
 
-#: event.module:60
+#: event.module:61
 msgid "Calendar"
 msgstr "Calendario"
 
-#: event.module:60
+#: event.module:61
 msgid "Table"
 msgstr "Tabla"
 
-#: event.module:60
-msgid "The type of overview to show the user when he clicks on the block calendar."
-msgstr "El tipo de resumen que quiere mostrar al usuario cuando hace click en el calendario."
+#: event.module:61
+msgid ""
+"The type of overview to show the user when he clicks on the block calendar."
+msgstr ""
+"El tipo de resumen que quiere mostrar al usuario cuando hace click en el "
+"calendario."
 
-#: event.module:67
-#: ;570
+#: event.module:68 ;596
 msgid "Date"
 msgstr "Fecha"
 
-#: event.module:67
-#: ;570
+#: event.module:68 ;596
 msgid "Title"
 msgstr "Título"
 
-#: event.module:67
-#: ;570
+#: event.module:68 ;596
 msgid "Teaser"
 msgstr "Avance"
 
-#: event.module:67
-#: ;570
+#: event.module:68 ;596
 msgid "Body"
 msgstr "Cuerpo"
 
-#: event.module:68
+#: event.module:69
 msgid "Table headers"
 msgstr "Cabeceros de tabla"
 
-#: event.module:68
-msgid "The table headers used in the table view. Only entries that have their own database column in the event table and are of type \"textfield\", \"textarea\", or \"select\" can be used."
-msgstr "Los cabeceros de tabla usados en la vista de tabla. Solo las entradas que tengan su propia columna en la tabla \"event\" de la base de datos y sean de tipo \"textfield\", \"textarea\", o \"select\" pueden ser usadas."
+#: event.module:69
+msgid ""
+"The table headers used in the table view. Only entries that have their own "
+"database column in the event table and are of type \"textfield\", \"textarea"
+"\", or \"select\" can be used."
+msgstr ""
+"Los cabeceros de tabla usados en la vista de tabla. Solo las entradas que "
+"tengan su propia columna en la tabla \"event\" de la base de datos y sean de "
+"tipo \"textfield\", \"textarea\", o \"select\" pueden ser usadas."
 
-#: event.module:75
-#: ;244
-msgid "Home"
-msgstr "Principal"
+#: event.module:73 ;510
+msgid "Jan"
+msgstr "Ene"
 
-#: event.module:76
-#: ;115;245
-msgid "Events"
-msgstr "Eventos"
+#: event.module:73 ;510
+msgid "Feb"
+msgstr "Feb"
 
-#: event.module:80
-#: ;635;701
-msgid "Search"
-msgstr "Buscar"
+#: event.module:73 ;510
+msgid "Mar"
+msgstr "Mar"
 
-#: event.module:81
-msgid "Search Events"
-msgstr "Buscar Eventos"
+#: event.module:73 ;510
+msgid "Apr"
+msgstr "Abr"
 
-#: event.module:90
-msgid "Upcoming"
-msgstr "Próximos"
+#: event.module:73 ;75;277;510;512
+msgid "May"
+msgstr "May"
 
-#: event.module:95
-msgid "Upcoming Events"
-msgstr "Eventos Próximos"
+#: event.module:73 ;510
+msgid "Jun"
+msgstr "Jun"
 
-#: event.module:109
-msgid "search events"
-msgstr "buscar eventos"
+#: event.module:73 ;510
+msgid "Jul"
+msgstr "Jul"
 
-#: event.module:128
-msgid "edit event"
-msgstr "editar evento"
+#: event.module:73 ;510
+msgid "Aug"
+msgstr "Ago"
 
-#: event.module:128
-msgid "Edit this event."
-msgstr "Editar este evento."
+#: event.module:73 ;510
+msgid "Sep"
+msgstr "Sep"
 
-#: event.module:131
-#: ;147
-msgid "calendar"
-msgstr "calendario"
+#: event.module:73 ;510
+msgid "Oct"
+msgstr "Oct"
 
-#: event.module:137
-#: ;146
-msgid "events"
-msgstr "eventos"
+#: event.module:73 ;510
+msgid "Nov"
+msgstr "Nov"
 
-#: event.module:137
-msgid "Show events"
-msgstr "Mostrar eventos"
+#: event.module:73 ;510
+msgid "Dec"
+msgstr "Dic"
 
-#: event.module:143
-#: ;160;0
-msgid "event"
-msgstr "evento"
-
-#: event.module:148
-msgid "search"
-msgstr "buscar"
-
-#: event.module:201
-msgid "Required."
-msgstr "Requerido."
-
-#: event.module:213
-#: ;307
-msgid "Start"
-msgstr "Inicio"
-
-#: event.module:268
+#: event.module:75 ;277;512
 msgid "January"
 msgstr "Enero"
 
-#: event.module:268
+#: event.module:75 ;277;512
 msgid "February"
 msgstr "Febrero"
 
-#: event.module:268
+#: event.module:75 ;277;512
 msgid "March"
 msgstr "Marzo"
 
-#: event.module:268
+#: event.module:75 ;277;512
 msgid "April"
 msgstr "Abril"
 
-#: event.module:268
-msgid "May"
-msgstr "Mayo"
-
-#: event.module:268
+#: event.module:75 ;277;512
 msgid "June"
 msgstr "Junio"
 
-#: event.module:268
+#: event.module:75 ;277;512
 msgid "July"
 msgstr "Julio"
 
-#: event.module:268
+#: event.module:75 ;277;512
 msgid "August"
 msgstr "Agosto"
 
-#: event.module:268
+#: event.module:75 ;277;512
 msgid "September"
 msgstr "Septiembre"
 
-#: event.module:268
+#: event.module:75 ;277;512
 msgid "October"
 msgstr "Octubre"
 
-#: event.module:268
+#: event.module:75 ;277;512
 msgid "November"
 msgstr "Noviembre"
 
-#: event.module:268
+#: event.module:75 ;277;512
 msgid "December"
 msgstr "Diciembre"
 
-#: event.module:272
+#: event.module:81 ;253
+msgid "Home"
+msgstr "Principal"
+
+#: event.module:82 ;121;254;671
+msgid "Events"
+msgstr "Eventos"
+
+#: event.module:86 ;676;750
+msgid "Search"
+msgstr "Buscar"
+
+#: event.module:87
+msgid "Search Events"
+msgstr "Buscar Eventos"
+
+#: event.module:96
+msgid "Upcoming"
+msgstr "Próximos"
+
+#: event.module:101
+msgid "Upcoming Events"
+msgstr "Eventos Próximos"
+
+#: event.module:115
+msgid "search events"
+msgstr "buscar eventos"
+
+#: event.module:134
+msgid "edit event"
+msgstr "editar evento"
+
+#: event.module:134
+msgid "Edit this event."
+msgstr "Editar este evento."
+
+#: event.module:137 ;153
+msgid "calendar"
+msgstr "calendario"
+
+#: event.module:143 ;152
+msgid "events"
+msgstr "eventos"
+
+#: event.module:143
+msgid "Show events"
+msgstr "Mostrar eventos"
+
+#: event.module:149 ;166;0
+msgid "event"
+msgstr "evento"
+
+#: event.module:154
+msgid "search"
+msgstr "buscar"
+
+#: event.module:210
+msgid "Required."
+msgstr "Requerido."
+
+#: event.module:222 ;316
+msgid "Start"
+msgstr "Inicio"
+
+#: event.module:281
 msgid "am"
 msgstr "am"
 
-#: event.module:272
+#: event.module:281
 msgid "pm"
 msgstr "pm"
 
-#: event.module:307
+#: event.module:316
 msgid "When is this event taking place."
 msgstr "Cuándo tomará lugar el evento."
 
-#: event.module:318
+#: event.module:327
 msgid "Details"
 msgstr "Detalles"
 
-#: event.module:509
-#: ;512
+#: event.module:530 ;534
 msgid "Mon"
 msgstr "Lun"
 
-#: event.module:509
-#: ;512
+#: event.module:530 ;534
 msgid "Tue"
 msgstr "Mar"
 
-#: event.module:509
-#: ;512
+#: event.module:530 ;534
 msgid "Wed"
 msgstr "Mie"
 
-#: event.module:509
-#: ;512
+#: event.module:530 ;534
 msgid "Thu"
 msgstr "Jue"
 
-#: event.module:509
-#: ;512
+#: event.module:530 ;534
 msgid "Fri"
 msgstr "Vie"
 
-#: event.module:509
-#: ;512
+#: event.module:530 ;534
 msgid "Sat"
 msgstr "Sab"
 
-#: event.module:509
-#: ;512
+#: event.module:530 ;534
 msgid "Sun"
 msgstr "Dom"
 
-#: event.module:601
+#: event.module:627
 msgid "Click here to see the full event."
 msgstr "Haga clic aquí para ver el evento."
 
-#: event.module:606
+#: event.module:632
 msgid "M, %day"
 msgstr "M, %day"
 
-#: event.module:642
+#: event.module:683
 msgid "No matches found."
 msgstr "No se encontraron equivalencias."
 
-#: event.module:687
+#: event.module:736
 msgid "Date period"
 msgstr "Período"
 
-#: event.module:687
+#: event.module:736
 msgid "From"
 msgstr "Desde"
 
-#: event.module:687
+#: event.module:736
 msgid "To"
 msgstr "Hasta"
 
-#: event.module:734
+#: event.module:783
 msgid "NOW"
 msgstr "AHORA"
 
-#: event.module:737
-#: event.module:740
-#: event.module:743
-#: event.module:119
-msgid "maintain events"
-msgstr "mantener eventos"
-
-#: event.module:737
+#: event.module:786
 msgid "1 minute"
 msgid_plural "%count minutes"
 msgstr[0] "1 minuto"
 msgstr[1] "%count minutos"
 
-#: event.module:740
+#: event.module:789
 msgid "1 hour"
 msgid_plural "%count hours"
 msgstr[0] "1 hora"
 msgstr[1] "%count horas"
 
-#: event.module:743
+#: event.module:792
 msgid "1 day"
 msgid_plural "%count days"
 msgstr[0] "1 día"
 msgstr[1] "%count días"
 
-
+#: event.module:125
+msgid "maintain events"
+msgstr "mantener eventos"
