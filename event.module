@@ -57,7 +57,7 @@ function event_settings() {
   $output = form_textarea(t('Explanation or submission guidelines'), 'event_help', variable_get('event_help', ''), 70, 5, t('This text will be displayed at the top of the event submission form.  Useful for helping or instructing your users.'));
   $output .= form_select(t('Start of week'), 'event_week', variable_get('event_week', '0'), array('0' => t('Sunday'), '1' => t('Monday')), t('The day the weeks starts in the block calendar.'));
   $output .= form_radios(t('Time notation preference'), 'event_ampm', variable_get('event_ampm', '0'), array('0' => t('24h'),'1' => t('12h')), t('The time notation system used for entering event start times.'));
-  $output .= form_radios(t('Timezone handling'), 'event_timezone', variable_get('event_timezone', '0'), array('0' => t('Yes'), '1' => t('No')), t('Yes: Times are saved relative to the user's timezone. No: Times are saved relative to the server's time.'));
+  $output .= form_radios(t('Timezone handling'), 'event_timezone', variable_get('event_timezone', '0'), array('0' => t('Yes'), '1' => t('No')), t("Yes: Times are saved relative to the user's timezone. No: Times are saved relative to the server's time."));
   $output .= form_select(t('Type of overview'), 'event_overview', variable_get('event_overview', 'calendar'), array('calendar' => t('Calendar'), 'table' => t('Table')), t('The type of overview to show the user when he clicks on the block calendar.'));
 
   $extra = event_fields();
