@@ -185,18 +185,31 @@ function event_link($type, $node = 0, $main) {
         $links[] = l(t('events'), 'event', array('title' => t('Show events')));
       }
       break;
-    case 'system':
-      if (user_access('maintain events')) {
-        menu('node/add/event', t('event'), 'node_page');
-      }
-      if (user_access('access content')) {
-        menu('event', t('events'), 'event_page', 1);
-        menu('event/'. event_format_date(time(), 'custom', 'Y/m/d'), t('calendar'), 'event_page');
-        menu('event/search', t('search'), 'event_page', 1);
-      }
   }
 
   return $links ? $links : array();
+}
+
+/**
+ * Implementation of hook_menu()
+ */
+function event_menu() {
+  global $user;
+
+  $items = array();
+  $items[] = array('path' => 'node/add/event', 'title' => t('event'),
+                   'access' => user_access('maintain events'));
+  $items[] = array('path' => 'event', 'title' => t('events'),
+                   'callback' => 'event_page',
+                   'access' => user_access('access content'),
+                   'type' => MENU_SUGGESTED_ITEM);
+  $items[] = array('event/'.event_format_date(time(), 'custom', 'Y/m/d'), 'title' => t('calendar'),
+                   'access' => user_access('access content'),
+                   'type' => MENU_DYNAMIC_ITEM);
+  $items[] = array('path' => 'event/search', 'title' => t('search'),
+                   'callback' => 'event_page',
+                   'type' => MENU_SUGGESTED_ITEM);
+  return $items;
 }
 
 /**
@@ -420,7 +433,7 @@ function event_form(&$node, &$error) {
       $output .= $function($def[1], $field, $node->$field, $def[7], $def[8] . theme_error($error[$field]), $def[9], $def[10]);
     }
   }
-  $output .= form_textarea(t('Details'), 'body', $node->body, 60, 15, filter_tips_short());
+  $output .= form_textarea(t('Details'), 'body', $node->body, 60, 15, '', NULL, TRUE);
 
   return $output;
 }
