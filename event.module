@@ -245,7 +245,8 @@ function event_node_name() {
 }
 
 /**
- * Determines whether a user has permission to execute a specified operation.
+ * Determines whether a user has permission to execute a specified operation. When no permission
+ * is specified, the node_access table determines access
  *
  * @ingroup event_node
  * @param $op the operation that is being requested.
@@ -255,14 +256,16 @@ function event_node_name() {
 function event_access($op, &$node) {
   global $user;
   switch ($op) {
-    case 'view':
-      return $node->status;
     case 'create':
       return user_access('maintain events');
     case 'update':
-      return $user->uid == $node->uid && user_access('maintain events');
+      if ($user->uid == $node->uid && user_access('maintain events')) {
+        return TRUE;
+      }
     case 'delete':
-      return $user->uid == $node->uid && user_access('maintain events');
+      if ($user->uid == $node->uid && user_access('maintain events')) {
+        return TRUE;
+      }
   }
 }
 
@@ -270,7 +273,7 @@ function event_access($op, &$node) {
  * Verifies that the details of an event are properly set.
  *  - Changes 24 hour time to 12 hour time (if the module is configured to do this).
  *  - Adjusts times for timezone offsets.
- *  - Verifies that all required fields have values. 
+ *  - Verifies that all required fields have values.
  *
  * @ingroup event_node
  * @param &$node the event node to validate
@@ -378,7 +381,7 @@ function event_view(&$node, $main = 0, $page = 0) {
  * @param $timestamp The time already selected.  This is applicable if the user is editing an event.
  * @param $prefix
  * @return A set of select boxes that contain options for month, day, year, hour, and minute
- * @todo Make the years automatically populated instead of static. 
+ * @todo Make the years automatically populated instead of static.
  */
 function event_form_date($timestamp, $prefix = '') {
 
@@ -433,7 +436,7 @@ function event_form_date($timestamp, $prefix = '') {
  *
  * @ingroup event_node
  * @param &$node The event to be edited.
- * @param &$error Any error messages that need to be displayed.  These are returned from event_validate().  
+ * @param &$error Any error messages that need to be displayed.  These are returned from event_validate().
  * @return The form elements needed to edit the event.
  */
 function event_form(&$node, &$error) {
@@ -837,7 +840,7 @@ function event_display($callback, &$year, &$month, &$day, $navigation = 0, $extr
  * Creates a themed table of events.
  *
  * @ingroup event_support
- * @param $start The starting date for the table. 
+ * @param $start The starting date for the table.
  * @param $month The ending date for the table.
  * @param $today The date to be indicated as current in the table.
  * @return A fully themed table.
