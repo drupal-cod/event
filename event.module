@@ -382,6 +382,21 @@ function event_page() {
 
   $theme->header();
 
+  if (empty($op)) {
+    $op = arg(1);
+  }
+
+  if (arg(0) == "event" && is_numeric(arg(1)) && arg(3)) {
+    $year = arg(1);
+    $month = arg(2);
+    $day = arg(3);
+  }
+  else if (arg(0) == "event" && is_numeric(arg(1)) && arg(2)) {
+    $year = arg(1);
+    $month = arg(2);
+    $op = "month";
+  }
+
   switch ($op) {
     case t("Upload image"):
       event_image_upload();
@@ -540,7 +555,7 @@ class EventCalendar {
     // Generate calendar header:
     $output .= "\n<!-- calendar -->\n";
     $output .= "<table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"1\">\n";
-    $output .= " <tr><td align=\"center\" colspan=\"7\"><small><a href=\"index.php?date=$prev\">&lt;</a>&nbsp;<a href=\"module.php?mod=event&op=month&month=". date("m",$this->date) ."&year=". date("Y", $this->date) ."\">". t(date("F", $this->date))."&nbsp;". date("Y", $this->date)."</a>&nbsp;<a href=\"index.php?date=$next\">&gt;</a></small></td></tr>\n";
+    $output .= " <tr><td align=\"center\" colspan=\"7\"><small>". l("&lt;", "event/".  date("Y/m/d", $prev)) ."&nbsp;". l(t(date("F",$this->date)) ."&nbsp;". date("Y",$this->date), "event/". date("Y/m",$this->date)) ."&nbsp;". l("&gt;", "event/".  date("Y/m/d", $next)) ."</small></td></tr>\n";
 
     // Generate the days of the week:
     $output .= " <tr>";
@@ -576,9 +591,9 @@ class EventCalendar {
 
       // Print one cell:
       $date = mktime(0, 0, 0, $month, $nday, $year);
-      if ($date == $today) $output .= "  <td align=\"center\" bgcolor=\"$coltoday\"><small><a href=\"module.php?mod=event&date=$date\" STYLE=\"text-decoration: none;\">$nday</a></small></td>\n";
-      else if (in_array($nday , $eventmonth)) $output .= "  <td align=\"center\" bgcolor=\"$colevent\"><small><a href=\"module.php?mod=event&date=$date\" style=\"text-decoration: none;\">$nday</a></small></td>\n";
-      else $output .= "  <td align=\"center\" ><small><a href=\"module.php?mod=event&date=$date\" style=\"text-decoration: none;\">$nday</a></small></td>\n";
+      if ($date == $today) $output .= "  <td align=\"center\" bgcolor=\"$coltoday\"><small>". l($nday, "event/$year/$month/$nday", array("style" => "text-decoration: none;")) ."</small></td>\n";
+      else if (in_array($nday , $eventmonth)) $output .= "  <td align=\"center\" bgcolor=\"$colevent\"><small>". l($nday, "event/$year/$month/$nday", array("style" => "text-decoration: none;")) ."</small></td>\n";
+      else $output .= "  <td align=\"center\" ><small>". l($nday, "event/$year/$month/$nday", array("style" => "text-decoration: none;")) ."</small></td>\n";
 
       // Start every week on a new line:
       if ($sday == 6) $output .=  " </tr>\n";
