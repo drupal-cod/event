@@ -499,11 +499,11 @@ function event_create_query($fields, $node, &$v, $insert = 1) {
 
   foreach ($fields as $field) {
     if ($insert) {
-      $k[] = check_query($field);
+      $k[] = db_escape_string($field);
       $s[] = "'%s'";
     }
     else {
-      $q[] = check_query($field) ." = '%s'";
+      $q[] = db_escape_string($field) ." = '%s'";
     }
     $v[] = $node->$field;
   }
@@ -986,12 +986,12 @@ function event_query_parse($edit) {
       if ($def[0] == "select" && $def[10]) { // multi-select
         foreach ($edit->$field as $value) {
           if ($value) {
-            $or[] = "e.$field LIKE '%". check_query($value). "%'";
+            $or[] = "e.$field LIKE '%". db_escape_string($value). "%'";
           }
         }
       }
       else {
-        $query[] = "e.$field LIKE '%". check_query($edit->$field) ."%'";
+        $query[] = "e.$field LIKE '%". db_escape_string($edit->$field) ."%'";
       }
     }
   }
