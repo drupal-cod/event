@@ -68,7 +68,7 @@ function event_page() {
     print theme('page', event_query(), t('Search Events'), $breadcrumbs);
     return;
   }
-  elseif (arg(1) == "") {
+  elseif (!arg(1)) {
     global $user;
     $time = time();
     $result = pager_query("SELECT n.nid FROM {event} e INNER JOIN {node} n USING (nid) WHERE n.status = 1 AND e.start >= $time ORDER BY e.start", variable_get("default_nodes_main", 10));
