@@ -54,11 +54,11 @@ function event_link($type, $node = 0, $main) {
   if ($type == "page" && user_access("access events")) {
     // Page links requested. These are the links on every page like home, submit, etc.
     // Return links to event_page().
-    $links[] = lm(t("events"), array("mod" => "event"), "", array("title" => t("Show events")));
+    $links[] = l(t("events"), "event", array("title" => t("Show events")));
   }
 
   if ($type == "menu.create" && user_access("post events")) {
-    $links[] = lm(t("create event"), array("mod" => "node", "op" => "add", "type" => "event"), "", array("title" => t("Add a new event.")));
+    $links[] = l(t("create event"), "node/addi/event", array("title" => t("Add a new event.")));
   }
 
   if ($type == "node" && $node->type == "event") {
@@ -68,18 +68,18 @@ function event_link($type, $node = 0, $main) {
 
     if ($node->parent) {
       // Add link to parent event since we have one.
-      $links[] = l(t("main event"), array("id" => $node->parent), "", t("This event is part of a larger event"));
+      $links[] = l(t("main event"), "node/$node->parent", t("This event is part of a larger event"));
     }
 
     if ($node->images) {
       // This node has images so add a link to them :)
-      $links[] = lm(t("view images"), array("mod" => "event", "op" => "images", "id" => $node->nid), "", array("title" => t("View the images from this event.")));
+      $links[] = l(t("view images"), "event/images/$node->nid", array("title" => t("View the images from this event.")));
     }
 
     if ($user->id == $node->uid || user_access("administer events")) {
       // If the current user is the author of the event, or an event admin let
       // them add images to the event for others to view.
-      $links[] = lm(t("add image"), array("mod" => "event", "op" => "addimage", "id" => $node->nid), "", array("title" => t("Add a new image to this event.")));
+      $links[] = l(t("add image"), "event/addimage/$node->nid", array("title" => t("Add a new image to this event.")));
     }
   }
 
@@ -109,7 +109,7 @@ function event_view_parent($node) {
       $output = "<hr /><b>". t("Events") ."</b><br />";
 
       while ($node = db_fetch_object($result)) {
-        $output .= "&nbsp; ". format_date($node->start) .": ". l($node->title, array("id" => $node->nid), "", array("title" => t("View the main event.")));
+        $output .= "&nbsp; ". format_date($node->start) .": ". l($node->title, "node/$node->nid", array("title" => t("View the main event.")));
       }
       return $output;
     }
@@ -140,7 +140,7 @@ function event_delete(&$node) {
  */
 function event_load(&$node) {
   global $user;
-
+"
   $event = db_fetch_object(db_query("SELECT start, start_type, parent, images FROM event WHERE nid = $node->nid"));
 
   return $event;
@@ -343,7 +343,7 @@ function event_image_upload() {
     $node->images = implode(",", $node->images);
     db_query("UPDATE event SET images = '$node->images' WHERE nid = '$edit[id]'");
 
-    $output .= "<p>". lm("<img src=\"$image\" alt=\"$image[1]\" $src_size[3]>", array("mod" => "event", "op" => "images", "id" => $edit["id"]), "", array("title" => $edit["caption"])) ."<br />$edit[caption]</p>";
+    $output .= "<p>". l("<img src=\"$image\" alt=\"$image[1]\" $src_size[3]>", "event/images/$edit[id]", array("title" => $edit["caption"])) ."<br />$edit[caption]</p>";
     node_view($node, 1);
   }
 
@@ -358,7 +358,7 @@ function event_images(&$node) {
     $image = explode("=", $node->images[$image], 2);
     $size = getimagesize(variable_get("event_dir", "misc/") ."$image[0]");
 
-    $output = "<p>". lm("<img src=\"". variable_get("event_dir", "misc/") ."$image[0]\" alt=\"$image[1]\" $size[3]>", array("mod" => "event", "op" => "images", "id" => $id)) ."<br />$image[1]</p>";
+    $output = "<p>". l("<img src=\"". variable_get("event_dir", "misc/") ."$image[0]\" alt=\"$image[1]\" $size[3]>", "event/images/$id") ."<br />$image[1]</p>";
   }
   else {
     $output = '<table border="0" cellpadding="2" cellspacing="2"><tr valign="top">';
@@ -369,7 +369,7 @@ function event_images(&$node) {
         }
         $image = explode("=", $image, 2);
         $size = getimagesize(variable_get("event_dir", "misc/") ."x$image[0]");
-        $output .= "<td><p>". lm("<img src=\"". variable_get("event_dir", "misc/") ."x$image[0]\" alt=\"$image[1]\" $size[3]>", array("mod" => "event", "op" => "images", "id" => $id, "image" => $i)) ."<br />$image[1]</p></td>\n";
+        $output .= "<td><p>". l("<img src=\"". variable_get("event_dir", "misc/") ."x$image[0]\" alt=\"$image[1]\" $size[3]>", "event/images/$id/$i") ."<br />$image[1]</p></td>\n";
       }
     }
     $output .= "</tr>\n</table>\n";
