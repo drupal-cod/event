@@ -41,7 +41,7 @@ function event_block($op = 'list', $delta = 0) {
       switch ($delta) {
         case 0:
           $block['subject'] = t('Browse events');
-          $block['content'] = event_calendar('event_calendar_simple', $year, $month, $day);
+          $block['content'] = event_display('event_calendar_simple', $year, $month, $day);
           return $block;
         case 1:
           $block['subject'] = t('Upcoming events');
@@ -56,7 +56,17 @@ function event_block($op = 'list', $delta = 0) {
 function event_settings() {
   $output = form_textarea(t('Explanation or submission guidelines'), 'event_help', variable_get('event_help', ''), 70, 5, t('This text will be displayed at the top of the event submission form.  Useful for helping or instructing your users.'));
   $output .= form_select(t('Start of week'), 'event_week', variable_get('event_week', '0'), array('0' => t('Sunday'), '1' => t('Monday')), t('The day the weeks starts in the block calendar.'));
-  $output .= form_radios(t('Time notation preference'), 'event_ampm', variable_get('event_ampm', '0'), array('0' => t('24h'),'1' => t('12h')), t('The time notation system used for entering event start times.')); 
+  $output .= form_radios(t('Time notation preference'), 'event_ampm', variable_get('event_ampm', '0'), array('0' => t('24h'),'1' => t('12h')), t('The time notation system used for entering event start times.'));
+  $output .= form_select(t('Type of overview'), 'event_overview', variable_get('event_overview', 'calendar'), array('calendar' => t('Calendar'), 'table' => t('Table')), t('The type of overview to show the user when he clicks on the block calendar.'));
+
+  $extra = event_fields();
+  $headerarray = array();
+  foreach($extra as $key => $value) {
+    if ($value[0] == ('textfield' || 'textarea' || 'select') && $value[3]) $headerarray['e.'. $key] = $value[1];
+  }
+  $headerarray = array_merge(array('e.start' => t('Date'), 'n.title' => t('Title'), 'n.teaser' => t('Teaser'), 'n.body' => t('Body')), $headerarray);
+  $output .= form_select(t('Table headers'), 'event_table_headers', variable_get('event_table_headers', array('e.start', 'n.title', 'n.teaser')), $headerarray, t('The table headers used in the table view. Only entries that have their own database column in the event table and are of type "textfield", "textarea", or "select" can be used.'), 0, 1);
+
   return $output;
 }
 
@@ -90,7 +100,12 @@ function event_page() {
   // Show calendar by default
   $year = arg(1); $month = arg(2); $day = arg(3);
   $output = '<div id="event">';
-  $output .= event_calendar('event_calendar_expanded', $year, $month, $day, 1);
+  if (variable_get('event_overview', 'calendar') == 'table') {
+    $output .= event_display('event_table', $year, $month, $day, 1, 1);
+  }
+  else {
+    $output .= event_display('event_calendar_expanded', $year, $month, $day, 1);
+  }
   $output .= theme('links', array( l(t('search events'), "event/search") ));
   $output .= '</div>';
 
@@ -169,7 +184,7 @@ function event_validate(&$node) {
       }
       elseif ($hour == 12) {
         $hour -= 12;
-      } 
+      }
     }
     $node->start = gmmktime($hour, $node->minute, 0, $node->month, $node->day, $node->year) - $GLOBALS['user']->timezone;
   }
@@ -284,7 +299,7 @@ function event_form_date($timestamp, $prefix = '') {
 }
 
 function event_form(&$node, &$error) {
-  
+
   $output = '';
   if (module_exist('taxonomy')) {
     $output .= implode('', taxonomy_node_form('event', $node));
@@ -343,7 +358,7 @@ function event_insert(&$node) {
   $fields = array('nid', 'start', 'data');
   $sql = event_create_query($fields, $node, $values);
   foreach ($values as $value) {
-    $vals[] = is_array($value) ? serialize($value) : $value; 
+    $vals[] = is_array($value) ? serialize($value) : $value;
   }
   db_query($sql, $vals);
 }
@@ -352,7 +367,7 @@ function event_update(&$node) {
   $fields = array('start', 'data');
   $sql = event_create_query($fields, $node, $values, 0);
   foreach ($values as $value) {
-    $vals[] = is_array($value) ? serialize($value) : $value; 
+    $vals[] = is_array($value) ? serialize($value) : $value;
   }
   db_query($sql, $vals);
 }
@@ -454,7 +469,7 @@ function event_calendar_expanded($year, $month, $day, $timestamp) {
   return $output;
 }
 
-function event_calendar($callback, &$year, &$month, &$day, $navigation = 0) {
+function event_display($callback, &$year, &$month, &$day, $navigation = 0, $extra = 0) {
   global $user;
   $time = time() + $user->timezone;
   if (!$year) {
@@ -488,47 +503,116 @@ function event_calendar($callback, &$year, &$month, &$day, $navigation = 0) {
     array('class' => 'next', 'data' => $next)
   );
 
-  // Week starts when?
-  if (variable_get('event_week', 1)) {
-    $day_name = array(t('Mon'), t('Tue'), t('Wed'), t('Thu'), t('Fri'), t('Sat'), t('Sun'));
-  }
-  else {
-    $day_name = array(t('Sun'), t('Mon'), t('Tue'), t('Wed'), t('Thu'), t('Fri'), t('Sat'));
-  }
-
-  foreach ($day_name as $_day) {
-    $row[] = array('class' => strtolower("days $_day"), 'data' => $_day);
-  }
-  $rows = array($row);
-  $week = 1;
-
-  // Create table days.
-  $row = array_fill(0, 6, '');
-  for ($_day = 1; $_day <= $days; $_day++) {
-    $timestamp = gmmktime(0, 0, 0, $month, $_day, $year);
-    $week_day = gmdate('w', $timestamp);
-    // Make sure we have the right day (week starts on).
+  if (!$extra) { // calendar views
+    // Week starts when?
     if (variable_get('event_week', 1)) {
-      $week_day = $week_day == 0 ? 6 : $week_day - 1;
+      $day_name = array(t('Mon'), t('Tue'), t('Wed'), t('Thu'), t('Fri'), t('Sat'), t('Sun'));
     }
-    $row[$week_day] = array(
-      'class' => strtolower("$month_name $day_name[$week_day]". ($weeks == $week ? ' lastweek' : '') . ($timestamp == $today ? ' today' : '') . ($_day == $day ? ' selected' : '')),
-      'id' => strtolower($month_name . $_day),
-      'data' => $callback($year, $month, $_day, $timestamp)
-    );
+    else {
+      $day_name = array(t('Sun'), t('Mon'), t('Tue'), t('Wed'), t('Thu'), t('Fri'), t('Sat'));
+    }
 
-    if ($week_day == 6 || $_day == $days) {
-      $rows[] = array_pad($row, 7, '&nbsp;');
-      $row = array();
-      $week++;
+    foreach ($day_name as $_day) {
+      $row[] = array('class' => strtolower("days $_day"), 'data' => $_day);
     }
+    $rows = array($row);
+    $week = 1;
+
+    // Create table days.
+    $row = array_fill(0, 6, '');
+    for ($_day = 1; $_day <= $days; $_day++) {
+      $timestamp = gmmktime(0, 0, 0, $month, $_day, $year);
+      $week_day = gmdate('w', $timestamp);
+      // Make sure we have the right day (week starts on).
+      if (variable_get('event_week', 1)) {
+        $week_day = $week_day == 0 ? 6 : $week_day - 1;
+      }
+      $row[$week_day] = array(
+        'class' => strtolower("$month_name $day_name[$week_day]". ($weeks == $week ? ' lastweek' : '') . ($timestamp == $today ? ' today' : '') . ($_day == $day ? ' selected' : '')),
+        'id' => strtolower($month_name . $_day),
+        'data' => $callback($year, $month, $_day, $timestamp)
+      );
+
+      if ($week_day == 6 || $_day == $days) {
+        $rows[] = array_pad($row, 7, '&nbsp;');
+        $row = array();
+        $week++;
+      }
+    }
+    $output = '<div class="event-calendar">';
+    $output .= theme("table", $header, $rows);
+  }
+  else { // table view
+    $start = gmmktime(0, 0, 0, $month, ($day ? $day : 1), $year) + $user->timezone;
+    $days = gmdate('j', gmmktime(0, 0, 0, $month + 1, 0, $year));
+    $last = gmmktime(23, 59, 59, $month, $days, $year) + $user->timezone;
+    $output = '<div class="event-calendar">';
+    $output .= theme('table', $header, NULL);
+    $output .= $callback($start, $last, $today);
   }
 
-  $output = '<div class="event-calendar">';
-  $output .= theme("table", $header, $rows);
   $output .= '</div>';
 
   return $output;
+}
+
+function event_table($start, $end, $today) {
+  $extra = event_fields();
+  $headerarray = $type = array();
+  foreach($extra as $key => $def) {
+    if ($def[3]) {
+      $headerarray[$def[1]] = 'e.'. $key;
+      $type['e.'. $key]['type'] = $def[0];
+      $type['e.'. $key]['fields'] = $def[7];
+    }
+  }
+  $headerkeys = variable_get('event_table_headers', array('e.start', 'n.title', 'n.teaser'));
+  $headerarray = array_merge(array(t('Date') => 'e.start', t('Title') => 'n.title', t('Teaser') => 'n.teaser', t('Body') => 'n.body'), $headerarray);
+  $type = array_merge(array('e.start' => array('type' => 'time'), 'n.title' => array('type' => 'textfield'), 'n.teaser' => array('type' => 'textarea'), 'n.body' => array('type' => 'textarea')), $type);
+  $headerarray = array_intersect($headerarray, $headerkeys);
+  $header = array();
+  foreach ($headerarray as $name => $column) {
+    $header[] = array('data' => $name, 'field' => $column);
+  }
+  $sql = "SELECT n.nid, n.title, n.teaser, n.body, e.* FROM {node} n INNER JOIN {event} e ON n.nid = e.nid WHERE n.status = 1 AND e.start > $start AND e.start < $end GROUP BY e.start, n.title";
+  $sql .= tablesort_sql($header);
+  $result = pager_query($sql, 10);
+  $rows = array();
+  while ($event = db_fetch_object($result)) {
+    $row = array();
+    foreach ($headerarray as $column) {
+      $field = substr($column, 2);
+      $row[] = array('data' => event_format_field($type[$column], $event->$field, $field, $event->nid), 'class' => $type[$column]['type'] .' '. $field . (($today == gmmktime(0, 0, 0, gmdate('m', $event->start), gmdate('j', $event->start), gmdate('Y', $event->start))) ? ' today': ''));
+    }
+    $rows[] = $row;
+  }
+  if ($pager = theme('pager', NULL, 10, 0, tablesort_pager())) {
+    $rows[] = array(array('data' => $pager, "colspan" => count($headerfields)));
+  }
+
+  return theme('table', $header, $rows);
+}
+
+function event_format_field($type, $data, $field, $nid) {
+  switch ($type['type']) {
+    case 'textarea':
+    case 'textfield':
+      if ($field == 'title') {
+        return l($data, "node/view/$nid", array("title" => t('Click here to see the full event.')));
+      }
+      return $data;
+      break;
+    case 'time':
+      return format_date($data, 'custom', t('M, %day', array('%day' => 'j')));
+      break;
+    case 'select':
+      $arr = array();
+      foreach (unserialize($data) as $key) {
+        $arr[] = $type['fields'][$key];
+      }
+      return implode(', ', $arr);
+      break;
+  }
 }
 
 function event_search($keys) {
@@ -575,7 +659,7 @@ function event_query_parse($edit) {
   if (isset($edit->to['year']) && isset($edit->to['month']) && isset($edit->to['day']) && isset($edit->to['hour']) && isset($edit->to['minute'])) {
     $query[] = 'e.start <= '. (gmmktime($edit->to['hour'], $edit->to['minute'], 0, $edit->to['month'], $edit->to['day'], $edit->to['year']) - $GLOBALS['user']->timezone);
   }
-  
+
   foreach ($fields as $field => $def) {
     if ($def[3] && $edit->$field) {
       if ($def[0] == "select" && $def[10]) { // multi-select
@@ -601,7 +685,7 @@ function event_query_parse($edit) {
 function event_query_form() {
   $fields = event_fields();
   $output = form_group(t('Date period'), form_item(t('From'), event_form_date(time()-2*365*24*60*60, 'from][')) . form_item(t('To'), event_form_date(time()+3*365*24*60*60, 'to][')));
-  
+
   foreach ($fields as $field => $def) {
     if ($def[3]) {
       $function = "form_$def[0]";
@@ -644,26 +728,24 @@ function theme_event_upcoming_list($links) {
   if (is_array($links) && (sizeof($links) > 0)) {
     foreach ($links as $node) {
 
-    $minutesleft = floor((  $node->start - time() ) / 60); 
+      $minutesleft = floor(($node->start - time()) / 60);
 
-    if ( $minutesleft < 0 ) 
-      $timeleft = t('NOW');
-    else if ( $minutesleft  == 1 ) 
-      $timeleft = "1&bsp;" . t('minute');
-    else if ( $minutesleft < 60 ) 
-      $timeleft = $minutesleft . "&nbsp;" . t('minutes');
-    else if ( $minutesleft >= 60 && $minutesleft < 120 ) 
-      $timeleft = "1&nbsp;" . t('hour');
-    else if ( $minutesleft < (24*60) ) 
-      $timeleft = floor($minutesleft/60) . "&nbsp;" . t('hours');
-    else if ( $minutesleft >= (24*60) && $minutesleft < (48*60) ) 
-      $timeleft = "1&nbsp;" . t('day');  
-    else 
-      $timeleft = floor($minutesleft/(24*60)) . "&nbsp;" . t('days');  
+      if ($minutesleft < 0) {
+        $timeleft = t('NOW');
+      }
+      else if ($minutesleft < 60) {
+        $timeleft = format_plural($minutesleft, '1 minute', '%count minutes');
+      }
+      else if ($minutesleft >= 60 && $minutesleft < (24*60)) {
+        $timeleft = format_plural(floor($minutesleft/60), '1 hour', '%count hours');
+      }
+      else if ($minutesleft >= (24*60)) {
+        $timeleft = format_plural(floor($minutesleft/(24*60)), '1 day', '%count days');
+      }
 
-       $items[] = l($node->title, "node/view/$node->nid", array("title" => $node->title)) . " ($timeleft)";
+      $items[] = l($node->title, "node/view/$node->nid", array("title" => $node->title)) . " ($timeleft)";
     }
-    return theme("item_list",$items);
+    return theme("item_list", $items);
   }
 }
 
