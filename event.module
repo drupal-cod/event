@@ -1,4 +1,4 @@
-<?php
+m?php
 // $Id$
 
 /**
@@ -204,7 +204,7 @@ function event_form(&$node, &$help, &$error) {
     $node->minute = date("i", $node->start);
   };
 
-  $start = str_replace("</p>", "", str_replace("<p>", "", form_select("", "year", ($node->year ? $node->year : date("Y")), $years) . form_select("", "month", ($node->month ? $node->month : date("m")), $months) . form_select("", "day", ($node->day ? $node->day : date("d")), $days) ." : ". form_select("", "hour", ($node->hour ? $node->hour : date("H")), $hours) . form_select("", "minute", ($node->minute ? $node->minute : "00"), $minutes)));
+  $start = "<p>" . str_replace("</p>", "", str_replace("<p>", "", form_select("", "year", ($node->year ? $node->year : date("Y")), $years) . form_select("", "month", ($node->month ? $node->month : date("m")), $months) . form_select("", "day", ($node->day ? $node->day : date("d")), $days) ." : ". form_select("", "hour", ($node->hour ? $node->hour : date("H")), $hours) . form_select("", "minute", ($node->minute ? $node->minute : "00"), $minutes))) . "</p>";
 
   // List all parent events in case we are making a multi-event:
   $events[0] = t("<root>");
@@ -222,7 +222,7 @@ function event_form(&$node, &$help, &$error) {
   if ($node->teaser) {
     $output .= form_textarea(t("Teaser"), "teaser", $node->teaser, 60, 5, $error["teaser"]);
   }
-  $output .= form_textarea(t("Details"), "body", $node->body, 70, 20, t("Allowed HTML tags") .": ". htmlspecialchars(variable_get("allowed_html", "")));
+  $output .= form_textarea(t("Details"), "body", $node->body, 60, 15, t("Allowed HTML tags") .": ". htmlspecialchars(variable_get("allowed_html", "")));
 
   // Return the form to be displayed.
   return $output;
@@ -289,7 +289,7 @@ function event_image_upload() {
   if (!is_uploaded_file($edit["file"])) {
     $output = t("Error: not a file upload.");
   }
-  elseif (!in_array($edit_type["file"], array("image/x-png", "image/jpg", "image/jpeg", "image/pjpeg"))) {
+  elseif (!in_array($edit_type["file"], array("image/png", "image/x-png", "image/jpg", "image/jpeg", "image/pjpeg"))) {
     $output = t("Error: invalid image format") ." $edit_type[file].";
   }
   else {
