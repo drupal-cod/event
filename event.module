@@ -131,7 +131,17 @@ function event_page() {
   }
 
   // Show calendar by default
-  $year = arg(1); $month = arg(2); $day = arg(3);
+  if (arg(1) == 'today') {
+    $current = event_format_date(time(), 'custom', 'Y/m/d');
+    $pieces = explode('/', $current);
+    $year = $pieces[0];
+    $month = $pieces[1];
+    $day = $pieces[2];
+  }
+  else {
+    $year = arg(1); $month = arg(2); $day = arg(3);
+  }
+
   $output = '<div id="event">';
   if (variable_get('event_overview', 'calendar') == 'table') {
     $output .= event_display('event_table', $year, $month, $day, 1, 1);
