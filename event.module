@@ -3,31 +3,16 @@
 
 function event_fields() {
   /*
-  ** Add an entry below for any additional field you might need, or put
-  ** the extra fields in a file called fields.inc in the event module
+  ** To add extra fields you might need, add them to 
+  ** the file called fields.inc in the event module
   ** directory.
   */
-  $fields = array(
-    'location' => array(
-      'textfield',        // Field type
-      t('Location'),      // Display name
-      false,              // Required field
-      true,               // Store in separate database field
-      true,               // Show in calendar
-      '',                 // Default value
-      100,                // Field length
-      255,                // Maximum input length
-      t('Where this event is taking place.'),   // Help text
-    ),
-    // 'country' => array('textfield', t('Country'), false, false, false, '', 64, 64, t('Which country is hosting this event?')),
-    // 'keynote' => array('textarea', t('Keynote topic'), false, false, false, '', 64, 4, ''),
-  );
-
   if (file_exists('modules/event/fields.inc')) {
     include_once 'modules/event/fields.inc';
+    return event_extra_fields();
   }
 
-  return $fields;
+  return array();
 }
 
 function event_help($section) {
@@ -443,6 +428,21 @@ function event_calendar($callback, &$year, &$month, &$day, $navigation = 0) {
   $output .= '</div>';
 
   return $output;
+}
+
+function event_search($keys) {
+  $extra_fields = event_fields();
+  $query = "";
+  foreach ($extra_fields as $field => $def) {
+    if ($def[3]) { // Stored in separate database field
+        $query .= " OR e.". $field ." LIKE '%$keys%'";
+    }
+  }
+  $result = db_query("SELECT n.*, e.* FROM {event} e INNER JOIN {node} n ON n.nid = e.nid WHERE (n.title LIKE '%$keys%' OR n.body LIKE '%$keys%' OR n.teaser LIKE '%$keys%' ". $query .") ORDER BY n.changed DESC LIMIT 20");
+  while ($search = db_fetch_object($result)) {
+    $find[] = array("title" => check_output($search->title), "link" => (strstr(request_uri(), "admin") ? url("admin/node/edit/id/$search->nid") : url("node/view/$search->nid")), "user" => $search->name, "date" => $search->timestamp);
+  }
+  return $find;
 }
 
 ?>

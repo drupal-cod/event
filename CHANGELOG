@@ -1,5 +1,11 @@
 26. October 2003
 ----------------
+[Gerhard Killesreiter]
+- re-added search function, extrafields with extra db fields will by searched
+- moved extra fields to fields.inc
+
+26. October 2003
+----------------
 [Kjartan Mannes]
 - Fixed week day names not being translated.
 - Changed #calendar to .event-calendar.
