@@ -172,7 +172,7 @@ function event_link($type, $node = 0, $main) {
     case 'node':
       if ($node->type == 'event') {
         if (node_access('update', $node) && !user_access('administer nodes')) {
-          $links[] = l(t('edit event'), "node/edit/$node->nid", array('title' => t('Edit this event.')));
+          $links[] = l(t('edit event'), "node/$node->nid/edit", array('title' => t('Edit this event.')));
         }
         else {
           $links[] = l(t('calendar'), 'event/'. event_format_date($node->start, 'custom', 'Y/m/d'));
@@ -681,7 +681,7 @@ function event_calendar_expanded($year, $month, $day, $timestamp) {
     foreach ($data as $node) {
       $output .= '<div class="event">';
       $output .= '<span class="time">'. event_format_date($node->start, 'custom', $date_format) .'</span>';
-      $output .= '<span class="title">'. l($node->title, "node/view/$node->nid") .'</span>';
+      $output .= '<span class="title">'. l($node->title, "node/$node->nid") .'</span>';
       foreach ($fields as $field => $def) {
         if ($def[4] && $node->$field) {
           if ($node->$field) {
@@ -883,7 +883,7 @@ function event_format_field($type, $data, $field, $nid) {
     case 'textarea':
     case 'textfield':
       if ($field == 'title') {
-        return l($data, "node/view/$nid", array("title" => t('Click here to see the full event.')));
+        return l($data, "node/$nid", array("title" => t('Click here to see the full event.')));
       }
       return $data;
       break;
@@ -939,7 +939,7 @@ function event_search($keys) {
   }
   $result = db_query_range("SELECT n.*, e.* FROM {event} e INNER JOIN {node} n ON n.nid = e.nid ". node_access_join_sql() ." WHERE ". node_access_where_sql() ." AND (n.title LIKE '%$keys%' OR n.body LIKE '%$keys%' OR n.teaser LIKE '%$keys%' ". $query .") AND n.status = 1 ORDER BY n.changed DESC", 0, 20);
   while ($search = db_fetch_object($result)) {
-    $find[] = array("title" => check_output($search->title), "link" => (strstr(request_uri(), "admin") ? url("admin/node/edit/id/$search->nid") : url("node/view/$search->nid")), "user" => $search->name, "date" => $search->timestamp);
+    $find[] = array("title" => check_output($search->title), "link" => (strstr(request_uri(), "admin") ? url("node/$search->nid/edit") : url("node/$search->nid")), "user" => $search->name, "date" => $search->timestamp);
   }
   return array(t('Events'), $find);
 }
@@ -1099,7 +1099,7 @@ function theme_event_upcoming_list($links) {
         $timeleft = format_plural(floor($minutesleft/(24*60)), '1 day', '%count days');
       }
 
-      $items[] = l($node->title, "node/view/$node->nid", array("title" => $node->title)) . " ($timeleft)";
+      $items[] = l($node->title, "node/$node->nid", array("title" => $node->title)) . " ($timeleft)";
     }
     return theme("item_list", $items);
   }
