@@ -1,13 +1,14 @@
-.node .event .details {
+.event .details {
   padding: 0.2em 0.2em 1em 0.2em;
 }
-.node .event .content {
+.event .content {
   border-top: 1px dashed #999;
+  padding-top: 0.8em;
 }
-.node .event .details .form-item, .node .event .details .form-item .title {
+.event .details .form-item, .node .event .details .form-item .title {
   color: #999;
 }
-.node .event .details .form-item .title {
+.event .details .form-item .title {
   display: inline;
   padding-right: 0.2em;
 }
