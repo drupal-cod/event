@@ -573,7 +573,7 @@ function event_calendar_data($year, $month, $day) {
       $last += $user->timezone;
     }
 
-    $result = db_query("SELECT n.nid FROM {event} e INNER JOIN {node} n USING (nid) WHERE n.status = 1 AND e.start > %d AND e.start < %d ORDER BY e.start", $first, $last);
+    $result = db_query('SELECT n.nid FROM {event} e INNER JOIN {node} n USING (nid) '. node_access_join_sql() .' WHERE '. node_access_where_sql() .' AND n.status = 1 AND e.start > %d AND e.start < %d ORDER BY e.start', $first, $last);
     while ($node = db_fetch_object($result)) {
       $node = node_load($node);
       $data[$year][$month][event_format_date($node->start, 'custom', 'j')][] = $node;
@@ -868,7 +868,7 @@ function event_search($keys) {
         $query .= " OR e.". $field ." LIKE '%$keys%'";
     }
   }
-  $result = db_query_range("SELECT n.*, e.* FROM {event} e INNER JOIN {node} n ON n.nid = e.nid WHERE (n.title LIKE '%$keys%' OR n.body LIKE '%$keys%' OR n.teaser LIKE '%$keys%' ". $query .") ORDER BY n.changed DESC", 0, 20);
+  $result = db_query_range("SELECT n.*, e.* FROM {event} e INNER JOIN {node} n ON n.nid = e.nid ". node_access_join_sql() ." WHERE ". node_access_where_sql() ." AND (n.title LIKE '%$keys%' OR n.body LIKE '%$keys%' OR n.teaser LIKE '%$keys%' ". $query .") AND n.status = 1 ORDER BY n.changed DESC", 0, 20);
   while ($search = db_fetch_object($result)) {
     $find[] = array("title" => check_output($search->title), "link" => (strstr(request_uri(), "admin") ? url("admin/node/edit/id/$search->nid") : url("node/view/$search->nid")), "user" => $search->name, "date" => $search->timestamp);
   }
@@ -936,7 +936,7 @@ function event_query_parse($edit) {
     $query[] = '('. implode(' OR ', $or). ')';
   }
 
-  $sql = 'SELECT n.nid FROM {event} e INNER JOIN {node} n USING (nid) WHERE '. implode(' AND ', $query);
+  $sql = 'SELECT n.nid FROM {event} e INNER JOIN {node} n USING (nid) '. node_access_join_sql() .' WHERE '. node_access_where_sql() .' AND '. implode(' AND ', $query);
   return db_query($sql);
 }
 
@@ -995,7 +995,7 @@ function event_block_upcoming($limit = 6) {
   global $user;
   // For two hours, we display "NOW"
   $time = time()-(2*60*60);
-  $result = db_query_range("SELECT n.nid, n.title, n.status, n.moderate, e.* FROM {node} n INNER JOIN {event} e on n.nid = e.nid WHERE n.type='event' AND n.status = 1 AND n.moderate = 0 AND e.start >= $time ORDER BY e.start",0,$limit);
+  $result = db_query_range("SELECT n.nid, n.title, n.status, n.moderate, e.* FROM {node} n ". node_access_join_sql() ." INNER JOIN {event} e ON n.nid = e.nid WHERE n.type='event' AND ". node_access_where_sql() ." AND n.status = 1 AND e.start >= $time ORDER BY e.start",0,$limit);
 
   while ($node = db_fetch_object($result)) {
     $links[] = $node;
