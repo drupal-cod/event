@@ -1,3 +1,9 @@
+23. September 2002
+------------------
+event.module [Gerhard Killesreiter]
+- changed "post content" to "post events"
+- changed "access content" to "access events"
+
 6. September 2002
 -----------------
 event.module [Gerhard Killesreiter]

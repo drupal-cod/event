@@ -7,7 +7,7 @@
  * @return (array) array of permissions
  */
 function event_perm() {
-  return array("access events", "administer events");
+  return array("access events", "administer events", "post events");
 }
 
 /**
@@ -51,13 +51,13 @@ function event_link($type, $node = 0, $main) {
   // The different if-then-else statements help dermin what type of links are
   // requested.
 
-  if ($type == "page" && user_access("access content")) {
+  if ($type == "page" && user_access("access events")) {
     // Page links requested. These are the links on every page like home, submit, etc.
     // Return links to event_page().
     $links[] = lm(t("events"), array("mod" => "event"), "", array("title" => t("Show events")));
   }
 
-  if ($type == "menu.create" && user_access("post content")) {
+  if ($type == "menu.create" && user_access("post events")) {
     $links[] = lm(t("create event"), array("mod" => "node", "op" => "add", "type" => "event"), "", array("title" => t("Add a new event.")));
   }
 
@@ -422,7 +422,7 @@ function event_page() {
       $first = mktime(0, 0, 0, $month, 1, $year);
       $last  = mktime(23, 59, 59, $month + 1, 0, $year);
 
-      if (user_access("access content")) {
+      if (user_access("access events")) {
         // This needs a heading function in the theme.
         // $theme->heading(t("Events in ") . t(strtr("%a", array("%a" => date("F", $first)))) . date(" Y", $first));
         $theme->box(t("Event calendar"), form($form));
@@ -465,7 +465,7 @@ function event_page() {
 
       $theme->box(t("Event calendar"), form($form));
 
-      if (user_access("access content")) {
+      if (user_access("access events")) {
         // Fetch event nodes for the selected date, or current date if none selected.
         $result = db_query("SELECT n.nid FROM node n LEFT JOIN event e ON n.nid = e.nid WHERE e.parent = 0 AND n.status = 1 AND e.start >= '". ($date > 0 ? check_input($date) : time()) ."' AND n.type = 'event'  ORDER BY e.start ASC LIMIT ". ($user->nodes ? $user->nodes : variable_get(default_nodes_main, 10) .""));
         if($result){
