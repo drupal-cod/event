@@ -143,6 +143,8 @@ function event_access($op, $node) {
 function event_view(&$node, $main = 0) {
   // This function is called by node.module when an event node is viewed. This
   // lets event.module do some processing to the node before outputting it.
+  $node->teaser = check_output($node->teaser);
+  $node->body = check_output($node->body);
 
   // Output the node for the user to take a peek at it.
   theme("node_event", $node, $main);
