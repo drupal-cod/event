@@ -15,7 +15,7 @@ function event_perm() {
  *
  * @return (string) XHTML output/form
  */
-function event_conf_options() {
+function event_settings() {
   $sunmon = array("0" => t("Sunday"), "1" => t("Monday") );
   $output .= form_textfield(t("Image directory"), "event_dir", variable_get("event_dir", "misc/"), 30, 55, t("Path to the place to store images (relative to Drupal). Don't forget the / at the end."));
   $output .= form_select(t("Start of week"), "event_week", variable_get("event_week", "0"), $sunmon , t("The day the weeks starts in the block calendar."));
