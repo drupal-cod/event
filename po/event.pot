@@ -19,7 +19,7 @@ msgid "Lets users make events and keep calendars."
 msgstr ""
 
 #: event.module:23
-msgid "Events are what you think you they are. Occurrences happening an a given time and place."
+msgid "Events are what you think you they are. Occurrences happening at a given time and place."
 msgstr ""
 
 #: event.module:35
