@@ -591,10 +591,11 @@ function theme_event_query_results($result) {
 /* Two helper functions for upcoming events block */
 /* Borrowed some code from weblinks.module */
 
-function event_block_upcoming($limit = 10) {
+function event_block_upcoming($limit = 6) {
   global $user;
-  $time = time();
-  $result = db_query_range("SELECT n.nid, n.title, n.status, n.moderate, e.start FROM {node} n INNER JOIN {event} e on n.nid = e.nid WHERE n.type='event' AND n.status = 1 AND n.moderate = 0 AND e.start >= $time",0,$limit);
+  // For two hours, we display "NOW"
+  $time = time()-(2*60*60);
+  $result = db_query_range("SELECT n.nid, n.title, n.status, n.moderate, e.start FROM {node} n INNER JOIN {event} e on n.nid = e.nid WHERE n.type='event' AND n.status = 1 AND n.moderate = 0 AND e.start >= $time ORDER BY e.start",0,$limit);
 
   while ($node = db_fetch_object($result)) {
     $links[] = $node;
@@ -607,13 +608,22 @@ function theme_event_upcoming_list($links) {
   if (is_array($links) && (sizeof($links) > 0)) {
     foreach ($links as $node) {
 
-       $minutesleft = ( $node->start - time()) / 60;
-       if ( $minutesleft < 60 )
-         $timeleft = floor($minutesleft) . "&nbsp;" . t('minutes');
-       else if ( $minutesleft < (24*60) )
-         $timeleft = floor($minutesleft/60) . "&nbsp;" . t('hours');
-       else
-         $timeleft = floor($minutesleft/(24*60)) . "&nbsp;" . t('days');
+    $minutesleft = floor((  $node->start - time() ) / 60); 
+
+    if ( $minutesleft < 0 ) 
+      $timeleft = t('NOW');
+    else if ( $minutesleft  == 1 ) 
+      $timeleft = "1&bsp;" . t('minute');
+    else if ( $minutesleft < 60 ) 
+      $timeleft = $minutesleft . "&nbsp;" . t('minutes');
+    else if ( $minutesleft >= 60 && $minutesleft < 120 ) 
+      $timeleft = "1&nbsp;" . t('hour');
+    else if ( $minutesleft < (24*60) ) 
+      $timeleft = floor($minutesleft/60) . "&nbsp;" . t('hours');
+    else if ( $minutesleft >= (24*60) && $minutesleft < (48*60) ) 
+      $timeleft = "1&nbsp;" . t('day');  
+    else 
+      $timeleft = floor($minutesleft/(24*60)) . "&nbsp;" . t('days');  
 
        $items[] = l($node->title, "node/view/$node->nid", array("title" => $node->title)) . " ($timeleft)";
     }
