@@ -55,7 +55,9 @@ function event_page() {
   );
 
   if (!arg(1)) {
-    $result = pager_query("SELECT n.nid FROM {event} e LEFT JOIN {node} n USING (nid) WHERE n.status = 1 AND e.start >= ". (time() - $GLOBALS['user']->timezone) ." ORDER BY e.start", variable_get("default_nodes_main", 10));
+    global $user;
+    $time = time() + $user->timezone;
+    $result = pager_query("SELECT n.nid FROM {event} e LEFT JOIN {node} n USING (nid) WHERE n.status = 1 AND e.start >= $time ORDER BY e.start", variable_get("default_nodes_main", 10));
     if (db_num_rows($result)) {
       $breadcrumbs[] = t('Upcoming');
       theme('header');
@@ -148,7 +150,7 @@ function event_access($op, &$node) {
 function event_validate(&$node) {
   // Re-calculate $node->start if we have all the parameters.
   if (isset($node->year) && isset($node->month) && isset($node->day) && isset($node->hour) && isset($node->minute)) {
-    $node->start = gmmktime($node->hour, $node->minute, 0, $node->month, $node->day, $node->year) - $GLOBALS['user']->timezone;
+    $node->start = gmmktime($node->hour, $node->minute, 0, $node->month, $node->day, $node->year) - $GLOBALS['user']->timezone - date("Z");
   }
 
   if (empty($node->start)) {
@@ -314,14 +316,16 @@ function event_load(&$node) {
 function event_calendar_data($year, $month, $day) {
   static $data;
   if (!is_array($data[$year][$month])) {
+    global $user;
     $data[$year][$month] = array();
     $days = gmdate('j', gmmktime(0, 0, 0, $month + 1, 0, $year));
-    $first = gmmktime(0, 0, 0, $month, 1, $year);
-    $last = gmmktime(0, 0, 0, $month, $days, $year);
+    $first = gmmktime(0, 0, 0, $month, 1, $year) + $user->timezone;
+    $last = gmmktime(23, 59, 59, $month, $days, $year) + $user->timezone;
+
     $result = db_query("SELECT n.nid FROM {event} e LEFT JOIN {node} n USING (nid) WHERE n.status = 1 AND e.start > %d AND e.start < %d ORDER BY start", $first, $last);
     while ($node = db_fetch_object($result)) {
       $node = node_load($node);
-      $data[$year][$month][format_date($node->start, 'custom', 'j')][] = $node;
+      $data[$year][$month][gmdate('j', $node->start)][] = $node;
     }
   }
 
@@ -383,7 +387,7 @@ function event_calendar($callback, &$year, &$month, &$day, $navigation = 0) {
   }
   $header = array(
     array('class' => 'prev', 'data' => $prev),
-    array('class' => 'heading', 'colspan' => 5, 'data' => gmdate('F Y', $date)),
+    array('class' => 'heading', 'colspan' => 5, 'data' => format_date($date, 'custom', 'F Y')),
     array('class' => 'next', 'data' => $next)
   );
 
