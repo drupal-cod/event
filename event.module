@@ -936,6 +936,7 @@ function _event_mktime($hour, $minute, $second, $month, $day, $year) {
  * @return An array of events matching the $keys.
  */
 function event_search($keys) {
+  $keys = check_query($keys);
   $extra_fields = event_fields();
   $query = "";
   foreach ($extra_fields as $field => $def) {
