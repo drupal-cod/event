@@ -120,7 +120,7 @@ function event_access($op, $node) {
 
   // For create access if theuser has create permissions
   if ($op == "create") {
-    return user_access("post events") || _image_can_personal();
+    return user_access("post events");
   }
 
   // Only allow the creator of the node to update it
