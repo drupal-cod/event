@@ -113,7 +113,7 @@ function event_page() {
   $output .= theme('links', array( l(t('search events'), "event/search") ));
   $output .= '</div>';
 
-  $timestamp = _event_mktime(0, 0, 0, $month, $day, $year);
+  $timestamp = _event_mktime(0, 0, 0, $month, ($day ? $day : 1), $year);
   $breadcrumbs[] = l($year, "event/$year");
   $breadcrumbs[] = l(t(event_format_date($timestamp, 'custom', 'F')), "event/$year/$month");
   print theme('page', $output, t('Events'), $breadcrumbs);
