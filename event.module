@@ -436,7 +436,7 @@ function event_calendar_simple($year, $month, $day, $timestamp) {
 function event_calendar_expanded($year, $month, $day, $timestamp) {
 
   if (variable_get('event_ampm', '0')) {
-    $date_format = t('ga i');
+    $date_format = t('g:ia');
   }
   else {
     $date_format = t('G:i');
