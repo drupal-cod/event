@@ -183,7 +183,12 @@ function event_content(&$node, $main = 0) {
   $output .= form_item(t('Start'), format_date($node->start));
   foreach ($fields as $field => $def) {
     if ($node->$field) {
-      $output .= form_item($def[1], $node->$field);
+      if ($def[0] == "select") {
+        $output .= form_item($def[1], $def[6][$node->$field]);
+      }
+      else {
+        $output .= form_item($def[1], $node->$field);
+      }
     }
   }
   $output .= '</div>';

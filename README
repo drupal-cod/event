@@ -4,3 +4,5 @@ Send comments to kjartan@drupal.org.
 The event.module has the following features:
 
 - event calendar
+- admin defined fields
+- searching of events

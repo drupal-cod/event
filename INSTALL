@@ -25,7 +25,7 @@ Installation
 4. Optionally add custom fields by editing the function in
    the fields.inc source code file. If you want to add fields
    that have an extra entry in the database, you need to add those
-   entries to the event table.
+   entries to the event table. Only fields with their own db column are included on the search form
 
 Author
 ------
