@@ -65,25 +65,21 @@ function event_page() {
 
   if (arg(1) == 'search') {
     $breadcrumbs[] = l(t('Search'), 'event/search');
-    print theme('header');
-    print theme('breadcrumb', $breadcrumbs);
-    event_query();
-    print theme('footer');
+    print theme('page', event_query(), t('Search Events'), $breadcrumbs);
     return;
   }
-  elseif (!arg(1)) {
+  elseif (arg(1) == "") {
     global $user;
     $time = time();
     $result = pager_query("SELECT n.nid FROM {event} e INNER JOIN {node} n USING (nid) WHERE n.status = 1 AND e.start >= $time ORDER BY e.start", variable_get("default_nodes_main", 10));
     if (db_num_rows($result)) {
+      $output = "";
       $breadcrumbs[] = t('Upcoming');
-      print theme('header');
-      print theme('breadcrumb', $breadcrumbs);
       while ($node = db_fetch_object($result)) {
-        node_view(node_load($node), 1);
+        $output .= node_view(node_load($node), 1);
       }
-      print pager_display(NULL, variable_get("default_nodes_main", 10));
-      print theme('footer');
+      $output .= pager_display(NULL, variable_get("default_nodes_main", 10));
+      print theme('page', $output, t("Upcoming Events"), $breadcrumbs);
       return;
     }
   }
@@ -98,10 +94,7 @@ function event_page() {
   $timestamp = gmmktime(0, 0, 0, $month, $day, $year);
   $breadcrumbs[] = l($year, "event/$year");
   $breadcrumbs[] = l(format_date($timestamp, 'custom', 'F'), "event/$year/$month");
-  print theme('header');
-  print theme('breadcrumb', $breadcrumbs);
-  print theme('box', t('Events'), $output);
-  print theme('footer');
+  print theme('page', $output, t('Events'), $breadcrumbs);
 }
 
 function event_perm() {
@@ -127,12 +120,12 @@ function event_link($type, $node = 0, $main) {
       break;
     case 'system':
       if (user_access('maintain events')) {
-        menu('node/add/event', t('event'), 'page');
+        menu('node/add/event', t('event'), 'node_page');
       }
       if (user_access('access content')) {
-        menu('event', t('events'), 'page', 1);
-        menu('event/'. format_date(time(), 'custom', 'Y/m/d'), t('calendar'), 'page');
-        menu('event/search', t('search'), 'page', 1);
+        menu('event', t('events'), 'event_page', 1);
+        menu('event/'. format_date(time(), 'custom', 'Y/m/d'), t('calendar'), 'event_page');
+        menu('event/search', t('search'), 'event_page', 1);
       }
   }
 
@@ -217,15 +210,15 @@ function event_content(&$node, $main = 0) {
   return $node;
 }
 
-function event_view(&$node, $main = 0) {
+function event_view(&$node, $main = 0, $page = 0) {
   $node = event_content($node, $main);
-  if ($main == 0) {
+  if ($page) {
     // Breadcrumb navigation
     $breadcrumb[] = l(t('Home'), NULL);
     $breadcrumb[] = l(t('Events'), 'event');
-    print theme('breadcrumb', $breadcrumb);
+    drupal_set_breadcrumb($breadcrumb);
   }
-  print theme('node', $node, $main);
+  return theme('node', $node, $main, $page);
 }
 
 function event_form_date($timestamp, $prefix = '') {
@@ -520,16 +513,17 @@ function event_query() {
       $result = event_query_parse((object) $_POST['edit']);
 
       if (db_num_rows($result)) {
-        print theme('event_query_results', $result);
+        $output = theme('event_query_results', $result);
       }
       else {
-        print theme('box', t('Search results'), t('No matches found.'));
+        $output = theme('box', t('Search results'), t('No matches found.'));
       }
       break;
     default:
-      print theme('box', t('Search events'), event_query_form());
+      $output = theme('box', t('Search events'), event_query_form());
       break;
   }
+  return $output;
 }
 
 function event_query_parse($edit) {
