@@ -23,7 +23,7 @@ function event_extra_fields() {
     // 'keynote' => array('textarea', t('Keynote topic'), false, false, false, '', '', 64, 4, ''),
     
     // include 'none' in your options array in order to have search form work as expected. this is true even for 'required' fields. array should also have uniquely named keys as shown below (for search).
-    // 'etype'  => array('select', t('Event Type'), false, true, false, 'access private event fields', '', array(0 => '<'. t('None'). '>', 'etype_1' => t('Job fair'),  'etype_2' => t('Human resources'), 'etype_3' => t('Diversity'), 'etype_4' => t('Hispanic Association')), '', NULL, 1),
+    // 'etype'  => array('select', t('Event Type'), false, true, false, 'access private event fields', '', array('etype_0' => '<'. t('None'). '>', 'etype_1' => t('Job fair'),  'etype_2' => t('Human resources'), 'etype_3' => t('Diversity'), 'etype_4' => t('Hispanic Association')), '', NULL, 1),
   );
   
   // omit any fields which are not permitted for current user.

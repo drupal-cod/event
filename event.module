@@ -110,7 +110,7 @@ function event_page() {
   $output .= theme('links', array( l(t('search events'), "event/search") ));
   $output .= '</div>';
 
-  $timestamp = gmmktime(0, 0, 0, $month, $day, $year);
+  $timestamp = _event_mktime(0, 0, 0, $month, $day, $year);
   $breadcrumbs[] = l($year, "event/$year");
   $breadcrumbs[] = l(event_format_date($timestamp, 'custom', 'F'), "event/$year/$month");
   print theme('page', $output, t('Events'), $breadcrumbs);
@@ -187,7 +187,10 @@ function event_validate(&$node) {
         $hour -= 12;
       }
     }
-    $node->start = gmmktime($hour, $node->minute, 0, $node->month, $node->day, $node->year) - $GLOBALS['user']->timezone;
+    $node->start = _event_mktime($hour, $node->minute, 0, $node->month, $node->day, $node->year);
+    if (variable_get('event_timezone', '0') == 0) {
+      $node->start -= $GLOBALS['user']->timezone;
+    }
   }
 
   if (empty($node->start)) {
@@ -405,9 +408,9 @@ function event_calendar_data($year, $month, $day) {
   if (!is_array($data[$year][$month])) {
     global $user;
     $data[$year][$month] = array();
-    $days = gmdate('j', gmmktime(0, 0, 0, $month + 1, 0, $year));
-    $first = gmmktime(0, 0, 0, $month, 1, $year) + $user->timezone;
-    $last = gmmktime(23, 59, 59, $month, $days, $year) + $user->timezone;
+    $days = _event_date('j', _event_mktime(0, 0, 0, $month + 1, 0, $year));
+    $first = _event_mktime(0, 0, 0, $month, 1, $year) + $user->timezone;
+    $last = _event_mktime(23, 59, 59, $month, $days, $year) + $user->timezone;
 
     $result = db_query("SELECT n.nid FROM {event} e INNER JOIN {node} n USING (nid) WHERE n.status = 1 AND e.start > %d AND e.start < %d ORDER BY start", $first, $last);
     while ($node = db_fetch_object($result)) {
@@ -472,25 +475,30 @@ function event_calendar_expanded($year, $month, $day, $timestamp) {
 
 function event_display($callback, &$year, &$month, &$day, $navigation = 0, $extra = 0) {
   global $user;
-  $time = time() + $user->timezone;
+  if (variable_get('event_timezone', '0') == 0) {
+    $time = time() + $user->timezone;
+  }
+  else {
+    $time = time();
+  }
   if (!$year) {
-    $year = gmdate('Y', $time);
+    $year = _event_date('Y', $time);
   }
   if (!$month) {
-    $month = gmdate('m', $time);
+    $month = _event_date('m', $time);
   }
 /* Having no day is ok.
   if (!$day) {
-    $day = gmdate('d', $time);
+    $day = _event_date('d', $time);
   }
 */
   // Sanitize date:
-  $days = gmdate('j', gmmktime(0, 0, 0, $month + 1, 0, $year));
-  $date = gmmktime(0, 0, 0, $month, ($day && $day <= $days ? $day : 1), $year);
-  $today = gmmktime(0, 0, 0, gmdate('m', $time), gmdate('j', $time), gmdate('Y', $time));
+  $days = _event_date('j', _event_mktime(0, 0, 0, $month + 1, 0, $year));
+  $date = _event_mktime(0, 0, 0, $month, ($day && $day <= $days ? $day : 1), $year);
+  $today = _event_mktime(0, 0, 0, _event_date('m', $time), _event_date('j', $time), _event_date('Y', $time));
 
   // Extract key data from date:
-  $month_name = gmdate('M', $date);
+  $month_name = _event_date('M', $date);
   $weeks = ceil($days / 7);
 
   // Initialize the header/week days:
@@ -500,7 +508,7 @@ function event_display($callback, &$year, &$month, &$day, $navigation = 0, $extr
   }
   $header = array(
     array('class' => 'prev', 'data' => $prev),
-    array('class' => 'heading', 'colspan' => 5, 'data' => gmdate('F Y', $date)),
+    array('class' => 'heading', 'colspan' => 5, 'data' => _event_date('F Y', $date)),
     array('class' => 'next', 'data' => $next)
   );
 
@@ -524,8 +532,8 @@ function event_display($callback, &$year, &$month, &$day, $navigation = 0, $extr
     // Create table days.
     $row = array_fill(0, 6, '');
     for ($_day = 1; $_day <= $days; $_day++) {
-      $timestamp = gmmktime(0, 0, 0, $month, $_day, $year);
-      $week_day = gmdate('w', $timestamp);
+      $timestamp = _event_mktime(0, 0, 0, $month, $_day, $year);
+      $week_day = _event_date('w', $timestamp);
       // Make sure we have the right day (week starts on).
       if (variable_get('event_week', 1)) {
         $week_day = $week_day == 0 ? 6 : $week_day - 1;
@@ -546,9 +554,9 @@ function event_display($callback, &$year, &$month, &$day, $navigation = 0, $extr
     $output .= theme("table", $header, $rows);
   }
   else { // table view
-    $start = gmmktime(0, 0, 0, $month, ($day ? $day : 1), $year) + $user->timezone;
-    $days = gmdate('j', gmmktime(0, 0, 0, $month + 1, 0, $year));
-    $last = gmmktime(23, 59, 59, $month, $days, $year) + $user->timezone;
+    $start = _event_mktime(0, 0, 0, $month, ($day ? $day : 1), $year) + $user->timezone;
+    $days = _event_date('j', _event_mktime(0, 0, 0, $month + 1, 0, $year));
+    $last = _event_mktime(23, 59, 59, $month, $days, $year) + $user->timezone;
     $output = '<div class="event-calendar">';
     $output .= theme('table', $header, NULL);
     $output .= $callback($start, $last, $today);
@@ -585,7 +593,7 @@ function event_table($start, $end, $today) {
     $row = array();
     foreach ($headerarray as $column) {
       $field = substr($column, 2);
-      $row[] = array('data' => event_format_field($type[$column], $event->$field, $field, $event->nid), 'class' => $type[$column]['type'] .' '. $field . (($today == gmmktime(0, 0, 0, gmdate('m', $event->start), gmdate('j', $event->start), gmdate('Y', $event->start))) ? ' today': ''));
+      $row[] = array('data' => event_format_field($type[$column], $event->$field, $field, $event->nid), 'class' => $type[$column]['type'] .' '. $field . (($today == _event_mktime(0, 0, 0, _event_date('m', $event->start), _event_date('j', $event->start), _event_date('Y', $event->start))) ? ' today': ''));
     }
     $rows[] = $row;
   }
@@ -619,8 +627,18 @@ function event_format_field($type, $data, $field, $nid) {
 }
 
 function event_format_date($timestamp, $type = 'medium', $format = '') {
-  $tz = variable_get('event_timezone', NULL) ? 1 : NULL;
+  $tz = variable_get('event_timezone', '0') ? 1 : NULL;
   return format_date($timestamp, $type, $format, $tz);
+}
+
+function _event_date($time, $format) {
+  $fn = variable_get('event_timezone', '0') ? 'gmdate' : 'date';
+  return  $fn($time, $format);
+}
+
+function _event_mktime($hour, $minute, $second, $month, $day, $year) {
+  $fn = variable_get('event_timezone', '0') ? 'gmmktime' : 'mktime';
+  return  $fn($hour, $minute, $second, $month, $day, $year);
 }
 
 function event_search($keys) {
@@ -661,11 +679,11 @@ function event_query_parse($edit) {
 
   // Calculate timestamps if we have all the parameters.
   if (isset($edit->from['year']) && isset($edit->from['month']) && isset($edit->from['day']) && isset($edit->from['hour']) && isset($edit->from['minute'])) {
-    $query[] = 'e.start >= '. (gmmktime($edit->from['hour'], $edit->from['minute'], 0, $edit->from['month'], $edit->from['day'], $edit->from['year']) - $GLOBALS['user']->timezone);
+    $query[] = 'e.start >= '. (_event_mktime($edit->from['hour'], $edit->from['minute'], 0, $edit->from['month'], $edit->from['day'], $edit->from['year']) - $GLOBALS['user']->timezone);
   }
 
   if (isset($edit->to['year']) && isset($edit->to['month']) && isset($edit->to['day']) && isset($edit->to['hour']) && isset($edit->to['minute'])) {
-    $query[] = 'e.start <= '. (gmmktime($edit->to['hour'], $edit->to['minute'], 0, $edit->to['month'], $edit->to['day'], $edit->to['year']) - $GLOBALS['user']->timezone);
+    $query[] = 'e.start <= '. (_event_mktime($edit->to['hour'], $edit->to['minute'], 0, $edit->to['month'], $edit->to['day'], $edit->to['year']) - $GLOBALS['user']->timezone);
   }
 
   foreach ($fields as $field => $def) {
