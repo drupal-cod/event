@@ -7,13 +7,12 @@ function event_init() {
   ** You must also add a column of the same name in the 'event' table
   */
 
-  $GLOBALS["event_fields"] = array(
-    // standard fields
-    
+  $GLOBALS["event_fields"] = array(    
     // some examples of extra fields
-    "country"       => array("textfield", t("Country"), "", 64, 64, t("Which county is hosting this event?")),
-    //"keynote"     => array("textarea", t("Keynote topic"), "", 64, 4, ""),
-    //"gender"        => array("select", t("Gender"), "", array(0 => "-", "m" => t("male"), "f" => t("female")), "", 0, 0),
+    // "location"      => array("textfield", t("Location"), "", 100, 50, t("Where this event is taking place.")),
+    // "country"       => array("textfield", t("Country"), "", 64, 64, t("Which country is hosting this event?")),
+    // "keynote"       => array("textarea", t("Keynote topic"), "", 64, 4, ""),
+    // "gender"        => array("select", t("Gender"), "", array(0 => "-", "m" => t("male"), "f" => t("female")), "", 0, 0),
   );
 }
 
@@ -86,13 +85,14 @@ function event_insert(&$node) {
   
   $fields = array_keys($event_fields);
   $names = $fields;
-  array_push($names, "nid", "start", "location"); // add standard fields
+  array_push($names, "nid", "start"); // add standard fields
   $str_names = implode(", ", $names);
   
+  $values = array();
   foreach ($fields as $field) {
     $values[] = "'". check_query($node->$field). "'";
   }
-  array_push($values, $node->nid, $node->start, "'". check_query($node->location). "'");
+  array_push($values, $node->nid, $node->start);
   $str_values = implode(", ", $values);
   db_query("INSERT INTO {event} ($str_names) VALUES ($str_values)");
 }
@@ -109,7 +109,6 @@ function event_update(&$node) {
 
   // append the standard fields
   $values[] = "start=$node->start";
-  $values[] = "location='". check_query($node->location). "'";
 
   $str_values = implode(", ", $values);
   
@@ -156,7 +155,6 @@ function event_access($op, $node) {
 function event_content($node, $main = 0) {
   $node->teaser = check_output($node->teaser);
   $pre .= form_item(t("Start"), format_date($node->start));
-  $pre .= form_item(t("Location"), $node->location);
   $pre .= event_build_form_fields($node);
   $node->body = $pre. "<br />". $node->body;
   return $node;
@@ -212,8 +210,7 @@ function event_form(&$node, &$help, &$error) {
   
   $output .= form_item(t("Start"), $when, t("When is this event taking place."));
   
-  $output .= form_textfield(t("Location"), "location", $node->location, 50, 100, t("Where this event is taking place."));
-
+  $required_fields = array();
   foreach ($event_fields as $name => $field) {
     $f = "form_". $field[0];
     // TODO: actually support required fields.
