@@ -534,11 +534,11 @@ class EventCalendar {
     $colevent = variable_get("event_date", "#aaaaaa");
     // Generate calendar header:
     $output .= "\n<!-- calendar -->\n";
-    $output .= "<TABLE WIDTH=\"100%\" BORDER=\"1\" CELLSPACING=\"0\" CELLPADDING=\"1\">\n";
-    $output .= " <TR><TD ALIGN=\"center\" COLSPAN=\"7\"><SMALL><A HREF=\"index.php?date=$prev\">&lt;</A>&nbsp;<A HREF=\"module.php?mod=event&op=month&month=". date("m",$this->date) ."&year=". date("Y", $this->date) ."\">". t(date("F", $this->date))."&nbsp;". date("Y", $this->date)."</A>&nbsp;<A HREF=\"index.php?date=$next\">&gt;</A></SMALL></TD></TR>\n";
+    $output .= "<table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"1\">\n";
+    $output .= " <tr><td align=\"center\" colspan=\"7\"><small><a href=\"index.php?date=$prev\">&lt;</a>&nbsp;<a href=\"module.php?mod=event&op=month&month=". date("m",$this->date) ."&year=". date("Y", $this->date) ."\">". t(date("F", $this->date))."&nbsp;". date("Y", $this->date)."</a>&nbsp;<a href=\"index.php?date=$next\">&gt;</a></small></td></tr>\n";
 
     // Generate the days of the week:
-    $output .= " <TR>";
+    $output .= " <tr>";
     if(variable_get("event_week", "0")){
       $someday = mktime(0, 0, 0, 3, 21, 1994);
       $offset = $first - 1;
@@ -550,9 +550,9 @@ class EventCalendar {
 
     for ($i = 0; $i < 7; $i++) {
     // I'd rather have two letter abbreviations.
-      $output .= "<TD ALIGN=\"center\"><SMALL>" . substr(ucfirst(t(date("l", $someday + $i * 86400))), 0, 2) . "</SMALL></TD>";
+      $output .= "<td align=\"center\"><small>" . substr(ucfirst(t(date("l", $someday + $i * 86400))), 0, 2) . "</small></td>";
     }
-    $output .= "</TR>\n";
+    $output .= "</tr>\n";
 
     // Initialize temporary variables:
     $nday = 1;
@@ -562,7 +562,7 @@ class EventCalendar {
     while ($nday <= $last) {
       // Set up blank days for first week of the month:
       if ($offset) {
-        $output .= " <TR><TD COLSPAN=\"$offset\">&nbsp</TD>\n";
+        $output .= " <tr><td colspan=\"$offset\">&nbsp</td>\n";
         $offset = 0;
       }
 
@@ -571,12 +571,12 @@ class EventCalendar {
 
       // Print one cell:
       $date = mktime(0, 0, 0, $month, $nday, $year);
-      if ($date == $today) $output .= "  <TD ALIGN=\"center\" bgcolor=\"$coltoday\"><SMALL><A HREF=\"module.php?mod=event&date=$date\" STYLE=\"text-decoration: none;\">$nday</A></SMALL></TD>\n";
-      else if (in_array($nday , $eventmonth)) $output .= "  <TD ALIGN=\"center\" bgcolor=\"$colevent\"><SMALL><A HREF=\"module.php?mod=event&date=$date\" STYLE=\"text-decoration: none;\">$nday</A></SMALL></TD>\n";
-      else $output .= "  <TD ALIGN=\"center\" ><SMALL><A HREF=\"module.php?mod=event&date=$date\" STYLE=\"text-decoration: none;\">$nday</A></SMALL></TD>\n";
+      if ($date == $today) $output .= "  <td align=\"center\" bgcolor=\"$coltoday\"><small><a href=\"module.php?mod=event&date=$date\" STYLE=\"text-decoration: none;\">$nday</a></small></td>\n";
+      else if (in_array($nday , $eventmonth)) $output .= "  <td align=\"center\" bgcolor=\"$colevent\"><small><a href=\"module.php?mod=event&date=$date\" style=\"text-decoration: none;\">$nday</a></small></td>\n";
+      else $output .= "  <td align=\"center\" ><small><a href=\"module.php?mod=event&date=$date\" style=\"text-decoration: none;\">$nday</a></small></td>\n";
 
       // Start every week on a new line:
-      if ($sday == 6) $output .=  " </TR>\n";
+      if ($sday == 6) $output .=  " </tr>\n";
 
       // Update temporary variables:
       $sday++;
@@ -587,9 +587,9 @@ class EventCalendar {
     // Complete the calendar:
     if ($sday) {
       $end = 7 - $sday;
-      $output .= "  <TD COLSPAN=\"$end\">&nbsp;</TD>\n </TR>\n";
+      $output .= "  <td colspan=\"$end\">&nbsp;</td>\n </tr>\n";
     }
-    $output .= "</TABLE>\n\n";
+    $output .= "</table>\n\n";
 
     // Return calendar:
     return $output;
