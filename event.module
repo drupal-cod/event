@@ -161,7 +161,7 @@ function node_event($node, $main) {
     $terms = taxonomy_link("taxonomy terms", $node);
   }
   
-  $output  = "<b>$node->title</b> by " . format_name($node) . "<br />";
+  $output  = strtr(t("<b>%title</b> by %name."), array("%title" => $node->title, "%name" => format_name($node))) ."<br />";
   
   if (count($terms)) {
     $output .= "<small>(" . theme("links", $terms) . ")</small><br />";
@@ -174,7 +174,7 @@ function node_event($node, $main) {
     $output .= $node->body;
   }
   
-  $output .= "<br /> " . format_date($node->start, "large") . " at " . $node->location . ". <br />";
+  $output .= "<br /> ". strtr(t("%date at %location."), array("%date" => format_date($node->start, \"large\"), "%location" => $node->location))  ."<br />";
   
   if ($links = link_node($node, $main)) {
     $output .= "<br />[ " . theme("links", $links) . " ]";
