@@ -54,9 +54,17 @@ function event_page() {
     l(t('Events'), 'event')
   );
 
-  if (!arg(1)) {
+  if (arg(1) == 'search') {
+    $breadcrumbs[] = l(t('Search'), 'event/search');
+    theme('header');
+    theme('breadcrumb', $breadcrumbs);
+    event_query();
+    theme('footer');
+    return;
+  }
+  elseif (!arg(1)) {
     global $user;
-    $time = time() + $user->timezone;
+    $time = time();
     $result = pager_query("SELECT n.nid FROM {event} e INNER JOIN {node} n USING (nid) WHERE n.status = 1 AND e.start >= $time ORDER BY e.start", variable_get("default_nodes_main", 10));
     if (db_num_rows($result)) {
       $breadcrumbs[] = t('Upcoming');
@@ -76,9 +84,6 @@ function event_page() {
   $output = '<div id="event">';
   $output .= event_calendar('event_calendar_expanded', $year, $month, $day, 1);
   $output .= '</div>';
-  if (user_access('maintain events')) {
-    $output .= '<p>'. l(t('Add new event.'), 'node/add/event') .'</p>';
-  }
 
   $timestamp = gmmktime(0, 0, 0, $month, $day, $year);
   $breadcrumbs[] = l($year, "event/$year");
@@ -112,11 +117,12 @@ function event_link($type, $node = 0, $main) {
       break;
     case 'system':
       if (user_access('maintain events')) {
-        menu('node/add/event', t('event'), 'event_page');
+        menu('node/add/event', t('event'), 'page');
       }
       if (user_access('access content')) {
-        menu('event', t('events'), 'event_page', 1);
-        menu('event/'. format_date(time(), 'custom', 'Y/m/d'), t('calendar'), 'event_page');
+        menu('event', t('events'), 'page', 1);
+        menu('event/'. format_date(time(), 'custom', 'Y/m/d'), t('calendar'), 'page');
+        menu('event/search', t('search'), 'page', 1);
       }
   }
 
@@ -150,7 +156,7 @@ function event_access($op, &$node) {
 function event_validate(&$node) {
   // Re-calculate $node->start if we have all the parameters.
   if (isset($node->year) && isset($node->month) && isset($node->day) && isset($node->hour) && isset($node->minute)) {
-    $node->start = gmmktime($node->hour, $node->minute, 0, $node->month, $node->day, $node->year) - $GLOBALS['user']->timezone - date("Z");
+    $node->start = gmmktime($node->hour, $node->minute, 0, $node->month, $node->day, $node->year) - $GLOBALS['user']->timezone;
   }
 
   if (empty($node->start)) {
@@ -199,40 +205,45 @@ function event_view(&$node, $main = 0) {
   theme('node', $node, $main);
 }
 
-function event_form(&$node, &$help, &$error) {
-  $help = variable_get('event_help', '');
-
+function event_form_date($timestamp, $prefix = '') {
   // Construct the start time select boxes.
   // TODO: Make the years automatically populated instead of static.
+
   $years = array(2001 => 2001, 2002 => 2002, 2003 => 2003, 2004 => 2004, 2005 => 2005);
   $months = array(1 => t('January'), t('February'), t('March'), t('April'), t('May'), t('June'), t('July'), t('August'), t('September'), t('October'), t('November'), t('December'));
   for ($i = 1; $i <= 31; $i++) $days[$i] = $i;
   for ($i = 0; $i <= 23; $i++) $hours[$i] = $i < 10 ? "0$i" : $i;
   for ($i = 0; $i <= 59; $i++) $minutes[$i] = $i < 10 ? "0$i" : $i;
 
-  if ($node->start) {
+  if ($timestamp) {
     // Use format_date(), it handles user timezone and locale.
-    $node->year = format_date($node->start, 'custom', 'Y');
-    $node->month = format_date($node->start, 'custom', 'm');
-    $node->day = format_date($node->start, 'custom', 'd');
-    $node->hour = format_date($node->start, 'custom', 'H');
-    $node->minute = format_date($node->start, 'custom', 'i');
-  };
+    $year = format_date($timestamp, 'custom', 'Y');
+    $month = format_date($timestamp, 'custom', 'm');
+    $day = format_date($timestamp, 'custom', 'd');
+    $hour = format_date($timestamp, 'custom', 'H');
+    $minute = format_date($timestamp, 'custom', 'i');
+  }
 
   $when = '<div class="container-inline">';
-  $when .= form_select('', 'month', $node->month, $months);
-  $when .= form_select('', 'day', $node->day, $days);
-  $when .= form_select('', 'year', $node->year, $years);
+  $when .= form_select('', $prefix .'month', $month, $months);
+  $when .= form_select('', $prefix .'day', $day, $days);
+  $when .= form_select('', $prefix .'year', $year, $years);
   $when .= ' : ';
-  $when .= form_select('', 'hour', $node->hour, $hours);
-  $when .= form_select('', 'minute', $node->minute, $minutes);
+  $when .= form_select('', $prefix .'hour', $hour, $hours);
+  $when .= form_select('', $prefix .'minute', $minute, $minutes);
   $when .= '</div>';
+
+  return $when;
+}
+
+function event_form(&$node, &$help, &$error) {
+  $help = variable_get('event_help', '');
 
   $output = '';
   if (module_exist('taxonomy')) {
     $output .= implode('', taxonomy_node_form('event', $node));
   }
-  $output .= form_item(t('Start'), $when, t('When is this event taking place.'));
+  $output .= form_item(t('Start'), event_form_date($node->start), t('When is this event taking place.'));
   $fields = event_fields();
   foreach ($fields as $field => $def) {
     $function = "form_$def[0]";
@@ -447,6 +458,71 @@ function event_search($keys) {
     $find[] = array("title" => check_output($search->title), "link" => (strstr(request_uri(), "admin") ? url("admin/node/edit/id/$search->nid") : url("node/view/$search->nid")), "user" => $search->name, "date" => $search->timestamp);
   }
   return $find;
+}
+
+function event_query() {
+  switch ($_POST['op']) {
+    case t('Search'):
+      $result = event_query_parse((object) $_POST['edit']);
+
+      if (db_num_rows($result)) {
+        theme('theme_event_query_results', $result);
+      }
+      else {
+        theme('box', t('Search results'), t('No matches found.'));
+      }
+      break;
+    default:
+      theme('box', t('Search events'), event_query_form());
+      break;
+  }
+}
+
+function event_query_parse($edit) {
+  $fields = event_fields();
+
+  // Calculate timestamps if we have all the parameters.
+  if (isset($edit->from['year']) && isset($edit->from['month']) && isset($edit->from['day']) && isset($edit->from['hour']) && isset($edit->from['minute'])) {
+    $query[] = 'e.start >= '. (gmmktime($edit->from['hour'], $edit->from['minute'], 0, $edit->from['month'], $edit->from['day'], $edit->from['year']) - $GLOBALS['user']->timezone);
+  }
+
+  if (isset($edit->to['year']) && isset($edit->to['month']) && isset($edit->to['day']) && isset($edit->to['hour']) && isset($edit->to['minute'])) {
+    $query[] = 'e.start <= '. (gmmktime($edit->to['hour'], $edit->to['minute'], 0, $edit->to['month'], $edit->to['day'], $edit->to['year']) - $GLOBALS['user']->timezone);
+  }
+  
+  foreach ($fields as $field => $def) {
+    if ($def[3] && $edit->$field) {
+      $query[] = "e.$field = '". check_query($edit->$field) ."'";
+    }
+  }
+
+  return db_query('SELECT n.nid FROM {event} e INNER JOIN {node} n USING (nid) WHERE n.status = 1 AND '. implode(' AND ', $query));
+}
+
+function event_query_form() {
+  $fields = event_fields();
+  $output = form_group(t('Date period'), form_item(t('From'), event_form_date(time(), 'from][')) . form_item(t('To'), event_form_date(time() + 24 * 60 * 60, 'to][')));
+  
+  foreach ($fields as $field => $def) {
+    if ($def[3]) {
+      $function = "form_$def[0]";
+      if (in_array($def[0], array('password', 'textfield', 'textarea'))) {
+        $output .= $function($def[1], $field, '', $def[6], $def[7], $def[8], $def[9]);
+      }
+      else {
+        $output .= $function($def[1], $field, '', $def[6], $def[7], $def[8], $def[9]);
+      }
+    }
+  }
+
+  $output .= form_submit(t('Search'));
+  return form($output);
+}
+
+function theme_event_query_results($result) {
+  while ($node = db_fetch_object($result)) {
+    node_view(node_load($node), 1);
+  }
 }
 
 ?>

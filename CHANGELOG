@@ -1,5 +1,13 @@
-27.Oct.2003 12:22
+09. November 2003
 -----------------
+[Kjartan Mannes]
+- Fixed bugs due to Drupal menu callback changes.
+- Fixed default event page to show future events instead of calendar.
+- Added advanced event search form. Only extra fields in their own database
+  field are searchable.
+
+27. October 2003
+----------------
 [Kjartan Mannes]
 - Fixed events on the last day of the month not showing in the calendar.
 - Fixed event start date to compensate for bug in format_date().
