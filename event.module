@@ -208,8 +208,6 @@ function event_cron() {
 function event_menu($may_cache) {
   global $user;
 
-  drupal_set_html_head(event_html_head());
-
   $items = array();
   if ($may_cache) {
     $items[] = array('path' => 'node/add/event', 'title' => t('event'),
@@ -224,6 +222,9 @@ function event_menu($may_cache) {
     $items[] = array('path' => 'event/search', 'title' => t('search'),
                      'callback' => 'event_page',
                      'type' => MENU_SUGGESTED_ITEM);
+  }
+  else {
+    drupal_set_html_head(event_html_head());
   }
 
   return $items;
