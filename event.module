@@ -628,7 +628,7 @@ function event_block_upcoming($limit = 6) {
     $links[] = $node;
   }
 
-  return theme("theme_event_upcoming_list",$links);
+  return theme("event_upcoming_list",$links);
 }
 
 function theme_event_upcoming_list($links) {
@@ -654,7 +654,7 @@ function theme_event_upcoming_list($links) {
 
        $items[] = l($node->title, "node/view/$node->nid", array("title" => $node->title)) . " ($timeleft)";
     }
-    return theme("theme_item_list",$items);
+    return theme("item_list",$items);
   }
 }
 
