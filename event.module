@@ -58,7 +58,7 @@ function event_link($type, $node = 0, $main) {
   }
 
   if ($type == "menu.create" && user_access("post events")) {
-    $links[] = l(t("create event"), "node/addi/event", array("title" => t("Add a new event.")));
+    $links[] = l(t("create event"), "node/add/event", array("title" => t("Add a new event.")));
   }
 
   if ($type == "node" && $node->type == "event") {
