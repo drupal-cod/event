@@ -24,7 +24,7 @@ function event_help($section) {
   }
 }
 
-function event_head() {
+function event_html_head() {
   return '<style type="text/css">@import url(modules/event/event.css);</style>';
 }
 
@@ -103,6 +103,8 @@ function event_perm() {
 }
 
 function event_link($type, $node = 0, $main) {
+
+  drupal_set_html_head(event_html_head());
   switch ($type) {
     case 'node':
       if ($node->type == 'event') {
