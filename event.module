@@ -266,24 +266,23 @@ function event_page() {
 
 function event_render_nodes($year, $month, $day, $op) {
   switch ($op) {
-      case "month":
-        // first and last timestamp of the month
-        $first = mktime(0, 0, 0, $month, 1, $year); 
-        $last  = mktime(23, 59, 59, $month + 1, 0, $year);  
-        break;
-      case t("Show"):
-        $first = mktime(0, 0, 0, $month, $day, $year); 
-        $last  = mktime(23, 59, 59, $month, $day, $year);
-    }  
+    case "month":
+      // first and last timestamp of the month
+      $first = mktime(0, 0, 0, $month, 1, $year); 
+      $last  = mktime(23, 59, 59, $month + 1, 0, $year);  
+      break;
+    case t("Show"):
+      $first = mktime(0, 0, 0, $month, $day, $year); 
+      $last  = mktime(23, 59, 59, $month, $day, $year);
+  }  
 
-    // Fetch event nodes for the selected month or day
-    $result = pager_query("SELECT n.nid FROM {node} n INNER JOIN {event} e ON n.nid = e.nid WHERE n.status = 1 AND e.start >= '". $first  ."' AND e.start <= '". $last ."' AND n.type = 'event' ORDER BY e.start ASC");
-    if($result){
-      while ($node = db_fetch_object($result)) {
-        node_view(node_load(array("nid" => $node->nid, "type" => "event")), 1);
-      }
-      print pager_display();
+  // Fetch event nodes for the selected month or day
+  $result = pager_query("SELECT n.nid FROM {node} n INNER JOIN {event} e ON n.nid = e.nid WHERE n.status = 1 AND e.start >= '". $first  ."' AND e.start <= '". $last ."' AND n.type = 'event' ORDER BY e.start ASC");
+  if($result){
+    while ($node = db_fetch_object($result)) {
+      node_view(node_load(array("nid" => $node->nid, "type" => "event")), 1);
     }
+    print pager_display();
   }
 }
 
