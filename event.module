@@ -472,7 +472,7 @@ function event_create_query($fields, $node, &$v, $insert = 1) {
   $node->data  = array();
   $extra_fields = event_fields();
   foreach ($extra_fields as $field => $def) {
-    if ($node->$field) {
+    if (isset($node->$field)) {
       if ($def[3]) { // Store in separate database field
         $fields[] = $field;
       }
