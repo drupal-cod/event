@@ -25,11 +25,9 @@ function event_perm() {
  * @return (string) XHTML output/form
  */
 function event_settings() {
+ $output .= form_textarea("Explanation or submission guidelines", "event_help", variable_get("event_help", ""), 70, 5, "This text will be displayed at the top of the event submission form.  Useful for helping or instructing your users.");  
   $sunmon = array("0" => t("Sunday"), "1" => t("Monday") );
-  $output .= form_textfield(t("Image directory"), "event_dir", variable_get("event_dir", "misc/"), 30, 55, t("Path to the place to store images (relative to Drupal). Don't forget the / at the end."));
   $output .= form_select(t("Start of week"), "event_week", variable_get("event_week", "0"), $sunmon , t("The day the weeks starts in the block calendar."));
-  $output .= form_textfield(t("Colour of today's date"), "event_today", variable_get("event_today", "#cccccc"), 30, 55, t("The colour of today's date in the block calendar as a hex code. Don't forget the # at the beginning."));
-  $output .= form_textfield(t("Colour of event dates"), "event_date", variable_get("event_date", "#aaaaaa"), 30, 55, t("The colour of a date with an event in the block calendar as a hex code. Don't forget the # at the beginning."));
   return $output;
 }
 
@@ -41,7 +39,7 @@ function event_settings() {
  */
 function event_node($field) {
   $info["name"] = t("event");
-  $info["description"] = t("A event is what you think it is: A node that contains information on an event in real life. After you submitted an event, you can add pictures to it.");
+  $info["description"] = t("An event contains information on an event in real life.");
 
   return $info[$field];
 }
@@ -70,73 +68,23 @@ function event_link($type, $node = 0, $main) {
     $links[] = l(t("create event"), "node/add/event", array("title" => t("Add a new event.")));
   }
 
-  if ($type == "node" && $node->type == "event") {
-    // Node links requested. The links to be added to a node view. Don't forget
-    // to check the $node->type values.
-    global $user;
-
-    if ($node->parent) {
-      // Add link to parent event since we have one.
-      $links[] = l(t("main event"), "node/$node->parent", array("title" => t("This event is part of a larger event")));
-    }
-
-    if ($node->images) {
-      // This node has images so add a link to them :)
-      $links[] = l(t("view images"), "event/images/$node->nid", array("title" => t("View the images from this event.")));
-    }
-
-    if ($user->id == $node->uid || user_access("administer events")) {
-      // If the current user is the author of the event, or an event admin let
-      // them add images to the event for others to view.
-      $links[] = l(t("add image"), "event/addimage/$node->nid", array("title" => t("Add a new image to this event.")));
-    }
-  }
-
   // Return all the links, or an empty array if there are none.
   return $links ? $links : array();
 }
 
-/**
- * Finds the parents of the node to link to them.
- *
- * @return (string) XHTML output linking to parent
- */
-function event_view_parent($node) {
-  // This function will display a tree of events if $node has a parent, or if
-  // the node is a parent. This will be displayed at the bottom of nodes when
-  // they are viewed.
-
-  if ($node->parent) {
-    $query = "AND (n.nid = $node->parent OR e.parent = $node->parent)  ORDER BY e.start DESC";
-  }
-  elseif ($node->nid) {
-    $query = "AND e.parent = $node->nid ORDER BY e.start";
-  }
-  if ($query) {
-    $result = db_query("SELECT n.nid, n.title, e.start FROM node n LEFT JOIN event e ON n.nid = e.nid AND n.nid = e.nid WHERE n.type = 'event' AND n.status = 1 $query");
-    if (db_num_rows($result)) {
-      $output = "<hr /><b>". t("Events") ."</b><br />";
-
-      while ($node = db_fetch_object($result)) {
-        $output .= "&nbsp; ". format_date($node->start) .": ". l($node->title, "node/$node->nid", array("title" => t("View the main event.")));
-      }
-      return $output;
-    }
+function event_validate(&$node) {
+  // Set node->start based on the form if necessary
+  if (!$node->start && isset($node->year) && isset($node->month) && isset($node->day) && isset($node->hour) && isset($node->minute)) {
+    $node->start = strtotime($node->year ."-". $node->month ."-". $node->day ." ". $node->hour .":". $node->minute);
   }
 }
 
 function event_insert(&$node) {
-  $edit = $_POST["edit"];
-
-  $node->start = strtotime($edit["year"] ."-". $edit["month"] ."-". $edit["day"] ." ". $edit["hour"] .":". $edit["minute"]);
-  db_query("INSERT INTO event (nid, parent, start_type, start) VALUES ($node->nid, $node->parent, $node->start_type, $node->start)");
+  db_query("INSERT INTO event (nid, start, location) VALUES ($node->nid, $node->start, '" . check_query($node->location) . "')");
 }
 
 function event_update(&$node) {
-  $edit = $_POST["edit"];
-
-  $node->start = strtotime($edit["year"] ."-". $edit["month"] ."-". $edit["day"] ." ". $edit["hour"] .":". $edit["minute"]);
-  db_query("UPDATE event SET parent = " . ($node->parent ? $node->parent : 0) . ", start_type = " . ($node->start_type ? $node->start_type : 0) . ", start = $node->start WHERE nid = $node->nid");
+  db_query("UPDATE event SET start = $node->start, location = '" . check_query($node->location) . "' WHERE nid = $node->nid");
 }
 
 function event_delete(&$node) {
@@ -150,11 +98,40 @@ function event_delete(&$node) {
  * @return (object) additional node data
  */
 function event_load(&$node) {
-  global $user;
 
-  $event = db_fetch_object(db_query("SELECT start, start_type, parent, images FROM event WHERE nid = $node->nid"));
+  $event = db_fetch_object(db_query("SELECT start, location FROM event WHERE nid = $node->nid"));
 
   return $event;
+}
+
+/**
+ * Function to determine whether a user has access to this node or not.
+ * 
+ * Return 0 (or False) if the user should be denied access.
+ * Return Any other value if the user should be granted access.
+ */
+function event_access($op, $node) {
+  global $user;
+  
+  // For node view allow access if the node status is approved and they have access permissions
+  if ($op == "view") {
+    return ($node->status && user_access("access events"));
+  }
+
+  // For create access if theuser has create permissions
+  if ($op == "create") {
+    return user_access("post events") || _image_can_personal();
+  }
+
+  // Only allow the creator of the node to update it
+  if ($op == "update") {
+    return ($user->uid == $node->uid);
+  }
+
+  // Only allow the creator of the node to delete it
+  if ($op == "delete") {
+    return ($user->uid == $node->uid);
+  }
 }
 
 /**
@@ -167,29 +144,50 @@ function event_view(&$node, $main = 0) {
   // This function is called by node.module when an event node is viewed. This
   // lets event.module do some processing to the node before outputting it.
 
-
-  // Mess with the timestamp of the node so it shows when the event is instead.
-  // Normally a bad thing, but in this case quite handy.
-  if (!$node->start) {
-    $node->start = strtotime($node->year ."-". $node->month ."-". $node->day ." ". $node->hour .":". $node->minute);
-  }
-
-  $node->created = $node->start;
-
-  // Construct the body of the node to be shown. If the node is part of the
-  // listing on the frontpage just display the abstract.
-  if ($main)
-    // Output the node for the user to take a peek at it.
-    theme("node", $node, $main);
-  else {
-    $node->body = $node->body . event_view_parent($node);
-    // Output the node for the user to take a peek at it.
-    theme("node", $node, $main);
-  }
+  // Output the node for the user to take a peek at it.
+  theme("node_event", $node, $main);
 }
 
 /**
- * Node _view hook to show the event node properly.
+ * Theme event function to supply a default rendering of 
+ * an event.  This function can be implemented in a .theme
+ * object to override this function.
+ *
+ * @param (object) $node node object
+ * @param (boolean) $main is the node on the front page
+ */
+function node_event($node, $main) {
+  if (module_exist("taxonomy")) {
+    $terms = taxonomy_link("taxonomy terms", $node);
+  }
+  
+  $output  = "<b>$node->title</b> by " . format_name($node) . "<br />";
+  
+  if (count($terms)) {
+    $output .= "<small>(" . theme("links", $terms) . ")</small><br />";
+  }
+  
+  if ($main && $node->teaser) {
+    $output .= $node->teaser;
+  }
+  else {
+    $output .= $node->body;
+  }
+  
+  $output .= "<br /> " . format_date($node->start, "large") . " at " . $node->location . ". <br />";
+  
+  if ($links = link_node($node, $main)) {
+    $output .= "<br />[ " . theme("links", $links) . " ]";
+  }
+  
+  $output .= "<hr />";
+  
+  print $output;
+}
+
+/**
+ * Node _form hook to display the necessary forms to add/edit
+ * and event.
  *
  * @param (object) $node node object
  * @param (string) $help specify help text on form
@@ -214,427 +212,219 @@ function event_form(&$node, &$help, &$error) {
     $node->hour = date("H", $node->start);
     $node->minute = date("i", $node->start);
   };
+  
+  $output .= implode("", taxonomy_node_form("event", $node));
 
-  $start = "<p>" . str_replace("</p>", "", str_replace("<p>", "", form_select("", "year", ($node->year ? $node->year : date("Y")), $years) . form_select("", "month", ($node->month ? $node->month : date("m")), $months) . form_select("", "day", ($node->day ? $node->day : date("d")), $days) ." : ". form_select("", "hour", ($node->hour ? $node->hour : date("H")), $hours) . form_select("", "minute", ($node->minute ? $node->minute : "00"), $minutes))) . "</p>";
+  $when = "<div class=\"container-inline\">";
+  $when .= form_select("", "month", ($node->month ? $node->month : date("m")), $months);
+  $when .= form_select("", "day", ($node->day ? $node->day : date("d")), $days) ." : ". form_select("", "hour", ($node->hour ? $node->hour : date("H")), $hours) . form_select("", "minute", ($node->minute ? $node->minute : "00"), $minutes);
+  $when .= form_select("", "year", ($node->year ? $node->year : date("Y")), $years);
+  $when .= "</div>";
+  
+  $output .= form_item(t("Start"), $when, t("When is this event taking place."));
+  
+  $output .= form_textfield(t("Location"), "location", $node->location, 50, 100, t("Where this event is taking place."));
 
-  // List all parent events in case we are making a multi-event:
-  $events[0] = t("<root>");
-  $result = db_query("SELECT nid, title FROM node WHERE type = 'event' AND status = '1' ORDER BY title");
-  while ($_node = db_fetch_object($result)) {
-    $events[$_node->nid] = $_node->title;
-  }
-
-  $output = form_select(t("Parent"), "parent", $node[parent], $events, t("The event this event is a part of."));
-  if (function_exists("taxonomy_node_form")) {
-    $output .= implode("", taxonomy_node_form("event", $node));
-  }
-  $output .= form_select(t("Start date and time"), "start_type", $node->start_type, array(0 => t("Must be on time"), 1 => t("Can be 15 min late"), 2 => t("All day")));
-  $output .= $start;
-  if ($node->teaser) {
-    $output .= form_textarea(t("Teaser"), "teaser", $node->teaser, 60, 5, $error["teaser"]);
-  }
   $output .= form_textarea(t("Details"), "body", $node->body, 60, 15, t("Allowed HTML tags") .": ". htmlspecialchars(variable_get("allowed_html", "")));
+
+  $help = variable_get("event_help", "");
 
   // Return the form to be displayed.
   return $output;
 }
 
-/**
- * Node _save hook.
- *
- * @param (string) $op operation
- * @param (object) $node node object
- * @return (array) values to save
- */
-function event_save($op, &$node) {
-  if ($op == "approve") {
-    return array("status" => 1);
-  }
-
-  if ($op == "create") {
-    if (!$node->start) {
-      $node->start = strtotime($node->year ."-". $node->month ."-". $node->day ." ". $node->hour .":". $node->minute);
-    }
-
-    if (user_access("administer nodes")) {
-      return array("body" => filter($node->body), "teaser" => filter($node->teaser), "start" => $node->start, "start_type", "parent");
-    }
-    else {
-      return array("body" => filter($node->body), "teaser" => filter($node->teaser), "start" => $node->start, "start_type", "moderate" => 1, "parent", "promote" => 0, "status" => 1);
-    }
-  }
-
-  if ($op == "decline") {
-    return array("status" => 0);
-  }
-
-  if ($op == "update") {
-    if (user_access("administer nodes")) {
-      return array("body" => filter($node->body), "teaser" => filter($node->teaser), "format", "parent", "start", "start_type");
-    }
-  }
-}
-
-/**
- * Add image form.
- *
- * @param (int) $id node id
- */
-function event_images_add($id) {
-
-  if (user_access("administer events")) {
-    $form = form_file(t("Image location"), "file", 37, t("Only JPEG and PNG files are accepted."));
-    $form .= form_hidden("id", $id);
-    $form .= form_textfield(t("Caption"), "caption", "", 50, 50, t("Maximum 50 characters."));
-    $form .= form_submit(t("Upload image"));
-
-    theme("box", t("Image upload"), form($form, "post", 0, "enctype=\"multipart/form-data\""));
-  }
-  else {
-    theme("box", t("Access denied"), t("Images may only be added by event administrators. If you want to become an event administrator, write to %a and explain why.", array("%a" => variable_get(site_mail, "root@localhost"))));
-  }
-}
-
-function event_image_upload() {
-  $edit = $_POST["edit"];
-  $edit_name = $_POST["edit_name"];
-  $edit_type = $_POST["edit_type"];
-  $edit_size = $_POST["edit_size"];
-
-  if (!is_uploaded_file($edit["file"])) {
-    $output = t("Error: not a file upload.");
-  }
-  elseif (!in_array($edit_type["file"], array("image/png", "image/x-png", "image/jpg", "image/jpeg", "image/pjpeg"))) {
-    $output = t("Error: invalid image format") ." $edit_type[file].";
-  }
-  else {
-    $node = node_load(array("nid" => $edit["id"], "type" => "event"));
-    $image_dir = variable_get("event_dir", "misc/");
-    $image_name = "$edit[id]_$edit_name[file]";
-    $image = $image_dir . $image_name;
-    move_uploaded_file($edit["file"], $image);
-
-    $src_size = getimagesize("$image");
-    switch ($src_size[2]) {
-      case 1: // GIF, this requires an old version of GD. Somebody might find it usefull.
-        $create = "ImageCreateFromGIF";
-        $save = "ImageGIF";
-        break;
-      case 3: // PNG
-        $create = "ImageCreateFromPNG";
-        $save = "ImagePNG";
-        break;
-      default: // JPEG
-        $create = "ImageCreateFromJPEG";
-        $save = "ImageJPEG";
-    }
-
-    if($src_size[0] > $src_size[1]){
-      $smax = 0;
-      $smin = 1;
-    }
-    else {
-      $smax = 1;
-      $smin = 0;
-    }
-    // The smaller side of the thumbnail
-    $tmin = round(($src_size[$smin] / $src_size[$smax])*120);
-    if($smax){ // portrait format
-      $tx = $tmin;
-      $ty = 120;
-    }
-    else { // landscape format
-      $tx = 120;
-      $ty = $tmin;
-    }
-    $src = $create($image);
-    $dst = imagecreate($tx, $ty);
-    // Generate thumbnail version of $tx by $ty
-    imagecopyresized($dst, $src, 0, 0, 0, 0, $tx, $ty, $src_size[0], $src_size[1]);
-    $save($dst, $image_dir ."x$image_name");
-
-    $node->images = explode(",", $node->images);
-    $node->images[] = "$image_name=$edit[caption]";
-    $node->images = implode(",", $node->images);
-    db_query("UPDATE event SET images = '$node->images' WHERE nid = '$edit[id]'");
-
-    $output .= "<p>". l("<img src=\"$image\" alt=\"$image[1]\" $src_size[3]>", "event/images/$edit[id]", array("title" => $edit["caption"])) ."<br />$edit[caption]</p>";
-    node_view($node, 1);
-  }
-
-  theme("box", t("Image upload"), $output);
-
-}
-
-function event_images(&$node) {
-  $image = $_POST["image"];
-  $id = $_POST["id"];
-
-  $node->images = explode(",", $node->images);
-  if (!empty($image) && !empty($node->images[$image])) {
-    $image = explode("=", $node->images[$image], 2);
-    $size = getimagesize(variable_get("event_dir", "misc/") ."$image[0]");
-
-    $output = "<p>". l("<img src=\"". variable_get("event_dir", "misc/") ."$image[0]\" alt=\"$image[1]\" $size[3]>", "event/images/$id") ."<br />$image[1]</p>";
-  }
-  else {
-    $output = '<table border="0" cellpadding="2" cellspacing="2"><tr valign="top">';
-    foreach ($node->images as $i=>$image) {
-      if (!empty($image)) {
-        if ($i % 4 == 0) {
-          $output .= '</tr><tr valign="top">';
-        }
-        $image = explode("=", $image, 2);
-        $size = getimagesize(variable_get("event_dir", "misc/") ."x$image[0]");
-        $output .= "<td><p>". l("<img src=\"". variable_get("event_dir", "misc/") ."x$image[0]\" alt=\"$image[1]\" $size[3]>", "event/images/$id/$i") ."<br />$image[1]</p></td>\n";
-      }
-    }
-    $output .= "</tr>\n</table>\n";
-  }
-  theme("box", "Images", $output);
-}
-
 function event_page() {
-  $date = $_POST["date"];
   $op = $_POST["op"];
-  $month = $_POST["month"];
-  $year = $_POST["year"];
-  $meta = $_POST["meta"];
-
+  $edit = $_POST["edit"];
+  
   theme("header");
+  
+  if (user_access("access events")) {
+  
+    if ($op == t("Show")) {
+      $month = $edit["month"];
+      $year = $edit["year"];
+      $day = $edit["day"];
+    } 
+    else if (arg(0) == "event" && arg(3)) {
+      $year = arg(1);
+      $month = arg(2);
+      $day = arg(3);
+      $op = t("Show");
+    }
+    else {
+      $year = arg(1);
+      $month = arg(2);
+      $day = 1;
+      $op = "month";
+    }
 
-  if (empty($op)) {
-    $op = arg(1);
-  }
+    $date = mktime(0, 0, 0, $month, 1, $year);
+    $years = array(2001 => 2001, 2002 => 2002, 2003 => 2003, 2004 => 2004, 2005 => 2005);
+    $months = array("-", t("January"), t("February"), t("March"), t("April"), t("May"), t("June"), t("July"), t("August"), t("September"), t("October"), t("November"), t("December"));
+    for ($i = 1; $i <= 31; $i++) $days[$i] = $i;
+  
+    $form = "<div class=\"container-inline\">";
+    $form .= form_select("", "year", ($year ? $year : date("Y")), $years). form_select("", "month", ($month ? $month : date("m")), $months) . form_select("", "day", ($day ? $day : date("d")), $days) . form_submit(t("Show"));
+    $form .= "</div>";
+  
+    theme("box", t("Event Calendar"), form($form));
+      
+    switch ($op) {
+      case "month":
+        // first and last timestamp of the month
+        $first = mktime(0, 0, 0, $month, 1, $year); 
+        $last  = mktime(23, 59, 59, $month + 1, 0, $year);  
+        break;
+      case t("Show"):
+        $first = mktime(0, 0, 0, $month, $day, $year); 
+        $last  = mktime(23, 59, 59, $month, $day, $year);
+    }  
 
-  if (arg(0) == "event" && is_numeric(arg(1)) && arg(3)) {
-    $year = arg(1);
-    $month = arg(2);
-    $day = arg(3);
-  }
-  else if (arg(0) == "event" && is_numeric(arg(1)) && arg(2)) {
-    $year = arg(1);
-    $month = arg(2);
-    $op = "month";
-  }
-
-  switch ($op) {
-    case t("Upload image"):
-      event_image_upload();
-      break;
-    case "addimage":
-      $id = $_POST["id"];
-      event_view(node_load(array("nid" => $id)), 1);
-      event_images_add($id);
-      break;
-    case "images":
-      $id = $_POST["id"];
-      $node = node_load(array("nid" => $id));
-      event_view($node, 1);
-      event_images($node);
-      break;
-    case "month":
-      $edit = $_POST["edit"];
-      $date = mktime(0, 0, 0, $month, 1, $year);
-      $years = array(2001 => 2001, 2002 => 2002, 2003 => 2003, 2004 => 2004, 2005 => 2005);
-      $months = array("-", t("January"), t("February"), t("March"), t("April"), t("May"), t("June"), t("July"), t("August"), t("September"), t("October"), t("November"), t("December"));
-      for ($i = 1; $i <= 31; $i++) $days[$i] = $i;
-      for ($i = 0; $i <= 23; $i++) $hours[$i] = $i < 10 ? "0$i" : $i;
-      for ($i = 0; $i <= 59; $i++) $minutes[$i] = $i < 10 ? "0$i" : $i;
-
-      if ($edit[start]) {
-        $edit[year] = date("Y", $edit[start]);
-        $edit[month] = date("m", $edit[start]);
-        $edit[days] = date("d", $edit[start]);
-      };
-
-      $start = str_replace("<b>:</b><br />", " ", form_select("", "year", ($edit[year] ? $edit[year] : $year), $years) . form_select("", "month", ($edit[month] ? $edit[month] : $month), $months) . form_select("", "day", ($edit[day] ? $edit[day] : 1), $days) . form_submit(t("Show")));
-      $start = str_replace("<p>", " ", $start);
-      $start = str_replace("<p />\n", " ", $start);
-      $start = str_replace("<option value=\"0\">-</option>", "", $start);
-
-      $form = $start;
-      // first and last timestamp of the month
-      $first = mktime(0, 0, 0, $month, 1, $year);
-      $last  = mktime(23, 59, 59, $month + 1, 0, $year);
-
-      if (user_access("access events")) {
-        // This needs a heading function in the theme.
-        // $theme->heading(t("Events in ") . t(strtr("%a", array("%a" => date("F", $first)))) . date(" Y", $first));
-        theme("box", t("Event calendar"), form($form));
-        // Fetch event nodes for the selected month
-        $result = db_query("SELECT n.*, l.*, u.name FROM node n LEFT JOIN event l ON n.nid = l.nid LEFT JOIN users u ON n.uid = u.uid WHERE ". ($meta ? "n.attributes LIKE '%". check_query($meta) ."%' AND " : "l.parent = 0 AND ") ." n.status = 1 AND l.start >= '". $first  ."' AND l.start <= '". $last ."' AND n.type = 'event' ORDER BY l.start ASC");
-        if($result){
-          while ($node = db_fetch_object($result)) {
-            node_view($node);
-          }
-        }
-        else {
-          $output .= t("Your search yielded no result.");
-        }
+    // Fetch event nodes for the selected month
+    $result = db_query("SELECT n.nid FROM node n LEFT JOIN event e ON n.nid = e.nid WHERE n.status = 1 AND e.start >= '". $first  ."' AND e.start <= '". $last ."' AND n.type = 'event' ORDER BY e.start ASC");
+    if($result){
+      while ($node = db_fetch_object($result)) {
+        node_view(node_load(array("nid" => $node->nid, "type" => "event")), 1);
       }
-      else {
-        theme("box", t("Access denied"), message_access());
-      }
-      break;
-    case t("Show"):
-      $edit = $_POST["edit"];
-      $date = mktime(0, 0, 0, $edit[month], $edit[day], $edit[year]);
-      // Fall though
-    default:
-      $edit = $_POST["edit"];
-      $years = array(2001 => 2001, 2002 => 2002, 2003 => 2003, 2004 => 2004, 2005 => 2005);
-      $months = array("-", t("January"), t("February"), t("March"), t("April"), t("May"), t("June"), t("July"), t("August"), t("September"), t("October"), t("November"), t("December"));
-      for ($i = 1; $i <= 31; $i++) $days[$i] = $i;
-      for ($i = 0; $i <= 23; $i++) $hours[$i] = $i < 10 ? "0$i" : $i;
-      for ($i = 0; $i <= 59; $i++) $minutes[$i] = $i < 10 ? "0$i" : $i;
-
-      if ($edit[start]) {
-        $edit[year] = date("Y", $edit[start]);
-        $edit[month] = date("m", $edit[start]);
-        $edit[day] = date("d", $edit[start]);
-      };
-
-      $start = str_replace("</p>", "", str_replace("<p>", "", form_select("", "year", ($edit[year] ? $edit[year] : date("Y")), $years) . form_select("", "month", ($edit[month] ? $edit[month] : date("m")), $months) . form_select("", "day", ($edit[day] ? $edit[day] : date("d")), $days) . form_submit(t("Show"))));
-
-      $form = $start;
-
-      theme("box", t("Event calendar"), form($form));
-
-      if (user_access("access events")) {
-        // Fetch event nodes for the selected date, or current date if none selected.
-        $result = db_query("SELECT n.nid FROM node n LEFT JOIN event e ON n.nid = e.nid WHERE e.parent = 0 AND n.status = 1 AND e.start >= '". ($date > 0 ? check_query($date) : time()) ."' AND n.type = 'event'  ORDER BY e.start ASC LIMIT ". ($user->nodes ? $user->nodes : variable_get(default_nodes_main, 10) .""));
-        if($result){
-          while ($node = db_fetch_object($result)) {
-            node_view(node_load(array("nid" => $node->nid, "type" => "event")), 1);
-          }
-        }
-        else {
-          $output = t("Your search yielded no result.");
-        }
-      }
-      else {
-        theme("box", t("Access denied"), message_access());
-      }
+    }
   }
-
+  
   theme("footer");
+  
 }
 
 function event_search($keys) {
   global $status, $user;
   $result = db_query("SELECT n.*, b.* FROM event b LEFT JOIN node n ON n.nid = b.nid AND n.nid = b.nid WHERE (n.title LIKE '%$keys%' OR n.body LIKE '%$keys%') ORDER BY n.changed DESC LIMIT 20");
   while ($search = db_fetch_object($result)) {
-    $find[$i++] = array("title" => check_output($search->title), "link" => (user_access("administer nodes") ? "admin.php?mod=node&type=search&op=edit&id=$search->nid" : "node.php?id=$search->nid"), "user" => $search->name, "date" => $search->timestamp);
+    $find[] = array("title" => check_output($search->title), "link" => (user_access("administer nodes") ? "admin.php?mod=node&type=search&op=edit&id=$search->nid" : "node.php?id=$search->nid"), "user" => $search->name, "date" => $search->timestamp);
   }
   return $find;
 }
 
-// Event calendar
-class EventCalendar {
-  var $date;
+function event_calendar() {
+  $edit = $_POST["edit"];
 
-  function EventCalendar($date = 0) {
-    // Set date to today if not given
-    $this->date = ($date ? $date : mktime(23, 59, 59, date("n", time()), date("d", time()), date("Y", time())));
+  if ($edit["year"] && $edit["month"] && $edit["day"]) {  
+    $requested = mktime(0, 0, 0, $edit["month"], $edit["day"], $edit["year"]);
+  }
+  else if (arg(0) == "event" && arg(3)) {    
+    $requested = mktime(0, 0, 0, arg(2), arg(3), arg(1));
+  }
+  else if (arg(0) == "event") {
+    $requested = mktime(0, 0, 0, arg(2), 1, arg(1));
+  }
+  else {
+    $requested = mktime(23, 59, 59, date("n", time()), date("d", time()), date("Y", time()));
   }
 
-  function display() {
-    // Extract information from the given date:
-    $month  = date("n", $this->date);
-    $year = date("Y", $this->date);
-    $day = date("d", $this->date);
+  // Extract information from the given date:
+  $month  = date("n", $requested);
+  $year = date("Y", $requested);
+  $day = date("d", $requested);
+      
+  // Extract today's date:
+  $today = mktime(0, 0, 0, date("n", time()), date("d", time()), date("Y", time()));
+ 
 
-    // Extract today's date:
-    $today = mktime(0, 0, 0, date("n", time()), date("d", time()), date("Y", time()));
+  // Extract the timestamp of the last day of today's month:
+  $thislast = mktime(23, 59, 59, date("n", time()), date("t", time()), date("Y", time()));
 
-    // Extract the timestamp of the last day of today's month:
-    $thislast = mktime(23, 59, 59, date("n", time()), date("t", time()), date("Y", time()));
+  // Extract first day of the month:
+  $first = date("w", mktime(0, 0, 0, $month, 1, $year));
 
-    // Extract first day of the month:
-    $first = date("w", mktime(0, 0, 0, $month, 1, $year));
+  // Extract last day of the month:
+  $last = date("t", mktime(0, 0, 0, $month, 1, $year));
 
-    // Extract last day of the month:
-    $last = date("t", mktime(0, 0, 0, $month, 1, $year));
+  // Calculate previous and next months dates and check for shorter months (28/30 days)
+  $prevmonth = mktime(23, 59, 59, $month - 1, 1, $year);
+  $prev = mktime(23, 59, 59, $month - 1, min(date("t", $prevmonth), $day), $year);
+  $nextmonth = mktime(23, 59, 59, $month + 1, 1, $year);
+  $next = mktime(23, 59, 59, $month + 1, min(date("t", $nextmonth), $day), $year);
 
-    // Calculate previous and next months dates and check for shorter months (28/30 days)
-    $prevmonth = mktime(23, 59, 59, $month - 1, 1, $year);
-    $prev = mktime(23, 59, 59, $month - 1, min(date("t", $prevmonth), $day), $year);
-    $nextmonth = mktime(23, 59, 59, $month + 1, 1, $year);
-    $next = mktime(23, 59, 59, $month + 1, min(date("t", $nextmonth), $day), $year);
+  // Get events in this month
+  $result = db_query("SELECT start FROM event WHERE start > ".mktime(0, 0, 0, $month, 1, $year)." AND start < ".$nextmonth);
+  $days_with_events[] = "";
+  while ($node = db_fetch_object($result)) {
+    $days_with_events[] = date("d", $node->start);
+  }
 
-    // Get events in this month
-    $result = db_query("SELECT start FROM event WHERE start > ".mktime(0, 0, 0, $month, 1, $year)." AND start < ".$nextmonth);
-    $eventmonth[] = "";
-    while ($node = db_fetch_object($result)) {
-      $eventmonth[] = date("d", $node->start);
+  // Generate calendar header:
+  $output .= "\n<!-- calendar -->\n";
+  $output .= "<div class=\"calendar\"><table width=\"100%\">\n";
+  $output .= " <tr><td colspan=\"7\" class=\"header-month\">". l("&lt;", "event/".  date("Y/m/d", $prev)) ."&nbsp;". l(t(date("F",$requested)) ."&nbsp;". date("Y",$requested), "event/". date("Y/m",$requested)) ."&nbsp;". l("&gt;", "event/".  date("Y/m/d", $next)) ."</td></tr>\n";
+
+  // Generate the days of the week:
+  $output .= " <tr class=\"header-week\">";
+  if(variable_get("event_week", "0")){
+    $someday = mktime(0, 0, 0, 3, 21, 1994);
+    $offset = $first - 1;
+  }
+  else {
+    $someday = mktime(0, 0, 0, 3, 20, 1994);
+    $offset = $first;
+  }
+
+  for ($i = 0; $i < 7; $i++) {
+    $output .= "<td>" . substr(ucfirst(t(date("l", $someday + $i * 86400))), 0, 1) . "</td>";
+  }
+  $output .= "</tr>\n";
+
+  // Initialize temporary variables:
+  $nday = 1;
+  $sday = $offset;
+
+  // Loop through all the days of the month:
+  while ($nday <= $last) {
+    // Set up blank days for first week of the month:
+    if ($offset) {
+      $output .= " <tr class=\"row-week\"><td class=\"day-blank\" colspan=\"$offset\">&nbsp;</td>\n";
+      $offset = 0;
     }
 
-    // Get hex codes for coulours.
-    $coltoday = variable_get("event_today", "#cccccc");
-    $colevent = variable_get("event_date", "#aaaaaa");
-    // Generate calendar header:
-    $output .= "\n<!-- calendar -->\n";
-    $output .= "<table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"1\">\n";
-    $output .= " <tr><td align=\"center\" colspan=\"7\"><small>". l("&lt;", "event/".  date("Y/m/d", $prev)) ."&nbsp;". l(t(date("F",$this->date)) ."&nbsp;". date("Y",$this->date), "event/". date("Y/m",$this->date)) ."&nbsp;". l("&gt;", "event/".  date("Y/m/d", $next)) ."</small></td></tr>\n";
+    // Start every week on a new line:
+    if ($sday == 0) $output .=  " <tr class=\"row-week\">\n";
 
-    // Generate the days of the week:
-    $output .= " <tr>";
-    if(variable_get("event_week", "0")){
-      $someday = mktime(0, 0, 0, 3, 21, 1994);
-      $offset = $first - 1;
+    // Print one cell:
+    $date = mktime(0, 0, 0, $month, $nday, $year);
+    if (in_array($nday , $days_with_events)) {
+      $dayclass = "day-link";
+      $daytext = l($nday, "event/$year/$month/$nday");
     }
     else {
-      $someday = mktime(0, 0, 0, 3, 20, 1994);
-      $offset = $first;
+      $dayclass = "day-noevent";
+      $daytext = $nday;
+    }
+    
+    if ($date == $requested) {
+      $output .= "  <td class=\"day-selected\">". $daytext ."</td>\n";
+    }
+    else if ($date == $today) {
+      $output .= "  <td class=\"day-today\">". $daytext ."</td>\n";
+    }
+    else {
+      $output .= "  <td align=\"$dayclass\" >". $daytext ."</td>\n";
     }
 
-    for ($i = 0; $i < 7; $i++) {
-    // I'd rather have two letter abbreviations.
-      $output .= "<td align=\"center\"><small>" . substr(ucfirst(t(date("l", $someday + $i * 86400))), 0, 2) . "</small></td>";
-    }
-    $output .= "</tr>\n";
+    // Start every week on a new line:
+    if ($sday == 6) $output .=  " </tr>\n";
 
-    // Initialize temporary variables:
-    $nday = 1;
-    $sday = $offset;
-
-    // Loop through all the days of the month:
-    while ($nday <= $last) {
-      // Set up blank days for first week of the month:
-      if ($offset) {
-        $output .= " <tr><td colspan=\"$offset\">&nbsp;</td>\n";
-        $offset = 0;
-      }
-
-      // Start every week on a new line:
-      if ($sday == 0) $output .=  " <TR>\n";
-
-      // Print one cell:
-      $date = mktime(0, 0, 0, $month, $nday, $year);
-      if ($date == $today) $output .= "  <td align=\"center\" bgcolor=\"$coltoday\"><small>". l($nday, "event/$year/$month/$nday", array("style" => "text-decoration: none;")) ."</small></td>\n";
-      else if (in_array($nday , $eventmonth)) $output .= "  <td align=\"center\" bgcolor=\"$colevent\"><small>". l($nday, "event/$year/$month/$nday", array("style" => "text-decoration: none;")) ."</small></td>\n";
-      else $output .= "  <td align=\"center\" ><small>". l($nday, "event/$year/$month/$nday", array("style" => "text-decoration: none;")) ."</small></td>\n";
-
-      // Start every week on a new line:
-      if ($sday == 6) $output .=  " </tr>\n";
-
-      // Update temporary variables:
-      $sday++;
-      $sday = $sday % 7;
-      $nday++;
-    }
-
-    // Complete the calendar:
-    if ($sday) {
-      $end = 7 - $sday;
-      $output .= "  <td colspan=\"$end\">&nbsp;</td>\n </tr>\n";
-    }
-    $output .= "</table>\n\n";
-
-    // Return calendar:
-    return $output;
+    // Update temporary variables:
+    $sday++;
+    $sday = $sday % 7;
+    $nday++;
   }
+
+  // Complete the calendar:
+  if ($sday) {
+    $end = 7 - $sday;
+    $output .= "  <td class=\"day-blank\" colspan=\"$end\">&nbsp;</td>\n </tr>\n";
+  }
+  $output .= "</table></div>\n\n";
+
+  // Return calendar:
+  return $output;
 }
 
 function event_block($op = "list", $delta = 0) {
@@ -643,13 +433,11 @@ function event_block($op = "list", $delta = 0) {
     return $blocks;
   }
   else {
-    $date = $_POST["date"];
-
-    $calendar = new EventCalendar($date);
-
-    $block["subject"] = t("Browse events");
-    $block["content"] = $calendar->display();
-    return $block;
+    if (user_access("access events")) {      
+      $block["subject"] = t("Browse events");
+      $block["content"] = event_calendar($date);
+      return $block;
+    }
   }
 }
 

@@ -1,3 +1,15 @@
+13. June 2003
+-------------
+Major overhaul by Craig Courtney
+
+WARNING: This breaks compatibility with all prior versions of
+         event.module!
+
+- removed image stuff
+- removed parent stuff
+- made more css and theme friendly
+- ... 
+
 23. September 2002
 ------------------
 event.module [Gerhard Killesreiter]

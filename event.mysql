@@ -13,8 +13,12 @@ CREATE TABLE event (
   PRIMARY KEY  (lid)
 );
 ALTER TABLE event ADD start_type int(10) unsigned DEFAULT 0 NOT NULL AFTER parent;
+ALTER TABLE event ADD location text NOT NULL AFTER parent;
+ALTER TABLE event DROP start_type;
 ALTER TABLE event DROP lid;
 ALTER TABLE event DROP abstract;
 ALTER TABLE event DROP details;
 ALTER TABLE event DROP end;
+ALTER TABLE event DROP images;
+ALTER TABLE event DROP parent;
 ALTER TABLE event ADD PRIMARY KEY (nid);
