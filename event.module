@@ -71,8 +71,6 @@ function event_settings() {
   // Dummy arrays to be used by extractor.php
   // Dummy array with abbreviations of months.
   $month_abbr_dummy = array(t('Jan'), t('Feb'), t('Mar'), t('Apr'), t('May'), t('Jun'), t('Jul'), t('Aug'), t('Sep'), t('Oct'), t('Nov'), t('Dec'));
-  // Dummy array with full month names
-  $month_name_dummy = array(t('January'), t('February'), t('March'), t('April'), t('May'), t('June'), t('July'), t('August'), t('September'), t('October'), t('November'), t('December'));
   return $output;
 }
 
@@ -506,10 +504,6 @@ function event_display($callback, &$year, &$month, &$day, $navigation = 0, $extr
 
   // Extract key data from date:
   $month_name = t(_event_date('M', $date));
-  // Dummy array with abbreviations of months.
-  $month_abbr_dummy = array(t('Jan'), t('Feb'), t('Mar'), t('Apr'), t('May'), t('Jun'), t('Jul'), t('Aug'), t('Sep'), t('Oct'), t('Nov'), t('Dec'));
-  // Dummy array with full month names
-  $month_name_dummy = array(t('January'), t('February'), t('March'), t('April'), t('May'), t('June'), t('July'), t('August'), t('September'), t('October'), t('November'), t('December'));
   $weeks = ceil($days / 7);
 
   // Initialize the header/week days:
