@@ -1,0 +1,8 @@
+This is a simple module to keep track of events and show them to users.
+Send comments to kjartan@drupal.org.
+
+The event.module has the following features:
+
+- event calendar
+- add images to events
+- Events can have sub-events
