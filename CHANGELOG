@@ -1,0 +1,43 @@
+01. June 2002
+-------------
+event.module [Kjartan Mannes]
+- updated module to 4.0.0.
+
+08. Feburary 2002
+-----------------
+event.module [Kjartan Mannes]
+- fixed parent nodes showing up as sub events on node preview.
+
+30. October 2001
+----------------
+event.module [Gerhard Killesreiter]
+- fixed the time selector
+- fixed SQL-query
+
+29. October 2001
+----------------
+event.module [Gerhard Killesreiter]
+- added search
+- made block-calendar more configurable
+  - choose first dayof week to be monday or sunday
+  - display days with events with configurable colour
+  - display today's date with another configurable colour
+- small changes
+
+24. October 2001
+----------------
+event.module [Gerhard Killesreiter]
+- added missing user_access() check.
+- fixed calender.
+
+22. October 2001
+----------------
+event.module [Kjartan Mannes]
+- fixed a problem with meta collections when editing a node.
+
+event.mysql [Kjartan Mannes]
+- fixed a problem with the SQL definitions reported by Alexander.
+
+19. October 2001
+----------------
+- initial release.

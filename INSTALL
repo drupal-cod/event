@@ -1,0 +1,51 @@
+Readme
+------
+
+This is a simple file module. It lets people submit file URLs.
+Send comments to kjartan@drop.org.
+
+Requirements
+------------
+
+To validate external files you have to make sure that PHP was compiled with
+'--enable-ftp' and the PHP setting allow_url_fopen is 'on'.
+
+This module requires the lastest version of the current Drupal CVS version.
+
+Installation
+------------
+
+1. Create the SQL tables. This depends a little on your system, but the most
+   common method is:
+     mysql -u username -ppassword drupal < file.mysql
+
+2. Copy the file.module to the Drupal modules/ directory.
+
+3. Check the "settings and filters" in the administration and set the module
+   settings to your liking.
+
+4. You can add content using the node.module administration. For submissions
+   add a category of file node in the structure.module. Then use the submission
+   queue to submit the files.
+
+
+Author
+------
+
+Kjartan Mannes <kjartan@drop.org>
+
+
+Wish list
+--------
+
+This is in no particular order.
+
+- Support for file uploads.
+- Tool for administrators to copy an external file to a local directory.
+- Icons or a way to display a file is "hot" and/or "new". The latter might be
+  more appropriate in a theme though.
+- Stricter control on what can be submitted. This will stay on the wish list
+  till the structure.module is redone, and hopefully has some method to attach
+  node type configuration settings to the category.
+- Improved download counter to prevent people from boosting downloads too
+  easilly.
