@@ -184,14 +184,14 @@ function event_content(&$node, $main = 0) {
   foreach ($fields as $field => $def) {
     if ($node->$field) {
       if ($def[0] == "select") {
-        if ($def[9]) { // multi-select
+        if ($def[10]) { // multi-select
           foreach ($node->$field as $val) {
-            $vals[] = $def[6][$val];
+            $vals[] = $def[7][$val];
           }
           $output .= form_item($def[1], implode(", ", $vals));
         }
         else {
-          $output .= form_item($def[1], $def[6][$node->$field]);
+          $output .= form_item($def[1], $def[7][$node->$field]);
         }
       }
       else {
@@ -261,10 +261,10 @@ function event_form(&$node, &$help, &$error) {
   foreach ($fields as $field => $def) {
     $function = "form_$def[0]";
     if (in_array($def[0], array('password', 'textfield', 'textarea'))) {
-      $output .= $function($def[1], $field, $node->$field, $def[6], $def[7], $def[8] . theme_error($error[$field]), $def[9]);
+      $output .= $function($def[1], $field, $node->$field, $def[7], $def[8], $def[9] . theme_error($error[$field]), $def[10]);
     }
     else {
-      $output .= $function($def[1], $field, $node->$field, $def[6], $def[7] . theme_error($error[$field]), $def[8], $def[9]);
+      $output .= $function($def[1], $field, $node->$field, $def[7], $def[8] . theme_error($error[$field]), $def[9], $def[10]);
     }
   }
   $output .= form_textarea(t('Details'), 'body', $node->body, 60, 15, form_allowed_tags_text());
@@ -333,7 +333,7 @@ function event_load(&$node) {
   $extra_fields = event_fields();
   foreach ($extra_fields as $field => $def) {
     if ($def[3]) { // Stored in separate database field
-      if ($def[0] == "select" && $def[9]) { // multi-select
+      if ($def[0] == "select" && $def[10]) { // multi-select
           $event->$field = unserialize($event->$field);
       }
     }
@@ -376,7 +376,7 @@ function event_calendar_simple($year, $month, $day, $timestamp) {
 
 function event_calendar_expanded($year, $month, $day, $timestamp) {
   $fields = event_fields();
-  $output = "<div class=\"day\">$day</div>";
+  $output = "<div class=\"day\">$day</div>\n";
   if (count($data = event_calendar_data($year, $month, $day))) {
     foreach ($data as $node) {
       $output .= '<div class="event">';
@@ -384,7 +384,24 @@ function event_calendar_expanded($year, $month, $day, $timestamp) {
       $output .= '<span class="title">'. l($node->title, "node/view/$node->nid") .'</span>';
       foreach ($fields as $field => $def) {
         if ($def[4] && $node->$field) {
-          $output .= "<span class=\"$field\">". $node->$field .'</span>';
+          if ($node->$field) {
+            $output .= "<span class=\"$field\">";
+            if ($def[0] == "select") {
+              if ($def[10]) { // multi-select
+                foreach ($node->$field as $val) {
+                  $vals[] = $def[7][$val];
+                }
+                $output .= implode(", ", $vals);
+              }
+              else {
+                $output .= $def[7][$node->$field];
+              }
+            }
+            else {
+              $output .= $node->$field;
+            }
+            $output .= '</span>';
+          }
         }
       }
       $output .= '</div>';
@@ -480,7 +497,7 @@ function event_search($keys) {
         $query .= " OR e.". $field ." LIKE '%$keys%'";
     }
   }
-  $result = db_query("SELECT n.*, e.* FROM {event} e INNER JOIN {node} n ON n.nid = e.nid WHERE (n.title LIKE '%$keys%' OR n.body LIKE '%$keys%' OR n.teaser LIKE '%$keys%' ". $query .") ORDER BY n.changed DESC LIMIT 20");
+  $result = db_query_range("SELECT n.*, e.* FROM {event} e INNER JOIN {node} n ON n.nid = e.nid WHERE (n.title LIKE '%$keys%' OR n.body LIKE '%$keys%' OR n.teaser LIKE '%$keys%' ". $query .") ORDER BY n.changed DESC", 0, 20);
   while ($search = db_fetch_object($result)) {
     $find[] = array("title" => check_output($search->title), "link" => (strstr(request_uri(), "admin") ? url("admin/node/edit/id/$search->nid") : url("node/view/$search->nid")), "user" => $search->name, "date" => $search->timestamp);
   }
@@ -534,10 +551,10 @@ function event_query_form() {
     if ($def[3]) {
       $function = "form_$def[0]";
       if (in_array($def[0], array('password', 'textfield', 'textarea'))) {
-        $output .= $function($def[1], $field, '', $def[6], $def[7], $def[8], $def[9]);
+        $output .= $function($def[1], $field, '', $def[7], $def[8], $def[9], $def[10]);
       }
       else {
-        $output .= $function($def[1], $field, '', $def[6], $def[7], $def[8], $def[9]);
+        $output .= $function($def[1], $field, '', $def[7], $def[8], $def[9], $def[10]);
       }
     }
   }

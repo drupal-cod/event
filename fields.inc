@@ -13,17 +13,25 @@ function event_extra_fields() {
       false,              // Required field
       true,               // Store in separate database field
       true,               // Show in calendar
+      '',                 // the permission required to view this field (if any). edit event_perm() accordingly
       '',                 // Default value
       100,                // Field length
       255,                // Maximum input length
       t('Where this event is taking place.'),   // Help text
     ),
-    // 'country' => array('textfield', t('Country'), false, false, false, '', 64, 64, t('Which country is hosting this event?')),
-    // 'keynote' => array('textarea', t('Keynote topic'), false, false, false, '', 64, 4, ''),
+    // 'country' => array('textfield', t('Country'), false, false, false, '', '', 64, 64, t('Which country is hosting this event?')),
+    // 'keynote' => array('textarea', t('Keynote topic'), false, false, false, '', '', 64, 4, ''),
     
     // include 'none' in your options array in order to have search form work as expected. this is true even for 'required' fields.
-    // 'etype'  => array('select', t('Event Type'), false, true, false, '', array('<'. t('None'). '>', t('Job fair'),  t('Human resources'), t('Diversity'), t('Hispanic Association')), '', NULL, 1),
+    // 'etype'  => array('select', t('Event Type'), false, true, false, 'access private event fields', '', array('<'. t('None'). '>', t('Job fair'),  t('Human resources'), t('Diversity'), t('Hispanic Association')), '', NULL, 1),
   );
+  
+  // omit any fields which are not permitted for current user.
+  foreach ($fields as $field => $def) {
+    if ($def[5] && !user_access($def[5])) {
+      unset($fields[$field]);
+    }
+  }
   return $fields;
 }
 ?>
