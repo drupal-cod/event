@@ -80,15 +80,15 @@ function event_validate(&$node) {
 }
 
 function event_insert(&$node) {
-  db_query("INSERT INTO event (nid, start, location) VALUES ($node->nid, $node->start, '" . check_query($node->location) . "')");
+  db_query("INSERT INTO {event} (nid, start, location) VALUES ($node->nid, $node->start, '" . check_query($node->location) . "')");
 }
 
 function event_update(&$node) {
-  db_query("UPDATE event SET start = $node->start, location = '" . check_query($node->location) . "' WHERE nid = $node->nid");
+  db_query("UPDATE {event} SET start = $node->start, location = '" . check_query($node->location) . "' WHERE nid = $node->nid");
 }
 
 function event_delete(&$node) {
-  db_query("DELETE FROM event WHERE nid = '$node->nid'");
+  db_query("DELETE FROM {event} WHERE nid = '$node->nid'");
 }
 
 /**
@@ -99,7 +99,7 @@ function event_delete(&$node) {
  */
 function event_load(&$node) {
 
-  $event = db_fetch_object(db_query("SELECT start, location FROM event WHERE nid = $node->nid"));
+  $event = db_fetch_object(db_query("SELECT start, location FROM {event} WHERE nid = $node->nid"));
 
   return $event;
 }
@@ -284,7 +284,7 @@ function event_page() {
     }  
 
     // Fetch event nodes for the selected month
-    $result = db_query("SELECT n.nid FROM node n LEFT JOIN event e ON n.nid = e.nid WHERE n.status = 1 AND e.start >= '". $first  ."' AND e.start <= '". $last ."' AND n.type = 'event' ORDER BY e.start ASC");
+    $result = db_query("SELECT n.nid FROM {node} n INNER JOIN {event} e ON n.nid = e.nid WHERE n.status = 1 AND e.start >= '". $first  ."' AND e.start <= '". $last ."' AND n.type = 'event' ORDER BY e.start ASC");
     if($result){
       while ($node = db_fetch_object($result)) {
         node_view(node_load(array("nid" => $node->nid, "type" => "event")), 1);
@@ -298,9 +298,9 @@ function event_page() {
 
 function event_search($keys) {
   global $status, $user;
-  $result = db_query("SELECT n.*, b.* FROM event b LEFT JOIN node n ON n.nid = b.nid AND n.nid = b.nid WHERE (n.title LIKE '%$keys%' OR n.body LIKE '%$keys%') ORDER BY n.changed DESC LIMIT 20");
+  $result = db_query("SELECT n.*, b.* FROM {event} b INNER JOIN {node} n ON n.nid = b.nid AND n.nid = b.nid WHERE (n.title LIKE '%$keys%' OR n.body LIKE '%$keys%') ORDER BY n.changed DESC LIMIT 20");
   while ($search = db_fetch_object($result)) {
-    $find[] = array("title" => check_output($search->title), "link" => (user_access("administer nodes") ? "admin.php?mod=node&type=search&op=edit&id=$search->nid" : "node.php?id=$search->nid"), "user" => $search->name, "date" => $search->timestamp);
+    $find[] = array("title" => check_output($search->title), "link" => (user_access("administer nodes") ? "?q=admin/node/edit/id/$search->nid" : "?q=node/view/$search->nid"), "user" => $search->name, "date" => $search->timestamp);
   }
   return $find;
 }
@@ -346,7 +346,7 @@ function event_calendar() {
   $next = mktime(23, 59, 59, $month + 1, min(date("t", $nextmonth), $day), $year);
 
   // Get events in this month
-  $result = db_query("SELECT start FROM event WHERE start > ".mktime(0, 0, 0, $month, 1, $year)." AND start < ".$nextmonth);
+  $result = db_query("SELECT start FROM {event} WHERE start > ".mktime(0, 0, 0, $month, 1, $year)." AND start < ".$nextmonth);
   $days_with_events[] = "";
   while ($node = db_fetch_object($result)) {
     $days_with_events[] = date("d", $node->start);
