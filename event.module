@@ -409,10 +409,14 @@ function event_calendar_data($year, $month, $day) {
     global $user;
     $data[$year][$month] = array();
     $days = _event_date('j', _event_mktime(0, 0, 0, $month + 1, 0, $year));
-    $first = _event_mktime(0, 0, 0, $month, 1, $year) + $user->timezone;
-    $last = _event_mktime(23, 59, 59, $month, $days, $year) + $user->timezone;
+    $first = _event_mktime(0, 0, 0, $month, 1, $year);
+    $last = _event_mktime(23, 59, 59, $month, $days, $year);
+    if (variable_get('event_timezone', '0') == 0) {
+      $first += $user->timezone;
+      $last += $user->timezone;
+    }
 
-    $result = db_query("SELECT n.nid FROM {event} e INNER JOIN {node} n USING (nid) WHERE n.status = 1 AND e.start > %d AND e.start < %d ORDER BY start", $first, $last);
+    $result = db_query("SELECT n.nid FROM {event} e INNER JOIN {node} n USING (nid) WHERE n.status = 1 AND e.start > %d AND e.start < %d ORDER BY e.start", $first, $last);
     while ($node = db_fetch_object($result)) {
       $node = node_load($node);
       $data[$year][$month][event_format_date($node->start, 'custom', 'j')][] = $node;
@@ -475,11 +479,9 @@ function event_calendar_expanded($year, $month, $day, $timestamp) {
 
 function event_display($callback, &$year, &$month, &$day, $navigation = 0, $extra = 0) {
   global $user;
+  $time = time();
   if (variable_get('event_timezone', '0') == 0) {
-    $time = time() + $user->timezone;
-  }
-  else {
-    $time = time();
+    $time += $user->timezone;
   }
   if (!$year) {
     $year = _event_date('Y', $time);
@@ -554,9 +556,13 @@ function event_display($callback, &$year, &$month, &$day, $navigation = 0, $extr
     $output .= theme("table", $header, $rows);
   }
   else { // table view
-    $start = _event_mktime(0, 0, 0, $month, ($day ? $day : 1), $year) + $user->timezone;
+    $start = _event_mktime(0, 0, 0, $month, ($day ? $day : 1), $year);
     $days = _event_date('j', _event_mktime(0, 0, 0, $month + 1, 0, $year));
-    $last = _event_mktime(23, 59, 59, $month, $days, $year) + $user->timezone;
+    $last = _event_mktime(23, 59, 59, $month, $days, $year);
+    if (variable_get('event_timezone', '0') == 0) {
+      $start += $user->timezone;
+      $last += $user->timezone;
+    }
     $output = '<div class="event-calendar">';
     $output .= theme('table', $header, NULL);
     $output .= $callback($start, $last, $today);
@@ -679,11 +685,19 @@ function event_query_parse($edit) {
 
   // Calculate timestamps if we have all the parameters.
   if (isset($edit->from['year']) && isset($edit->from['month']) && isset($edit->from['day']) && isset($edit->from['hour']) && isset($edit->from['minute'])) {
-    $query[] = 'e.start >= '. (_event_mktime($edit->from['hour'], $edit->from['minute'], 0, $edit->from['month'], $edit->from['day'], $edit->from['year']) - $GLOBALS['user']->timezone);
+    $str = _event_mktime($edit->from['hour'], $edit->from['minute'], 0, $edit->from['month'], $edit->from['day'], $edit->from['year']);
+    if (variable_get('event_timezone', '0') == 0) {
+      $str -= $GLOBALS['user']->timezone;
+    }
+    $query[] = 'e.start >= '. $str;
   }
 
   if (isset($edit->to['year']) && isset($edit->to['month']) && isset($edit->to['day']) && isset($edit->to['hour']) && isset($edit->to['minute'])) {
-    $query[] = 'e.start <= '. (_event_mktime($edit->to['hour'], $edit->to['minute'], 0, $edit->to['month'], $edit->to['day'], $edit->to['year']) - $GLOBALS['user']->timezone);
+    $str = _event_mktime($edit->to['hour'], $edit->to['minute'], 0, $edit->to['month'], $edit->to['day'], $edit->to['year']);
+    if (variable_get('event_timezone', '0') == 0) {
+      $str -= $GLOBALS['user']->timezone;
+    }
+    $query[] = 'e.start <= '. $str; 
   }
 
   foreach ($fields as $field => $def) {
