@@ -463,7 +463,7 @@ function event_page() {
         // $theme->heading(t("Events in ") . t(strtr("%a", array("%a" => date("F", $first)))) . date(" Y", $first));
         theme("box", t("Event calendar"), form($form));
         // Fetch event nodes for the selected month
-        $result = db_query("SELECT n.*, l.*, u.name FROM node n LEFT JOIN event l ON n.nid = l.nid LEFT JOIN users u ON n.uid = u.uid WHERE ". ($meta ? "n.attributes LIKE '%". check_input($meta) ."%' AND " : "l.parent = 0 AND ") ." n.status = 1 AND l.start >= '". $first  ."' AND l.start <= '". $last ."' AND n.type = 'event' ORDER BY l.start ASC");
+        $result = db_query("SELECT n.*, l.*, u.name FROM node n LEFT JOIN event l ON n.nid = l.nid LEFT JOIN users u ON n.uid = u.uid WHERE ". ($meta ? "n.attributes LIKE '%". check_query($meta) ."%' AND " : "l.parent = 0 AND ") ." n.status = 1 AND l.start >= '". $first  ."' AND l.start <= '". $last ."' AND n.type = 'event' ORDER BY l.start ASC");
         if($result){
           while ($node = db_fetch_object($result)) {
             node_view($node);
@@ -503,7 +503,7 @@ function event_page() {
 
       if (user_access("access events")) {
         // Fetch event nodes for the selected date, or current date if none selected.
-        $result = db_query("SELECT n.nid FROM node n LEFT JOIN event e ON n.nid = e.nid WHERE e.parent = 0 AND n.status = 1 AND e.start >= '". ($date > 0 ? check_input($date) : time()) ."' AND n.type = 'event'  ORDER BY e.start ASC LIMIT ". ($user->nodes ? $user->nodes : variable_get(default_nodes_main, 10) .""));
+        $result = db_query("SELECT n.nid FROM node n LEFT JOIN event e ON n.nid = e.nid WHERE e.parent = 0 AND n.status = 1 AND e.start >= '". ($date > 0 ? check_query($date) : time()) ."' AND n.type = 'event'  ORDER BY e.start ASC LIMIT ". ($user->nodes ? $user->nodes : variable_get(default_nodes_main, 10) .""));
         if($result){
           while ($node = db_fetch_object($result)) {
             node_view(node_load(array("nid" => $node->nid, "type" => "event")), 1);
