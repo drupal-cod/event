@@ -227,7 +227,7 @@ function event_menu($may_cache) {
                      'callback' => 'event_page',
                      'access' => user_access('access content'),
                      'type' => MENU_SUGGESTED_ITEM);
-    $items[] = array('event/'.event_format_date(time(), 'custom', 'Y/m/d'), 'title' => t('calendar'),
+    $items[] = array('path' => 'event/'.event_format_date(time(), 'custom', 'Y/m/d'), 'title' => t('calendar'),
                      'access' => user_access('access content'),
                      'type' => MENU_DYNAMIC_ITEM);
     $items[] = array('path' => 'event/search', 'title' => t('search'),
@@ -317,7 +317,7 @@ function event_validate(&$node) {
   $fields = event_fields();
   foreach ($fields as $field => $def) {
     if ($def[2] && empty($node->$field)) {
-      $error[$field] = t("Required.");
+      form_set_error($field, t($def[1]).' '.t('is a required field.'));
     }
   }
 
@@ -461,10 +461,10 @@ function event_form(&$node, &$error) {
   foreach ($fields as $field => $def) {
     $function = "form_$def[0]";
     if (in_array($def[0], array('password', 'textfield', 'textarea'))) {
-      $output .= $function($def[1], $field, $node->$field, $def[7], $def[8], $def[9] . theme_error($error[$field]), $def[10]);
+      $output .= $function($def[1], $field, $node->$field, $def[7], $def[8], $def[9], NULL, $def[2]);
     }
     else {
-      $output .= $function($def[1], $field, $node->$field, $def[7], $def[8] . theme_error($error[$field]), $def[9], $def[10]);
+      $output .= $function($def[1], $field, $node->$field, $def[7], $def[8], $def[9], NULL, $def[2]);
     }
   }
   $output .= form_textarea(t('Details'), 'body', $node->body, 60, 15, '', NULL, TRUE);
