@@ -7,8 +7,7 @@ Send comments to kjartan@drupal.org.
 Requirements
 ------------
 
-This module requires Drupal CVS. PHP 4.2+ is required for array_fill() to work. If you
-cannot upgrade your PHP, a workaround is at http://drupal.org/node/view/3818
+This module requires Drupal 4.3 or higher.
 
 Installation
 ------------
@@ -26,9 +25,31 @@ Installation
 4. Optionally add custom fields by editing the function in
    the fields.inc source code file. If you want to add fields
    that have an extra entry in the database, you need to add those
-   entries to the event table. Only fields with their own db column are included on the search form
+   entries to the event table.
 
 Author
 ------
 
 Kjartan Mannes <kjartan@drupal.org>
+
+
+NOTE: event.module requires PHP 4.2 or higher.
+
+To work around this add this to event.module:
+
+if (!function_exists('array_fill')) {
+    require_once('array_fill.func.php');
+}
+and the array_fill.func.php file:
+<?php
+// For PHP version < 4.2.0 missing the array_fill function,
+// I provide here an alternative. -Philippe
+
+function array_fill($iStart, $iLen, $vValue) {
+     $aResult = array();
+     for ($iCount = $iStart; $iCount < $iLen + $iStart; $iCount++) {
+         $aResult[$iCount] = $vValue;
+     }
+     return $aResult;
+}
+?> 
