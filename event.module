@@ -636,18 +636,16 @@ function event_format_field($type, $data, $field, $nid) {
 }
 
 function event_format_date($timestamp, $type = 'medium', $format = '') {
-  $tz = variable_get('event_timezone', '0') ? 1 : NULL;
+  $tz = variable_get('event_timezone', '0') ? 0 : NULL;
   return format_date($timestamp, $type, $format, $tz);
 }
 
 function _event_date($time, $format) {
-  $fn = variable_get('event_timezone', '0') ? 'gmdate' : 'date';
-  return  $fn($time, $format);
+  return  gmdate($time, $format);
 }
 
 function _event_mktime($hour, $minute, $second, $month, $day, $year) {
-  $fn = variable_get('event_timezone', '0') ? 'gmmktime' : 'mktime';
-  return  $fn($hour, $minute, $second, $month, $day, $year);
+  return  gmmktime($hour, $minute, $second, $month, $day, $year);
 }
 
 function event_search($keys) {
