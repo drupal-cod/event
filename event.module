@@ -121,6 +121,7 @@ function event_page() {
       $output = "";
       $breadcrumbs[] = t('Upcoming');
       while ($node = db_fetch_object($result)) {
+        unset($node->start); // we need to select e.start for pgsql's sake but it confuses node_load.
         $output .= node_view(node_load($node), 1);
       }
       $output .= theme("pager", NULL, variable_get("default_nodes_main", 10));
@@ -599,6 +600,7 @@ function event_calendar_data($year, $month, $day) {
 
     $result = db_query('SELECT DISTINCT(n.nid), e.start FROM {event} e INNER JOIN {node} n USING (nid) '. node_access_join_sql() .' WHERE '. node_access_where_sql() .' AND n.status = 1 AND e.start > %d AND e.start < %d ORDER BY e.start', $first, $last);
     while ($node = db_fetch_object($result)) {
+      unset($node->start); // we need to select e.start for pgsql's sake but it confuses node_load.
       $node = node_load($node);
       $data[$year][$month][event_format_date($node->start, 'custom', 'j')][] = $node;
     }
