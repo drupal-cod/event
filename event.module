@@ -372,7 +372,7 @@ function event_calendar($callback, &$year, &$month, &$day, $navigation = 0) {
   }
 
   // Sanitize date:
-  $date = gmmktime(0, 0, 0, $month, ($day && $day < $days ? $day : 1), $year) + $user->timezone;
+  $date = gmmktime(0, 0, 0, $month, ($day && $day < $days ? $day : 1), $year);
   $today = gmmktime(0, 0, 0, gmdate('m', $time), gmdate('j', $time), gmdate('Y', $time));
 
   // Extract key data from date:
@@ -387,7 +387,7 @@ function event_calendar($callback, &$year, &$month, &$day, $navigation = 0) {
   }
   $header = array(
     array('class' => 'prev', 'data' => $prev),
-    array('class' => 'heading', 'colspan' => 5, 'data' => format_date($date, 'custom', 'F Y')),
+    array('class' => 'heading', 'colspan' => 5, 'data' => gmdate('F Y', $date)),
     array('class' => 'next', 'data' => $next)
   );
 
