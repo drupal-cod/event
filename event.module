@@ -463,17 +463,18 @@ function event_calendar($callback, &$year, &$month, &$day, $navigation = 0) {
   if (!$month) {
     $month = gmdate('m', $time);
   }
+/* Having no day is ok.
   if (!$day) {
     $day = gmdate('d', $time);
   }
-
+*/
   // Sanitize date:
-  $date = gmmktime(0, 0, 0, $month, ($day && $day < $days ? $day : 1), $year);
+  $days = gmdate('j', gmmktime(0, 0, 0, $month + 1, 0, $year));
+  $date = gmmktime(0, 0, 0, $month, ($day && $day <= $days ? $day : 1), $year);
   $today = gmmktime(0, 0, 0, gmdate('m', $time), gmdate('j', $time), gmdate('Y', $time));
 
   // Extract key data from date:
   $month_name = gmdate('M', $date);
-  $days = gmdate('j', gmmktime(0, 0, 0, $month + 1, 0, $year));
   $weeks = ceil($days / 7);
 
   // Initialize the header/week days:
@@ -489,14 +490,14 @@ function event_calendar($callback, &$year, &$month, &$day, $navigation = 0) {
 
   // Week starts when?
   if (variable_get('event_week', 1)) {
-    $day_name = array('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun');
+    $day_name = array(t('Mon'), t('Tue'), t('Wed'), t('Thu'), t('Fri'), t('Sat'), t('Sun'));
   }
   else {
-    $day_name = array('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat');
+    $day_name = array(t('Sun'), t('Mon'), t('Tue'), t('Wed'), t('Thu'), t('Fri'), t('Sat'));
   }
 
   foreach ($day_name as $_day) {
-    $row[] = array('class' => strtolower("days $_day"), 'data' => t($_day));
+    $row[] = array('class' => strtolower("days $_day"), 'data' => $_day);
   }
   $rows = array($row);
   $week = 1;
