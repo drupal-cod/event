@@ -466,7 +466,7 @@ function event_query() {
       $result = event_query_parse((object) $_POST['edit']);
 
       if (db_num_rows($result)) {
-        theme('theme_event_query_results', $result);
+        theme('event_query_results', $result);
       }
       else {
         theme('box', t('Search results'), t('No matches found.'));
