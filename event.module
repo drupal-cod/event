@@ -126,13 +126,15 @@ function event_view_parent($node) {
 }
 
 function event_insert(&$node) {
-  global $edit;
+  $edit = $_POST["edit"];
+
   $node->start = strtotime($edit["year"] ."-". $edit["month"] ."-". $edit["day"] ." ". $edit["hour"] .":". $edit["minute"]);
   db_query("INSERT INTO event (nid, parent, start_type, start) VALUES ($node->nid, $node->parent, $node->start_type, $node->start)");
 }
 
 function event_update(&$node) {
-  global $edit;
+  $edit = $_POST["edit"];
+
   $node->start = strtotime($edit["year"] ."-". $edit["month"] ."-". $edit["day"] ." ". $edit["hour"] .":". $edit["minute"]);
   db_query("UPDATE event SET parent = " . ($node->parent ? $node->parent : 0) . ", start_type = " . ($node->start_type ? $node->start_type : 0) . ", start = $node->start WHERE nid = $node->nid");
 }
@@ -294,7 +296,11 @@ function event_images_add($id) {
 }
 
 function event_image_upload() {
-  global $edit, $edit_name, $edit_type, $edit_size;
+  $edit = $_POST["edit"];
+  $edit_name = $_POST["edit_name"];
+  $edit_type = $_POST["edit_type"];
+  $edit_size = $_POST["edit_size"];
+
   if (!is_uploaded_file($edit["file"])) {
     $output = t("Error: not a file upload.");
   }
@@ -361,7 +367,9 @@ function event_image_upload() {
 }
 
 function event_images(&$node) {
-  global $REQUEST_URI, $image, $id;
+  $image = $_POST["image"];
+  $id = $_POST["id"];
+
   $node->images = explode(",", $node->images);
   if (!empty($image) && !empty($node->images[$image])) {
     $image = explode("=", $node->images[$image], 2);
@@ -387,7 +395,11 @@ function event_images(&$node) {
 }
 
 function event_page() {
-  global $date, $REQUEST_URI, $op, $month, $year, $meta;
+  $date = $_POST["date"];
+  $op = $_POST["op"];
+  $month = $_POST["month"];
+  $year = $_POST["year"];
+  $meta = $_POST["meta"];
 
   theme("header");
 
@@ -411,18 +423,18 @@ function event_page() {
       event_image_upload();
       break;
     case "addimage":
-      global $id;
+      $id = $_POST["id"];
       event_view(node_load(array("nid" => $id)), 1);
       event_images_add($id);
       break;
     case "images":
-      global $id;
+      $id = $_POST["id"];
       $node = node_load(array("nid" => $id));
       event_view($node, 1);
       event_images($node);
       break;
     case "month":
-      global $edit;
+      $edit = $_POST["edit"];
       $date = mktime(0, 0, 0, $month, 1, $year);
       $years = array(2001 => 2001, 2002 => 2002, 2003 => 2003, 2004 => 2004, 2005 => 2005);
       $months = array("-", t("January"), t("February"), t("March"), t("April"), t("May"), t("June"), t("July"), t("August"), t("September"), t("October"), t("November"), t("December"));
@@ -466,11 +478,11 @@ function event_page() {
       }
       break;
     case t("Show"):
-      global $edit;
+      $edit = $_POST["edit"];
       $date = mktime(0, 0, 0, $edit[month], $edit[day], $edit[year]);
       // Fall though
     default:
-      global $edit;
+      $edit = $_POST["edit"];
       $years = array(2001 => 2001, 2002 => 2002, 2003 => 2003, 2004 => 2004, 2005 => 2005);
       $months = array("-", t("January"), t("February"), t("March"), t("April"), t("May"), t("June"), t("July"), t("August"), t("September"), t("October"), t("November"), t("December"));
       for ($i = 1; $i <= 31; $i++) $days[$i] = $i;
@@ -631,7 +643,7 @@ function event_block($op = "list", $delta = 0) {
     return $blocks;
   }
   else {
-    global $date;
+    $date = $_POST["date"];
 
     $calendar = new EventCalendar($date);
 
