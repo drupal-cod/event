@@ -404,7 +404,7 @@ function event_calendar() {
       $output .= "  <td class=\"day-today\">". $daytext ."</td>\n";
     }
     else {
-      $output .= "  <td align=\"$dayclass\" >". $daytext ."</td>\n";
+      $output .= "  <td class=\"$dayclass\" >". $daytext ."</td>\n";
     }
 
     // Start every week on a new line:
