@@ -22,8 +22,10 @@ Installation
    and set the module settings to your liking in 
    admin >> site configuration >> modules >> event.
 
-4. Optionalally add custom fields by editing the first function in
-   event.module soruce code file.
+4. Optionally add custom fields by editing the function in
+   the fields.inc source code file. If you want to add fields
+   that have an extra entry in the database, you need to add those
+   entries to the event table.
 
 Author
 ------
