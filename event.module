@@ -83,6 +83,7 @@ function event_page() {
   $year = arg(1); $month = arg(2); $day = arg(3);
   $output = '<div id="event">';
   $output .= event_calendar('event_calendar_expanded', $year, $month, $day, 1);
+  $output .= theme('links', array( l(t('search events'), "event/search") ));
   $output .= '</div>';
 
   $timestamp = gmmktime(0, 0, 0, $month, $day, $year);
