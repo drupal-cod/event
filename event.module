@@ -117,7 +117,7 @@ function event_page() {
   elseif (!arg(1)) {
     global $user;
     $time = time();
-    $result = pager_query("SELECT n.nid FROM {event} e INNER JOIN {node} n USING (nid) WHERE n.status = 1 AND e.start >= $time ORDER BY e.start", variable_get("default_nodes_main", 10));
+    $result = pager_query("SELECT n.nid FROM {event} e INNER JOIN {node} n USING (nid) ". node_access_join_sql() ." WHERE ". node_access_where_sql() ." AND n.status = 1 AND e.start >= $time ORDER BY e.start", variable_get("default_nodes_main", 10));
     if (db_num_rows($result)) {
       $output = "";
       $breadcrumbs[] = t('Upcoming');
@@ -790,7 +790,7 @@ function event_table($start, $end, $today) {
   foreach ($headerarray as $name => $column) {
     $header[] = array('data' => $name, 'field' => $column);
   }
-  $sql = "SELECT n.nid, n.title, n.teaser, n.body, e.* FROM {node} n INNER JOIN {event} e ON n.nid = e.nid WHERE n.status = 1 AND e.start > $start AND e.start < $end GROUP BY e.start, n.title";
+  $sql = "SELECT n.nid, n.title, n.teaser, n.body, e.* FROM {node} n ". node_access_join_sql() ." INNER JOIN {event} e ON n.nid = e.nid WHERE ". node_access_where_sql() ." AND n.status = 1 AND e.start > $start AND e.start < $end GROUP BY e.start, n.title";
   $sql .= tablesort_sql($header);
   $result = pager_query($sql, 10);
   $rows = array();
