@@ -250,10 +250,10 @@ function event_validate(&$node) {
   if (isset($node->year) && isset($node->month) && isset($node->day) && isset($node->hour) && isset($node->minute)) {
     $hour = $node->hour;
     if (variable_get('event_ampm', '0')) {
-      if ($node->ampm == 'pm') {
+      if (($node->ampm == 'pm') && ($hour != 12)) {
         $hour += 12;
       }
-      elseif ($hour == 12) {
+      elseif (($node->ampm == 'am') && ($hour == 12)) {
         $hour -= 12;
       }
     }
