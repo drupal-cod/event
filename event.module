@@ -422,7 +422,7 @@ function event_page() {
         // $theme->heading(t("Events in ") . t(strtr("%a", array("%a" => date("F", $first)))) . date(" Y", $first));
         $theme->box(t("Event calendar"), form($REQUEST_URI, $form));
         // Fetch event nodes for the selected month
-        $result = db_query("SELECT n.*, l.*, u.name FROM node n LEFT JOIN event l ON n.lid = l.lid AND n.nid = l.nid LEFT JOIN users u ON n.author = u.id WHERE ". ($meta ? "n.attributes LIKE '%". check_input($meta) ."%' AND " : "l.parent = '' AND ") ." n.status = '". node_status("posted") ."' AND l.start >= '". $first  ."' AND l.start <= '". $last ."' AND n.type = 'event' ORDER BY l.start ASC");
+        $result = db_query("SELECT n.*, l.*, u.name FROM node n LEFT JOIN event l ON n.lid = l.lid AND n.nid = l.nid LEFT JOIN users u ON n.author = u.id WHERE ". ($meta ? "n.attributes LIKE '%". check_input($meta) ."%' AND " : "l.parent = '' AND ") ." n.status = '1' AND l.start >= '". $first  ."' AND l.start <= '". $last ."' AND n.type = 'event' ORDER BY l.start ASC");
         if($result){
           while ($node = db_fetch_object($result)) {
             node_view(node_get_object(array("nid" => $node->nid, "type" => $node->type)), 1);
