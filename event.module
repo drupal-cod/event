@@ -1,12 +1,13 @@
 <?php
 // $Id$
 
+/**
+ * Retrieves all of the fields from fields.inc.  To add extra fields you might need, add them to the file called
+ * fields.inc in the event module directory.
+ *
+ * @return an array of fields
+ */
 function event_fields() {
-  /*
-  ** To add extra fields you might need, add them to
-  ** the file called fields.inc in the event module
-  ** directory.
-  */
   if (file_exists('modules/event/fields.inc')) {
     include_once 'modules/event/fields.inc';
     return event_extra_fields();
@@ -15,6 +16,12 @@ function event_fields() {
   return array();
 }
 
+/**
+ * Displays the help text for this module.
+ *
+ * @param $section the page which is requesting help
+ * @return the help text
+ */
 function event_help($section) {
   switch ($section) {
     case 'admin/system/modules#description':
@@ -26,10 +33,24 @@ function event_help($section) {
   }
 }
 
+/**
+ * Provides a link to the CSS stylesheet associated with this module.
+ *
+ * @return a &lt;style&gt; tag that indicates what file browsers should import
+ */
 function event_html_head() {
   return '<style type="text/css">@import url(modules/event/event.css);</style>';
 }
 
+/**
+ * Provides the blocks that this module is capable of displaying.
+ *
+ * @param $op the operation that is being requested.  This defaults to 'list', which indicates that the method should
+ *        which blocks are available.
+ * @param $delta the specific block to display.  This is actually the offset into an array.
+ * @return one of two possibilities.  The first is an array of available blocks.  The other is an array containing a
+ *        block.
+ */
 function event_block($op = 'list', $delta = 0) {
   if ($op == 'list') {
     $blocks[0]['info'] = t('Calendar to browse events.');
@@ -53,6 +74,11 @@ function event_block($op = 'list', $delta = 0) {
   }
 }
 
+/**
+ * Displays and allows an administrator to change the settings for this module.
+ *
+ * @return the content for a settings page.
+ */
 function event_settings() {
   $output = form_textarea(t('Explanation or submission guidelines'), 'event_help', variable_get('event_help', ''), 70, 5, t('This text will be displayed at the top of the event submission form.  Useful for helping or instructing your users.'));
   $output .= form_select(t('Start of week'), 'event_week', variable_get('event_week', '0'), array('0' => t('Sunday'), '1' => t('Monday')), t('The day the weeks starts in the block calendar.'));
@@ -74,6 +100,9 @@ function event_settings() {
   return $output;
 }
 
+/**
+ * Displays a page containing event information.  The page layout defaults to a graphical calendar.
+ */
 function event_page() {
   $breadcrumbs = array(
     l(t('Home'), NULL),
@@ -119,10 +148,24 @@ function event_page() {
   print theme('page', $output, t('Events'), $breadcrumbs);
 }
 
+/**
+ * Provides an array of permissions associated with this module.
+ *
+ * @return an array of permissions
+ */
 function event_perm() {
   return array('maintain events');
 }
 
+/**
+ * Provides the links that should be displayed when viewing events.
+ *
+ * @param $type the type of link (for example, 'node', 'page', or 'system') being requested
+ * @param $node the node that is requesting the link.  This is used in conjunction with $type to further determine
+ *        what sort of link to display.
+ * @param $main unused in this method.
+ * @return an array of links, or an empty array if no links apply for the criteria passed to this method.
+ */
 function event_link($type, $node = 0, $main) {
 
   switch ($type) {
@@ -156,14 +199,28 @@ function event_link($type, $node = 0, $main) {
   return $links ? $links : array();
 }
 
-/*
-** Node functions.
-*/
+/**
+ * @defgroup event_node Methods that implement node hooks.
+ */
 
+/**
+ * Indicates what type of nodes this module generates.
+ *
+ * @ingroup event_node
+ * @return the type of node
+ */
 function event_node_name() {
   return t('event');
 }
 
+/**
+ * Determines whether a user has permission to execute a specified operation.
+ *
+ * @ingroup event_node
+ * @param $op the operation that is being requested.
+ * @param &$node the node on which the operation will be executed.
+ * @return whether the user has sufficient access to execute the operation.
+ */
 function event_access($op, &$node) {
   global $user;
   switch ($op) {
@@ -178,6 +235,16 @@ function event_access($op, &$node) {
   }
 }
 
+/**
+ * Verifies that the details of an event are properly set.
+ *  - Changes 24 hour time to 12 hour time (if the module is configured to do this).
+ *  - Adjusts times for timezone offsets.
+ *  - Verifies that all required fields have values. 
+ *
+ * @ingroup event_node
+ * @param &$node the event node to validate
+ * @return any error messages this method generates.
+ */
 function event_validate(&$node) {
   // Re-calculate $node->start if we have all the parameters.
   if (isset($node->year) && isset($node->month) && isset($node->day) && isset($node->hour) && isset($node->minute)) {
@@ -212,6 +279,14 @@ function event_validate(&$node) {
   return $error;
 }
 
+/**
+ * Completes an event node by setting the teaser and body fields.
+ *
+ * @ingroup event_node
+ * @param &$node the node to be completed
+ * @param $main unused in this method
+ * @return the same node passed with the teaser and body fields properly set
+ */
 function event_content(&$node, $main = 0) {
   $fields = event_fields();
 
@@ -244,6 +319,15 @@ function event_content(&$node, $main = 0) {
   return $node;
 }
 
+/**
+ * Prepares an event for viewing.
+ *
+ * @ingroup event_node
+ * @param &$node the event to be prepared
+ * @param $main whether or not the main page is requesting the node
+ * @param $page whether or not the event is being viewed by itself
+ * @return a string containing the event after it has been passed through the theme subsystem
+ */
 function event_view(&$node, $main = 0, $page = 0) {
   $node = event_content($node, $main);
   if ($page) {
@@ -255,9 +339,15 @@ function event_view(&$node, $main = 0, $page = 0) {
   return theme('node', $node, $main, $page);
 }
 
+/**
+ * Constructs the start time select boxes.
+ *
+ * @param $timestamp The time already selected.  This is applicable if the user is editing an event.
+ * @param $prefix
+ * @return A set of select boxes that contain options for month, day, year, hour, and minute
+ * @todo Make the years automatically populated instead of static. 
+ */
 function event_form_date($timestamp, $prefix = '') {
-  // Construct the start time select boxes.
-  // TODO: Make the years automatically populated instead of static.
 
   //determine settings for form's hour selector
   if (variable_get('event_ampm', '0')) {
@@ -305,6 +395,14 @@ function event_form_date($timestamp, $prefix = '') {
   return $when;
 }
 
+/**
+ * Prepares the event editing page.
+ *
+ * @ingroup event_node
+ * @param &$node The event to be edited.
+ * @param &$error Any error messages that need to be displayed.  These are returned from event_validate().  
+ * @return The form elements needed to edit the event.
+ */
 function event_form(&$node, &$error) {
 
   $output = '';
@@ -327,6 +425,15 @@ function event_form(&$node, &$error) {
   return $output;
 }
 
+/**
+ * Creates a query to either insert or update an event in the database.
+ *
+ * @param $fields The fields to be retrieved.
+ * @param $node The node we are inserting or updating.
+ * @param &$v
+ * @param $insert Whether or not this is an insert query.
+ * @return The SQL statement generated by the above criteria.
+ */
 function event_create_query($fields, $node, &$v, $insert = 1) {
   $node->data  = array();
   $extra_fields = event_fields();
@@ -361,6 +468,12 @@ function event_create_query($fields, $node, &$v, $insert = 1) {
   }
 }
 
+/**
+ * Updates the event database table when event nodes are inserted.
+ *
+ * @ingroup event_node
+ * @param @$node The node that is being inserted.
+ */
 function event_insert(&$node) {
   $fields = array('nid', 'start', 'data');
   $sql = event_create_query($fields, $node, $values);
@@ -370,6 +483,12 @@ function event_insert(&$node) {
   db_query($sql, $vals);
 }
 
+/**
+ * Updates the event database table when event nodes are updated.
+ *
+ * @ingroup event_node
+ * @param &$node The node that is being updated.
+ */
 function event_update(&$node) {
   $fields = array('start', 'data');
   $sql = event_create_query($fields, $node, $values, 0);
@@ -379,10 +498,23 @@ function event_update(&$node) {
   db_query($sql, $vals);
 }
 
+/**
+ * Deletes rows from the event database table when event nodes are deleted.
+ *
+ * @ingroup event_node
+ * @param &$node The node that is being deleted.
+ */
 function event_delete(&$node) {
   db_query("DELETE FROM {event} WHERE nid = %d", $node->nid);
 }
 
+/**
+ * Loads all of the event-specific information when an event node is viewed.
+ *
+ * @ingroup event_node
+ * @param &$node The node being viewed.
+ * @return An array of event-specific information.
+ */
 function event_load(&$node) {
   $event = db_fetch_object(db_query("SELECT * FROM {event} WHERE nid = %d", $node->nid));
   $extra_fields = event_fields();
@@ -402,10 +534,19 @@ function event_load(&$node) {
   return $event;
 }
 
-/*
-** Support functions.
-*/
+/**
+ * @defgroup event_support Support functions to accomplish event-specific tasks.
+ */
 
+/**
+ * Creates a list of events that are occurring on a given year, month, and day.
+ *
+ * @ingroup event_support
+ * @param $year The year the event is taking place.
+ * @param $month The month the event is taking place.
+ * @param $day The day the event is taking place.
+ * @return An array containing all of the events taking place on the specified date, or an empty array if none exist.
+ */
 function event_calendar_data($year, $month, $day) {
   static $data;
   if (!is_array($data[$year][$month])) {
@@ -429,10 +570,31 @@ function event_calendar_data($year, $month, $day) {
   return $data[$year][$month][$day] ? $data[$year][$month][$day] : array();
 }
 
+/**
+ * Creates an abbreviated calendar of events.
+ *
+ * @ingroup event_support
+ * @param $year The year the event is taking place.
+ * @param $month The month the event is taking place.
+ * @param $day The day the event is taking place.
+ * @param $timestamp Unused in this method.
+ * @return A link to a page containing more details about events occurring on the given date, or if no events are
+ *         taking place just the plaintext $day.
+ */
 function event_calendar_simple($year, $month, $day, $timestamp) {
   return count(event_calendar_data($year, $month, $day)) ? l($day, "event/$year/$month/$day") : $day;
 }
 
+/**
+ * Creates a detailed calendar of events.
+ *
+ * @ingroup event_support
+ * @param $year The year the event is taking place.
+ * @param $month The month the event is taking place.
+ * @param $day The day the event is taking place.
+ * @param $timestamp Unused in this function.
+ * @return A string containing all of the events taking place.
+ */
 function event_calendar_expanded($year, $month, $day, $timestamp) {
 
   if (variable_get('event_ampm', '0')) {
@@ -480,6 +642,18 @@ function event_calendar_expanded($year, $month, $day, $timestamp) {
   return $output;
 }
 
+/**
+ * Creates the graphical calendar and table views for events.
+ *
+ * @ingroup event_support
+ * @param $callback
+ * @param &$year The year the event is taking place.
+ * @param &$month The month the event is taking place.
+ * @param &$day The day the event is taking place.
+ * @param $navigation
+ * @param $extra
+ * @return The fully formatted calendar or table.
+ */
 function event_display($callback, &$year, &$month, &$day, $navigation = 0, $extra = 0) {
   global $user;
   $time = time();
@@ -576,6 +750,15 @@ function event_display($callback, &$year, &$month, &$day, $navigation = 0, $extr
   return $output;
 }
 
+/**
+ * Creates a themed table of events.
+ *
+ * @ingroup event_support
+ * @param $start The starting date for the table. 
+ * @param $month The ending date for the table.
+ * @param $today The date to be indicated as current in the table.
+ * @return A fully themed table.
+ */
 function event_table($start, $end, $today) {
   $extra = event_fields();
   $headerarray = $type = array();
@@ -635,6 +818,15 @@ function event_format_field($type, $data, $field, $nid) {
   }
 }
 
+/**
+ * Formats a date for display to the user.
+ *
+ * @ingroup event_support
+ * @param $timestamp The date to be displayed.
+ * @param $type The format to display the date in.
+ * @param $format A PHP date format string.  This is only applicable if $type is 'custom'.
+ * @return A string containing the formatted date.
+ */
 function event_format_date($timestamp, $type = 'medium', $format = '') {
   $tz = variable_get('event_timezone', '1') ? NULL : 0;
   return format_date($timestamp, $type, $format, $tz);
@@ -648,6 +840,13 @@ function _event_mktime($hour, $minute, $second, $month, $day, $year) {
   return gmmktime($hour, $minute, $second, $month, $day, $year);
 }
 
+/**
+ * Searches the event and node tables for events that match user-defined criteria.
+ *
+ * @ingroup event_support
+ * @param $keys The keywords the user is searching for.
+ * @return An array of events matching the $keys.
+ */
 function event_search($keys) {
   $extra_fields = event_fields();
   $query = "";
@@ -663,6 +862,12 @@ function event_search($keys) {
   return array(t('Events'), $find);
 }
 
+/**
+ * Creates a page that the user may use to search for events.
+ *
+ * @ingroup event_support
+ * @return A string containing the search form and any results returned.
+ */
 function event_query() {
   $output = event_query_form();
   switch ($_POST['op']) {
@@ -722,6 +927,12 @@ function event_query_parse($edit) {
   return db_query($sql);
 }
 
+/**
+ * Creates an HTML form element for the user to specify search criteria for events.
+ *
+ * @ingroup event_support
+ * @return A string containing HTML forms for selecting the 'from' and 'to' dates, as well as any auxiliary event fields.
+ */
 function event_query_form() {
   $fields = event_fields();
   $output = form_group(t('Date period'), form_item(t('From'), event_form_date(time()-2*365*24*60*60, 'from][')) . form_item(t('To'), event_form_date(time()+3*365*24*60*60, 'to][')));
@@ -742,6 +953,13 @@ function event_query_form() {
   return form($output, 'post', NULL, array ('id' => 'event-search'));
 }
 
+/**
+ * Takes an array of results from a SQL query and loads the relevant nodes.
+ *
+ * @ingroup event_support
+ * @param $result An array of SQL query results.
+ * @return A string containing all of the nodes that were returned from the SQL query.
+ */
 function theme_event_query_results($result) {
   while ($node = db_fetch_object($result)) {
     $output .= node_view(node_load($node), 1);
@@ -749,9 +967,17 @@ function theme_event_query_results($result) {
   return $output;
 }
 
-/* Two helper functions for upcoming events block */
-/* Borrowed some code from weblinks.module */
+/**
+ * @defgroup event_block Helper functions for event-specific blocks. Borrowed some code from weblinks.module
+ */
 
+/**
+ * Creates a block that contains upcoming events.
+ *
+ * @ingroup event_block
+ * @param $limit The number of events that can be displayed in the block.
+ * @return A string containing the fully themed block.
+ */
 function event_block_upcoming($limit = 6) {
   global $user;
   // For two hours, we display "NOW"
@@ -765,6 +991,13 @@ function event_block_upcoming($limit = 6) {
   return theme("event_upcoming_list",$links);
 }
 
+/**
+ * Creates an overridable theme hook that details how to display the upcoming events block.
+ *
+ * @ingroup event_block
+ * @param $links An array of links to upcoming events.
+ * @return A string containing the themed links.
+ */
 function theme_event_upcoming_list($links) {
   if (is_array($links) && (sizeof($links) > 0)) {
     foreach ($links as $node) {

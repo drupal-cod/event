@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Specifies any auxiliary fields that are applicable for events.  The only value returned by default is 'location'.
+ *
+ * @ingroup event_support
+ * @return An array of event-specific fields.
+ */
 function event_extra_fields() {
   /*
   ** Add an entry below for any additional field you might need.
