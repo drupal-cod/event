@@ -1,4 +1,4 @@
-# LANGUAGE translation of PROJECT
+﻿# LANGUAGE translation of PROJECT
 # Copyright YEAR NAME <EMAIL@ADDRESS>
 #
 msgid ""
@@ -16,16 +16,15 @@ msgstr ""
 #: event.module:21
 msgid "Lets users make events and keep calendars."
 msgstr ""
-"Läßt Nutzer Veranstaltungen eingeben und einen Veranstaltungskalender "
+"Lässt Nutzer Veranstaltungen eingeben und einen Veranstaltungskalender "
 "pflegen."
 
 # event.module
 #: event.module:23
-#, fuzzy
 msgid ""
 "Events are what you think you they are. Occurrences happening at a given "
 "time and place."
-msgstr "Veranstaltungen sind Treffen an gegebenem Ort zur gegebener Zeit."
+msgstr "Veranstaltungen sind Treffen an gegebenem Ort zu gegebener Zeit."
 
 # event.module
 #: event.module:35
@@ -89,19 +88,19 @@ msgstr "Montag"
 # event.module
 #: event.module:58
 msgid "The day the weeks starts in the block calendar."
-msgstr "Der Wochentag mit dem der Veranstaltungskalender beginnt."
+msgstr "Der Wochentag, mit dem der Veranstaltungskalender beginnt."
 
 #: event.module:59
 msgid "Time notation preference"
-msgstr ""
+msgstr "gewünschtes Zeitformat"
 
 #: event.module:59
 msgid "24h"
-msgstr ""
+msgstr "24-stündig"
 
 #: event.module:59
 msgid "12h"
-msgstr ""
+msgstr "12-stündig"
 
 #: event.module:59
 msgid "The time notation system used for entering event start times."
@@ -109,89 +108,88 @@ msgstr ""
 
 #: event.module:60
 msgid "Timezone handling"
-msgstr ""
+msgstr "Zeitzonenmanagement"
 
 #: event.module:60
 msgid "Yes"
-msgstr ""
+msgstr "Ja"
 
 #: event.module:60
 msgid "No"
-msgstr ""
+msgstr "Nein"
 
 #: event.module:60
 msgid ""
 "Yes: Times are saved relative to the user's timezone. No: Times are saved "
 "relative to the server's time."
-msgstr ""
+msgstr "Ja: Zeitangabe gemäß der Zeitzone des Nutzers; nein: Zeitangabe"
+"gemäß der Zeitzoneneinstellung des Servers."
 
 #: event.module:61
 msgid "Type of overview"
-msgstr ""
+msgstr "Übersichtstyp"
 
 # event.module, event.module
 #: event.module:61
-#, fuzzy
 msgid "Calendar"
 msgstr "Kalender"
 
 #: event.module:61
 msgid "Table"
-msgstr ""
+msgstr "Tabelle"
 
 # event.module
 #: event.module:61
-#, fuzzy
 msgid ""
 "The type of overview to show the user when he clicks on the block calendar."
-msgstr "Der Wochentag mit dem der Veranstaltungskalender beginnt."
+msgstr ""
 
 #: event.module:68 ;596
 msgid "Date"
-msgstr ""
+msgstr "Datum"
 
 #: event.module:68 ;596
 msgid "Title"
-msgstr ""
+msgstr "Überschrift"
 
 #: event.module:68 ;596
 msgid "Teaser"
-msgstr ""
+msgstr "Kurzbeschreibung"
 
 #: event.module:68 ;596
 msgid "Body"
-msgstr ""
+msgstr "Beschreibung"
 
 #: event.module:69
 msgid "Table headers"
-msgstr ""
+msgstr "Tabellenkopf"
 
 #: event.module:69
 msgid ""
 "The table headers used in the table view. Only entries that have their own "
 "database column in the event table and are of type \"textfield\", \"textarea"
 "\", or \"select\" can be used."
-msgstr ""
+msgstr "Die Tabellenköpfe werden für die Tabellenansicht benötigt. Nur diejenigen "
+"Einträge sind gültig, die einen eigenen Datensatz in der Veranstaltungsübersicht "
+"haben und vom Typ \"textfield\", \"textarea\" oder \"select\" sind."
 
 #: event.module:73 ;510
 msgid "Jan"
-msgstr ""
+msgstr "Jan"
 
 #: event.module:73 ;510
 msgid "Feb"
-msgstr ""
+msgstr "Feb"
 
 # event.module
 #: event.module:73 ;510
-#, fuzzy
 msgid "Mar"
-msgstr "März"
+msgstr "Mär"
 
 # event.module
 #: event.module:73 ;510
-#, fuzzy
 msgid "Apr"
-msgstr "April"
+msgstr "Apr"
 
 # event.module
 #: event.module:73 ;75;277;510;512
@@ -200,37 +198,34 @@ msgstr "Mai"
 
 # event.module
 #: event.module:73 ;510
-#, fuzzy
 msgid "Jun"
-msgstr "Juni"
+msgstr "Jun"
 
 # event.module
 #: event.module:73 ;510
-#, fuzzy
 msgid "Jul"
-msgstr "July"
+msgstr "Jul"
 
 # event.module
 #: event.module:73 ;510
-#, fuzzy
 msgid "Aug"
-msgstr "August"
+msgstr "Aug"
 
 #: event.module:73 ;510
 msgid "Sep"
-msgstr ""
+msgstr "Sep"
 
 #: event.module:73 ;510
 msgid "Oct"
-msgstr ""
+msgstr "Okt"
 
 #: event.module:73 ;510
 msgid "Nov"
-msgstr ""
+msgstr "Nov"
 
 #: event.module:73 ;510
 msgid "Dec"
-msgstr ""
+msgstr "Dez"
 
 # event.module
 #: event.module:75 ;277;512
@@ -254,13 +249,18 @@ msgstr "April"
 
 # event.module
 #: event.module:75 ;277;512
+msgid "May"
+msgstr "Mai"
+
+# event.module
+#: event.module:75 ;277;512
 msgid "June"
 msgstr "Juni"
 
 # event.module
 #: event.module:75 ;277;512
 msgid "July"
-msgstr "July"
+msgstr "Juli"
 
 # event.module
 #: event.module:75 ;277;512
@@ -360,7 +360,7 @@ msgstr "Suche"
 # event.module
 #: event.module:210
 msgid "Required."
-msgstr "Notwendige"
+msgstr "Notwendig!"
 
 # event.module, event.module
 #: event.module:222 ;316
@@ -369,11 +369,11 @@ msgstr "Start"
 
 #: event.module:281
 msgid "am"
-msgstr ""
+msgstr "vormittags"
 
 #: event.module:281
 msgid "pm"
-msgstr ""
+msgstr "nachmittags"
 
 # event.module
 #: event.module:316
@@ -387,47 +387,43 @@ msgstr "Weitere Angaben"
 
 # event.module
 #: event.module:530 ;534
-#, fuzzy
 msgid "Mon"
-msgstr "Montag"
+msgstr "Mon"
 
 #: event.module:530 ;534
 msgid "Tue"
-msgstr ""
+msgstr "Die"
 
 #: event.module:530 ;534
 msgid "Wed"
-msgstr ""
+msgstr "Mit"
 
 #: event.module:530 ;534
 msgid "Thu"
-msgstr ""
+msgstr "Don"
 
 #: event.module:530 ;534
 msgid "Fri"
-msgstr ""
+msgstr "Fre"
 
 # event.module, event.module
 #: event.module:530 ;534
-#, fuzzy
 msgid "Sat"
-msgstr "Start"
+msgstr "Sam"
 
 # event.module
 #: event.module:530 ;534
-#, fuzzy
 msgid "Sun"
-msgstr "Sonntag"
+msgstr "Son"
 
 #: event.module:627
 msgid "Click here to see the full event."
-msgstr ""
+msgstr "Hier klicken, um die gesamte Beschreibung zu sehen."
 
 # event.module
 #: event.module:632
-#, fuzzy
-msgid "M, %day"
-msgstr "Montag"
+msgid "M, j"
+msgstr "j. M"
 
 # event.module
 #: event.module:683
@@ -451,59 +447,31 @@ msgstr "Bis"
 
 #: event.module:783
 msgid "NOW"
-msgstr ""
+msgstr "AKTUELL"
 
 # event.module
 #: event.module:786
-#, fuzzy
 msgid "1 minute"
 msgid_plural "%count minutes"
 msgstr[0] "Minute"
-msgstr[1] "Minute"
+msgstr[1] "Minuten"
 
 # event.module
 #: event.module:789
-#, fuzzy
 msgid "1 hour"
 msgid_plural "%count hours"
 msgstr[0] "Stunde"
-msgstr[1] "Stunde"
+msgstr[1] "Stunden"
 
 # event.module
 #: event.module:792
-#, fuzzy
 msgid "1 day"
 msgid_plural "%count days"
 msgstr[0] "Tag"
-msgstr[1] "Tag"
+msgstr[1] "Tage"
 
 # event.module
 #: event.module:125
 msgid "maintain events"
-msgstr ""
+msgstr "Veranstaltungen pflegen"
 
-# event.module
-#~ msgid "An event contains information on an event in real life."
-#~ msgstr ""
-#~ "Eine Veranstaltung enthält Informationen über eine Veranstaltung im "
-#~ "Richtigen Leben(WZ)."
-
-# event.module
-#~ msgid "Search results"
-#~ msgstr "Suchergebnisse"
-
-# event.module
-#~ msgid "Search events"
-#~ msgstr "Veranstaltungen durchsuchen"
-
-# event.module
-#~ msgid "minutes"
-#~ msgstr "Minuten"
-
-# event.module
-#~ msgid "hours"
-#~ msgstr "Stunden"
-
-# event.module
-#~ msgid "days"
-#~ msgstr "Tage"
