@@ -3,7 +3,7 @@
 
 function event_fields() {
   /*
-  ** To add extra fields you might need, add them to 
+  ** To add extra fields you might need, add them to
   ** the file called fields.inc in the event module
   ** directory.
   */
@@ -57,7 +57,7 @@ function event_page() {
   if (!arg(1)) {
     global $user;
     $time = time() + $user->timezone;
-    $result = pager_query("SELECT n.nid FROM {event} e LEFT JOIN {node} n USING (nid) WHERE n.status = 1 AND e.start >= $time ORDER BY e.start", variable_get("default_nodes_main", 10));
+    $result = pager_query("SELECT n.nid FROM {event} e INNER JOIN {node} n USING (nid) WHERE n.status = 1 AND e.start >= $time ORDER BY e.start", variable_get("default_nodes_main", 10));
     if (db_num_rows($result)) {
       $breadcrumbs[] = t('Upcoming');
       theme('header');
@@ -322,10 +322,10 @@ function event_calendar_data($year, $month, $day) {
     $first = gmmktime(0, 0, 0, $month, 1, $year) + $user->timezone;
     $last = gmmktime(23, 59, 59, $month, $days, $year) + $user->timezone;
 
-    $result = db_query("SELECT n.nid FROM {event} e LEFT JOIN {node} n USING (nid) WHERE n.status = 1 AND e.start > %d AND e.start < %d ORDER BY start", $first, $last);
+    $result = db_query("SELECT n.nid FROM {event} e INNER JOIN {node} n USING (nid) WHERE n.status = 1 AND e.start > %d AND e.start < %d ORDER BY start", $first, $last);
     while ($node = db_fetch_object($result)) {
       $node = node_load($node);
-      $data[$year][$month][gmdate('j', $node->start)][] = $node;
+      $data[$year][$month][format_date($node->start, 'custom', 'j')][] = $node;
     }
   }
 
