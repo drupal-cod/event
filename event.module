@@ -347,6 +347,8 @@ function event_content(&$node, $main = 0) {
   $node->teaser = $output . ($node->teaser ? '<div class="content">'. check_output($node->teaser) .'</div></div>' : '</div>');
   $node->body = $output . ($node->body ? '<div class="content">'. check_output($node->body) .'</div></div>' : '</div>');
 
+  $node->readmore = (strlen($node->teaser) < strlen($node->body));
+
   return $node;
 }
 
@@ -591,7 +593,7 @@ function event_calendar_data($year, $month, $day) {
       $last += $user->timezone;
     }
 
-    $result = db_query('SELECT n.nid FROM {event} e INNER JOIN {node} n USING (nid) '. node_access_join_sql() .' WHERE '. node_access_where_sql() .' AND n.status = 1 AND e.start > %d AND e.start < %d ORDER BY e.start', $first, $last);
+    $result = db_query('SELECT DISTINCT(n.nid) FROM {event} e INNER JOIN {node} n USING (nid) '. node_access_join_sql() .' WHERE '. node_access_where_sql() .' AND n.status = 1 AND e.start > %d AND e.start < %d ORDER BY e.start', $first, $last);
     while ($node = db_fetch_object($result)) {
       $node = node_load($node);
       $data[$year][$month][event_format_date($node->start, 'custom', 'j')][] = $node;
@@ -1003,7 +1005,7 @@ function event_query_parse($edit) {
     $query[] = '('. implode(' OR ', $or). ')';
   }
 
-  $sql = 'SELECT n.nid FROM {event} e INNER JOIN {node} n USING (nid) '. node_access_join_sql() .' WHERE '. node_access_where_sql() .' AND '. implode(' AND ', $query);
+  $sql = 'SELECT DISTINCT(n.nid) FROM {event} e INNER JOIN {node} n USING (nid) '. node_access_join_sql() .' WHERE '. node_access_where_sql() .' AND '. implode(' AND ', $query);
   return db_query($sql);
 }
 
