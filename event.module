@@ -56,10 +56,10 @@ function event_page() {
 
   if (arg(1) == 'search') {
     $breadcrumbs[] = l(t('Search'), 'event/search');
-    theme('header');
-    theme('breadcrumb', $breadcrumbs);
+    print theme('header');
+    print theme('breadcrumb', $breadcrumbs);
     event_query();
-    theme('footer');
+    print theme('footer');
     return;
   }
   elseif (!arg(1)) {
@@ -68,13 +68,13 @@ function event_page() {
     $result = pager_query("SELECT n.nid FROM {event} e INNER JOIN {node} n USING (nid) WHERE n.status = 1 AND e.start >= $time ORDER BY e.start", variable_get("default_nodes_main", 10));
     if (db_num_rows($result)) {
       $breadcrumbs[] = t('Upcoming');
-      theme('header');
-      theme('breadcrumb', $breadcrumbs);
+      print theme('header');
+      print theme('breadcrumb', $breadcrumbs);
       while ($node = db_fetch_object($result)) {
         node_view(node_load($node), 1);
       }
       print pager_display(NULL, variable_get("default_nodes_main", 10));
-      theme('footer');
+      print theme('footer');
       return;
     }
   }
@@ -88,10 +88,10 @@ function event_page() {
   $timestamp = gmmktime(0, 0, 0, $month, $day, $year);
   $breadcrumbs[] = l($year, "event/$year");
   $breadcrumbs[] = l(format_date($timestamp, 'custom', 'F'), "event/$year/$month");
-  theme('header');
-  theme('breadcrumb', $breadcrumbs);
-  theme('box', t('Events'), $output);
-  theme('footer');
+  print theme('header');
+  print theme('breadcrumb', $breadcrumbs);
+  print theme('box', t('Events'), $output);
+  print theme('footer');
 }
 
 function event_perm() {
@@ -213,9 +213,9 @@ function event_view(&$node, $main = 0) {
     // Breadcrumb navigation
     $breadcrumb[] = l(t('Home'), NULL);
     $breadcrumb[] = l(t('Events'), 'event');
-    theme('breadcrumb', $breadcrumb);
+    print theme('breadcrumb', $breadcrumb);
   }
-  theme('node', $node, $main);
+  print theme('node', $node, $main);
 }
 
 function event_form_date($timestamp, $prefix = '') {
@@ -510,14 +510,14 @@ function event_query() {
       $result = event_query_parse((object) $_POST['edit']);
 
       if (db_num_rows($result)) {
-        theme('event_query_results', $result);
+        print theme('event_query_results', $result);
       }
       else {
-        theme('box', t('Search results'), t('No matches found.'));
+        print theme('box', t('Search results'), t('No matches found.'));
       }
       break;
     default:
-      theme('box', t('Search events'), event_query_form());
+      print theme('box', t('Search events'), event_query_form());
       break;
   }
 }
