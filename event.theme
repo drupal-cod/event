@@ -1,0 +1,193 @@
+<?php
+/**
+ * @addtogroup themeable
+ * @{
+ */
+
+/**
+ * Format a calendar view
+ *
+ * @param day
+ *   The day to display.
+ */
+function theme_event_calendar_month($op, $header, $rows) {
+  $output = theme("table", $header, $rows);
+  return '<div class="event-calendar"><div class="month-view">'. $output .'</div></div>'."\n";
+}
+
+/**
+ * Format a calendar view
+ *
+ * @param day
+ *   The day to display.
+ */
+function theme_event_calendar_week($op, $header, $rows) {
+  $output = theme("table", $header, $rows);
+  return '<div class="event-calendar"><div class="week-view">'. $output .'</div></div>'."\n";
+}
+
+/**
+ * Format a calendar view
+ *
+ * @param day
+ *   The day to display.
+ */
+function theme_event_calendar_day($op, $header, $rows) {
+  $output = theme("table", $header, $rows);
+  return '<div class="event-calendar"><div class="day-view">'. $output .'</div></div>'."\n";
+}
+
+/**
+ * Format a calendar view
+ *
+ * @param day
+ *   The day to display.
+ */
+function theme_event_calendar_table($op, $header, $rows) {
+  $output = theme("table", $header, $rows);
+  return '<div class="event-calendar"><div class="table-view">'. $output .'</div></div>'."\n";
+}
+
+/**
+ * Format an event node for display in an expanded calendar, like a calendar page
+ *
+ * @param node
+ *   The node being displayed
+ */
+function theme_event_node_day($node) {
+  $output .= '<div class="event">'."\n";
+  $output .= '<div class="type">'. l('('. $node->event_node_title .')', 'event/'.gmdate('Y/m/d', $node->start).'/day/'.$node->type, array('title' => t('limit view to events of this type'))).'</div>'."\n";
+
+  $output .= '<div class="title">'. l($node->title, "node/$node->nid", array('title' => t('view this event'))) .'</div>'."\n";
+  $output .= '<div class="links">'. theme('links', $node->event_links) ."\n</div>";
+  $output .= '<div id="info_'. $node->nid .'" class="info">'."\n";
+  $output .= '<div class="start"><nobr>Start:'. $node->start_format .'</nobr></div>'."\n";
+  $output .= '<div class="end"><nobr>End: '. $node->end_format .'</nobr></div>'."\n";
+  $output .= '<div class="content">'. $node->teaser .'</div>'."\n";
+  $output .= '</div></div>'."\n";
+  return $output;
+}
+
+/**
+ * Format an event node for display in an expanded calendar, like a calendar page
+ *
+ * @param node
+ *   The node being displayed
+ */
+function theme_event_node_week($node) {
+  $output .= '<div class="event">'."\n";
+  $output .= '<div class="type">'. l('('. $node->event_node_title .')', 'event/'.gmdate('Y/m/d', $node->start).'/week/'.$node->type, array('title' => t('limit view to events of this type'))).'</div>'."\n";
+
+  $output .= '<div class="title">'. l($node->title, "node/$node->nid", array('title' => t('view this event'))) .'</div>'."\n";
+  $output .= '<div class="links">'. theme('links', $node->event_links) ."\n</div>";
+  $output .= '<div id="info_'. $node->nid .'" class="info">'."\n";
+  $output .= '<div class="start"><nobr>Start:'. $node->start_format .'</nobr></div>'."\n";
+  $output .= '<div class="end"><nobr>End: '. $node->end_format .'</nobr></div>'."\n";
+  $output .= '<div class="content">'. $node->teaser .'</div>'."\n";
+  $output .= '</div></div>'."\n";
+  return $output;
+}
+
+/**
+ * Format an event node for display in an expanded calendar, like a calendar page
+ *
+ * @param node
+ *   The node being displayed
+ */
+function theme_event_node_month($node) {
+  $output .= '<div class="event">'."\n";
+  $output .= '<div class="type">'. l('('. $node->event_node_title .')', 'event/'.gmdate('Y/m/d', $node->start).'/month/'.$node->type, array('title' => t('limit view to events of this type'))).'</div>'."\n";
+
+  $output .= '<div class="title">'. l($node->title, "node/$node->nid", array('title' => t('view this event'))) .'</div>'."\n";
+  $output .= '<div class="links">'. theme('links', $node->event_links) ."\n</div>";
+  $output .= '<div id="info_'. $node->nid .'" class="info">'."\n";
+  $output .= '<div class="start"><nobr>Start:'. $node->start_format .'</nobr></div>'."\n";
+  $output .= '<div class="end"><nobr>End: '. $node->end_format .'</nobr></div>'."\n";
+  $output .= '<div class="content">'. $node->teaser .'</div>'."\n";
+  $output .= '</div></div>'."\n";
+  return $output;
+}
+
+/**
+ * Format an event node for display in an expanded calendar, like a calendar page
+ *
+ * @param node
+ *   The node being displayed
+ */
+function theme_event_node_table($node) {
+  $output .= '<div class="event">'."\n";
+  $output .= '<div class="type">'. l('('. $node->event_node_title .')', 'event/'.gmdate('Y/m/d', $node->start).'/table/'.$node->type, array('title' => t('limit view to events of this type'))).'</div>'."\n";
+
+  $output .= '<div class="title">'. l($node->title, "node/$node->nid", array('title' => t('view this event'))) .'</div>'."\n";
+  $output .= '<div class="links">'. theme('links', $node->event_links) ."\n</div>";
+  $output .= '<div id="info_'. $node->nid .'" class="info">'."\n";
+  $output .= '<div class="start"><nobr>Start:'. $node->start_format .'</nobr></div>'."\n";
+  $output .= '<div class="end"><nobr>End: '. $node->end_format .'</nobr></div>'."\n";
+  $output .= '<div class="content">'. $node->teaser .'</div>'."\n";
+  $output .= '</div></div>'."\n";
+  return $output;
+}
+
+/**
+ * Format an date's day box in a calendar
+ *
+ * @param day
+ *   The day to display.
+ */
+function theme_event_calendar_date_box($day) {
+  return '<div class="day">'. $day .'</div>'."\n";
+}
+
+/**
+ * Format an empty day on a calendar
+ *
+ * @param day
+ *   The day to display.
+ */
+function theme_event_empty_day() {
+  return '<div class="event-empty"></div>'."\n";
+}
+
+/**
+ * Format an date value for a nodeapi insert
+ *
+ * @param node
+ *   The node which needs it's dates formatted
+ */
+function theme_event_nodeapi($node) {
+  $output = '<div class="event-nodeapi"><div class="'.$node->type.'-start"><label>Start: </label>'. $node->start_format .'</div></div>'."\n";
+  $output .= '<div class="event-nodeapi"><div class="'.$node->type.'-end"><label>End: </label>'. $node->end_format .'</div></div>'."\n";
+  $output .= '<div class="event-nodeapi"><div class="'.$node->type.'-end"><label>Timezone: </label>'. $node->tz .'</div></div>'."\n";
+  return $output;
+}
+
+/**
+ *
+ * @param form
+ *   The form containing the taxonomy controls
+ */
+function theme_event_filter_control($form) {
+  return '<div class="event-taxonomy">'. $form .'</div>';
+}
+
+/**
+ * Format the 'next' navigation controls for event calendars
+ *
+ * @param link
+ *   The url for the navigation
+ */
+function theme_event_nav_next($url) {
+  return '<span class="next">'. l('&raquo;', $url) .'</span>';
+}
+
+/**
+ * Format the 'previous' navigation controls for event calendars
+ *
+ * @param link
+ *   The url for the navigation
+ */
+function theme_event_nav_prev($url) {
+  return '<span class="prev">'. l('&laquo;', $url) .'</span>';
+}
+/** @} End of addtogroup themeable */
+?>

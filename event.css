@@ -1,17 +1,9 @@
-.event .details {
-  padding: 0.2em 0.2em 1em 0.2em;
+.event-nodeapi div {
+  color: #000;
+  font-weight: bold;
+  padding: 0.5em 1em 0 0;
 }
-.event .content {
-  border-top: 1px dashed #999;
-  padding-top: 0.8em;
-}
-.event .details .form-item, .node .event .details .form-item .title {
-  color: #999;
-}
-.event .details .form-item .title {
-  display: inline;
-  padding-right: 0.2em;
-}
+.event-nodeapi div label { color: #999; }
 
 .event-calendar table {
   border: 1px solid #242;
@@ -78,11 +70,11 @@
   border: 1px solid #242;
   border-width: 0 1px 1px 0;
 }
-
-#event .event-calendar table {
+.event-calendar table {
   width: 100%;
+  margin-bottom: 1em;
 }
-#event .event-calendar td {
+.event-calendar td {
   width: 14.3%;
 }
 .event-calendar div.event {
@@ -98,27 +90,69 @@
   margin: 0;
   background: #f3f3f3;
 }
-.event-calendar div.event span {
-  display: block;
-  color: #000;
-  padding: 0;
-  margin: 0;
-}
-.event-calendar div.event span.time {
-  font-weight: bold;
-}
-.time {
-  padding: 20px;
-}
-.event-calendar div.event span.title a {
+.event-calendar div.title a {
   font-weight: normal;
   font-size: 0.9em;
   color: #000;
 }
-.event-calendar div.event span.location {
+.event-calendar div.title a:hover {
+  color: #c00;
+}
+.event-calendar div.type a {
+  font-weight: normal;
+  font-size: 0.6em;
+  color: #00c;
+}
+.event-calendar div.type a:hover {
+  color: #c00;
+}
+.event-calendar div.links a {
+  font-weight: normal;
+  font-size: 0.8em;
+  color: #00c;
+}
+.event-calendar div.links a:hover {
+  color: #c00;
+}
+.event-calendar div.event {
   font-style: italic;
   color: #555;
 }
-#event .event-calendar .event-empty {
+.event-calendar div.start {
+  font-style: normal;
+  font-size: 0.8em;
+  color: #555;
+  margin-top: 6px;
+}
+.event-calendar div.start nobr {
+  font-style: normal;
+  color: #000;
+}
+.event-calendar div.end {
+  font-style: normal;
+  font-size: 0.7em;
+  color: #555;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+.event-calendar div.info {
+  visibility: hidden;
+  height: 0px;
+}
+.event-calendar div.event {
+  font-style: italic;
+  background-color: #ddd;
+  border: solid 1px #555;
+  padding: 3px;
+  padding-left: 6px;
+  padding-top:1px;
+  margin: 0px;
+  margin-bottom: 3px;
+}
+.event-calendar .event-empty {
   min-height: 6em;
+}
+.container-inline .day input {
+  width: auto;
+  display: inline;
 }

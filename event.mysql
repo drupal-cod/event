@@ -1,25 +1,8 @@
-# Event.module SQL Definitions
-# $Id$
-
 CREATE TABLE event (
-  lid int(10) unsigned NOT NULL auto_increment,
   nid int(10) unsigned NOT NULL default '0',
-  parent int(10) unsigned NOT NULL default '0',
-  start int(10) unsigned NOT NULL default '0',
   end int(10) unsigned NOT NULL default '0',
-  abstract text NOT NULL,
-  details text NOT NULL,
-  images text NOT NULL,
-  PRIMARY KEY  (lid)
+  start int(10) unsigned NOT NULL default '0',
+  tz int(11) default NULL,
+  PRIMARY KEY (nid),
+  KEY start (start)
 );
-ALTER TABLE event ADD start_type int(10) unsigned DEFAULT 0 NOT NULL AFTER parent;
-ALTER TABLE event ADD location text NOT NULL AFTER parent;
-ALTER TABLE event DROP start_type;
-ALTER TABLE event DROP lid;
-ALTER TABLE event DROP abstract;
-ALTER TABLE event DROP details;
-ALTER TABLE event DROP end;
-ALTER TABLE event DROP images;
-ALTER TABLE event DROP parent;
-ALTER TABLE event ADD PRIMARY KEY (nid);
-ALTER TABLE event ADD data TEXT;
