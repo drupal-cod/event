@@ -497,7 +497,7 @@ function event_query_parse($edit) {
   
   foreach ($fields as $field => $def) {
     if ($def[3] && $edit->$field) {
-      $query[] = "e.$field = '". check_query($edit->$field) ."'";
+      $query[] = "e.$field LIKE '%". check_query($edit->$field) ."%'";
     }
   }
 

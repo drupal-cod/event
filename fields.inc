@@ -20,6 +20,9 @@ function event_extra_fields() {
     ),
     // 'country' => array('textfield', t('Country'), false, false, false, '', 64, 64, t('Which country is hosting this event?')),
     // 'keynote' => array('textarea', t('Keynote topic'), false, false, false, '', 64, 4, ''),
+    
+    // include 'none' in your options array in order to have search form work as expected. this is true even for 'required' fields.
+    // 'etype'  => array('select', t('Event Type'), false, true, false, '', array('<'. t('None'). '>', t('Job fair'),  t('Human resources'), t('Diversity'), t('Hispanic Association')), ''),
   );
   return $fields;
 }
