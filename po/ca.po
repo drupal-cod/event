@@ -1,0 +1,436 @@
+# Catalan translation of Drupal.
+# Copyright © 2003, 2004 Free Software Foundation, Inc.
+# Jordi Mallach <jordi@sindominio.net>, 2003, 2004.
+# Quim Gil <qgil@interactors.coop>, 2004.
+#
+# Aquesta traducció ha estat finaçada per la STSI, sota la supervisió
+# d'Interactoors s.coop. <http://interactors.coop/>.
+msgid ""
+msgstr ""
+"Project-Id-Version: drupal 4.4\n"
+"POT-Creation-Date: 2004-04-22 21:46+0200\n"
+"PO-Revision-Date: 2004-11-06 20:45+0100\n"
+"Last-Translator: Jordi Mallach <jordi@sindominio.net>\n"
+"Language-Team: Catalan <drupal@softcatala.net\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: event.module:21
+msgid "Lets users make events and keep calendars."
+msgstr "Permet els usuaris crear esdeveniments i mantenir calendaris."
+
+#: event.module:25
+msgid "Events are happenings scheduled for a specific date and time."
+msgstr "Calendari d'esdeveniments relacionats amb les temàtiques d'aquest web."
+
+#: event.module:35
+msgid "Calendar to browse events."
+msgstr "Calendari per a navegar pels esdeveniments."
+
+#: event.module:36
+msgid "List of upcoming events."
+msgstr "Llista dels pròxims esdeveniments."
+
+#: event.module:43
+msgid "Browse events"
+msgstr "Consulta els esdeveniments"
+
+#: event.module:47
+msgid "Upcoming events"
+msgstr "Pròxims esdeveniments"
+
+#: event.module:49
+msgid "more"
+msgstr "més"
+
+#: event.module:49
+msgid "More events."
+msgstr "Més esdeveniments."
+
+#: event.module:57
+msgid "Explanation or submission guidelines"
+msgstr "Explicació o guia per als enviaments"
+
+#: event.module:57
+msgid ""
+"This text will be displayed at the top of the event submission form.  Useful "
+"for helping or instructing your users."
+msgstr ""
+"Aquest text es mostrarà a la part superior del formulari d'enviament "
+"d'esdeveniments. És útil per a ajudar o instruir els vostres usuaris."
+
+#: event.module:58
+msgid "Start of week"
+msgstr "Inici de la setmana"
+
+#: event.module:58
+msgid "Sunday"
+msgstr "diumenge"
+
+#: event.module:58
+msgid "Monday"
+msgstr "dilluns"
+
+#: event.module:58
+msgid "The day the weeks starts in the block calendar."
+msgstr "El dia pel qual comença la setmana al bloc de calendari."
+
+#: event.module:59
+msgid "Time notation preference"
+msgstr "Preferència de notació de l'hora"
+
+#: event.module:59
+msgid "24h"
+msgstr "24h"
+
+#: event.module:59
+msgid "12h"
+msgstr "12h"
+
+#: event.module:59
+msgid "The time notation system used for entering event start times."
+msgstr ""
+"El sistema de notació de l'hora que s'utilitza per a introduir l'hora "
+"d'inici dels esdeveniments."
+
+#: event.module:60
+msgid "Timezone handling"
+msgstr "Gestió de fusos horaris"
+
+#: event.module:60
+msgid "Yes"
+msgstr "Sí"
+
+#: event.module:60
+msgid "No"
+msgstr "No"
+
+#: event.module:60
+msgid ""
+"Yes: Times are saved relative to the user's timezone. No: Times are "
+"displayed exactly as the user inputted them."
+msgstr ""
+"Sí: les hores es desen relatives al fus horari de l'usuari. No: les hores es "
+"mostren tal qual van ser introduïdes per l'usuari."
+
+#: event.module:61
+msgid "Type of overview"
+msgstr "Tipus de resum"
+
+#: event.module:61
+msgid "Calendar"
+msgstr "Calendari"
+
+#: event.module:61
+msgid "Table"
+msgstr "Taula"
+
+#: event.module:61
+msgid ""
+"The type of overview to show the user when he clicks on the block calendar."
+msgstr ""
+"El tipus de resum a mostrar a l'usuari quan fa clic al bloc del calendari."
+
+#: event.module:68 ;590
+msgid "Date"
+msgstr "Data"
+
+#: event.module:68 ;590
+msgid "Title"
+msgstr "Títol"
+
+#: event.module:68 ;590
+msgid "Teaser"
+msgstr "Resum"
+
+#: event.module:68 ;590
+msgid "Body"
+msgstr "Cos"
+
+#: event.module:69
+msgid "Table headers"
+msgstr "Capçaleres de la taula"
+
+#: event.module:69
+msgid ""
+"The table headers used in the table view. Only entries that have their own "
+"database column in the event table and are of type \"textfield\", \"textarea"
+"\", or \"select\" can be used."
+msgstr ""
+"Les capçaleres de les taules utilitzades en la vista de taula. Només es "
+"poden utilitzar les entrades que tinguen la seua columna de la base de dades "
+"a la taula d'esdeveniments i que siguen del tipus «textfield», «textarea» o "
+"«select»."
+
+#: event.module:73
+msgid "Jan"
+msgstr "gen"
+
+#: event.module:73
+msgid "Feb"
+msgstr "feb"
+
+#: event.module:73
+msgid "Mar"
+msgstr "mar"
+
+#: event.module:73
+msgid "Apr"
+msgstr "abr"
+
+#: event.module:73 ;275
+msgid "May"
+msgstr "maig"
+
+#: event.module:73
+msgid "Jun"
+msgstr "jun"
+
+#: event.module:73
+msgid "Jul"
+msgstr "jul"
+
+#: event.module:73
+msgid "Aug"
+msgstr "ago"
+
+#: event.module:73
+msgid "Sep"
+msgstr "set"
+
+#: event.module:73
+msgid "Oct"
+msgstr "oct"
+
+#: event.module:73
+msgid "Nov"
+msgstr "nov"
+
+#: event.module:73
+msgid "Dec"
+msgstr "dec"
+
+#: event.module:79 ;251
+msgid "Home"
+msgstr "Inici"
+
+#: event.module:80 ;119;252;663
+msgid "Events"
+msgstr "Esdeveniments"
+
+#: event.module:84 ;669;741
+msgid "Search"
+msgstr "Cerca"
+
+#: event.module:85
+msgid "Search Events"
+msgstr "Cerca esdeveniments"
+
+#: event.module:94
+msgid "Upcoming"
+msgstr "Propers"
+
+#: event.module:99
+msgid "Upcoming Events"
+msgstr "Propers esdeveniments"
+
+#: event.module:113
+msgid "search events"
+msgstr "cerca esdeveniments"
+
+#: event.module:132
+msgid "edit event"
+msgstr "edita l'esdeveniment"
+
+#: event.module:132
+msgid "Edit this event."
+msgstr "Edita aquest esdeveniment."
+
+#: event.module:135 ;151
+msgid "calendar"
+msgstr "calendari"
+
+#: event.module:142 ;150
+msgid "events"
+msgstr "esdeveniments"
+
+#: event.module:142
+#, fuzzy
+msgid "Show events"
+msgstr "Consulta els esdeveniments"
+
+#: event.module:147 ;164;0
+msgid "event"
+msgstr "esdeveniment"
+
+#: event.module:152
+msgid "search"
+msgstr "cerca"
+
+#: event.module:208
+#, fuzzy
+msgid "Required."
+msgstr "Requerit"
+
+#: event.module:220 ;314
+msgid "Start"
+msgstr "Inici"
+
+#: event.module:264
+msgid "g"
+msgstr ""
+
+#: event.module:269
+msgid "H"
+msgstr "H"
+
+#: event.module:275
+msgid "January"
+msgstr "gener"
+
+#: event.module:275
+msgid "February"
+msgstr "febrer"
+
+#: event.module:275
+msgid "March"
+msgstr "març"
+
+#: event.module:275
+msgid "April"
+msgstr "abril"
+
+#: event.module:275
+msgid "June"
+msgstr "juny"
+
+#: event.module:275
+msgid "July"
+msgstr "juliol"
+
+#: event.module:275
+msgid "August"
+msgstr "agost"
+
+#: event.module:275
+msgid "September"
+msgstr "setembre"
+
+#: event.module:275
+msgid "October"
+msgstr "octubre"
+
+#: event.module:275
+msgid "November"
+msgstr "novembre"
+
+#: event.module:275
+msgid "December"
+msgstr "desembre"
+
+#: event.module:279
+msgid "am"
+msgstr "am"
+
+#: event.module:279
+msgid "pm"
+msgstr "pm"
+
+#: event.module:314
+msgid "When is this event taking place."
+msgstr "Quan comença l'event."
+
+#: event.module:325
+msgid "Details"
+msgstr "Detalls"
+
+#: event.module:439
+msgid "g:ia"
+msgstr ""
+
+#: event.module:442
+msgid "G:i"
+msgstr "G:i"
+
+#: event.module:524 ;528
+msgid "Mon"
+msgstr "dl"
+
+#: event.module:524 ;528
+msgid "Tue"
+msgstr "dm"
+
+#: event.module:524 ;528
+msgid "Wed"
+msgstr "dc"
+
+#: event.module:524 ;528
+msgid "Thu"
+msgstr "dj"
+
+#: event.module:524 ;528
+msgid "Fri"
+msgstr "dv"
+
+#: event.module:524 ;528
+msgid "Sat"
+msgstr "ds"
+
+#: event.module:524 ;528
+msgid "Sun"
+msgstr "dg"
+
+#: event.module:621
+msgid "Click here to see the full event."
+msgstr "Feu clic aquí per a veure l'esdeveniment sencer."
+
+#: event.module:626
+msgid "M, j"
+msgstr ""
+
+#: event.module:675
+#, fuzzy
+msgid "No matches found."
+msgstr "No trobat"
+
+#: event.module:727
+msgid "Date period"
+msgstr "Interval de temps"
+
+#: event.module:727
+msgid "From"
+msgstr "Des de"
+
+#: event.module:727
+msgid "To"
+msgstr "A"
+
+#: event.module:775
+msgid "NOW"
+msgstr "ARA"
+
+#: event.module:778
+#, fuzzy
+msgid "1 minute"
+msgid_plural "%count minutes"
+msgstr[0] "1 minut"
+msgstr[1] "1 minut"
+
+#: event.module:781
+#, fuzzy
+msgid "1 hour"
+msgid_plural "%count hours"
+msgstr[0] "1 hora"
+msgstr[1] "1 hora"
+
+#: event.module:784
+#, fuzzy
+msgid "1 day"
+msgid_plural "%count days"
+msgstr[0] "1 dia"
+msgstr[1] "1 dia"
+
+#: event.module:123
+msgid "maintain events"
+msgstr "manteniment d'esdeveniments"
