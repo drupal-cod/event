@@ -53,11 +53,7 @@ function event_node($field) {
  * @return (array) array of links
  */
 function event_link($type, $node = 0, $main) {
-  // This function is called by different modules to retrieve links.
-  // All values have to be returned in a $links[] array of strings.
-  // The different if-then-else statements help dermin what type of links are
-  // requested.
-
+  
   if ($type == "page" && user_access("access events")) {
     // Page links requested. These are the links on every page like home, submit, etc.
     // Return links to event_page().
@@ -255,24 +251,21 @@ function event_page() {
       $op = t("Show");
     }
     else {
-      $year = arg(1);
-      $month = arg(2);
+      $year = arg(1) ? arg(1) : date(y);
+      $month = arg(2) ? arg(2) : date(m);
       $day = 1;
       $op = "month";
     }
 
-    $date = mktime(0, 0, 0, $month, 1, $year);
-    $years = array(2001 => 2001, 2002 => 2002, 2003 => 2003, 2004 => 2004, 2005 => 2005);
-    $months = array("-", t("January"), t("February"), t("March"), t("April"), t("May"), t("June"), t("July"), t("August"), t("September"), t("October"), t("November"), t("December"));
-    for ($i = 1; $i <= 31; $i++) $days[$i] = $i;
+    theme("box", t("Event Calendar"), event_date_picker($year, $month, $day));
+    event_render_nodes($year, $month, $day, $op);
+  }
   
-    $form = "<div class=\"container-inline\">";
-    $form .= form_select("", "year", ($year ? $year : date("Y")), $years). form_select("", "month", ($month ? $month : date("m")), $months) . form_select("", "day", ($day ? $day : date("d")), $days) . form_submit(t("Show"));
-    $form .= "</div>";
-  
-    theme("box", t("Event Calendar"), form($form));
-      
-    switch ($op) {
+  theme("footer");
+}
+
+function event_render_nodes($year, $month, $day, $op) {
+  switch ($op) {
       case "month":
         // first and last timestamp of the month
         $first = mktime(0, 0, 0, $month, 1, $year); 
@@ -283,17 +276,27 @@ function event_page() {
         $last  = mktime(23, 59, 59, $month, $day, $year);
     }  
 
-    // Fetch event nodes for the selected month
-    $result = db_query("SELECT n.nid FROM {node} n INNER JOIN {event} e ON n.nid = e.nid WHERE n.status = 1 AND e.start >= '". $first  ."' AND e.start <= '". $last ."' AND n.type = 'event' ORDER BY e.start ASC");
+    // Fetch event nodes for the selected month or day
+    $result = pager_query("SELECT n.nid FROM {node} n INNER JOIN {event} e ON n.nid = e.nid WHERE n.status = 1 AND e.start >= '". $first  ."' AND e.start <= '". $last ."' AND n.type = 'event' ORDER BY e.start ASC");
     if($result){
       while ($node = db_fetch_object($result)) {
         node_view(node_load(array("nid" => $node->nid, "type" => "event")), 1);
       }
+      print pager_display();
     }
   }
-  
-  theme("footer");
-  
+}
+
+function event_date_picker($year, $month, $day) {
+  $date = mktime(0, 0, 0, $month, 1, $year);
+  $years = array(2001 => 2001, 2002 => 2002, 2003 => 2003, 2004 => 2004, 2005 => 2005);
+  $months = array("-", t("January"), t("February"), t("March"), t("April"), t("May"), t("June"), t("July"), t("August"), t("September"), t("October"), t("November"), t("December"));
+  for ($i = 1; $i <= 31; $i++) $days[$i] = $i;
+
+  $form = "<div class=\"container-inline\">";
+  $form .= form_select("", "year", ($year ? $year : date("Y")), $years). form_select("", "month", ($month ? $month : date("m")), $months) . form_select("", "day", ($day ? $day : date("d")), $days) . form_submit(t("Show"));
+  $form .= "</div>";
+  return $form;
 }
 
 function event_search($keys) {
