@@ -487,7 +487,7 @@ function event_page() {
 
 function event_search($keys) {
   global $status, $user;
-  $result = db_query("SELECT n.*, b.* FROM event b LEFT JOIN node n ON n.nid = b.nid AND n.nid = b.nid WHERE (n.title LIKE '%$keys%' OR n.body LIKE '%$keys%' OR n.attributes LIKE '%$keys%') ORDER BY n.changed DESC LIMIT 20");
+  $result = db_query("SELECT n.*, b.* FROM event b LEFT JOIN node n ON n.nid = b.nid AND n.nid = b.nid WHERE (n.title LIKE '%$keys%' OR n.body LIKE '%$keys%') ORDER BY n.changed DESC LIMIT 20");
   while ($search = db_fetch_object($result)) {
     $find[$i++] = array("title" => check_output($search->title), "link" => (user_access("administer nodes") ? "admin.php?mod=node&type=search&op=edit&id=$search->nid" : "node.php?id=$search->nid"), "user" => $search->name, "date" => $search->timestamp);
   }
