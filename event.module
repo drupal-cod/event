@@ -174,7 +174,7 @@ function node_event($node, $main) {
     $output .= $node->body;
   }
   
-  $output .= "<br /> ". strtr(t("%date at %location."), array("%date" => format_date($node->start, \"large\"), "%location" => $node->location))  ."<br />";
+  $output .= "<br /> ". strtr(t("%date at %location."), array("%date" => format_date($node->start, "large"), "%location" => $node->location))  ."<br />";
   
   if ($links = link_node($node, $main)) {
     $output .= "<br />[ " . theme("links", $links) . " ]";
