@@ -46,7 +46,7 @@ function event_block($op = 'list', $delta = 0) {
   else {
     if (user_access('access content')) {
       $block['subject'] = t('Browse events');
-      $block['content'] = event_calendar('event_calendar_simple');
+      $block['content'] = event_calendar('event_calendar_simple', $year, $month, $day);
       return $block;
     }
   }
