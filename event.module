@@ -11,7 +11,7 @@ function event_fields() {
       'textfield',        // Field type
       t('Location'),      // Display name
       false,              // Required field
-      false,               // Store in separate database field
+      true,               // Store in separate database field
       true,               // Show in calendar
       '',                 // Default value
       100,                // Field length
