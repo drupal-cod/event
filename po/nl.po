@@ -1,0 +1,412 @@
+# translation of event.po to Nederlands
+# Hendrik Eeckhaut <Hendrik.Eeckhaut@UGent.be>, 2004.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: event\n"
+"POT-Creation-Date: 2004-04-22 21:46+0200\n"
+"PO-Revision-Date: 2004-11-11 13:59+0100\n"
+"Last-Translator: Hendrik Eeckhaut <Hendrik.Eeckhaut@UGent.be>\n"
+"Language-Team: Nederlands <nl@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
+"X-Generator: KBabel 1.9.1\n"
+
+#: event.module:21
+msgid "Lets users make events and keep calendars."
+msgstr "Laat gebruikers evenementen aanmaken en kalenders bijhouden."
+
+#: event.module:25
+msgid "Events are happenings scheduled for a specific date and time."
+msgstr "Evenementen zijn gebeurtenissen die op een bepaalde dag en uur gepland zijn."
+
+#: event.module:35
+msgid "Calendar to browse events."
+msgstr "Kalender om door de evenementen te bladeren."
+
+#: event.module:36
+msgid "List of upcoming events."
+msgstr "Lijst van geplande evenementen."
+
+#: event.module:43
+msgid "Browse events"
+msgstr "Evenementen doorbladeren"
+
+#: event.module:47
+msgid "Upcoming events"
+msgstr "Geplande evenementen"
+
+#: event.module:49
+msgid "more"
+msgstr "meer"
+
+#: event.module:49
+msgid "More events."
+msgstr "Meer evenementen."
+
+#: event.module:57
+msgid "Explanation or submission guidelines"
+msgstr "Uitleg of indienrichtlijnen"
+
+#: event.module:57
+msgid "This text will be displayed at the top of the event submission form.  Useful for helping or instructing your users."
+msgstr "Deze tekst zal aan de bovenkant van het evenement-indienformulier weergegeven worden.  Het is handig om uw gebruikers te helpen of informeren."
+
+#: event.module:58
+msgid "Start of week"
+msgstr "Begin van de week"
+
+#: event.module:58
+msgid "Sunday"
+msgstr "Zondag"
+
+#: event.module:58
+msgid "Monday"
+msgstr "Maandag"
+
+#: event.module:58
+msgid "The day the weeks starts in the block calendar."
+msgstr "De eerste dag van de week in het kalenderblok."
+
+#: event.module:59
+msgid "Time notation preference"
+msgstr "Voorkeur tijdsnotatie"
+
+#: event.module:59
+msgid "24h"
+msgstr "24h"
+
+#: event.module:59
+msgid "12h"
+msgstr "12h"
+
+#: event.module:59
+msgid "The time notation system used for entering event start times."
+msgstr "Het tijdsnotatiesysteem om begintijdstippen van evenementen in te geven."
+
+#: event.module:60
+msgid "Timezone handling"
+msgstr "Tijdszone behandeling"
+
+#: event.module:60
+msgid "Yes"
+msgstr "Ja"
+
+#: event.module:60
+msgid "No"
+msgstr "Nee"
+
+#: event.module:60
+msgid "Yes: Times are saved relative to the user's timezone. No: Times are displayed exactly as the user inputted them."
+msgstr ""
+"Ja: Tijden worden relatief ten opzichte van de tijdzone van de gebruiker weergegeven. "
+"Nee: Tijden worden weergegeven, exact zoals de gebruiker ze opgegeven heeft."
+
+#: event.module:61
+msgid "Type of overview"
+msgstr "Type overzicht"
+
+#: event.module:61
+msgid "Calendar"
+msgstr "Kalender"
+
+#: event.module:61
+msgid "Table"
+msgstr "Tabel"
+
+#: event.module:61
+msgid "The type of overview to show the user when he clicks on the block calendar."
+msgstr "Het type overzicht dat aan de gebruiker getoond moet worden wanneer hij op het het kalenderblok klikt."
+
+#: event.module:68;590
+msgid "Date"
+msgstr "Datum"
+
+#: event.module:68;590
+msgid "Title"
+msgstr "Titel"
+
+#: event.module:68;590
+msgid "Teaser"
+msgstr "Voorproefje"
+
+#: event.module:68;590
+msgid "Body"
+msgstr "Berichttekst"
+
+#: event.module:69
+msgid "Table headers"
+msgstr "Tabel hoofding"
+
+#: event.module:69
+msgid "The table headers used in the table view. Only entries that have their own database column in the event table and are of type \"textfield\", \"textarea\", or \"select\" can be used."
+msgstr "De tabelhoofdingen die gebruikt worden in het tabelzicht. Enkel items die hun eigen databank kolom in de evenement tabel hebben en van het type \"textfield\", \"textarea\", of \"select\" zijn, kunnen gebruikt worden."
+
+#: event.module:73
+msgid "Jan"
+msgstr "Jan"
+
+#: event.module:73
+msgid "Feb"
+msgstr "Feb"
+
+#: event.module:73
+msgid "Mar"
+msgstr "Mar"
+
+#: event.module:73
+msgid "Apr"
+msgstr "Apr"
+
+#: event.module:73;275
+msgid "May"
+msgstr "Mei"
+
+#: event.module:73
+msgid "Jun"
+msgstr "Jun"
+
+#: event.module:73
+msgid "Jul"
+msgstr "Jul"
+
+#: event.module:73
+msgid "Aug"
+msgstr "Aug"
+
+#: event.module:73
+msgid "Sep"
+msgstr "Sep"
+
+#: event.module:73
+msgid "Oct"
+msgstr "Okt"
+
+#: event.module:73
+msgid "Nov"
+msgstr "Nov"
+
+#: event.module:73
+msgid "Dec"
+msgstr "Dec"
+
+#: event.module:79;251
+msgid "Home"
+msgstr "Begin"
+
+#: event.module:80;119;252;663
+msgid "Events"
+msgstr "Evenementen"
+
+#: event.module:84;669;741
+msgid "Search"
+msgstr "Zoeken"
+
+#: event.module:85
+msgid "Search Events"
+msgstr "Evenementen zoeken"
+
+#: event.module:94
+msgid "Upcoming"
+msgstr "Geplande"
+
+#: event.module:99
+msgid "Upcoming Events"
+msgstr "Geplande evenementen"
+
+#: event.module:113
+msgid "search events"
+msgstr "evenementen zoeken"
+
+#: event.module:132
+msgid "edit event"
+msgstr "evenement bewerken"
+
+#: event.module:132
+msgid "Edit this event."
+msgstr "Dit evenement bewerken."
+
+#: event.module:135;151
+msgid "calendar"
+msgstr "kalender"
+
+#: event.module:142;150
+msgid "events"
+msgstr "evenementen"
+
+#: event.module:142
+msgid "Show events"
+msgstr "Evenementen tonen"
+
+#: event.module:147;164;0
+msgid "event"
+msgstr "evenement"
+
+#: event.module:152
+msgid "search"
+msgstr "zoeken"
+
+#: event.module:208
+msgid "Required."
+msgstr "Vereist."
+
+#: event.module:220;314
+msgid "Start"
+msgstr "Begin"
+
+#: event.module:264
+msgid "g"
+msgstr "g"
+
+#: event.module:269
+msgid "H"
+msgstr "H"
+
+#: event.module:275
+msgid "January"
+msgstr "Januari"
+
+#: event.module:275
+msgid "February"
+msgstr "Februari"
+
+#: event.module:275
+msgid "March"
+msgstr "Maart"
+
+#: event.module:275
+msgid "April"
+msgstr "April"
+
+#: event.module:275
+msgid "June"
+msgstr "Juni"
+
+#: event.module:275
+msgid "July"
+msgstr "Juli"
+
+#: event.module:275
+msgid "August"
+msgstr "Augustus"
+
+#: event.module:275
+msgid "September"
+msgstr "September"
+
+#: event.module:275
+msgid "October"
+msgstr "Oktober"
+
+#: event.module:275
+msgid "November"
+msgstr "November"
+
+#: event.module:275
+msgid "December"
+msgstr "December"
+
+#: event.module:279
+msgid "am"
+msgstr "vm"
+
+#: event.module:279
+msgid "pm"
+msgstr "nm"
+
+#: event.module:314
+msgid "When is this event taking place."
+msgstr "Wanneer vindt dit evenement plaats."
+
+#: event.module:325
+msgid "Details"
+msgstr "Details"
+
+#: event.module:439
+msgid "g:ia"
+msgstr "g:ia"
+
+#: event.module:442
+msgid "G:i"
+msgstr "G:i"
+
+#: event.module:524;528
+msgid "Mon"
+msgstr "Ma"
+
+#: event.module:524;528
+msgid "Tue"
+msgstr "Di"
+
+#: event.module:524;528
+msgid "Wed"
+msgstr "Wo"
+
+#: event.module:524;528
+msgid "Thu"
+msgstr "Do"
+
+#: event.module:524;528
+msgid "Fri"
+msgstr "Vr"
+
+#: event.module:524;528
+msgid "Sat"
+msgstr "Za"
+
+#: event.module:524;528
+msgid "Sun"
+msgstr "Zo"
+
+#: event.module:621
+msgid "Click here to see the full event."
+msgstr "Hier klikken om het volledige evenement te zien."
+
+#: event.module:626
+msgid "M, j"
+msgstr "M, j"
+
+#: event.module:675
+msgid "No matches found."
+msgstr "Geen overeenkomsten gevonden."
+
+#: event.module:727
+msgid "Date period"
+msgstr "Datum periode"
+
+#: event.module:727
+msgid "From"
+msgstr "Van"
+
+#: event.module:727
+msgid "To"
+msgstr "Tot"
+
+#: event.module:775
+msgid "NOW"
+msgstr "NU"
+
+#: event.module:778
+msgid "1 minute"
+msgid_plural "%count minutes"
+msgstr[0] "1 minuut"
+msgstr[1] "%count minuten"
+
+#: event.module:781
+msgid "1 hour"
+msgid_plural "%count hours"
+msgstr[0] "1 uur"
+msgstr[1] "%count uren"
+
+#: event.module:784
+msgid "1 day"
+msgid_plural "%count days"
+msgstr[0] "1 dag"
+msgstr[1] "%count dagen"
+
+#: event.module:123
+msgid "maintain events"
+msgstr "evenementen onderhouden"
+
