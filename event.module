@@ -611,8 +611,8 @@ function event_block($op = "list", $delta = 0) {
 
     $calendar = new EventCalendar($date);
 
-    $block[0]["subject"] = t("Browse events");
-    $block[0]["content"] = $calendar->display();
+    $block["subject"] = t("Browse events");
+    $block["content"] = $calendar->display();
     return $block;
   }
 }
