@@ -1,0 +1,412 @@
+# LANGUAGE translation of PROJECT
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: event.module\n"
+"POT-Creation-Date: 2004-04-22 21:46+0200\n"
+"PO-Revision-Date: 2005-01-24 22:08+0100\n"
+"Last-Translator: Matteo Ferrari <webmaster@cantincoro.org>\n"
+"Language-Team: Italian <michele@drupalitalia.org> <Matteo Ferrari <webmaster@cantincoro.org>>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Poedit-Language: Italian\n"
+"X-Poedit-Country: ITALY\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: event.module:21
+msgid "Lets users make events and keep calendars."
+msgstr "Permette agli utenti di pubblicare eventi e mantenere un calendario."
+
+#: event.module:25
+msgid "Events are happenings scheduled for a specific date and time."
+msgstr "Gli eventi sono avvenimenti schedulati ad una certa data e ora."
+
+#: event.module:35
+msgid "Calendar to browse events."
+msgstr "Calendario per visualizzazione eventi."
+
+#: event.module:36
+msgid "List of upcoming events."
+msgstr "Lista dei prossimi eventi."
+
+#: event.module:43
+msgid "Browse events"
+msgstr "Visualizza eventi"
+
+#: event.module:47
+msgid "Upcoming events"
+msgstr "Prossimi eventi"
+
+#: event.module:49
+msgid "more"
+msgstr "leggi tutto"
+
+#: event.module:49
+msgid "More events."
+msgstr "Altri eventi."
+
+#: event.module:57
+msgid "Explanation or submission guidelines"
+msgstr "Spiegazione o linee guida per l'inserimento"
+
+#: event.module:57
+msgid "This text will be displayed at the top of the event submission form.  Useful for helping or instructing your users."
+msgstr "Questo testo verrà visualizzato all'inizio della maschera di pubblicazione eventi. Utile per aiutare o istruire gli utenti."
+
+#: event.module:58
+msgid "Start of week"
+msgstr "Inizio della settimana"
+
+#: event.module:58
+msgid "Sunday"
+msgstr "Domenica"
+
+#: event.module:58
+msgid "Monday"
+msgstr "Lunedì"
+
+#: event.module:58
+msgid "The day the weeks starts in the block calendar."
+msgstr "Il giorno con cui iniziano le settimane nel blocco calendario."
+
+#: event.module:59
+msgid "Time notation preference"
+msgstr "Preferenze formato orario"
+
+#: event.module:59
+msgid "24h"
+msgstr "24 ore"
+
+#: event.module:59
+msgid "12h"
+msgstr "12 ore"
+
+#: event.module:59
+msgid "The time notation system used for entering event start times."
+msgstr "Il formato orario usato per inserire l'orario di inizio evento."
+
+#: event.module:60
+msgid "Timezone handling"
+msgstr "Gestione fuso orario"
+
+#: event.module:60
+msgid "Yes"
+msgstr "Si"
+
+#: event.module:60
+msgid "No"
+msgstr "No"
+
+#: event.module:60
+msgid "Yes: Times are saved relative to the user's timezone. No: Times are displayed exactly as the user inputted them."
+msgstr "Si: gli orari sono salvati relativi al fuso orario dell'utente.  No: gli orari sono visualizzati esattamente come l'utente gli ha inseriti."
+
+#: event.module:61
+msgid "Type of overview"
+msgstr "Tipo di anteprima"
+
+#: event.module:61
+msgid "Calendar"
+msgstr "Calendario"
+
+#: event.module:61
+msgid "Table"
+msgstr "Tabella"
+
+#: event.module:61
+msgid "The type of overview to show the user when he clicks on the block calendar."
+msgstr "Il tipo di anteprima da visualizzare all'utente quando lui clicca sul blocco calendario."
+
+#: event.module:68;590
+msgid "Date"
+msgstr "Data"
+
+#: event.module:68;590
+msgid "Title"
+msgstr "Titolo"
+
+#: event.module:68;590
+msgid "Teaser"
+msgstr "Teaser"
+
+#: event.module:68;590
+msgid "Body"
+msgstr "Testo"
+
+#: event.module:69
+msgid "Table headers"
+msgstr "Intestazioni tabella"
+
+#: event.module:69
+msgid "The table headers used in the table view. Only entries that have their own database column in the event table and are of type \"textfield\", \"textarea\", or \"select\" can be used."
+msgstr "Gli elementi di testata usati nella visualizzazione della tabella. Solo le entrate che hanno le proprie colonne nella tabella 'event' e sono del tipo \"textfield\", \"textarea\", o \"select\" possono essere utilizzati."
+
+#: event.module:73
+msgid "Jan"
+msgstr "Gen"
+
+#: event.module:73
+msgid "Feb"
+msgstr "Feb"
+
+#: event.module:73
+msgid "Mar"
+msgstr "Mar"
+
+#: event.module:73
+msgid "Apr"
+msgstr "Apr"
+
+#: event.module:73;275
+msgid "May"
+msgstr "Maggio"
+
+#: event.module:73
+msgid "Jun"
+msgstr "Giu"
+
+#: event.module:73
+msgid "Jul"
+msgstr "Lug"
+
+#: event.module:73
+msgid "Aug"
+msgstr "Ago"
+
+#: event.module:73
+msgid "Sep"
+msgstr "Set"
+
+#: event.module:73
+msgid "Oct"
+msgstr "Ott"
+
+#: event.module:73
+msgid "Nov"
+msgstr "Nov"
+
+#: event.module:73
+msgid "Dec"
+msgstr "Dic"
+
+#: event.module:79;251
+msgid "Home"
+msgstr "Home"
+
+#: event.module:80;119;252;663
+msgid "Events"
+msgstr "Eventi"
+
+#: event.module:84;669;741
+msgid "Search"
+msgstr "Ricerca"
+
+#: event.module:85
+msgid "Search Events"
+msgstr "Ricerca eventi"
+
+#: event.module:94
+msgid "Upcoming"
+msgstr "Imminente"
+
+#: event.module:99
+msgid "Upcoming Events"
+msgstr "Eventi imminenti"
+
+#: event.module:113
+msgid "search events"
+msgstr "ricerca eventi"
+
+#: event.module:132
+msgid "edit event"
+msgstr "modifica evento"
+
+#: event.module:132
+msgid "Edit this event."
+msgstr "Modifica questo evento."
+
+#: event.module:135;151
+msgid "calendar"
+msgstr "calendario"
+
+#: event.module:142;150
+msgid "events"
+msgstr "eventi"
+
+#: event.module:142
+msgid "Show events"
+msgstr "Mostra gli eventi"
+
+#: event.module:147;164;0
+msgid "event"
+msgstr "evento"
+
+#: event.module:152
+msgid "search"
+msgstr "ricerca"
+
+#: event.module:208
+msgid "Required."
+msgstr "Obbligatorio."
+
+#: event.module:220;314
+msgid "Start"
+msgstr "Inizio"
+
+#: event.module:264
+msgid "g"
+msgstr "g"
+
+#: event.module:269
+msgid "H"
+msgstr "H"
+
+#: event.module:275
+msgid "January"
+msgstr "Gennaio"
+
+#: event.module:275
+msgid "February"
+msgstr "Febbraio"
+
+#: event.module:275
+msgid "March"
+msgstr "Marzo"
+
+#: event.module:275
+msgid "April"
+msgstr "Aprile"
+
+#: event.module:275
+msgid "June"
+msgstr "Giugno"
+
+#: event.module:275
+msgid "July"
+msgstr "Luglio"
+
+#: event.module:275
+msgid "August"
+msgstr "Agosto"
+
+#: event.module:275
+msgid "September"
+msgstr "Settembre"
+
+#: event.module:275
+msgid "October"
+msgstr "Ottobre"
+
+#: event.module:275
+msgid "November"
+msgstr "Novembre"
+
+#: event.module:275
+msgid "December"
+msgstr "Dicembre"
+
+#: event.module:279
+msgid "am"
+msgstr "am"
+
+#: event.module:279
+msgid "pm"
+msgstr "pm"
+
+#: event.module:314
+msgid "When is this event taking place."
+msgstr "Quando avviene l'evento"
+
+#: event.module:325
+msgid "Details"
+msgstr "Dettagli"
+
+#: event.module:439
+msgid "g:ia"
+msgstr "g:ia"
+
+#: event.module:442
+msgid "G:i"
+msgstr "G:i"
+
+#: event.module:524;528
+msgid "Mon"
+msgstr "Lun"
+
+#: event.module:524;528
+msgid "Tue"
+msgstr "Mar"
+
+#: event.module:524;528
+msgid "Wed"
+msgstr "Mer"
+
+#: event.module:524;528
+msgid "Thu"
+msgstr "Gio"
+
+#: event.module:524;528
+msgid "Fri"
+msgstr "Ven"
+
+#: event.module:524;528
+msgid "Sat"
+msgstr "Sab"
+
+#: event.module:524;528
+msgid "Sun"
+msgstr "Dom"
+
+#: event.module:621
+msgid "Click here to see the full event."
+msgstr "Cliccare qui per vedere l'evenbto completo."
+
+#: event.module:626
+msgid "M, j"
+msgstr "M, j"
+
+#: event.module:675
+msgid "No matches found."
+msgstr "Nessun dato soddisfa i criteri di ricerca."
+
+#: event.module:727
+msgid "Date period"
+msgstr "Periodo di date"
+
+#: event.module:727
+msgid "From"
+msgstr "Da"
+
+#: event.module:727
+msgid "To"
+msgstr "A"
+
+#: event.module:775
+msgid "NOW"
+msgstr "ADESSO"
+
+#: event.module:778
+msgid "1 minute"
+msgid_plural "%count minutes"
+msgstr[0] "1 minuto"
+msgstr[1] "%count minuti"
+
+#: event.module:781
+msgid "1 hour"
+msgid_plural "%count hours"
+msgstr[0] "1 ora"
+msgstr[1] "%count ore"
+
+#: event.module:784
+msgid "1 day"
+msgid_plural "%count days"
+msgstr[0] "1 giorno"
+msgstr[1] "%count giorni"
+
+#: event.module:123
+msgid "maintain events"
+msgstr "manutenzione eventi"
+
