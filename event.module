@@ -567,7 +567,7 @@ class EventCalendar {
     while ($nday <= $last) {
       // Set up blank days for first week of the month:
       if ($offset) {
-        $output .= " <tr><td colspan=\"$offset\">&nbsp</td>\n";
+        $output .= " <tr><td colspan=\"$offset\">&nbsp;</td>\n";
         $offset = 0;
       }
 
