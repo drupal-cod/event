@@ -929,29 +929,6 @@ function _event_mktime($hour, $minute, $second, $month, $day, $year) {
 }
 
 /**
- * Searches the event and node tables for events that match user-defined criteria.
- *
- * @ingroup event_support
- * @param $keys The keywords the user is searching for.
- * @return An array of events matching the $keys.
- */
-function event_search($keys) {
-  $keys = check_query($keys);
-  $extra_fields = event_fields();
-  $query = "";
-  foreach ($extra_fields as $field => $def) {
-    if ($def[3]) { // Stored in separate database field
-        $query .= " OR e.". $field ." LIKE '%$keys%'";
-    }
-  }
-  $result = db_query_range('SELECT n.*, e.* FROM {event} e INNER JOIN {node} n ON n.nid = e.nid '. node_access_join_sql() .' WHERE '. node_access_where_sql() ." AND (n.title LIKE '%$keys%' OR n.body LIKE '%$keys%' OR n.teaser LIKE '%$keys%' ". $query .") AND n.status = 1 ORDER BY n.changed DESC", 0, 20);
-  while ($search = db_fetch_object($result)) {
-    $find[] = array("title" => check_output($search->title), "link" => (strstr(request_uri(), "admin") ? url("node/$search->nid/edit") : url("node/$search->nid")), "user" => $search->name, "date" => $search->timestamp);
-  }
-  return array(t('Events'), $find);
-}
-
-/**
  * Creates a page that the user may use to search for events.
  *
  * @ingroup event_support
