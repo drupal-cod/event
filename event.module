@@ -67,7 +67,7 @@ function event_block($op = 'list', $delta = 0) {
         case 1:
           $block['subject'] = t('Upcoming events');
           $block['content'] = event_block_upcoming();
-          $block['content'] .= "<div class=\"more-link\">". l(t("more"),"event", array("title" => t("More events."))) ."</div>";
+          $block['content'] .= '<div class="more-link">'. l(t('more'), 'event', array('title' => t('More events.'))) .'</div>';
           return $block;
       }
     }
@@ -1071,7 +1071,7 @@ function event_block_upcoming($limit = 6) {
     $links[] = $node;
   }
 
-  return theme("event_upcoming_list",$links);
+  return theme('event_upcoming_list', $links);
 }
 
 /**
@@ -1082,10 +1082,20 @@ function event_block_upcoming($limit = 6) {
  * @return A string containing the themed links.
  */
 function theme_event_upcoming_list($links) {
+  global $user;
+
   if (is_array($links) && (sizeof($links) > 0)) {
     foreach ($links as $node) {
+      $starttime = $node->start;
+      if (variable_get('event_timezone', '1')) {
+        $starttime -= $user->timezone;
+      }
+      else {
+        $timezone = variable_get('date_default_timezone', 0);
+        $starttime -= $timezone;
+      }
 
-      $minutesleft = floor(($node->start - time()) / 60);
+      $minutesleft = floor(($starttime - time()) / 60);
 
       if ($minutesleft < 0) {
         $timeleft = t('NOW');
