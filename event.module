@@ -454,6 +454,7 @@ function event_form(&$node, &$error) {
     }
   }
   $output .= form_textarea(t('Details'), 'body', $node->body, 60, 15, '', NULL, TRUE);
+  $output .= filter_form('format', $node->format);
 
   return $output;
 }
