@@ -1,4 +1,4 @@
-m?php
+<?php
 // $Id$
 
 /**
@@ -140,7 +140,7 @@ function event_delete(&$node) {
  */
 function event_load(&$node) {
   global $user;
-"
+
   $event = db_fetch_object(db_query("SELECT start, start_type, parent, images FROM event WHERE nid = $node->nid"));
 
   return $event;
