@@ -601,16 +601,20 @@ class EventCalendar {
   }
 }
 
-function event_block() {
-  global $date;
+function event_block($op = "list", $delta = 0) {
+  if ($op == "list") {
+    $blocks[0]["info"] = t("Calendar to browse events");
+    return $blocks;
+  }
+  else {
+    global $date;
 
-  $calendar = new EventCalendar($date);
+    $calendar = new EventCalendar($date);
 
-  $block[0]["subject"] = "Browse events";
-  $block[0]["content"] = $calendar->display();
-  $block[0]["info"] = "Calendar to browse events";
-
-  return $block;
+    $block[0]["subject"] = t("Browse events");
+    $block[0]["content"] = $calendar->display();
+    return $block;
+  }
 }
 
 ?>
