@@ -138,11 +138,11 @@ function event_link($type, $node = 0, $main) {
       break;
     case 'page':
       if (user_access('access content')) {
+        drupal_set_html_head(event_html_head());
         $links[] = l(t('events'), 'event', array('title' => t('Show events')));
       }
       break;
     case 'system':
-      drupal_set_html_head(event_html_head());
       if (user_access('maintain events')) {
         menu('node/add/event', t('event'), 'node_page');
       }
