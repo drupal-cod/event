@@ -81,7 +81,6 @@ function event_block($op = 'list', $delta = 0) {
  */
 function event_settings() {
   $output = form_textarea(t('Explanation or submission guidelines'), 'event_help', variable_get('event_help', ''), 70, 5, t('This text will be displayed at the top of the event submission form.  Useful for helping or instructing your users.'));
-  $output .= form_select(t('Start of week'), 'event_week', variable_get('event_week', '0'), array('0' => t('Sunday'), '1' => t('Monday')), t('The day the weeks starts in the block calendar.'));
   $output .= form_radios(t('Time notation preference'), 'event_ampm', variable_get('event_ampm', '0'), array('0' => t('24h'),'1' => t('12h')), t('The time notation system used for entering event start times.'));
   $output .= form_radios(t('Timezone handling'), 'event_timezone', variable_get('event_timezone', '1'), array('1' => t('Yes'), '0' => t('No')), t("Yes: Times are saved relative to the user's timezone. No: Times are displayed exactly as the user inputted them."));
   $output .= form_select(t('Type of overview'), 'event_overview', variable_get('event_overview', 'calendar'), array('calendar' => t('Calendar'), 'table' => t('Table')), t('The type of overview to show the user when he clicks on the block calendar.'));
@@ -774,15 +773,13 @@ function event_display($callback, &$year, &$month, &$day, $navigation = 0, $extr
   );
 
   if (!$extra) { // calendar views
+    $day_name = array('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat');
+    $day_trans = array(t('Sun'), t('Mon'), t('Tue'), t('Wed'), t('Thu'), t('Fri'), t('Sat'));
+    $weekstart = variable_get('date_first_day', 0);
+
     // Week starts when?
-    if (variable_get('event_week', 1)) {
-      $day_name = array('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun');
-      $day_trans = array(t('Mon'), t('Tue'), t('Wed'), t('Thu'), t('Fri'), t('Sat'), t('Sun'));
-    }
-    else {
-      $day_name = array('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat');
-      $day_trans = array(t('Sun'), t('Mon'), t('Tue'), t('Wed'), t('Thu'), t('Fri'), t('Sat'));
-    }
+    $day_name = array_merge(array_slice($day_name, $weekstart), array_slice($day_name, 0, $weekstart));
+    $day_trans = array_merge(array_slice($day_trans, $weekstart), array_slice($day_trans, 0, $weekstart));
 
     foreach ($day_name as $key => $_day) {
       $row[] = array('class' => strtolower("days $_day"), 'data' => $day_trans[$key]);
@@ -794,11 +791,8 @@ function event_display($callback, &$year, &$month, &$day, $navigation = 0, $extr
     $row = array_fill(0, 6, '');
     for ($_day = 1; $_day <= $days; $_day++) {
       $timestamp = _event_mktime(0, 0, 0, $month, $_day, $year);
-      $week_day = _event_date('w', $timestamp);
       // Make sure we have the right day (week starts on).
-      if (variable_get('event_week', 1)) {
-        $week_day = $week_day == 0 ? 6 : $week_day - 1;
-      }
+      $week_day = (_event_date('w', $timestamp) - $weekstart + 7) % 7;
       $row[$week_day] = array(
         'class' => strtolower("$month_name $day_name[$week_day]". ($weeks == $week ? ' lastweek' : '') . ($timestamp == $today ? ' today' : '') . ($_day == $day ? ' selected' : '')),
         'id' => strtolower($month_name . $_day),
