@@ -205,24 +205,27 @@ function event_cron() {
 /**
  * Implementation of hook_menu()
  */
-function event_menu() {
+function event_menu($may_cache) {
   global $user;
 
   drupal_set_html_head(event_html_head());
 
   $items = array();
-  $items[] = array('path' => 'node/add/event', 'title' => t('event'),
-                   'access' => user_access('maintain events'));
-  $items[] = array('path' => 'event', 'title' => t('events'),
-                   'callback' => 'event_page',
-                   'access' => user_access('access content'),
-                   'type' => MENU_SUGGESTED_ITEM);
-  $items[] = array('event/'.event_format_date(time(), 'custom', 'Y/m/d'), 'title' => t('calendar'),
-                   'access' => user_access('access content'),
-                   'type' => MENU_DYNAMIC_ITEM);
-  $items[] = array('path' => 'event/search', 'title' => t('search'),
-                   'callback' => 'event_page',
-                   'type' => MENU_SUGGESTED_ITEM);
+  if ($may_cache) {
+    $items[] = array('path' => 'node/add/event', 'title' => t('event'),
+                     'access' => user_access('maintain events'));
+    $items[] = array('path' => 'event', 'title' => t('events'),
+                     'callback' => 'event_page',
+                     'access' => user_access('access content'),
+                     'type' => MENU_SUGGESTED_ITEM);
+    $items[] = array('event/'.event_format_date(time(), 'custom', 'Y/m/d'), 'title' => t('calendar'),
+                     'access' => user_access('access content'),
+                     'type' => MENU_DYNAMIC_ITEM);
+    $items[] = array('path' => 'event/search', 'title' => t('search'),
+                     'callback' => 'event_page',
+                     'type' => MENU_SUGGESTED_ITEM);
+  }
+
   return $items;
 }
 
