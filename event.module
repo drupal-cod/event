@@ -2,9 +2,10 @@
 // $Id$
 
 function event_fields() {
-  $fields = array();
   /*
-  ** Add an entry below for any additional field you might need.
+  ** Add an entry below for any additional field you might need, or put
+  ** the extra fields in a file called fields.inc in the event module
+  ** directory.
   */
   $fields = array(
     'location' => array(
@@ -21,6 +22,10 @@ function event_fields() {
     // 'country' => array('textfield', t('Country'), false, false, false, '', 64, 64, t('Which country is hosting this event?')),
     // 'keynote' => array('textarea', t('Keynote topic'), false, false, false, '', 64, 4, ''),
   );
+
+  if (file_exists('modules/event/fields.inc')) {
+    include_once 'modules/event/fields.inc';
+  }
 
   return $fields;
 }
@@ -88,8 +93,9 @@ function event_page() {
     $output .= '<p>'. l(t('Add new event.'), 'node/add/event') .'</p>';
   }
 
+  $timestamp = gmmktime(0, 0, 0, $month, $day, $year);
   $breadcrumbs[] = l($year, "event/$year");
-  $breadcrumbs[] = l($month, "event/$year/$month");
+  $breadcrumbs[] = l(format_date($timestamp, 'custom', 'F'), "event/$year/$month");
   theme('header');
   theme('breadcrumb', $breadcrumbs);
   theme('box', t('Events'), $output);
@@ -250,7 +256,7 @@ function event_form(&$node, &$help, &$error) {
       $output .= $function($def[1], $field, $node->$field, $def[6], $def[7] . theme_error($error[$field]), $def[8], $def[9]);
     }
   }
-  $output .= form_textarea(t('Details'), 'body', $node->body, 60, 15, t('Allowed HTML tags') .': '. htmlspecialchars(variable_get('allowed_html', '')));
+  $output .= form_textarea(t('Details'), 'body', $node->body, 60, 15, form_allowed_tags_text());
 
   return $output;
 }
@@ -405,7 +411,7 @@ function event_calendar($callback, &$year, &$month, &$day, $navigation = 0) {
   }
 
   foreach ($day_name as $_day) {
-    $row[] = array('class' => strtolower("days $_day"), 'data' => $_day);
+    $row[] = array('class' => strtolower("days $_day"), 'data' => t($_day));
   }
   $rows = array($row);
   $week = 1;
@@ -432,7 +438,7 @@ function event_calendar($callback, &$year, &$month, &$day, $navigation = 0) {
     }
   }
 
-  $output = '<div id="calendar">';
+  $output = '<div class="event-calendar">';
   $output .= table($header, $rows);
   $output .= '</div>';
 

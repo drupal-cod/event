@@ -1,6 +1,16 @@
 26. October 2003
 ----------------
 [Kjartan Mannes]
+- Fixed week day names not being translated.
+- Changed #calendar to .event-calendar.
+- Changed to form_allowed_tags_text() instead of replicating code.
+- Added support for modules/event/fields.inc for extra fields.
+- Changed calendar breadcrumbs to use month name instead of number.
+- Fixed wrong number of parameters passed to event_calendar in block.
+
+26. October 2003
+----------------
+[Kjartan Mannes]
 - Refactored the extra fields to not require an extra database field by
   storing extra fields in a data field (requires MySQL update).
 - Improved timezone handling.
