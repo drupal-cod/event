@@ -22,3 +22,4 @@ ALTER TABLE event DROP end;
 ALTER TABLE event DROP images;
 ALTER TABLE event DROP parent;
 ALTER TABLE event ADD PRIMARY KEY (nid);
+ALTER TABLE event ADD data TEXT;

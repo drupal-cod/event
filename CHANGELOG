@@ -1,17 +1,31 @@
+26. October 2003
+----------------
+[Kjartan Mannes]
+- Refactored the extra fields to not require an extra database field by
+  storing extra fields in a data field (requires MySQL update).
+- Improved timezone handling.
+- Improved calendar.
+- Removed "date picker".
+- Renamed posting permission to 'maintain events' to be more consistent
+  with other modules.
+- Removed 'access events' and 'administer events' permissions.
+- Added support for user updating of events.
+- Removed dead code, cleaned up other code, no stone left unturned.
+- Added event.css to style calendar and other output.
+- Updated INSTALL and TODO.
+
 18. October 2003
--------------
+----------------
 event.module [Moshe Weitzman]
 - updated for new help and menu and content hooks
 - able to add custom fields by editing top of source file
 - refactored event_page() enabling easier code re-use
 - removed some cruft from event_access()
 - no error when taxonomy is disabled
-- refactored 'view' to use simple list of fields. a bit more discussion is needed about
-how to allow themers to override this. i propose a css powered scheme like the newly committed
-recipe.module
+- refactored 'view' to use simple list of fields.
 
 12. October 2003
--------------
+----------------
 event.module [Moshe Weitzman]
 - now showing current month's nodes on main page when no other date
   was specified.

@@ -12,18 +12,18 @@ This module requires Drupal 4.3 or higher.
 Installation
 ------------
 
-1. Create the SQL tables. This depends a little on your system, but the most
-   common method is:
+1. Create the SQL tables. This depends a little on your system, but the
+   most common method is:
      mysql -u username -ppassword drupal < event.mysql
 
-2. Copy the event.module to the Drupal modules/ directory or to any 
-   directory below it.
+2. Place the event module with all its files under modules/event.
 
 3. Enable the module in admin >> site configuration >> modules 
    and set the module settings to your liking in 
    admin >> site configuration >> modules >> event.
 
-4. optional. add custom fields by editing the first function in event.module soruce code file
+4. Optionalally add custom fields by editing the first function in
+   event.module soruce code file.
 
 Author
 ------

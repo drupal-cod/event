@@ -1,0 +1,120 @@
+.node .event .details {
+  padding: 0.2em 0.2em 1em 0.2em;
+}
+.node .event .content {
+  border-top: 1px dashed #999;
+}
+.node .event .details .form-item, .node .event .details .form-item .title {
+  color: #999;
+}
+.node .event .details .form-item .title {
+  display: inline;
+  padding-right: 0.2em;
+}
+
+#calendar table {
+  border: 1px solid #242;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+#calendar tr {
+  padding: 0;
+  margin: 0;
+}
+#calendar th {
+  color: #000;
+  background: #aac;
+  font-size: 120%;
+  text-align: center;
+  padding: 1px 0.33em;
+  border: 1px solid #242;
+}
+#calendar th.heading {
+  border-width: 1px 0px;
+}
+#calendar th.prev {
+  text-align: left;
+  border-width: 1px 0px 1px 1px;
+}
+#calendar th.next {
+  text-align: right;
+  border-width: 1px 1px 1px 0px;
+}
+#calendar th a {
+  font-weight: bold;
+  color: #363636;
+}
+#calendar td {
+  border: 1px solid #bbb;
+  color: #777;
+  text-align: right;
+  vertical-align: top;
+  margin: 0;
+  padding: 0;
+}
+#calendar td a {
+  font-weight: bold;
+  text-decoration: none;
+}
+#calendar tr {
+  background: white;
+}
+#calendar td.sat, #calendar td.sun {
+  background: #fdd;
+}
+#calendar td.today {
+  background: #f99;
+}
+#calendar td.selected {
+  background: #99f;
+}
+#calendar td.days {
+  color: #cce;
+  background: #224;
+  font-weight: bold;
+  text-align: center;
+  padding: 1px 0.33em;
+  border: 1px solid #242;
+  border-width: 0 1px 1px 0;
+}
+
+#event #calendar table {
+  width: 100%;
+}
+#event #calendar td {
+  width: 14.3%;
+}
+#calendar div.event {
+  text-align: left;
+  margin: 0.25em 0 1em 0.25em;
+}
+#calendar div.day {
+  float: right;
+  text-align: center;
+  border: 1px solid gray;
+  border-width: 0 0 1px 1px;
+  padding: 0.125em 0.25em 0 0.25em;
+  margin: 0;
+  background: #f3f3f3;
+}
+#calendar div.event span {
+  display: block;
+  color: #000;
+  padding: 0;
+  margin: 0;
+}
+#calendar div.event span.time {
+  font-weight: bold;
+}
+#calendar div.event span.title a {
+  font-weight: normal;
+  font-size: 0.9em;
+  color: #000;
+}
+#calendar div.event span.location {
+  font-style: italic;
+  color: #555;
+}
+#event #calendar .event-empty {
+  min-height: 6em;
+}
