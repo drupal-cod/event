@@ -58,7 +58,7 @@ function event_block($op = 'list', $delta = 0) {
     return $blocks;
   }
   else {
-    if (user_access('access content')) {
+    if (($op == 'view') && user_access('access content')) {
       switch ($delta) {
         case 0:
           $block['subject'] = t('Browse events');
