@@ -436,10 +436,10 @@ function event_calendar_simple($year, $month, $day, $timestamp) {
 function event_calendar_expanded($year, $month, $day, $timestamp) {
 
   if (variable_get('event_ampm', '0')) {
-    $date_format = 'G';
+    $date_format = t('ga i');
   }
   else {
-    $date_format = 'ga';
+    $date_format = t('G:i');
   }
 
   $fields = event_fields();
@@ -447,7 +447,7 @@ function event_calendar_expanded($year, $month, $day, $timestamp) {
   if (count($data = event_calendar_data($year, $month, $day))) {
     foreach ($data as $node) {
       $output .= '<div class="event">';
-      $output .= '<span class="time">'. event_format_date($node->start, 'custom', $date_format .':i') .'</span>';
+      $output .= '<span class="time">'. event_format_date($node->start, 'custom', $date_format) .'</span>';
       $output .= '<span class="title">'. l($node->title, "node/view/$node->nid") .'</span>';
       foreach ($fields as $field => $def) {
         if ($def[4] && $node->$field) {
