@@ -68,6 +68,11 @@ function event_settings() {
   $headerarray = array_merge(array('e.start' => t('Date'), 'n.title' => t('Title'), 'n.teaser' => t('Teaser'), 'n.body' => t('Body')), $headerarray);
   $output .= form_select(t('Table headers'), 'event_table_headers', variable_get('event_table_headers', array('e.start', 'n.title', 'n.teaser')), $headerarray, t('The table headers used in the table view. Only entries that have their own database column in the event table and are of type "textfield", "textarea", or "select" can be used.'), 0, 1);
 
+  // Dummy arrays to be used by extractor.php
+  // Dummy array with abbreviations of months.
+  $month_abbr_dummy = array(t('Jan'), t('Feb'), t('Mar'), t('Apr'), t('May'), t('Jun'), t('Jul'), t('Aug'), t('Sep'), t('Oct'), t('Nov'), t('Dec'));
+  // Dummy array with full month names
+  $month_name_dummy = array(t('January'), t('February'), t('March'), t('April'), t('May'), t('June'), t('July'), t('August'), t('September'), t('October'), t('November'), t('December'));
   return $output;
 }
 
@@ -112,7 +117,7 @@ function event_page() {
 
   $timestamp = _event_mktime(0, 0, 0, $month, $day, $year);
   $breadcrumbs[] = l($year, "event/$year");
-  $breadcrumbs[] = l(event_format_date($timestamp, 'custom', 'F'), "event/$year/$month");
+  $breadcrumbs[] = l(t(event_format_date($timestamp, 'custom', 'F')), "event/$year/$month");
   print theme('page', $output, t('Events'), $breadcrumbs);
 }
 
@@ -500,7 +505,11 @@ function event_display($callback, &$year, &$month, &$day, $navigation = 0, $extr
   $today = _event_mktime(0, 0, 0, _event_date('m', $time), _event_date('j', $time), _event_date('Y', $time));
 
   // Extract key data from date:
-  $month_name = _event_date('M', $date);
+  $month_name = t(_event_date('M', $date));
+  // Dummy array with abbreviations of months.
+  $month_abbr_dummy = array(t('Jan'), t('Feb'), t('Mar'), t('Apr'), t('May'), t('Jun'), t('Jul'), t('Aug'), t('Sep'), t('Oct'), t('Nov'), t('Dec'));
+  // Dummy array with full month names
+  $month_name_dummy = array(t('January'), t('February'), t('March'), t('April'), t('May'), t('June'), t('July'), t('August'), t('September'), t('October'), t('November'), t('December'));
   $weeks = ceil($days / 7);
 
   // Initialize the header/week days:
@@ -510,7 +519,7 @@ function event_display($callback, &$year, &$month, &$day, $navigation = 0, $extr
   }
   $header = array(
     array('class' => 'prev', 'data' => $prev),
-    array('class' => 'heading', 'colspan' => 5, 'data' => _event_date('F Y', $date)),
+    array('class' => 'heading', 'colspan' => 5, 'data' => t(_event_date('F', $date)) .' '. _event_date('Y', $date)),
     array('class' => 'next', 'data' => $next)
   );
 
