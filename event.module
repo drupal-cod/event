@@ -653,7 +653,7 @@ function event_search($keys) {
   while ($search = db_fetch_object($result)) {
     $find[] = array("title" => check_output($search->title), "link" => (strstr(request_uri(), "admin") ? url("admin/node/edit/id/$search->nid") : url("node/view/$search->nid")), "user" => $search->name, "date" => $search->timestamp);
   }
-  return $find;
+  return array(t('Events'), $find);
 }
 
 function event_query() {
