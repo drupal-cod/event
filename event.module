@@ -506,14 +506,16 @@ function event_display($callback, &$year, &$month, &$day, $navigation = 0, $extr
   if (!$extra) { // calendar views
     // Week starts when?
     if (variable_get('event_week', 1)) {
-      $day_name = array(t('Mon'), t('Tue'), t('Wed'), t('Thu'), t('Fri'), t('Sat'), t('Sun'));
+      $day_name = array('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun');
+      $day_trans = array(t('Mon'), t('Tue'), t('Wed'), t('Thu'), t('Fri'), t('Sat'), t('Sun'));
     }
     else {
-      $day_name = array(t('Sun'), t('Mon'), t('Tue'), t('Wed'), t('Thu'), t('Fri'), t('Sat'));
+      $day_name = array('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat');
+      $day_trans = array(t('Sun'), t('Mon'), t('Tue'), t('Wed'), t('Thu'), t('Fri'), t('Sat'));
     }
 
-    foreach ($day_name as $_day) {
-      $row[] = array('class' => strtolower("days $_day"), 'data' => $_day);
+    foreach ($day_name as $key => $_day) {
+      $row[] = array('class' => strtolower("days $_day"), 'data' => $day_trans[$key]);
     }
     $rows = array($row);
     $week = 1;
