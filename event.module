@@ -342,7 +342,7 @@ function event_calendar() {
   // Calculate previous and next months dates and check for shorter months (28/30 days)
   $prevmonth = mktime(23, 59, 59, $month - 1, 1, $year);
   $prev = mktime(23, 59, 59, $month - 1, min(date("t", $prevmonth), $day), $year);
-  $nextmonth = mktime(23, 59, 59, $month + 1, 1, $year);
+  $nextmonth = mktime(0, 0, 0, $month + 1, 1, $year);
   $next = mktime(23, 59, 59, $month + 1, min(date("t", $nextmonth), $day), $year);
 
   // Get events in this month
