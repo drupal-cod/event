@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Drupal event.module\n"
-"POT-Creation-Date: 2003-12-05 12:26+0100\n"
+"POT-Creation-Date: 2004-01-06 13:32+0100\n"
 "PO-Revision-Date: 2003-12-08 17:23+01:00\n"
 "Last-Translator: Gerhard Killesreiter <gerhard@killesreiter.de>\n"
 "Language-Team: Deutsch <gerhard@killesreiter.de>\n"
@@ -12,219 +12,328 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: event.module
+# event.module
+#: event.module:21
 msgid "Lets users make events and keep calendars."
-msgstr "Läßt Nutzer Veranstaltungen eingeben und einen Veranstaltungskalender pflegen."
+msgstr ""
+"Läßt Nutzer Veranstaltungen eingeben und einen Veranstaltungskalender "
+"pflegen."
 
-#: event.module
-msgid "Events are what you think you they are. Occurrences happening an a given time and place."
+# event.module
+#: event.module:23
+msgid ""
+"Events are what you think you they are. Occurrences happening an a given "
+"time and place."
 msgstr "Veranstaltungen sind Treffen an gegebenem Ort zur gegebener Zeit."
 
-#: event.module
+# event.module
+#: event.module:33
 msgid "Calendar to browse events."
 msgstr "Veranstaltungskalender"
 
-#: event.module
+# event.module
+#: event.module:34
 msgid "List of upcoming events."
 msgstr "Liste der nächsten Veranstaltungen"
 
-#: event.module
+# event.module
+#: event.module:41
 msgid "Browse events"
 msgstr "Veranstaltungen anschauen"
 
-#: event.module
+# event.module
+#: event.module:45
 msgid "Upcoming events"
 msgstr "Nächste Veranstaltungen"
 
-#: event.module
+# event.module
+#: event.module:47
 msgid "more"
 msgstr "mehr"
 
-#: event.module
+# event.module
+#: event.module:47
 msgid "More events."
 msgstr "Weitere Veranstaltungen"
 
-#: event.module
+# event.module
+#: event.module:55
 msgid "Explanation or submission guidelines"
 msgstr "Erklärung oder Richtlinien für Veranstaltungen"
 
-#: event.module
-msgid "This text will be displayed at the top of the event submission form.  Useful for helping or instructing your users."
-msgstr "Dieser Text wird über dem Veranstaltungsformular angezeigt. Man kann damit Richtlinien für Veranstaltungen angeben."
+# event.module
+#: event.module:55
+msgid ""
+"This text will be displayed at the top of the event submission form.  Useful "
+"for helping or instructing your users."
+msgstr ""
+"Dieser Text wird über dem Veranstaltungsformular angezeigt. Man kann damit "
+"Richtlinien für Veranstaltungen angeben."
 
-#: event.module
+# event.module
+#: event.module:56
 msgid "Start of week"
 msgstr "Anfang der Woche"
 
-#: event.module
+# event.module
+#: event.module:56
 msgid "Sunday"
 msgstr "Sonntag"
 
-#: event.module
+# event.module
+#: event.module:56
 msgid "Monday"
 msgstr "Montag"
 
-#: event.module
+# event.module
+#: event.module:56
 msgid "The day the weeks starts in the block calendar."
 msgstr "Der Wochentag mit dem der Veranstaltungskalender beginnt."
 
-#: event.module, event.module
+#: event.module:57
+msgid "Time notation preference"
+msgstr ""
+
+#: event.module:57
+msgid "24h"
+msgstr ""
+
+#: event.module:57
+msgid "12h"
+msgstr ""
+
+#: event.module:57
+msgid "The time notation system used for entering event start times."
+msgstr ""
+
+# event.module, event.module
+#: event.module:63
 msgid "Home"
 msgstr "Start"
 
-#: event.module, event.module, event.module
+# event.module, event.module, event.module
+#: event.module:64
 msgid "Events"
 msgstr "Veranstaltungen"
 
-#: event.module, event.module, event.module
+# event.module, event.module, event.module
+#: event.module:68
 msgid "Search"
 msgstr "Suche"
 
-#: event.module
+# event.module
+#: event.module:69
 msgid "Search Events"
 msgstr "Veranstaltungen durchsuchen"
 
-#: event.module
+# event.module
+#: event.module:78
 msgid "Upcoming"
 msgstr "Anstehende"
 
-#: event.module
+# event.module
+#: event.module:83
 msgid "Upcoming Events"
 msgstr "Nächste Veranstaltungen"
 
-#: event.module
+# event.module
+#: event.module:92
 msgid "search events"
 msgstr "Veranstaltungen durchsuchen"
 
-#: event.module
+# event.module
+#: event.module:110
 msgid "edit event"
 msgstr "Veranstaltung bearbeiten"
 
-#: event.module
+# event.module
+#: event.module:110
 msgid "Edit this event."
 msgstr "Diese Veranstaltung bearbeiten"
 
-#: event.module, event.module
+# event.module, event.module
+#: event.module:113
 msgid "calendar"
 msgstr "Kalender"
 
-#: event.module, event.module
+# event.module, event.module
+#: event.module:119
 msgid "events"
 msgstr "Veranstaltungen"
 
-#: event.module
+# event.module
+#: event.module:119
 msgid "Show events"
 msgstr "Veranstaltungen anzeigen"
 
-#: event.module, event.module
+# event.module, event.module
+#: event.module:124
 msgid "event"
 msgstr "Veranstaltung"
 
-#: event.module
+# event.module
+#: event.module:129
 msgid "search"
 msgstr "Suche"
 
-#: event.module
+# event.module
+#: event.module:142
 msgid "An event contains information on an event in real life."
-msgstr "Eine Veranstaltung enthält Informationen über eine Veranstaltung im Richtigen Leben(WZ)."
+msgstr ""
+"Eine Veranstaltung enthält Informationen über eine Veranstaltung im "
+"Richtigen Leben(WZ)."
 
-#: event.module
+# event.module
+#: event.module:184
 msgid "Required."
 msgstr "Notwendige"
 
-#: event.module, event.module
+# event.module, event.module
+#: event.module:196
 msgid "Start"
 msgstr "Start"
 
-#: event.module
+# event.module
+#: event.module:251
 msgid "January"
 msgstr "Januar"
 
-#: event.module
+# event.module
+#: event.module:251
 msgid "February"
 msgstr "Februar"
 
-#: event.module
+# event.module
+#: event.module:251
 msgid "March"
 msgstr "März"
 
-#: event.module
+# event.module
+#: event.module:251
 msgid "April"
 msgstr "April"
 
-#: event.module
+# event.module
+#: event.module:251
 msgid "May"
 msgstr "Mai"
 
-#: event.module
+# event.module
+#: event.module:251
 msgid "June"
 msgstr "Juni"
 
-#: event.module
+# event.module
+#: event.module:251
 msgid "July"
 msgstr "July"
 
-#: event.module
+# event.module
+#: event.module:251
 msgid "August"
 msgstr "August"
 
-#: event.module
+# event.module
+#: event.module:251
 msgid "September"
 msgstr "September"
 
-#: event.module
+# event.module
+#: event.module:251
 msgid "October"
 msgstr "Oktober"
 
-#: event.module
+# event.module
+#: event.module:251
 msgid "November"
 msgstr "November"
 
-#: event.module
+# event.module
+#: event.module:251
 msgid "December"
 msgstr "Dezember"
 
-#: event.module
+#: event.module:255
+msgid "am"
+msgstr ""
+
+#: event.module:255
+msgid "pm"
+msgstr ""
+
+# event.module
+#: event.module:291
 msgid "When is this event taking place."
 msgstr "Wann findet diese Veranstaltung statt?"
 
-#: event.module
+# event.module
+#: event.module:302
 msgid "Details"
 msgstr "Weitere Angaben"
 
-#: event.module
+# event.module
+#: event.module:548
 msgid "Search results"
 msgstr "Suchergebnisse"
 
-#: event.module
+# event.module
+#: event.module:548
 msgid "No matches found."
 msgstr "Keine Treffer"
 
-#: event.module
+# event.module
+#: event.module:552
 msgid "Search events"
 msgstr "Veranstaltungen durchsuchen"
 
-#: event.module
+# event.module
+#: event.module:594
 msgid "Date period"
 msgstr "Zeitintervall"
 
-#: event.module
+# event.module
+#: event.module:594
 msgid "From"
 msgstr "Von"
 
-#: event.module
+# event.module
+#: event.module:594
 msgid "To"
 msgstr "Bis"
 
-#: event.module
+#: event.module:641
+msgid "NOW"
+msgstr ""
+
+# event.module
+#: event.module:643
+#, fuzzy
+msgid "minute"
+msgstr "Minuten"
+
+# event.module
+#: event.module:645
 msgid "minutes"
 msgstr "Minuten"
 
-#: event.module
+# event.module
+#: event.module:647
+#, fuzzy
+msgid "hour"
+msgstr "Stunden"
+
+# event.module
+#: event.module:649
 msgid "hours"
 msgstr "Stunden"
 
-#: event.module
-msgid "days"
+# event.module
+#: event.module:651
+#, fuzzy
+msgid "day"
 msgstr "Tage"
 
+# event.module
+#: event.module:653
+msgid "days"
+msgstr "Tage"

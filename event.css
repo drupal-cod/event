@@ -107,6 +107,9 @@
 .event-calendar div.event span.time {
   font-weight: bold;
 }
+.time {
+  padding: 20px;
+}
 .event-calendar div.event span.title a {
   font-weight: normal;
   font-size: 0.9em;
