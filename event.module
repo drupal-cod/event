@@ -19,10 +19,10 @@ function event_help($section) {
   switch ($section) {
     case 'admin/system/modules#description':
       return t('Lets users make events and keep calendars.');
-    case 'admin/system/modules/event':
-      return t('Events are what you think you they are. Occurrences happening at a given time and place.');
     case 'node/add/event':
       return variable_get('event_help', '');
+    case 'node/add#event':
+      return t('Events are happenings scheduled for a specific date and time.');
   }
 }
 
