@@ -184,7 +184,15 @@ function event_content(&$node, $main = 0) {
   foreach ($fields as $field => $def) {
     if ($node->$field) {
       if ($def[0] == "select") {
-        $output .= form_item($def[1], $def[6][$node->$field]);
+        if ($def[9]) { // multi-select
+          foreach ($node->$field as $val) {
+            $vals[] = $def[6][$val];
+          }
+          $output .= form_item($def[1], implode(", ", $vals));
+        }
+        else {
+          $output .= form_item($def[1], $def[6][$node->$field]);
+        }
       }
       else {
         $output .= form_item($def[1], $node->$field);
@@ -301,13 +309,19 @@ function event_create_query($fields, $node, &$v, $insert = 1) {
 function event_insert(&$node) {
   $fields = array('nid', 'start', 'data');
   $sql = event_create_query($fields, $node, $values);
-  db_query($sql, $values);
+  foreach ($values as $value) {
+    $vals[] = is_array($value) ? serialize($value) : $value; 
+  }
+  db_query($sql, $vals);
 }
 
 function event_update(&$node) {
   $fields = array('start', 'data');
   $sql = event_create_query($fields, $node, $values, 0);
-  db_query($sql, $values);
+  foreach ($values as $value) {
+    $vals[] = is_array($value) ? serialize($value) : $value; 
+  }
+  db_query($sql, $vals);
 }
 
 function event_delete(&$node) {
@@ -316,6 +330,14 @@ function event_delete(&$node) {
 
 function event_load(&$node) {
   $event = db_fetch_object(db_query("SELECT * FROM {event} WHERE nid = %d", $node->nid));
+  $extra_fields = event_fields();
+  foreach ($extra_fields as $field => $def) {
+    if ($def[3]) { // Stored in separate database field
+      if ($def[0] == "select" && $def[9]) { // multi-select
+          $event->$field = unserialize($event->$field);
+      }
+    }
+  }
   $event->data = unserialize($event->data);
   if (is_array($event->data)) {
     foreach ($event->data as $field => $value) {
