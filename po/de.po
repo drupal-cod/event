@@ -1,11 +1,8 @@
-﻿# LANGUAGE translation of PROJECT
-# Copyright YEAR NAME <EMAIL@ADDRESS>
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: Drupal event.module\n"
 "POT-Creation-Date: 2004-04-06 23:00+0200\n"
-"PO-Revision-Date: 2003-12-08 17:23+01:00\n"
+"PO-Revision-Date: 2005-02-07 13:29+0100\n"
 "Last-Translator: Gerhard Killesreiter <gerhard@killesreiter.de>\n"
 "Language-Team: Deutsch <gerhard@killesreiter.de>\n"
 "MIME-Version: 1.0\n"
@@ -249,11 +246,6 @@ msgstr "April"
 
 # event.module
 #: event.module:75 ;277;512
-msgid "May"
-msgstr "Mai"
-
-# event.module
-#: event.module:75 ;277;512
 msgid "June"
 msgstr "Juni"
 
@@ -453,22 +445,22 @@ msgstr "AKTUELL"
 #: event.module:786
 msgid "1 minute"
 msgid_plural "%count minutes"
-msgstr[0] "Minute"
-msgstr[1] "Minuten"
+msgstr[0] "1 Minute"
+msgstr[1] "%count Minuten"
 
 # event.module
 #: event.module:789
 msgid "1 hour"
 msgid_plural "%count hours"
-msgstr[0] "Stunde"
-msgstr[1] "Stunden"
+msgstr[0] "1 Stunde"
+msgstr[1] "%count Stunden"
 
 # event.module
 #: event.module:792
 msgid "1 day"
 msgid_plural "%count days"
-msgstr[0] "Tag"
-msgstr[1] "Tage"
+msgstr[0] "1 Tag"
+msgstr[1] "%count Tage"
 
 # event.module
 #: event.module:125
