@@ -299,7 +299,7 @@ function event_form(&$node, &$help, &$error) {
       $output .= $function($def[1], $field, $node->$field, $def[7], $def[8] . theme_error($error[$field]), $def[9], $def[10]);
     }
   }
-  $output .= form_textarea(t('Details'), 'body', $node->body, 60, 15, form_allowed_tags_text());
+  $output .= form_textarea(t('Details'), 'body', $node->body, 60, 15, filter_tips_short());
 
   return $output;
 }
