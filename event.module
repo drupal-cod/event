@@ -113,9 +113,9 @@ function event_page() {
   $output .= theme('links', array( l(t('search events'), "event/search") ));
   $output .= '</div>';
 
-  $timestamp = _event_mktime(0, 0, 0, $month, ($day ? $day : 1), $year);
+  $timestamp = gmmktime(0, 0, 0, $month, ($day ? $day : 1), $year);
   $breadcrumbs[] = l($year, "event/$year");
-  $breadcrumbs[] = l(t(event_format_date($timestamp, 'custom', 'F')), "event/$year/$month");
+  $breadcrumbs[] = l(t(format_date($timestamp, 'custom', 'F', 0)), "event/$year/$month");
   print theme('page', $output, t('Events'), $breadcrumbs);
 }
 
@@ -641,11 +641,11 @@ function event_format_date($timestamp, $type = 'medium', $format = '') {
 }
 
 function _event_date($time, $format) {
-  return  gmdate($time, $format);
+  return gmdate($time, $format);
 }
 
 function _event_mktime($hour, $minute, $second, $month, $day, $year) {
-  return  gmmktime($hour, $minute, $second, $month, $day, $year);
+  return gmmktime($hour, $minute, $second, $month, $day, $year);
 }
 
 function event_search($keys) {
