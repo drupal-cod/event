@@ -1,13 +1,20 @@
 <?php
 // $Id$
 
-/**
- * System hook
- *
- */
-function event_system($field){
-  $system["description"] = t("Enables users to maintain an event calendar.");
-  return $system[$field];
+function event_init() {
+  /*
+  ** Add a line below for any additional field you might need. 
+  ** You must also add a column of the same name in the 'event' table
+  */
+
+  $GLOBALS["event_fields"] = array(
+    // standard fields
+    
+    // some examples of extra fields
+    "country"       => array("textfield", t("Country"), "", 64, 64, t("Which county is hosting this event?")),
+    //"keynote"     => array("textarea", t("Keynote topic"), "", 64, 4, ""),
+    //"gender"        => array("select", t("Gender"), "", array(0 => "-", "m" => t("male"), "f" => t("female")), "", 0, 0),
+  );
 }
 
 /**
@@ -25,7 +32,7 @@ function event_perm() {
  * @return (string) XHTML output/form
  */
 function event_settings() {
- $output .= form_textarea("Explanation or submission guidelines", "event_help", variable_get("event_help", ""), 70, 5, "This text will be displayed at the top of the event submission form.  Useful for helping or instructing your users.");  
+  $output .= form_textarea("Explanation or submission guidelines", "event_help", variable_get("event_help", ""), 70, 5, "This text will be displayed at the top of the event submission form.  Useful for helping or instructing your users.");  
   $sunmon = array("0" => t("Sunday"), "1" => t("Monday") );
   $output .= form_select(t("Start of week"), "event_week", variable_get("event_week", "0"), $sunmon , t("The day the weeks starts in the block calendar."));
   return $output;
@@ -40,7 +47,6 @@ function event_settings() {
 function event_node($field) {
   $info["name"] = t("event");
   $info["description"] = t("An event contains information on an event in real life.");
-
   return $info[$field];
 }
 
@@ -55,16 +61,14 @@ function event_node($field) {
 function event_link($type, $node = 0, $main) {
   
   if ($type == "page" && user_access("access events")) {
-    // Page links requested. These are the links on every page like home, submit, etc.
-    // Return links to event_page().
     $links[] = l(t("events"), "event", array("title" => t("Show events")));
   }
 
-  if ($type == "menu.create" && user_access("post events")) {
-    $links[] = l(t("create event"), "node/add/event", array("title" => t("Add a new event.")));
+  if ($type == "system") {
+    if (user_access("create events")) {
+      menu("node/add/event", t("event"), "event_page", 0);
+    }
   }
-
-  // Return all the links, or an empty array if there are none.
   return $links ? $links : array();
 }
 
@@ -73,18 +77,47 @@ function event_validate(&$node) {
   if (!$node->start && isset($node->year) && isset($node->month) && isset($node->day) && isset($node->hour) && isset($node->minute)) {
     $node->start = strtotime($node->year ."-". $node->month ."-". $node->day ." ". $node->hour .":". $node->minute);
   }
+  
+  // add any needed validation for your extra fields below. if invalid, set an $error as usual for this hook.
 }
 
 function event_insert(&$node) {
-  db_query("INSERT INTO {event} (nid, start, location) VALUES ($node->nid, $node->start, '" . check_query($node->location) . "')");
+  global $event_fields;
+  
+  $fields = array_keys($event_fields);
+  $names = $fields;
+  array_push($names, "nid", "start", "location"); // add standard fields
+  $str_names = implode(", ", $names);
+  
+  foreach ($fields as $field) {
+    $values[] = "'". check_query($node->$field). "'";
+  }
+  array_push($values, $node->nid, $node->start, "'". check_query($node->location). "'");
+  $str_values = implode(", ", $values);
+  db_query("INSERT INTO {event} ($str_names) VALUES ($str_values)");
 }
 
 function event_update(&$node) {
-  db_query("UPDATE {event} SET start = $node->start, location = '" . check_query($node->location) . "' WHERE nid = $node->nid");
+  global $event_fields;
+  
+  $fields = array_keys($event_fields);
+  foreach ($fields as $field) {
+    $val = "$field=";
+    $val .= $node->$field ? "'". check_query($node->$field). "'" : "''";
+    $values[] = $val;
+  }
+
+  // append the standard fields
+  $values[] = "start=$node->start";
+  $values[] = "location='". check_query($node->location). "'";
+
+  $str_values = implode(", ", $values);
+  
+  db_query("UPDATE {event} SET $str_values WHERE nid = $node->nid");
 }
 
 function event_delete(&$node) {
-  db_query("DELETE FROM {event} WHERE nid = '$node->nid'");
+  db_query("DELETE FROM {event} WHERE nid = $node->nid");
 }
 
 /**
@@ -95,8 +128,7 @@ function event_delete(&$node) {
  */
 function event_load(&$node) {
 
-  $event = db_fetch_object(db_query("SELECT start, location FROM {event} WHERE nid = $node->nid"));
-
+  $event = db_fetch_object(db_query("SELECT * FROM {event} WHERE nid = $node->nid"));
   return $event;
 }
 
@@ -114,73 +146,31 @@ function event_access($op, $node) {
     return ($node->status && user_access("access events"));
   }
 
-  // For create access if theuser has create permissions
+  // For create access if the user has create permissions
   if ($op == "create") {
     return user_access("post events");
   }
-
-  // Only allow the creator of the node to update it
-  if ($op == "update") {
-    return ($user->uid == $node->uid);
-  }
-
-  // Only allow the creator of the node to delete it
-  if ($op == "delete") {
-    return ($user->uid == $node->uid);
-  }
 }
 
-/**
- * Node _view hook to show the event node properly.
- *
- * @param (object) $node node object
- * @param (boolean) $main is the node on the front page
- */
-function event_view(&$node, $main = 0) {
-  // This function is called by node.module when an event node is viewed. This
-  // lets event.module do some processing to the node before outputting it.
+
+function event_content($node, $main = 0) {
   $node->teaser = check_output($node->teaser);
-  $node->body = check_output($node->body);
-
-  // Output the node for the user to take a peek at it.
-  theme("node_event", $node, $main);
+  $pre .= form_item(t("Start"), format_date($node->start));
+  $pre .= form_item(t("Location"), $node->location);
+  $pre .= event_build_form_fields($node);
+  $node->body = $pre. "<br />". $node->body;
+  return $node;
 }
 
-/**
- * Theme event function to supply a default rendering of 
- * an event.  This function can be implemented in a .theme
- * object to override this function.
- *
- * @param (object) $node node object
- * @param (boolean) $main is the node on the front page
- */
-function node_event($node, $main) {
-  if (module_exist("taxonomy")) {
-    $terms = taxonomy_link("taxonomy terms", $node);
+function event_view($node, $main = 0) {
+  if ($main == 0) {
+    // Breadcrumb navigation
+    $breadcrumb[] = l(t("Home"), NULL);
+    $breadcrumb[] = l(t("Events"), "event");
+    theme("breadcrumb", $breadcrumb);
   }
-  
-  $output  = strtr(t("<b>%title</b> by %name."), array("%title" => $node->title, "%name" => format_name($node))) ."<br />";
-  
-  if (count($terms)) {
-    $output .= "<small>(" . theme("links", $terms) . ")</small><br />";
-  }
-  
-  if ($main && $node->teaser) {
-    $output .= $node->teaser;
-  }
-  else {
-    $output .= $node->body;
-  }
-  
-  $output .= "<br /> ". strtr(t("%date at %location."), array("%date" => format_date($node->start, "large"), "%location" => $node->location))  ."<br />";
-  
-  if ($links = link_node($node, $main)) {
-    $output .= "<br />[ " . theme("links", $links) . " ]";
-  }
-  
-  $output .= "<hr />";
-  
-  print $output;
+  $node = event_content($node);
+  theme("node", $node, $main);
 }
 
 /**
@@ -193,9 +183,8 @@ function node_event($node, $main) {
  * $return (string) XHTML output
  */
 function event_form(&$node, &$help, &$error) {
-  // This function is called when a user submits an event, or if an admin edits
-  // an event. Existing values will be passed to this function, which is stored
-  // in an array.
+  global $event_fields;
+    
   // Construct the start time select boxes.
   $years = array(2001 => 2001, 2002 => 2002, 2003 => 2003, 2004 => 2004, 2005 => 2005);
   $months = array(1 => t("January"), t("February"), t("March"), t("April"), t("May"), t("June"), t("July"), t("August"), t("September"), t("October"), t("November"), t("December"));
@@ -211,7 +200,9 @@ function event_form(&$node, &$help, &$error) {
     $node->minute = date("i", $node->start);
   };
   
-  $output .= implode("", taxonomy_node_form("event", $node));
+  if (module_exist("taxonomy")) {
+    $output .= implode("", taxonomy_node_form("event", $node));
+  }
 
   $when = "<div class=\"container-inline\">";
   $when .= form_select("", "month", ($node->month ? $node->month : date("m")), $months);
@@ -223,6 +214,12 @@ function event_form(&$node, &$help, &$error) {
   
   $output .= form_textfield(t("Location"), "location", $node->location, 50, 100, t("Where this event is taking place."));
 
+  foreach ($event_fields as $name => $field) {
+    $f = "form_". $field[0];
+    // TODO: actually support required fields.
+    $output .= $f((in_array($name, $required_fields) ? event_required($field[1]) : $field[1]), $name, $node->$name, $field[3], $field[4], $field[5], $field[6]);
+  }
+  
   $output .= form_textarea(t("Details"), "body", $node->body, 60, 15, t("Allowed HTML tags") .": ". htmlspecialchars(variable_get("allowed_html", "")));
 
   $help = variable_get("event_help", "");
@@ -230,6 +227,42 @@ function event_form(&$node, &$help, &$error) {
   // Return the form to be displayed.
   return $output;
 }
+
+
+function event_build_form_fields($node) {
+  global $event_fields;
+  
+  $fields = array_keys($event_fields);
+  foreach ($fields as $name) {
+    $field = $event_fields[$name];
+    if (!empty($node->$name)) {
+      switch ($field[0]) {
+        case "textfield":
+        case "textarea":
+        case "checkbox":
+          $value = check_output($node->$name);
+          $output .= form_item($field[1], $value);
+          break;
+        case "select":
+          $output .= form_item($field[1], check_output($event_fields[$name][3][$node->$name]));
+          break;
+        case "":
+          // special
+      }
+    }
+  }
+  return $output; 
+}
+
+function event_select($name, $value, $options, $extra = 0, $multiple = 0) {
+  if (count($options) > 0) {
+    foreach ($options as $key=>$choice) {
+      $select .= "<option value=\"$key\"". (is_array($value) ? (in_array($key, $value) ? " selected=\"selected\"" : "") : ($key == $value ? " selected=\"selected\"" : "")) .">". check_form($choice) ."</option>";
+    }
+    return "<select name=\"edit[$name]". ($multiple ? "[]" : "") ."\"". ($multiple ? " multiple " : "") . ($extra ? " $extra" : "") .">$select</select>";
+  }
+}
+
 
 function event_page() {
   $op = $_POST["op"];
@@ -443,6 +476,23 @@ function event_block($op = "list", $delta = 0) {
       return $block;
     }
   }
+}
+
+function event_help($section = "admin/help#event") {
+  $output = "";
+
+  switch ($section) {
+    case 'admin/system/modules#description':
+      $output = t("Enables users to submit events.");
+      break;
+    case 'admin/system/modules/event':
+      $output = t("Events are what you think you they are. Occurrences happenning an a given time and place.");
+      break;
+    case 'admin/help#event':
+      $output = "<p>The event module lets you add fields by adding lines to the $event_fields array at the top of event.module.</p>";
+      break;
+  }
+  return $output;
 }
 
 ?>

@@ -7,7 +7,7 @@ Send comments to kjartan@drupal.org.
 Requirements
 ------------
 
-This module requires the lastest version of the current Drupal 4 version.
+This module requires Drupal 4.3 or higher.
 
 Installation
 ------------
@@ -22,6 +22,8 @@ Installation
 3. Enable the module in admin >> site configuration >> modules 
    and set the module settings to your liking in 
    admin >> site configuration >> modules >> event.
+
+4. optional. add custom fields by editing the first function in event.module soruce code file
 
 Author
 ------
