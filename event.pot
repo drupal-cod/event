@@ -1,0 +1,229 @@
+# LANGUAGE translation of PROJECT
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+msgid ""
+msgstr "Project-Id-Version: PROJECT\n"
+"POT-Creation-Date: 2003-12-05 12:26+0100\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: event.module
+msgid "Lets users make events and keep calendars."
+msgstr ""
+
+#: event.module
+msgid "Events are what you think you they are. Occurrences happening an a given time and place."
+msgstr ""
+
+#: event.module
+msgid "Calendar to browse events."
+msgstr ""
+
+#: event.module
+msgid "List of upcoming events."
+msgstr ""
+
+#: event.module
+msgid "Browse events"
+msgstr ""
+
+#: event.module
+msgid "Upcoming events"
+msgstr ""
+
+#: event.module
+msgid "more"
+msgstr ""
+
+#: event.module
+msgid "More events."
+msgstr ""
+
+#: event.module
+msgid "Explanation or submission guidelines"
+msgstr ""
+
+#: event.module
+msgid "This text will be displayed at the top of the event submission form.  Useful for helping or instructing your users."
+msgstr ""
+
+#: event.module
+msgid "Start of week"
+msgstr ""
+
+#: event.module
+msgid "Sunday"
+msgstr ""
+
+#: event.module
+msgid "Monday"
+msgstr ""
+
+#: event.module
+msgid "The day the weeks starts in the block calendar."
+msgstr ""
+
+#: event.module, event.module
+msgid "Home"
+msgstr ""
+
+#: event.module, event.module, event.module
+msgid "Events"
+msgstr ""
+
+#: event.module, event.module, event.module
+msgid "Search"
+msgstr ""
+
+#: event.module
+msgid "Search Events"
+msgstr ""
+
+#: event.module
+msgid "Upcoming"
+msgstr ""
+
+#: event.module
+msgid "Upcoming Events"
+msgstr ""
+
+#: event.module
+msgid "search events"
+msgstr ""
+
+#: event.module
+msgid "edit event"
+msgstr ""
+
+#: event.module
+msgid "Edit this event."
+msgstr ""
+
+#: event.module, event.module
+msgid "calendar"
+msgstr ""
+
+#: event.module, event.module
+msgid "events"
+msgstr ""
+
+#: event.module
+msgid "Show events"
+msgstr ""
+
+#: event.module, event.module
+msgid "event"
+msgstr ""
+
+#: event.module
+msgid "search"
+msgstr ""
+
+#: event.module
+msgid "An event contains information on an event in real life."
+msgstr ""
+
+#: event.module
+msgid "Required."
+msgstr ""
+
+#: event.module, event.module
+msgid "Start"
+msgstr ""
+
+#: event.module
+msgid "January"
+msgstr ""
+
+#: event.module
+msgid "February"
+msgstr ""
+
+#: event.module
+msgid "March"
+msgstr ""
+
+#: event.module
+msgid "April"
+msgstr ""
+
+#: event.module
+msgid "May"
+msgstr ""
+
+#: event.module
+msgid "June"
+msgstr ""
+
+#: event.module
+msgid "July"
+msgstr ""
+
+#: event.module
+msgid "August"
+msgstr ""
+
+#: event.module
+msgid "September"
+msgstr ""
+
+#: event.module
+msgid "October"
+msgstr ""
+
+#: event.module
+msgid "November"
+msgstr ""
+
+#: event.module
+msgid "December"
+msgstr ""
+
+#: event.module
+msgid "When is this event taking place."
+msgstr ""
+
+#: event.module
+msgid "Details"
+msgstr ""
+
+#: event.module
+msgid "Search results"
+msgstr ""
+
+#: event.module
+msgid "No matches found."
+msgstr ""
+
+#: event.module
+msgid "Search events"
+msgstr ""
+
+#: event.module
+msgid "Date period"
+msgstr ""
+
+#: event.module
+msgid "From"
+msgstr ""
+
+#: event.module
+msgid "To"
+msgstr ""
+
+#: event.module
+msgid "minutes"
+msgstr ""
+
+#: event.module
+msgid "hours"
+msgstr ""
+
+#: event.module
+msgid "days"
+msgstr ""
+
