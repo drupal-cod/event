@@ -31,13 +31,22 @@ function event_head() {
 function event_block($op = 'list', $delta = 0) {
   if ($op == 'list') {
     $blocks[0]['info'] = t('Calendar to browse events.');
+    $blocks[1]['info'] = t('List of upcoming events.');
     return $blocks;
   }
   else {
     if (user_access('access content')) {
-      $block['subject'] = t('Browse events');
-      $block['content'] = event_calendar('event_calendar_simple', $year, $month, $day);
-      return $block;
+      switch ($delta) {
+        case 0:
+          $block['subject'] = t('Browse events');
+          $block['content'] = event_calendar('event_calendar_simple', $year, $month, $day);
+          return $block;
+        case 1:
+          $block['subject'] = t('Upcoming events');
+          $block['content'] = event_block_upcoming();
+          $block['content'] .= "<div class=\"more-link\">". l(t("more"),"event", array("title" => t("More events."))) ."</div>";
+          return $block;
+      }
     }
   }
 }
@@ -567,6 +576,39 @@ function event_query_form() {
 function theme_event_query_results($result) {
   while ($node = db_fetch_object($result)) {
     node_view(node_load($node), 1);
+  }
+}
+
+/* Two helper functions for upcoming events block */
+/* Borrowed some code from weblinks.module */
+
+function event_block_upcoming($limit = 10) {
+  global $user;
+  $time = time();
+  $result = db_query_range("SELECT n.nid, n.title, n.status, n.moderate, e.start FROM {node} n INNER JOIN {event} e on n.nid = e.nid WHERE n.type='event' AND n.status = 1 AND n.moderate = 0 AND e.start >= $time",0,$limit);
+
+  while ($node = db_fetch_object($result)) {
+    $links[] = $node;
+  }
+
+  return theme("theme_event_upcoming_list",$links);
+}
+
+function theme_event_upcoming_list($links) {
+  if (is_array($links) && (sizeof($links) > 0)) {
+    foreach ($links as $node) {
+
+       $minutesleft = ( $node->start - time()) / 60;
+       if ( $minutesleft < 60 )
+         $timeleft = floor($minutesleft) . "&nbsp;" . t('minutes');
+       else if ( $minutesleft < (24*60) )
+         $timeleft = floor($minutesleft/60) . "&nbsp;" . t('hours');
+       else
+         $timeleft = floor($minutesleft/(24*60)) . "&nbsp;" . t('days');
+
+       $items[] = l($node->title, "node/view/$node->nid", array("title" => $node->title)) . " ($timeleft)";
+    }
+    return theme("theme_item_list",$items);
   }
 }
 
