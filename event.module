@@ -1058,7 +1058,7 @@ function event_block_upcoming($limit = 6) {
   global $user;
   // For two hours, we display "NOW"
   $time = time()-(2*60*60);
-  $result = db_query_range('SELECT n.nid, n.title, n.status, n.moderate, e.* FROM {node} n '. node_access_join_sql() ." INNER JOIN {event} e ON n.nid = e.nid WHERE n.type='event' AND ". node_access_where_sql() ." AND n.status = 1 AND e.start >= $time ORDER BY e.start", 0, $limit);
+  $result = db_query_range('SELECT DISTINCT(n.nid), n.title, n.status, n.moderate, e.* FROM {node} n '. node_access_join_sql() ." INNER JOIN {event} e ON n.nid = e.nid WHERE n.type='event' AND ". node_access_where_sql() ." AND n.status = 1 AND e.start >= $time ORDER BY e.start", 0, $limit);
 
   while ($node = db_fetch_object($result)) {
     $links[] = $node;
