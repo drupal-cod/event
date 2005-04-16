@@ -56,6 +56,12 @@
 .event-calendar td.selected {
   background: #99f;
 }
+.event-calendar td.year, .event-calendar td.month {
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.2em;
+  border-width: 1px 0px;
+}
 
 /*  days of the week header cells */
 .event-calendar td.days {
@@ -260,7 +266,7 @@
   width: 100%;
 }
 .event-calendar .event .stripe-10 {
-  background-color: #FFF;
+  background-color: #DDD;
   height: 5px;
   width: 100%;
 }

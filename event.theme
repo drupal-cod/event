@@ -61,8 +61,10 @@ function theme_event_calendar_table($op, $header, $rows) {
  *
  * @param node
  *   The node being displayed
+ * @param module
+ *   The name of the external module calling the function. Default: null;
  */
-function theme_event_node_day($node) {
+function theme_event_node_day($node, $module = NULL) {
   $output .= '<div class="event dayview">'."\n";
   $output .= '<div class="type">'. l('('. $node->event_node_title .')', 'event/'.gmdate('Y/m/d', $node->start).'/day/'.$node->type, array('title' => t('limit view to events of this type'))).'</div>'."\n";
 
@@ -81,8 +83,10 @@ function theme_event_node_day($node) {
  *
  * @param node
  *   The node being displayed
+ * @param module
+ *   The name of the external module calling the function. Default: null;
  */
-function theme_event_node_week($node) {
+function theme_event_node_week($node, $module = NULL) {
   static $stripe, $stripe_map;
 
   if(!$stripe_map[$node->nid]) {
@@ -127,8 +131,10 @@ function theme_event_node_week($node) {
  *
  * @param node
  *   The node being displayed
+ * @param module
+ *   The name of the external module calling the function. Default: null;
  */
-function theme_event_node_month($node) {
+function theme_event_node_month($node, $module = NULL) {
   static $stripe, $stripe_map;
 
   if(!$stripe_map[$node->nid]) {
@@ -173,9 +179,11 @@ function theme_event_node_month($node) {
  *
  * @param node
  *   The node being displayed
+ * @param module
+ *   The name of the external module calling the function. Default: null;
  */
 
-function theme_event_node_table($node) {
+function theme_event_node_table($node, $module = NULL) {
   static $stripe, $stripe_map, $link_count;
   $link_count++;
 
@@ -191,7 +199,9 @@ function theme_event_node_table($node) {
 
   $output .= '<div class="event tableview">'."\n";
   $output .= '<div class="stripe-'. $stripe_map[$node->nid] .'"></div>'."\n";
-  $output .= '<div class="type">'. l('('. $node->event_node_title .')', 'event/'.gmdate('Y/m/d', $node->start).'/table/'.$node->type, array('title' => t('limit view to events of this type'))).'</div>'."\n";
+  if(!$module) {
+    $output .= '<div class="type">'. l('('. $node->event_node_title .')', 'event/'.gmdate('Y/m/d', $node->start).'/table/'.$node->type, array('title' => t('limit view to events of this type'))).'</div>'."\n";
+  }
   $output .= '<div class="title">'. l($node->title, "node/$node->nid", array('title' => t('view this event'))) .'</div>'."\n";
 
   switch ($node->event_state) {
@@ -211,8 +221,10 @@ function theme_event_node_table($node) {
   }
 
   $output .= '<div id="info_'. $link_count .'" class="info">'."\n";
-  $output .= '<div class="start"><nobr>Start: '. $node->start_format .'</nobr></div>'."\n";
-  $output .= '<div class="end"><nobr>End: '. $node->end_format .'</nobr></div>'."\n";
+  if($node->event_state != 'singleday') {
+    $output .= '<div class="start"><nobr>Start: '. $node->start_format .'</nobr></div>'."\n";
+    $output .= '<div class="end"><nobr>End: '. $node->end_format .'</nobr></div>'."\n";
+  }
   $output .= '<div class="content">'. $node->teaser .'</div></div>'."\n";
 
   $links = $node->event_links;

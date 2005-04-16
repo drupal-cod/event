@@ -252,7 +252,7 @@ function event_page($year = NULL, $month = NULL, $day = NULL, $view = NULL, $typ
     case 'week':
         // week view
         // setup calendar table header
-        $temp = $stamp -(gmdate('w', $stamp) * (86400));
+        $temp = $stamp - (_event_day_of_week($stamp) * (86400));
         $headertitle = t('Week of '. gmdate('F', $temp)) .' '.  gmdate('d', $temp) .', '. $year;
         $colspan = 5;
         $rows = event_calendar_week('page', $stamp, $types, $terms);
@@ -276,8 +276,8 @@ function event_page($year = NULL, $month = NULL, $day = NULL, $view = NULL, $typ
   // build header navigation
   $prev = _event_nav($stamp, 'prev', $view, $types, $terms, $duration);
   $next = _event_nav($stamp, 'next', $view, $types, $terms, $duration);
-  // setup calendar table header
 
+  // setup calendar table header
   $header = array(
     array('class' => 'prev', 'data' => $prev),
     array('class' => 'heading', 'data' => $headertitle, 'colspan' => $colspan),
@@ -374,7 +374,7 @@ function event_calendar_month($op, $stamp, $types = NULL, $terms = NULL) {
   // pad the first week row array to fill up days in the previous month we don't build
   $row = array_fill(0, 6, '');
   // get the day of week offset value for the first day of the month
-  $offset = $start = gmdate('w', $curstamp);
+  $start = $offset = _event_day_of_week($curstamp);
   // render the month calendar
   while ($curstamp <= $lastday) {
     for ($x = $start; $x < 7; $x++) {
@@ -419,7 +419,7 @@ function event_calendar_week($op, $stamp, $types = NULL, $terms = NULL) {
   $today = _event_user_date();
 
   // apply offset to goto first day of week
-  $stamp -= (gmdate('w', $stamp) * (86400));
+  $stamp -= (_event_day_of_week($stamp) * (86400));
 
   for ($x = 0; $x < 7; $x++) {
     $year = gmdate('Y', $stamp);
@@ -450,7 +450,7 @@ function event_calendar_day($op, $stamp, $types = NULL, $terms = NULL) {
   $year = gmdate('Y', $stamp);
   $month = gmdate('m', $stamp);
   $day = gmdate('j', $stamp);
-  $dow = gmdate('w', $stamp);
+  $dow = _event_day_of_week($stamp);
   $month_name = gmdate('M', $stamp);
   $weekdays = event_week_days();
 
@@ -480,7 +480,7 @@ function event_calendar_table($op, $stamp, $endstamp, $types = NULL, $terms = NU
     $month = gmdate('m', $stamp);
     $cur_day = gmdate('j', $stamp);
     $month_name = gmdate('M', $stamp);
-    $dow = gmdate('w', $stamp);
+    $dow = _event_day_of_week($stamp);
     $weekdays = event_week_days();
 
     $rows[][] = array('colspan' => 3,
@@ -491,6 +491,186 @@ function event_calendar_table($op, $stamp, $endstamp, $types = NULL, $terms = NU
   }
 
   return $rows;
+}
+
+/**
+ * Returns a calendar in the requested format, populated with the provided nodes.
+ *
+ * @ingroup event_view
+ *
+ * @param $view - The format of calendar to return. Possible values:
+ *                "table": A tabular calendar.
+ *                "month": A month calendar.
+ *                "week": A week calendar.
+ *                "day": A day calendar.
+ *  @param $nodes – An associative array of nodes with nids for key values.
+ *           Node objects must have GMT timestamp values for start ($node->start).
+ *           Optionally, an end value ($node->end) and a timezone offset value
+ *           in the same format as drupal core ($node->tz). If a node has no end
+ *           value, it is rendered on only one day. If no timezone value is displayed
+ *           the time is rendered with no timezone offset (GMT).
+ *  @param $module - String containing the name of the module calling the function
+ *  @param $title - A string value that will be printed into the header of the calendar
+ *  @return Themed calendar view of nodes
+ */
+function event_get_calendar($view, $nodes, $module, $title = NULL) {
+  $today = _event_user_date();
+
+  foreach ($nodes as $node) {
+    $node->event_links = module_invoke_all('link', 'event_node_'. $view, $node, FALSE);
+    $nodes[$node->nid] = $node;
+    $nid->nid = $node->nid;
+
+    $node_start = gmmktime(0, 0, 0, _event_date('m', $node->start, $node->tz), _event_date('d', $node->start, $node->tz), _event_date('Y', $node->start, $node->tz));
+    if ($node->end) {
+      $node_end = gmmktime(0, 0, 0, _event_date('m', $node->end, $node->tz), _event_date('d', $node->end, $node->tz), _event_date('Y', $node->end, $node->tz));
+    }
+    else {
+      $node_end = $node_start;
+    }
+
+    if ($node_start == $node_end) {
+      $nid->event_state = 'singleday';
+      $nid->stamp = $node_start;
+      $data[_event_date('Y', $node_start, $node->tz)][_event_date('m', $node_start, $node->tz)][_event_date('j', $node_start, $node->tz)][] = $nid;
+    }
+    else {
+      // roll through each day the event occurs and set an entry for each
+      for ($x = $node_start; $x <= $node_end; $x += 86400) {
+        if ($x == $node_end) {
+          $nid->event_state = 'end';
+          $nid->stamp = $x;
+          $data[_event_date('Y', $x, $node->tz)][_event_date('m', $x, $node->tz)][_event_date('j', $x, $node->tz)][] = $nid;
+        }
+        elseif ($x == $node_start) {
+          $nid->event_state = 'start';
+          $nid->stamp = $x;
+          $data[_event_date('Y', $x, $node->tz)][_event_date('m', $x, $node->tz)][_event_date('j', $x, $node->tz)][] = $nid;
+        }
+        else {
+          $nid->event_state = 'ongoing';
+          $nid->stamp = $x;
+          $data[_event_date('Y', $x, $node->tz)][_event_date('m', $x, $node->tz)][_event_date('j', $x, $node->tz)][] = $nid;
+        }
+      }
+    }
+  }
+
+  // order the years, months and days
+  ksort($data, SORT_NUMERIC);
+  foreach($data as $year => $months) {
+    ksort($data[$year], SORT_NUMERIC);
+    foreach($data[$year] as $month => $days) {
+      ksort($data[$year][$month], SORT_NUMERIC);
+    }
+  }
+
+  $weekdays = event_week_days();
+  switch ($view) {
+    case 'day':
+    case 'table':
+        foreach ($data as $year => $months) {
+          if(count($data) > 1) {
+            // add year heading
+            $rows[][] = array(
+                        'class' => 'heading year',
+                        'id' => 'year'.$year,
+                        'data' => $year);
+          }
+          foreach($months as $month => $days) {
+            foreach($days as $day => $nids) {
+              $content = theme('event_calendar_date_box', $year, $month, $day, 'table');
+              foreach($nids as $nid) {
+                if(!$month_name) {
+                  $month_name = gmdate('M', $nid->stamp);
+                  $dow = _event_day_of_week($nid->stamp);
+                }
+                $node = $nodes[$nid->nid];
+
+                $node->event_state = $nid->event_state;
+
+                $content .= theme('event_node_'. $view, $node, $module);
+              }
+              $rows[][] = array(
+                'class' => strtolower("$month_name ". $weekdays[$dow]['t'] . ($nid->stamp == $today ? ' today' : '')),
+                'id' => strtolower($month_name . $day),
+                'data' => $content);
+              $month_name = NULL;
+            }
+          }
+        }
+      break;
+
+    case 'week':
+    case 'month':
+        $colspan = '7';
+        foreach ($data as $year => $months) {
+          if(count($data) > 1) {
+            // add year heading
+            $rows[][] = array(
+                        'class' => 'heading year',
+                        'id' => 'year'. $year,
+                        'data' => $year,
+                        'colspan' => $colspan);
+          }
+          foreach ($months as $month => $days) {
+            // timestamp of first day in month
+            $curstamp = gmmktime(0, 0, 0, $month, 1, $year);
+            // timestamp of last day in month
+            $lastday = gmmktime(0, 0, 0, $month, gmdate('t', $curstamp), $year);
+            // pad the first week row array to fill up days in the previous month we don't build
+            $row = array_fill(0, 6, '');
+            // get the day of week offset value for the first day of the month
+            $start = $offset = _event_day_of_week($curstamp);
+            // get name of month
+            $month_name = gmdate('M', $curstamp);
+            // set week counter
+            $week = 0;
+            // add month header
+            $rows[][] = array(
+                        'class' => 'heading month',
+                        'id' => 'month'. $month,
+                        'data' => $month_name,
+                        'colspan' => $colspan);
+            $rows[] = event_week_header();
+
+            while ($curstamp <= $lastday) {
+              for ($x = $start; $x < 7; $x++) {
+                $cur_day = (($week * 7) + ($x + 1) - $offset);
+
+                $content = theme('event_calendar_date_box', $year, $month, $cur_day, $view);
+
+                // render nodes for the day
+                if(is_array($days[$cur_day])) {
+                  foreach($days[$cur_day] as $nid) {
+                    $node = $nodes[$nid->nid];
+                    $node->event_state = $nid->event_state;
+                    $content .= theme('event_node_'. $view, $node, $module);
+                  }
+                }
+
+                $row[$x] = array(
+                  'class' => strtolower("$month_name ". $weekdays[$x]['t'] . ($curstamp == $today ? ' today' : '')),
+                  'id' => strtolower($month_name . $day),
+                  'data' => $content);
+
+                $curstamp += 86400;
+                if ($curstamp > $lastday) {
+                  $x = 8;
+                }
+              }
+              $week++;
+              $start = 0;
+              $rows[] = array_pad($row, 7, '&nbsp;');
+              $row = array();
+            }
+          }
+        }
+      break;
+  }
+
+  $header[] = ($title ? array('class' => 'heading', 'data' => $title, 'colspan' => $colspan) : array());
+  return theme('event_calendar_'. $view, 'page', $header, $rows);
 }
 
  /**
@@ -776,12 +956,20 @@ function _event_date($format, $timestamp, $timezone = null) {
     $timestamp += variable_get('date_default_timezone', 0);
   }
 
-  $result = gmdate($format, $timestamp);
   if ($format == 'w') {
-    // adjust day of week to settings value (mon or sun)
-    $result = (variable_get('date_first_day', 1) ? ($result == 0 ? 6 : --$result ) : $result);
+    $result = _event_day_of_week($timestamp);
+  }
+  else {
+    $result = gmdate($format, $timestamp);
   }
   return  $result;
+}
+
+// return the day of week with start of week offset applied
+function _event_day_of_week($stamp) {
+  $dow = gmdate('w', $stamp);
+  $dow = (variable_get('date_first_day', 1) ? ($dow == 0 ? 6 : --$dow ) : $dow);
+  return $dow;
 }
 
 /**
