@@ -1,3 +1,17 @@
+15. April 2005
+-----------------
+[Aaron Welch]
+- Update for drupal 4.6
+- Removed event node type and replace with nodeapi model
+- Add month, week, day and table views
+- Rework timezone handling
+- Support for start and end dates
+- Moved all output rendering to event.theme file
+- Add filtering of event views by content type and taxonomy
+- Update event.css file for new views
+- General navigation and calendar block updates
+- Update settings for default event page view type and timezone handling
+
 09. November 2003
 -----------------
 [Kjartan Mannes]

@@ -3,9 +3,9 @@ Send comments to gerhard@killesreiter.de.
 
 The event.module has the following features:
 
-- two types of event calendar
-- admin defined fields
-- searching of events
+- event types based on nodeapi
+- four calendar views: month, day, week, and table
+- filtering of views based on content type and taxonomy
 
 Sponsors:
 ---------
@@ -13,3 +13,5 @@ Sponsors:
   Verband der Vereine Deutscher Studenten http://vdst.net/
 - Sortable calendar table (Drupal 4.4):
   National Association of Hispanic Professionals http://www.nshp.org/
+- Nodeapi model and multiday event support (Drupal 4.6):
+  CivicSpace http://www.civicspacelabs.org

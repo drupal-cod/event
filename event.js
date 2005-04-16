@@ -1,4 +1,4 @@
-function popupnotes(target){
+function popupnotes(target) {
   targetObj = getStyleObject(target);
 
   if(targetObj.visibility=='visible') {

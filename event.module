@@ -28,59 +28,43 @@ function event_html_head() {
  * @param $main unused in this method.
  * @return an array of links, or an empty array if no links apply for the criteria passed to this method.
  */
-function event_link($type, $node = NULL, $teaser = FALSE) {  
+function event_link($type, $node = NULL, $teaser = FALSE) {
   switch ($type) {
     case 'node':
       if (event_enabled_state($node->type) == 'all') {
         $links[] = l(t('calendar'), 'event/'. format_date($node->start, 'custom', 'Y/m/d'));
       }
-      elseif(event_enabled_state($node->type) == 'solo') {
+      elseif (event_enabled_state($node->type) == 'solo') {
         $links[] = l(t('calendar'), 'event/'. format_date($node->start, 'custom', 'Y/m/d') .'/month/'. $node->type);
       }
       break;
     case 'event_month':
       if (user_access('access content')) {
-        $links[] = l(t('week'), "event/$node->year/$node->month/$node->day/week/". $filter, array('title' => t('Week view')));
-        $links[] = l(t('day'), "event/$node->year/$node->month/$node->day/day/". $filter, array('title' => t('Day view')));
-        $links[] = l(t('table'), "event/$node->year/$node->month/$node->day/table/". $filter, array('title' => t('Table view')));
+        $links[] = l(t('week'), "event/$node->year/$node->month/$node->day/week/". $node->filter, array('title' => t('Week view')));
+        $links[] = l(t('day'), "event/$node->year/$node->month/$node->day/day/". $node->filter, array('title' => t('Day view')));
+        $links[] = l(t('table'), "event/$node->year/$node->month/$node->day/table/". $node->filter, array('title' => t('Table view')));
       }
       break;
     case 'event_week':
       if (user_access('access content')) {
-        $links[] = l(t('month'), "event/$node->year/$node->month/$node->day/month/". $filter, array('title' => t('Month view')));
-        $links[] = l(t('day'), "event/$node->year/$node->month/$node->day/day/". $filter, array('title' => t('Day view')));
-        $links[] = l(t('table'), "event/$node->year/$node->month/$node->day/table/". $filter, array('title' => t('Table view')));
+        $links[] = l(t('month'), "event/$node->year/$node->month/$node->day/month/". $node->filter, array('title' => t('Month view')));
+        $links[] = l(t('day'), "event/$node->year/$node->month/$node->day/day/". $node->filter, array('title' => t('Day view')));
+        $links[] = l(t('table'), "event/$node->year/$node->month/$node->day/table/". $node->filter, array('title' => t('Table view')));
       }
       break;
     case 'event_day':
       if (user_access('access content')) {
-        $links[] = l(t('month'), "event/$node->year/$node->month/$node->day/month/". $filter, array('title' => t('Month view')));
-        $links[] = l(t('week'), "event/$node->year/$node->month/$node->day/week/". $filter, array('title' => t('Week view')));
-        $links[] = l(t('table'), "event/$node->year/$node->month/$node->day/table/". $filter, array('title' => t('Table view')));
+        $links[] = l(t('month'), "event/$node->year/$node->month/$node->day/month/". $node->filter, array('title' => t('Month view')));
+        $links[] = l(t('week'), "event/$node->year/$node->month/$node->day/week/". $node->filter, array('title' => t('Week view')));
+        $links[] = l(t('table'), "event/$node->year/$node->month/$node->day/table/". $node->filter, array('title' => t('Table view')));
       }
       break;
     case 'event_table':
       if (user_access('access content')) {
-        $links[] = l(t('month'), "event/$node->year/$node->month/$node->day/month/". $filter, array('title' => t('Month view')));
-        $links[] = l(t('week'), "event/$node->year/$node->month/$node->day/week/". $filter, array('title' => t('Week view')));
-        $links[] = l(t('day'), "event/$node->year/$node->month/$node->day/day/". $filter, array('title' => t('Day view')));
+        $links[] = l(t('month'), "event/$node->year/$node->month/$node->day/month/". $node->filter, array('title' => t('Month view')));
+        $links[] = l(t('week'), "event/$node->year/$node->month/$node->day/week/". $node->filter, array('title' => t('Week view')));
+        $links[] = l(t('day'), "event/$node->year/$node->month/$node->day/day/". $node->filter, array('title' => t('Day view')));
       }
-      break;
-    case 'event_node_month':
-        // this is called by event to inject links into individual node in the month calendar
-        $links[] = l(t('more'), '', array('onclick' => "popupnotes('info_".$node->nid."'); return false;", 'title' => "show detailed information for this event"));
-      break;
-    case 'event_node_week':
-        // this is called by event to inject links into individual node in the week calendar
-        $links[] = l(t('more'), '', array('onclick' => "popupnotes('info_".$node->nid."'); return false;", 'title' => "show detailed information for this event"));
-      break;
-    case 'event_node_day':
-        // this is called by event to inject links into individual node in the day calendar
-        $links[] = l(t('more'), '', array('onclick' => "popupnotes('info_".$node->nid."'); return false;", 'title' => "show detailed information for this event"));
-      break;
-    case 'event_node_table':
-        // this is called by event to inject links into individual node in the table calendar
-        $links[] = l(t('more'), '', array('onclick' => "popupnotes('info_".$node->nid."'); return false;", 'title' => "show detailed information for this event"));
       break;
   }
   return $links ? $links : array();
@@ -100,11 +84,7 @@ function event_menu($may_cache) {
                      'title' => t('events'),
                      'callback' => 'event_page',
                      'access' => user_access('access content'),
-                     'type' => MENU_SUGGESTED_ITEM);
-    $items[] = array('path' => 'event/'. format_date(gmmktime(), 'custom', 'Y/m/d'),
-                     'title' => t('calendar'),
-                     'access' => user_access('access content'),
-                     'type' => MENU_DYNAMIC_ITEM);
+                     'type' => MENU_CALLBACK);
     $items[] = array('path' => 'event/additem',
                      'title' => t('add item to calendar'),
                      'callback' => 'event_add_item',
@@ -114,7 +94,7 @@ function event_menu($may_cache) {
                      'title' => t('filter by content type'),
                      'callback' => 'event_type',
                      'access' => user_access('access content'),
-                     'type' => MENU_SUGGESTED_ITEM);
+                     'type' => MENU_CALLBACK);
     $items[] = array('path' => 'event/term',
                      'title' => t('filter by taxonomy'),
                      'callback' => 'event_term',
@@ -135,34 +115,34 @@ function event_menu($may_cache) {
  */
 function event_settings() {
 
-  if(variable_get('configurable_timezones', 0)) {
+  if (variable_get('configurable_timezones', 0)) {
     $group .= form_radios(t('Event timezone input'), 'event_timezone_input', variable_get('event_timezone_input', 'site'), array('site' => t('Use the sitewide timezone'), 'user' => t('Use the timezone of the user editing or creating the event'), 'input' => t('Allow users to set event timezones')), t('Events are saved with a timezone value. This setting allows you to determine how the timezone is determined when creating or editing an event.'));
 
     $group .= form_radios(t('Event timezone display'), 'event_timezone_display', variable_get('event_timezone_display', 'event'), array('event' => t('Use the event\'s timezone'), 'user' => t('Use the user\'s timezone')), t('Events are saved with a timezone value. This setting allows you to determine if the event\'s timezone or the user\'s personal timezone setting is used to display the time for an event.'));
   }
   else {
-    if(variable_get('event_timezone_input', 'site') == 'user') {
+    if (variable_get('event_timezone_input', 'site') == 'user') {
       variable_set('event_timezone_input', 'site');
     }
     variable_set('event_timezone_display', 'event');
 
     $group .= form_radios(t('Event timezone input'), 'event_timezone_input', variable_get('event_timezone_input', 'site'), array('site' => t('Use the sitewide timezone'), 'user" disabled' => t('Use the timezone of the user editing or creating the event'), 'input' => t('Allow users to set event timezones')), t('Events are saved with a timezone value. This setting allows you to determine how the timezone is determined when creating or editing an event. You must have \'Configurable time zones\' enabled in '.l(t('site configuration'), 'admin/settings').' before you can enable user\'s timezones for this feature.'));
 
-    $group .= form_radios(t('Event timezone display'), 'event_timezone_display', 'event', array('event' => t('Use the event\'s timezone'), 'user' => t('Use the user\'s timezone')), t('Events are saved with a timezone value. This setting allows you to determine if the event\'s timezone or the user\'s personal timezone setting is used to display the time for an event. You must have \'Configurable time zones\' enabled in '.l(t('site configuration'), 'admin/settings').' before you can enable user\'s timezones for this feature.'), '', array('disabled'=>true));
+    $group .= form_radios(t('Event timezone display'), 'event_timezone_display', 'event', array('event' => t('Use the event\'s timezone'), 'user' => t('Use the user\'s timezone')), t('Events are saved with a timezone value. This setting allows you to determine if the event\'s timezone or the user\'s personal timezone setting is used to display the time for an event. You must have \'Configurable time zones\' enabled in '.l(t('site configuration'), 'admin/settings').' before you can enable user\'s timezones for this feature.'), '', array('disabled' => true));
   }
   $output = form_group(t('General Event options'), $group);
 
   $group = form_radios(t('Default overview'), 'event_overview', variable_get('event_overview', 'day'), array('day' => t('Day'), 'week' => t('Week'), 'month' => t('Month'), 'table' => t('Table')), t('The default event view to display when no format is specifically requested. This is also the view that will be displayed from the block calendar links.'));
   $group .= form_textfield(t('Table view default period'), 'event_table_duration', variable_get('event_table_duration', '30'), 5, 3, t('The default number of days to display in the table view. You can specify a different number of days in the url. More info on the event url format %link', array('%link' => l(t('here'), 'admin/help/event#url-format'))));
 
-  if(module_exist('taxonomy')) {
-    $group .= form_radios( 'Taxonomy filter controls', 'event_taxonomy_control',
+  if (module_exist('taxonomy')) {
+    $group .= form_radios('Taxonomy filter controls', 'event_taxonomy_control',
               variable_get('event_taxonomy_control', 'all'),
               array('all' => t('Show taxonomy filter control on calendar views'),
               'request' => t('Only show taxonomy filter control when taxonomy filter view is requested'),
               'never' => t('Never show taxonomy filter control')));
   }
-  $group .= form_radios( 'Content type filter controls', 'event_type_control',
+  $group .= form_radios('Content type filter controls', 'event_type_control',
             variable_get('event_type_control', 'all'),
             array('all' => t('Show content type filter control on calendar views'),
             'request' => t('Only show content type filter control when content type filter view is requested'),
@@ -189,50 +169,51 @@ function event_page($year = NULL, $month = NULL, $day = NULL, $view = NULL, $typ
   $now = _event_user_time();
 
   // translate 'local' user time input to GMT
-  $stamp = _event_mktime(0, 0, 0, ($month ? $month : gmdate('m', $now)), ($day ? $day : gmdate('d', $now)), ($year ? $year : gmdate('Y', $now)));
+  $stamp = gmmktime(0, 0, 0, ($month ? $month : _event_date('m', $now)), ($day ? $day : _event_date('d', $now)), ($year ? $year : _event_date('Y', $now)));
   $year = gmdate('Y', $stamp);
   $month = gmdate('m', $stamp);
   $day = gmdate('d', $stamp);
 
   $view = $view ? $view : variable_get('event_overview', 'next');
 
-  if($_POST['edit']['event_type_select']) {
+  if ($_POST['edit']['event_type_select']) {
     drupal_goto('event/'. $year .'/'. $month .'/'. $day .'/'. $view .'/'. $_POST['edit']['event_type_select'] .'/'. $tids);
   }
 
-  if($_POST['edit']['event_term_select']) {
+  if ($_POST['edit']['event_term_select']) {
     drupal_goto('event/'. $year .'/'. $month .'/'. $day .'/'. $view .'/'. ($types ? $types : 'all') .'/'. $_POST['edit']['event_term_select']);
   }
 
   $breadcrumbs[] = l(t('Home'), NULL);
   $breadcrumbs[] = l(t('Events'), 'event');
 
-  if($types) {
+  if ($types) {
     // The '+' character in a query string may be parsed as ' '.
     $types = preg_split('/[+ ]/', $types);
-    foreach($types as $type) {
-      if(is_numeric($type)) {
+    foreach ($types as $type) {
+      if (is_numeric($type)) {
         $ctype = module_invoke('flexinode', 'load_content_type', $type);
-        if($ctype->name) {
+        if ($ctype->name) {
           $temp[$ctype->name] = 'flexinode-'. $type;
           $filter[] = $ctype->name;
         }
       }
-      elseif(substr($type, 0, 10) == 'flexinode-') {
+      elseif (substr($type, 0, 10) == 'flexinode-') {
         $ctype = module_invoke('flexinode', 'load_content_type', substr($type, 10));
-        if($ctype->name) {
+        if ($ctype->name) {
           $temp[$ctype->name] = $type;
           $filter[] = $ctype->name;
         }
       }
-      elseif($name = module_hook($type, 'node_name')) {
-        $temp[module_invoke($type, 'node_name', $node)] = $type;
+      elseif ($name = module_hook($type, 'node_name')) {
+        $x = module_invoke($type, 'node_name', $node);
+        $temp[$x] = $type;
         $filter[] = module_invoke($type, 'node_name', $node);
       }
     }
 
-    if(is_array($filter)) {
-      $top = l('view all', 'event/'.$year.'/'.$month.'/'.$day.'/day');
+    if (is_array($filter)) {
+      $links[] = l('view all', 'event/'. $year .'/'. $month .'/'. $day .'/'. $view .'/');
       $title =  t('Filter') .': ' .implode(', ', $filter);
       $types = $temp;
     }
@@ -242,8 +223,8 @@ function event_page($year = NULL, $month = NULL, $day = NULL, $view = NULL, $typ
   }
 
   $terms = null;
-  if($tids && $tids!='all') {
-    $top = l('view all', 'event/'.$year.'/'.$month.'/'.$day.'/day');
+  if ($tids && $tids != 'all') {
+    $links[] = l('view all', 'event/'.$year.'/'.$month.'/'.$day.'/day');
     if (preg_match('/^([0-9]+[+ ])+[0-9]+$/', $tids)) {
       // The '+' character in a query string may be parsed as ' '.
       $terms = preg_split('/[+ ]/', $tids);
@@ -262,7 +243,7 @@ function event_page($year = NULL, $month = NULL, $day = NULL, $view = NULL, $typ
     $output .= _event_get_type_control($types);
   }
 
-  switch($view) {
+  switch ($view) {
     case 'day':
         // day view
         $headertitle = t(gmdate('l', $stamp)) .' '. t(gmdate('F', $stamp)) .' '. $day .', '. $year;
@@ -271,7 +252,7 @@ function event_page($year = NULL, $month = NULL, $day = NULL, $view = NULL, $typ
     case 'week':
         // week view
         // setup calendar table header
-        $temp = $stamp - (gmdate('w', $stamp)*(86400));
+        $temp = $stamp -(gmdate('w', $stamp) * (86400));
         $headertitle = t('Week of '. gmdate('F', $temp)) .' '.  gmdate('d', $temp) .', '. $year;
         $colspan = 5;
         $rows = event_calendar_week('page', $stamp, $types, $terms);
@@ -286,31 +267,28 @@ function event_page($year = NULL, $month = NULL, $day = NULL, $view = NULL, $typ
         // table view
         // next 30 day view, $duration can be set for different ranges
         $duration = $duration ? $duration : variable_get('event_table_duration', '30');
-        $endstamp = $stamp + ($duration*86400);
+        $endstamp = $stamp + ($duration * 86400);
         $headertitle = t(gmdate('F', $stamp)) .' '. gmdate('d, Y', $stamp) .' - '. t(gmdate('F', $endstamp)) .' '. gmdate('d, Y', $endstamp);
         $rows = event_calendar_table('page', $stamp, $endstamp, $types, $terms);
       break;
   }
 
   // build header navigation
-  $prev = _event_nav( $stamp, 'prev', $view, $types, $terms );
-  $next = _event_nav( $stamp, 'next', $view, $types, $terms );
+  $prev = _event_nav($stamp, 'prev', $view, $types, $terms, $duration);
+  $next = _event_nav($stamp, 'next', $view, $types, $terms, $duration);
   // setup calendar table header
-  
+
   $header = array(
     array('class' => 'prev', 'data' => $prev),
     array('class' => 'heading', 'data' => $headertitle, 'colspan' => $colspan),
-    array('class' => 'next', 'data' => $next)
-  );
+    array('class' => 'next', 'data' => $next));
 
   $node->day = $day;
   $node->month = $month;
   $node->year = $year;
-  $node->types = ($types ? $types : 'all');
-  $node->terms = ($terms ? $types : 'all');
-  $output .= theme('links', module_invoke_all('link', 'event_'. $view, $node, FALSE));
+  $node->filter = ($types ? implode('+', $types) : 'all') .'/'. ($terms ? implode('+', $terms) : 'all');
+  $output .= theme('event_links', array_merge(module_invoke_all('link', 'event_'. $view, $node, FALSE), $links), $view);
 
-  $output .= $top;
   $output .= theme('event_calendar_'. $view, 'page', $header, $rows);
 
   drupal_set_title(t('Events') . ($title ? ' - '. $title : ''));
@@ -354,7 +332,7 @@ function event_calendar_month($op, $stamp, $types = NULL, $terms = NULL) {
   $month = gmdate('m', $stamp);
   $day = gmdate('d', $stamp);
 
-  switch($op) {
+  switch ($op) {
     case 'page':
         // setup callback for data population
         $callback = 'event_render_day';
@@ -363,10 +341,10 @@ function event_calendar_month($op, $stamp, $types = NULL, $terms = NULL) {
 
     case 'block':
         // create navigation links
-        $prev = _event_nav( $stamp, 'prev', 'month', $types, $terms );
-        $next = _event_nav( $stamp, 'next', 'month', $types, $terms );
+        $prev = _event_nav($stamp, 'prev', 'month', $types, $terms);
+        $next = _event_nav($stamp, 'next', 'month', $types, $terms);
 
-        $headertitle = l(t(gmdate('F', $stamp)) .' '. $year, 'event/'. $year .'/'. $month .'/'. $day );
+        $headertitle = l(t(gmdate('F', $stamp)) .' '. $year, 'event/'. $year .'/'. $month .'/'. $day);
         $header = array(
           array('class' => 'prev', 'data' => $prev),
           array('class' => 'heading', 'data' => $headertitle, 'colspan' => 5),
@@ -398,16 +376,15 @@ function event_calendar_month($op, $stamp, $types = NULL, $terms = NULL) {
   // get the day of week offset value for the first day of the month
   $offset = $start = gmdate('w', $curstamp);
   // render the month calendar
-  while($curstamp <= $lastday) {
+  while ($curstamp <= $lastday) {
     for ($x = $start; $x < 7; $x++) {
-      $cur_day = (($week*7)+($x+1)-$offset);
+      $cur_day = (($week * 7) + ($x + 1) - $offset);
       $row[$x] = array(
         'class' => strtolower("$month_name ". $weekdays[$x]['t'] . ($curstamp == $today ? ' today' : '') . ($cur_day == $day ? ' selected' : '')),
         'id' => strtolower($month_name . $cur_day),
-        'data' => $callback($year, $month, $cur_day, $view, $types, $terms)
-      );
+        'data' => $callback($year, $month, $cur_day, $view, $types, $terms));
       $curstamp += 86400;
-      if($curstamp > $lastday) {
+      if ($curstamp > $lastday) {
         $x = 8;
       }
     }
@@ -417,7 +394,7 @@ function event_calendar_month($op, $stamp, $types = NULL, $terms = NULL) {
     $row = array();
   }
 
-  switch($op) {
+  switch ($op) {
     case 'page':
         return $rows;
       break;
@@ -442,7 +419,7 @@ function event_calendar_week($op, $stamp, $types = NULL, $terms = NULL) {
   $today = _event_user_date();
 
   // apply offset to goto first day of week
-  $stamp -= (gmdate('w', $stamp)*(86400));
+  $stamp -= (gmdate('w', $stamp) * (86400));
 
   for ($x = 0; $x < 7; $x++) {
     $year = gmdate('Y', $stamp);
@@ -453,8 +430,7 @@ function event_calendar_week($op, $stamp, $types = NULL, $terms = NULL) {
     $row[$x] = array(
       'class' => strtolower("$month_name ". $weekdays[$x]['t'] . ($stamp == $today ? ' today' : '') . ($cur_day == $day ? ' selected' : '')),
       'id' => strtolower($month_name . $cur_day),
-      'data' => event_render_day($year, $month, $cur_day, 'week', $types, $terms)
-    );
+      'data' => event_render_day($year, $month, $cur_day, 'week', $types, $terms));
     $stamp += 86400;
   }
   $rows[] = $row;
@@ -495,7 +471,7 @@ function event_calendar_day($op, $stamp, $types = NULL, $terms = NULL) {
  * @param $end The GMT ending date for the table.
  * @return A fully themed table.
  */
-function event_calendar_table($op, $stamp, $endstamp, $types = NULL, $terms = NULL ) {
+function event_calendar_table($op, $stamp, $endstamp, $types = NULL, $terms = NULL) {
 
   $today = _event_user_date();
 
@@ -563,37 +539,75 @@ function event_query() {
 function event_calendar_data($year, $month, $day, $view = NULL, $types = NULL, $terms = NULL) {
   static $data;
 
+  $day_start = gmmktime(0, 0, 0, $month, $day, $year);
+
   if (!is_array($data[$year][$month])) {
     $data[$year][$month] = array();
-    $days = gmdate('j', gmmktime(0, 0, 0, $month + 1, 0, $year));
+    $days_stamp = gmmktime(0, 0, 0, $month + 1, 0, $year);
+    $days = gmdate('j', $days_stamp);
     $first = gmmktime(0, 0, 0, $month, 1, $year);
     $last = gmmktime(23, 59, 59, $month, $days, $year);
 
-    $result = db_query(db_rewrite_sql('SELECT n.nid FROM {event} e INNER JOIN {node} n USING (nid) WHERE n.status = 1 AND e.start > %d AND e.start < %d ORDER BY e.start'), $first, $last);
+    $day_end = gmmktime(23, 59, 59, $month, $day, $year);
 
-    while ($node = db_fetch_object($result)) {
-      $node = node_load(array('nid' => $node->nid));
+    $result = db_query(db_rewrite_sql('SELECT n.nid FROM {event} e INNER JOIN {node} n USING (nid) WHERE n.status = 1 AND ((e.start > %d AND e.start < %d) OR (e.end > %d AND e.end < %d) OR (e.start < %d AND e.end > %d)) ORDER BY e.start '), $first, $last, $first, $last, $first, $last);
+
+    while ($nid = db_fetch_object($result)) {
+      $node = node_load(array('nid' => $nid->nid));
+
       // we have to load these here since there is no way to pass the $view parameter to nodeapi through node_load :/
       $node->event_links = module_invoke_all('link', 'event_node_'. $view, $node, FALSE);
-      $data[$year][$month][_event_date('j', $node->start, $node->tz)][] = $node;
+      // this array contains the loaded nodes for the month, so we dont have them stored for every day they occur
+      $data[$year][$month]['nodes'][$nid->nid] = $node;
+
+      $node_start = gmmktime(0, 0, 0, _event_date('m', $node->start, $node->tz), _event_date('d', $node->start, $node->tz), _event_date('Y', $node->start, $node->tz));
+      $node_end = gmmktime(0, 0, 0, _event_date('m', $node->end, $node->tz), _event_date('d', $node->end, $node->tz), _event_date('Y', $node->end, $node->tz));
+
+      if ($node_start == $node_end) {
+        $nid->event_state = 'singleday';
+        $data[$year][$month][_event_date('j', $node_start, $node->tz)][] = $nid;
+      }
+      else {
+        // roll through each day the event occurs and set an entry for each
+        for ($x = ($first > $node_start ? $first : $node_start); $x <= $days_stamp; $x += 86400) {
+          if ($x == $node_end) {
+            $nid->event_state = 'end';
+            $data[$year][$month][_event_date('j', $x, $node->tz)][] = $nid;
+            $x = $days_stamp + 1;
+          }
+          elseif ($x == $node_start) {
+            $nid->event_state = 'start';
+            $data[$year][$month][_event_date('j', $x, $node->tz)][] = $nid;
+          }
+          else {
+            $nid->event_state = 'ongoing';
+            $data[$year][$month][_event_date('j', $x, $node->tz)][] = $nid;
+          }
+        }
+      }
     }
   }
 
   $nodes = array();
   $event_types = event_get_types();
   if ($data[$year][$month][$day]) {
-    if(isset($types)) {
+    if (isset($types)) {
       // content type filters set
-      if(isset($terms)) {
+      if (isset($terms)) {
         // taxonomy and content type filters set
-        foreach ($data[$year][$month][$day] as $node) {
-          if(in_array($node->type, $types) && event_taxonomy_filter($node, $terms)) {
+        foreach ($data[$year][$month][$day] as $nid) {
+          $node = $data[$year][$month]['nodes'][$nid->nid];
+          if (in_array($node->type, $types) && event_taxonomy_filter($node, $terms)) {
             // this node is the content type and taxonomy term requested
-            if(count($types)==1 && in_array($node->type, $event_types['solo'])) {
+            if (count($types) == 1 && in_array($node->type, $event_types['solo'])) {
               // only display solo types if there is only one event type requested
+              $node->event_current_date = $day_start;
+              $node->event_state = $nid->event_state;
               $nodes[] = $node;
             }
-            elseif(in_array($node->type, $event_types['all'])) {
+            elseif (in_array($node->type, $event_types['all'])) {
+              $node->event_current_date = $day_start;
+              $node->event_state = $nid->event_state;
               $nodes[] = $node;
             }
           }
@@ -601,31 +615,42 @@ function event_calendar_data($year, $month, $day, $view = NULL, $types = NULL, $
       }
       else {
         // only content type filters
-        foreach ($data[$year][$month][$day] as $node) {
-          if(in_array($node->type, $types)) {
-            if(count($types)==1 && in_array($node->type, $event_types['solo'])) {
+        foreach ($data[$year][$month][$day] as $nid) {
+          $node = $data[$year][$month]['nodes'][$nid->nid];
+          if (in_array($node->type, $types)) {
+            if (count($types) == 1 && in_array($node->type, $event_types['solo'])) {
               // only display solo types if there is only one event type requested
+              $node->event_current_date = $day_start;
+              $node->event_state = $nid->event_state;
               $nodes[] = $node;
             }
-            elseif(in_array($node->type, $event_types['all'])) {
+            elseif (in_array($node->type, $event_types['all'])) {
+              $node->event_current_date = $day_start;
+              $node->event_state = $nid->event_state;
               $nodes[] = $node;
             }
           }
         }
       }
     }
-    elseif(isset($terms)) {
+    elseif (isset($terms)) {
       // no types, only taxonomy filters
-      foreach ($data[$year][$month][$day] as $node) {
-        if(event_taxonomy_filter($node, $terms) && in_array($node->type, $event_types['all'])) {
+      foreach ($data[$year][$month][$day] as $nid) {
+        $node = $data[$year][$month]['nodes'][$nid->nid];
+        if (event_taxonomy_filter($node, $terms) && in_array($node->type, $event_types['all'])) {
+          $node->event_current_date = $day_start;
+          $node->event_state = $nid->event_state;
           $nodes[] = $node;
         }
       }
     }
     else {
-      foreach ($data[$year][$month][$day] as $node) {
+      foreach ($data[$year][$month][$day] as $nid) {
         // no filters set, only show events with content types states of 'all'
-        if(in_array($node->type, $event_types['all'])) {
+        $node = $data[$year][$month]['nodes'][$nid->nid];
+        if (in_array($node->type, $event_types['all'])) {
+          $node->event_current_date = $day_start;
+          $node->event_state = $nid->event_state;
           $nodes[] = $node;
         }
       }
@@ -636,9 +661,9 @@ function event_calendar_data($year, $month, $day, $view = NULL, $types = NULL, $
 }
 
 function event_taxonomy_filter($node, $terms) {
-  if($tids = taxonomy_node_get_terms($node->nid)) {
-    foreach($tids as $tid => $term) {
-      if(in_array($tid, $terms)) {
+  if ($tids = taxonomy_node_get_terms($node->nid)) {
+    foreach ($tids as $tid => $term) {
+      if (in_array($tid, $terms)) {
         return TRUE;
       }
     }
@@ -670,17 +695,17 @@ function event_render_day_single($year, $month, $day, $view, $types, $terms) {
  */
 function event_render_day($year, $month, $day, $view, $types, $terms) {
 
-  $output = theme('event_calendar_date_box', $day);
+  $output = theme('event_calendar_date_box', $year, $month, $day, $view);
 
   $nodes = event_calendar_data($year, $month, $day, $view, $types, $terms);
 
-  if(count($nodes)) {
+  if (count($nodes)) {
     foreach ($nodes as $node) {
       $output .= theme('event_node_'. $view, $node);
     }
   }
   else {
-    $output .= theme('event_empty_day');
+    $output .= theme('event_empty_day', $view);
   }
 
   return $output;
@@ -695,12 +720,12 @@ function event_render_day($year, $month, $day, $view, $types, $terms) {
 function event_week_days() {
   static $weekdays;
 
-  if(!$weekdays) {
+  if (!$weekdays) {
     if (variable_get('date_first_day', 1)) {
-      $weekdays = array(array('day'=>'Mon', 't' => t('Mon')), array('day'=>'Tue', 't' => t('Tue')), array('day'=>'Wed', 't' => t('Wed')), array('day'=>'Thu', 't' => t('Thu')), array('day'=>'Fri', 't' => t('Fri')), array('day'=>'Sat', 't' => t('Sat')), array('day'=>'Sun', 't' => t('Sun')));
+      $weekdays = array(array('day' => 'Mon', 't' => t('Mon')), array('day' => 'Tue', 't' => t('Tue')), array('day' => 'Wed', 't' => t('Wed')), array('day' => 'Thu', 't' => t('Thu')), array('day' => 'Fri', 't' => t('Fri')), array('day' => 'Sat', 't' => t('Sat')), array('day' => 'Sun', 't' => t('Sun')));
     }
     else {
-      $weekdays = array(array('day'=>'Sun', 't' => t('Sun')), array('day'=>'Mon', 't' => t('Mon')), array('day'=>'Tue', 't' => t('Tue')), array('day'=>'Wed', 't' => t('Wed')), array('day'=>'Thu', 't' => t('Thu')), array('day'=>'Fri', 't' => t('Fri')), array('day'=>'Sat', 't' => t('Sat')));
+      $weekdays = array(array('day' => 'Sun', 't' => t('Sun')), array('day' => 'Mon', 't' => t('Mon')), array('day' => 'Tue', 't' => t('Tue')), array('day' => 'Wed', 't' => t('Wed')), array('day' => 'Thu', 't' => t('Thu')), array('day' => 'Fri', 't' => t('Fri')), array('day' => 'Sat', 't' => t('Sat')));
     }
   }
   return $weekdays;
@@ -717,7 +742,7 @@ function event_week_header() {
   $days = event_week_days();
 
   foreach ($days as $day) {
-    $row[] = array('class' => strtolower("days ".$day['day']), 'data' => $day['t']);
+    $row[] = array('class' => strtolower("days ". $day['day']), 'data' => $day['t']);
   }
 
   return $row;
@@ -741,7 +766,7 @@ function event_week_header() {
 function _event_date($format, $timestamp, $timezone = null) {
   global $user;
 
-  if(isset($timezone)) {
+  if (isset($timezone)) {
     $timestamp += $timezone;
   }
   elseif (variable_get('configurable_timezones', 1) && $user->uid && strlen($user->timezone)) {
@@ -752,9 +777,9 @@ function _event_date($format, $timestamp, $timezone = null) {
   }
 
   $result = gmdate($format, $timestamp);
-  if($format=='w') {
+  if ($format == 'w') {
     // adjust day of week to settings value (mon or sun)
-    $result = (variable_get('date_first_day', 1) ? ($result==0 ? 6 : --$result ) : $result);
+    $result = (variable_get('date_first_day', 1) ? ($result == 0 ? 6 : --$result ) : $result);
   }
   return  $result;
 }
@@ -774,10 +799,10 @@ function _event_date($format, $timestamp, $timezone = null) {
  * @ingroup event_support
  * @return gmdate() formatted date value
  */
-function _event_mktime($hour, $minute, $second, $month, $day, $year, $timezone=null) {
+function _event_mktime($hour, $minute, $second, $month, $day, $year, $timezone = NULL) {
   global $user;
   $timestamp = gmmktime($hour, $minute, $second, $month, $day, $year);
-  if(isset($timezone)) {
+  if (isset($timezone)) {
     return $timestamp - $timezone;
   }
   elseif (variable_get('configurable_timezones', 1) && $user->uid && strlen($user->timezone) && (variable_get('event_timezone_input', 'site') == 'user')) {
@@ -804,7 +829,7 @@ function _event_user_time() {
 // returns a user timezone corrected datestamp (with time information set to 0)
 function _event_user_date() {
   static $date;
-  if(!$date) {
+  if (!$date) {
     $now = _event_user_time();
     $date = gmmktime(0, 0, 0, gmdate('m', $now), gmdate('j', $now), gmdate('Y', $now));
   }
@@ -832,10 +857,10 @@ function event_form_date($timestamp, $prefix = 'start', $timezone) {
     $last_hour = 23;
   }
 
-  $date = getdate( gmmktime() );
-  $curyear = $date[ 'year' ];
-  while($i < 10){
-    $years[$curyear+$i] = $curyear+$i;
+  $date = getdate(gmmktime());
+  $curyear = $date['year'];
+  while ($i < 10) {
+    $years[$curyear + $i] = $curyear + $i;
     $i++;
   }
 
@@ -895,7 +920,7 @@ function event_validate_form_date(&$node, $prefix) {
     // translate the input values to GMT and set the node property value
     $node->$prefix = _event_mktime($hour, $node->{$prefix . 'minute'}, 0, $node->{$prefix . 'month'}, $node->{$prefix . 'day'}, $node->{$prefix . 'year'}, $node->tz);
   }
-  elseif(!$node->$prefix) {
+  elseif (!$node->$prefix) {
     // Round to nearest hour:
     $node->$prefix = _event_user_time() - (_event_user_time() % (60 * 60));
   }
@@ -966,23 +991,23 @@ function _event_nav($date, $dir, $view, $types, $terms, $duration = NULL) {
   $range = variable_get('event_range_'. $dir, $date);
 
   // if we are beyond the range of the stored events, dont display navigation
-  if(($dir == 'prev' && $range < $date) || ($dir == 'next' && $range > $date)) {
-    $inc = ($dir == 'prev' ? -1 : 1 );
+  if (($dir == 'prev' && $range < $date) || ($dir == 'next' && $range > $date)) {
+    $inc = ($dir == 'prev' ? -1 : 1);
     $duration = ($duration ? $duration : 1);
-  
-    switch($view) {
+
+    switch ($view) {
       case 'day':
       case 'table':
           // Increment by $duration*days
-          $date += ($inc*($duration*86400));
+          $date += ($inc * ($duration * 86400));
         break;
       case 'week':
           // Increment by $duration*weeks
-          $date += ($inc*($duration*(86400*7)));
+          $date += ($inc * ($duration * (86400 * 7)));
         break;
       case 'month':
           // Increment by $duration*months
-          $date = gmmktime(0, 0, 0, gmdate('m', $date) + ($duration*$inc), gmdate('j', $date), gmdate('Y', $date));
+          $date = gmmktime(0, 0, 0, gmdate('m', $date) + ($duration * $inc), gmdate('j', $date), gmdate('Y', $date));
         break;
     }
 
@@ -991,8 +1016,8 @@ function _event_nav($date, $dir, $view, $types, $terms, $duration = NULL) {
     $url[] = gmdate('m', $date);
     $url[] = gmdate('d', $date);
     $url[] = $view;
-    $url[] = ($types ? $types : 'all');
-    $url[] = ($terms ? $terms : 'all');
+    $url[] = ($types ? implode('+', $types) : 'all');
+    $url[] = ($terms ? implode('+', $terms) : 'all');
     $url[] = $duration;
     return theme('event_nav_'. $dir, implode('/', $url));
   }
@@ -1006,27 +1031,27 @@ function _event_nav($date, $dir, $view, $types, $terms, $duration = NULL) {
 * @param $submit Adds 'onChange' form submit javascript command to control.
 * @return A form with a dropdown event taxonomy term input control.
 */
-function _event_get_taxonomy_control($curterm = NULL, $autosubmit = TRUE ) {
+function _event_get_taxonomy_control($curterm = NULL, $autosubmit = TRUE) {
   if (module_exist('taxonomy')) {
     $types = event_get_types();
     $vs = array();
-    foreach($types['all'] as $type) {
+    foreach ($types['all'] as $type) {
       $results = taxonomy_get_vocabularies($type);
-      foreach($results as $vocab) {
+      foreach ($results as $vocab) {
         $vs[$vocab->vid] = $vocab;
       }
     }
 
     $results = null;
-    foreach($types['solo'] as $type) {
+    foreach ($types['solo'] as $type) {
       $results = taxonomy_get_vocabularies($type);
-      foreach($results as $vocab) {
+      foreach ($results as $vocab) {
         $vs[$vocab->vid] = $vocab;
       }
     }
 
     $items['all'] = '(all)';
-    foreach($vs as $vid => $vocab) {
+    foreach ($vs as $vid => $vocab) {
       $tree = taxonomy_get_tree($vid);
       foreach ($tree as $term) {
         $items[$term->tid] = $vocab->name.' - '.$term->name;
@@ -1049,16 +1074,16 @@ function _event_get_taxonomy_control($curterm = NULL, $autosubmit = TRUE ) {
 * @param $submit Adds 'onChange' form submit javascript command to control.
 * @return A form with a dropdown event taxonomy term input control.
 */
-function _event_get_type_control($curtype = NULL, $autosubmit = TRUE ) {
+function _event_get_type_control($curtype = NULL, $autosubmit = TRUE) {
   if (module_exist('taxonomy')) {
     $results = event_get_types('all');
 
     $items['all'] = '(all)';
-    foreach($results as $type) {
-      if(module_hook($type, 'node_name')) {
+    foreach ($results as $type) {
+      if (module_hook($type, 'node_name')) {
         $items[$type] = module_invoke($type, 'node_name', $node);
       }
-      elseif($ctype = module_invoke('flexinode', 'load_content_type', substr($type, 10))) {
+      elseif ($ctype = module_invoke('flexinode', 'load_content_type', substr($type, 10))) {
         $items[$type] = $ctype->name;
       }
     }
@@ -1097,7 +1122,7 @@ function event_block($op = 'list', $delta = 0) {
       switch ($delta) {
         case 0:
           $time = _event_user_date();
-          if(arg(0) == 'event') {
+          if (arg(0) == 'event') {
             // follow event calendar
             $year = (arg(1) ? arg(1) : _event_date('Y', $time));
             $month = (arg(2) ? arg(2) : _event_date('m', $time));
@@ -1116,7 +1141,7 @@ function event_block($op = 'list', $delta = 0) {
           $block['content'] .= '<div class="more-link">'. l(t('more'), 'event', array('title' => t('More events.'))) .'</div>';
           return $block;
         case 2:
-          if(module_exist('taxonomy')) {
+          if (module_exist('taxonomy')) {
             $block['subject'] = t('Browse event types');
             $block['content'] = event_block_taxonomy();
             return $block;
@@ -1136,7 +1161,7 @@ function event_block($op = 'list', $delta = 0) {
 function event_block_upcoming($limit = 6) {
   global $user;
   // For two hours, we display "NOW"
-  $time = _event_user_time()-(2*60*60);
+  $time = _event_user_time() - (2 * 60 * 60);
   $result = db_query_range(db_rewrite_sql("SELECT n.nid, n.title, n.type, n.status, n.moderate, e.start FROM {node} n INNER JOIN {event} e USING (nid) WHERE n.status = 1 AND n.moderate = 0 AND e.start >= $time ORDER BY e.start"), 0, $limit);
 
   while ($node = db_fetch_object($result)) {
@@ -1153,17 +1178,17 @@ function event_block_upcoming($limit = 6) {
       else if ($minutesleft < 60) {
         $timeleft = format_plural($minutesleft, '1 minute', '%count minutes');
       }
-      else if ($minutesleft >= 60 && $minutesleft < (24*60)) {
-        $timeleft = format_plural(floor($minutesleft/60), '1 hour', '%count hours');
+      else if ($minutesleft >= 60 && $minutesleft < (24 * 60)) {
+        $timeleft = format_plural(floor($minutesleft / 60), '1 hour', '%count hours');
       }
-      else if ($minutesleft >= (24*60)) {
-        $days = floor($minutesleft / (24*60));
+      else if ($minutesleft >= (24 * 60)) {
+        $days = floor($minutesleft / (24 * 60));
         // hours remainder
-        $hours = ($minutesleft % (24*60)) / 60;
+        $hours = ($minutesleft % (24 * 60)) / 60;
         // hours left in the day
-        $hours_left = ((time() / 60) % (24*60)) / 60;
+        $hours_left = ((time() / 60) % (24 * 60)) / 60;
         // see if the remainder of hours on the event date is greater than the hours left in today, if so increase the days by one so that the days remaining mimics the date rather than how many 24 hour periods there are between now and then.
-        if($hours>$hours_left) {
+        if ($hours>$hours_left) {
           $days++;
         }
         $timeleft = format_plural($days, '1 day', '%count days');
@@ -1185,12 +1210,12 @@ function event_block_upcoming($limit = 6) {
 * @return A string containing the fully themed block.
 */
 function event_block_taxonomy($limit = 6) {
-  if(module_exist('taxonomy')) {
+  if (module_exist('taxonomy')) {
     $results = taxonomy_get_vocabularies('event');
-    foreach($results as $vocab) {
+    foreach ($results as $vocab) {
       $tree = taxonomy_get_tree($vocab->vid);
       foreach ($tree as $term) {
-        $links[] = l($term->name, "event/type/". $term->tid, array('title'=>'view event type'));
+        $links[] = l($term->name, "event/type/". $term->tid, array('title' => 'view event type'));
       }
     }
     return theme('item_list', $links);
@@ -1219,10 +1244,10 @@ function event_nodeapi(&$node, $op, $arg = 0) {
 
           $form .= form_item(t('End'), event_form_date($node->end, 'end', $node->tz), t('End date.'));
 
-          if(variable_get('event_timezone_input', 'site') == 'input') {
+          if (variable_get('event_timezone_input', 'site') == 'input') {
             $form .= form_select(t('Time zone'), 'tz', $node->tz, event_zonelist(), t('Select the time zone this event occurs in.'));
           }
-          elseif(variable_get('configurable_timezones', 1) && $user->uid && strlen($user->timezone) && (variable_get('event_timezone_input', 'site') == 'user')) {
+          elseif (variable_get('configurable_timezones', 1) && $user->uid && strlen($user->timezone) && (variable_get('event_timezone_input', 'site') == 'user')) {
             $form .= form_hidden('tz', $user->timezone);
           }
           else {
@@ -1235,7 +1260,7 @@ function event_nodeapi(&$node, $op, $arg = 0) {
       if (variable_get('event_nodeapi_'. $node->type, 'never') != 'never') {
         event_validate_form_date($node, 'start');
         event_validate_form_date($node, 'end');
-        if($node->end < $node->start  ) {
+        if ($node->end < $node->start) {
           $node->end = $node->start;
         }
         $node->start_format = _event_date('M d Y - H:i', $node->start, $node->tz);
@@ -1269,7 +1294,7 @@ function event_nodeapi(&$node, $op, $arg = 0) {
     case 'load':
       if (variable_get('event_nodeapi_'. $node->type, 'never') != 'never') {
         $object = db_fetch_object(db_query('SELECT start, end, tz FROM {event} WHERE nid = %d', $node->nid));
-        if(variable_get('event_timezone_display', 'event') == 'event') {
+        if (variable_get('event_timezone_display', 'event') == 'event') {
           $offset = $object->tz;
         }
 
@@ -1297,16 +1322,16 @@ function event_nodeapi(&$node, $op, $arg = 0) {
 
 function event_get_types($state = NULL) {
   static $types;
-  if(!is_array($types)) {
+  if (!is_array($types)) {
     $types['all'] = array();
     $types['solo'] = array();
     $types['never'] = array();
     $result = db_query('SELECT * FROM {variable} WHERE name like \'event_nodeapi_%\'');
-    while($type = db_fetch_object($result)) {
+    while ($type = db_fetch_object($result)) {
       $types[unserialize($type->value)][] = substr($type->name, 14);
     }
   }
-  switch($state) {
+  switch ($state) {
     case 'all':
         return $types['all'];
       break;
@@ -1324,8 +1349,8 @@ function event_get_types($state = NULL) {
 
 function event_enabled_state($type) {
   $states = event_get_types();
-  foreach($states as $key => $state) {
-    if(in_array($type, $state)) {
+  foreach ($states as $key => $state) {
+    if (in_array($type, $state)) {
       return $key;
     }
   }
