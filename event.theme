@@ -70,8 +70,8 @@ function theme_event_node_day($node, $module = NULL) {
 
   $output .= '<div class="title">'. l($node->title, "node/$node->nid", array('title' => t('view this event'))) .'</div>'."\n";
 
-  $output .= '<div class="start"><nobr>Start: '. $node->start_format .'</nobr></div>'."\n";
-  $output .= '<div class="end"><nobr>End: '. $node->end_format .'</nobr></div>'."\n";
+  $output .= '<div class="start"><nobr>'. t('Start') .': '. $node->start_format .'</nobr></div>'."\n";
+  $output .= '<div class="end"><nobr>'. t('End') .': '. $node->end_format .'</nobr></div>'."\n";
   $output .= '<div class="content">'. $node->teaser ."</div>\n";
   $output .= '<div class="links">'. theme('links', $node->event_links) ."\n</div>";
   $output .= "</div>\n";
@@ -104,17 +104,17 @@ function theme_event_node_week($node, $module = NULL) {
 
   switch ($node->event_state) {
     case 'singleday';
-        $times = '<div class="start">Start: <nobr>'. $node->start_time_format .'</nobr></div>'."\n";
-        $times .= '<div class="end">End: <nobr>'. $node->end_time_format .'</nobr></div>'."\n";
+        $times = '<div class="start">'. t('Start') .': <nobr>'. $node->start_time_format .'</nobr></div>'."\n";
+        $times .= '<div class="end">'. t('End') .': <nobr>'. $node->end_time_format .'</nobr></div>'."\n";
       break;
     case 'start':
-        $times = '<div class="start">Start: <nobr>'. $node->start_time_format .'</nobr></div>'."\n";
+        $times = '<div class="start">'. t('Start') .': <nobr>'. $node->start_time_format .'</nobr></div>'."\n";
       break;
     case 'end':
-        $times = '<div class="end">End: <nobr>'. $node->end_time_format .'</nobr></div>'."\n";
+        $times = '<div class="end">'. t('End') .': <nobr>'. $node->end_time_format .'</nobr></div>'."\n";
       break;
     case 'ongoing':
-        $times = '<div class="ongoing"><nobr>all day</nobr></div>'."\n";
+        $times = '<div class="ongoing"><nobr>'. t('all day') .'</nobr></div>'."\n";
       break;
   }
 
@@ -152,17 +152,17 @@ function theme_event_node_month($node, $module = NULL) {
 
   switch ($node->event_state) {
     case 'singleday';
-        $times = '<div class="start">Start: <nobr>'. $node->start_time_format .'</nobr></div>'."\n";
-        $times .= '<div class="end">End: <nobr>'. $node->end_time_format .'</nobr></div>'."\n";
+        $times = '<div class="start">'. t('Start') .': <nobr>'. $node->start_time_format .'</nobr></div>'."\n";
+        $times .= '<div class="end">'. t('End') .': <nobr>'. $node->end_time_format .'</nobr></div>'."\n";
       break;
     case 'start':
-        $times = '<div class="start">Start: <nobr>'. $node->start_time_format .'</nobr></div>'."\n";
+        $times = '<div class="start">'. t('Start') .': <nobr>'. $node->start_time_format .'</nobr></div>'."\n";
       break;
     case 'end':
-        $times = '<div class="end">End: <nobr>'. $node->end_time_format .'</nobr></div>'."\n";
+        $times = '<div class="end">'. t('End') .': <nobr>'. $node->end_time_format .'</nobr></div>'."\n";
       break;
     case 'ongoing':
-        $times = '<div class="ongoing"><nobr>all day</nobr></div>'."\n";
+        $times = '<div class="ongoing"><nobr>'. t('all day') .'</nobr></div>'."\n";
       break;
   }
   $output .= '<div class="type">'. l('('. $node->event_node_title .')', 'event/'. gmdate('Y/m/d', $node->event_current_date) .'/month/'.$node->type, array('title' => t('limit view to events of this type'))).'</div>'."\n";
@@ -206,24 +206,24 @@ function theme_event_node_table($node, $module = NULL) {
 
   switch ($node->event_state) {
     case 'singleday';
-        $output .= '<div class="start">Start: <nobr>'. $node->start_time_format ."</nobr></div>\n";
-        $output .= '<div class="end">End: <nobr>'. $node->end_time_format ."</nobr></div>\n";
+        $output .= '<div class="start">'. t('Start') .': <nobr>'. $node->start_time_format ."</nobr></div>\n";
+        $output .= '<div class="end">'. t('End') .': <nobr>'. $node->end_time_format ."</nobr></div>\n";
       break;
     case 'start':
-        $output .= '<div class="start">Start: <nobr>'. $node->start_time_format ."</nobr></div>\n";
+        $output .= '<div class="start">'. t('Start') .': <nobr>'. $node->start_time_format ."</nobr></div>\n";
       break;
     case 'end':
-        $output .= '<div class="end">End: <nobr>'. $node->end_time_format ."</nobr></div>\n";
+        $output .= '<div class="end">'. t('End') .': <nobr>'. $node->end_time_format ."</nobr></div>\n";
       break;
     case 'ongoing':
-        $output .= '<div class="ongoing"><nobr>(all day)</nobr></div>'."\n";
+        $output .= '<div class="ongoing"><nobr>('. t('all day') .')</nobr></div>'."\n";
       break;
   }
 
   $output .= '<div id="info_'. $link_count .'" class="info">'."\n";
   if($node->event_state != 'singleday') {
-    $output .= '<div class="start"><nobr>Start: '. $node->start_format .'</nobr></div>'."\n";
-    $output .= '<div class="end"><nobr>End: '. $node->end_format .'</nobr></div>'."\n";
+    $output .= '<div class="start"><nobr>'. t('Start') .': '. $node->start_format .'</nobr></div>'."\n";
+    $output .= '<div class="end"><nobr>'. t('End') .': '. $node->end_format .'</nobr></div>'."\n";
   }
   $output .= '<div class="content">'. $node->teaser .'</div></div>'."\n";
 
@@ -271,9 +271,9 @@ function theme_event_empty_day() {
  *   The node which needs it's dates formatted
  */
 function theme_event_nodeapi($node) {
-  $output = '<div class="event-nodeapi"><div class="'. $node->type. '-start"><label>Start: </label>'. $node->start_format .'</div></div>'."\n";
-  $output .= '<div class="event-nodeapi"><div class="'. $node->type. '-end"><label>End: </label>'. $node->end_format .'</div></div>'."\n";
-  $output .= '<div class="event-nodeapi"><div class="'. $node->type. '-end"><label>Timezone: </label>'. $node->tz .'</div></div>'."\n";
+  $output = '<div class="event-nodeapi"><div class="'. $node->type. '-start"><label>'. t('Start') .': </label>'. $node->start_format .'</div></div>'."\n";
+  $output .= '<div class="event-nodeapi"><div class="'. $node->type. '-end"><label>'. t('End') .': </label>'. $node->end_format .'</div></div>'."\n";
+  $output .= '<div class="event-nodeapi"><div class="'. $node->type. '-end"><label>'. t('Timezone') .': </label>'. $node->tz .'</div></div>'."\n";
   return $output;
 }
 

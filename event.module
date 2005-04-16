@@ -213,7 +213,7 @@ function event_page($year = NULL, $month = NULL, $day = NULL, $view = NULL, $typ
     }
 
     if (is_array($filter)) {
-      $links[] = l('view all', 'event/'. $year .'/'. $month .'/'. $day .'/'. $view .'/');
+      $links[] = l(t('view all'), 'event/'. $year .'/'. $month .'/'. $day .'/'. $view .'/');
       $title =  t('Filter') .': ' .implode(', ', $filter);
       $types = $temp;
     }
@@ -224,7 +224,7 @@ function event_page($year = NULL, $month = NULL, $day = NULL, $view = NULL, $typ
 
   $terms = null;
   if ($tids && $tids != 'all') {
-    $links[] = l('view all', 'event/'.$year.'/'.$month.'/'.$day.'/day');
+    $links[] = l(t('view all'), 'event/'.$year.'/'.$month.'/'.$day.'/day');
     if (preg_match('/^([0-9]+[+ ])+[0-9]+$/', $tids)) {
       // The '+' character in a query string may be parsed as ' '.
       $terms = preg_split('/[+ ]/', $tids);
@@ -672,34 +672,6 @@ function event_get_calendar($view, $nodes, $module, $title = NULL) {
   $header[] = ($title ? array('class' => 'heading', 'data' => $title, 'colspan' => $colspan) : array());
   return theme('event_calendar_'. $view, 'page', $header, $rows);
 }
-
- /**
- * Creates a page that the user may use to search for events.
- *
- * @ingroup event_view
- * @return A string containing the search form and any results returned.
- */
-function event_query() {
-  $output = event_query_form();
-  switch ($_POST['op']) {
-    case t('Search'):
-      $result = event_query_parse((object) $_POST['edit']);
-      if (db_num_rows($result)) {
-        while ($node = db_fetch_object($result)) {
-          $output .= node_view(node_load($node), 1);
-        }
-      }
-      else {
-        drupal_set_message(t('No matches found.'));
-      }
-      break;
-  }
-
-  drupal_set_breadcrumb(array(l(t('Home'), '')));
-  drupal_set_title(t('Search Events'));
-  print theme('page', $output);
-}
-
 
 /**
  * @defgroup event_support Functions that support the event system
