@@ -1,5 +1,5 @@
 <?php
-// $Id: event.module
+// $Id$ 
 
 include(drupal_get_path('module', 'event') .'/event.theme');
 
