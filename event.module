@@ -691,19 +691,16 @@ function event_get_calendar($view, $nodes, $module, $title = NULL) {
  */
 function event_calendar_data($year, $month, $day, $view = NULL, $types = NULL, $terms = NULL) {
   static $data;
+  global $user;
 
-  $day_start = gmmktime(0, 0, 0, $month, $day, $year);
+  $day_start = _event_mktime(0, 0, 0, $month, $day, $year);
 
   if (!is_array($data[$year][$month])) {
     $data[$year][$month] = array();
-    $days_stamp = gmmktime(0, 0, 0, $month + 1, 0, $year);
-    $days = gmdate('j', $days_stamp);
 
     // get GMT values from local date values for db query
     $first = _event_mktime(0, 0, 0, $month, 1, $year);
-    $last = _event_mktime(23, 59, 59, $month, $days, $year);
-
-    $day_end = gmmktime(23, 59, 59, $month, $day, $year);
+    $last = _event_mktime(23, 59, 59, $month + 1, 0, $year);
 
     $result = db_query(db_rewrite_sql('SELECT n.nid FROM {event} e INNER JOIN {node} n USING (nid) WHERE n.status = 1 AND ((e.start > %d AND e.start < %d) OR (e.end > %d AND e.end < %d) OR (e.start < %d AND e.end > %d)) ORDER BY e.start '), $first, $last, $first, $last, $first, $last);
 
@@ -715,8 +712,11 @@ function event_calendar_data($year, $month, $day, $view = NULL, $types = NULL, $
       // this array contains the loaded nodes for the month, so we dont have them stored for every day they occur
       $data[$year][$month]['nodes'][$nid->nid] = $node;
 
-      $node_start = gmmktime(0, 0, 0, _event_date('m', $node->start, $node->tz), _event_date('d', $node->start, $node->tz), _event_date('Y', $node->start, $node->tz));
-      $node_end = gmmktime(0, 0, 0, _event_date('m', $node->end, $node->tz), _event_date('d', $node->end, $node->tz), _event_date('Y', $node->end, $node->tz));
+      $tz = ((variable_get('event_timezone_display', 'event') == 'user') ? $user->timezone : $node->tz);
+
+      $node_start = gmmktime(0, 0, 0, _event_date('m', $node->start, $tz), _event_date('d', $node->start, $tz), _event_date('Y', $node->start, $tz));
+
+      $node_end = gmmktime(0, 0, 0, _event_date('m', $node->end, $tz), _event_date('d', $node->end, $tz), _event_date('Y', $node->end, $tz));
 
       if ($node_start == $node_end) {
         $nid->event_state = 'singleday';
@@ -724,11 +724,12 @@ function event_calendar_data($year, $month, $day, $view = NULL, $types = NULL, $
       }
       else {
         // roll through each day the event occurs and set an entry for each
-        for ($x = ($first > $node_start ? $first : $node_start); $x <= $days_stamp; $x += 86400) {
+        $first -= $node_start;
+        for ($x = ($first > $node_start ? $first : $node_start); $x <= $last; $x += 86400) {
           if ($x == $node_end) {
             $nid->event_state = 'end';
             $data[$year][$month][gmdate('j', $x)][] = $nid;
-            $x = $days_stamp + 1;
+            $x = $last + 1;
           }
           elseif ($x == $node_start) {
             $nid->event_state = 'start';
@@ -969,7 +970,7 @@ function _event_mktime($hour, $minute, $second, $month, $day, $year, $timezone =
   if (isset($timezone)) {
     return $timestamp - $timezone;
   }
-  elseif (variable_get('configurable_timezones', 1) && $user->uid && strlen($user->timezone) && (variable_get('event_timezone_input', 'site') == 'user')) {
+  elseif (variable_get('configurable_timezones', 1) && $user->uid && strlen($user->timezone) && (variable_get('event_timezone_display', 'event') == 'user')) {
     return $timestamp - $user->timezone;
   }
   else {
