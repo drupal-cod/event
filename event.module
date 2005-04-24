@@ -130,6 +130,7 @@ function event_settings() {
 
     $group .= form_radios(t('Event timezone display'), 'event_timezone_display', 'event', array('event' => t('Use the event\'s timezone'), 'user' => t('Use the user\'s timezone')), t('Events are saved with a timezone value. This setting allows you to determine if the event\'s timezone or the user\'s personal timezone setting is used to display the time for an event. You must have \'Configurable time zones\' enabled in '.l(t('site configuration'), 'admin/settings').' before you can enable user\'s timezones for this feature.'), '', array('disabled' => true));
   }
+  $group .= form_radios(t('Time notation preference'), 'event_ampm', variable_get('event_ampm', '0'), array('0' => t('24h'),'1' => t('12h')), t('The time notation system used for entering event times.'));
   $output = form_group(t('General Event options'), $group);
 
   $group = form_radios(t('Default overview'), 'event_overview', variable_get('event_overview', 'day'), array('day' => t('Day'), 'week' => t('Week'), 'month' => t('Month'), 'table' => t('Table')), t('The default event view to display when no format is specifically requested. This is also the view that will be displayed from the block calendar links.'));
@@ -1403,8 +1404,8 @@ function event_nodeapi(&$node, $op, $arg = 0) {
         if ($node->end < $node->start) {
           $node->end = $node->start;
         }
-        $node->start_format = _event_date('M d Y - H:i', $node->start, $node->tz);
-        $node->end_format = _event_date('M d Y - H:i', $node->end, $node->tz);
+        $node->start_format = format_date($node->start, 'small', '', $node->tz);
+        $node->end_format = format_date($node->end, 'small', '', $node->tz);
       }
       break;
 
