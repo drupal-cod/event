@@ -71,7 +71,9 @@ function theme_event_node_day($node, $module = NULL) {
   $output .= '<div class="title">'. l($node->title, "node/$node->nid", array('title' => t('view this event'))) .'</div>'."\n";
 
   $output .= '<div class="start"><nobr>'. t('Start') .': '. $node->start_format .'</nobr></div>'."\n";
-  $output .= '<div class="end"><nobr>'. t('End') .': '. $node->end_format .'</nobr></div>'."\n";
+  if ($node->start != $node->end) {
+    $output .= '<div class="end"><nobr>'. t('End') .': '. $node->end_format .'</nobr></div>'."\n";
+  }
   $output .= '<div class="content">'. $node->teaser ."</div>\n";
   $output .= '<div class="links">'. theme('links', $node->event_links) ."\n</div>";
   $output .= "</div>\n";
@@ -105,7 +107,9 @@ function theme_event_node_week($node, $module = NULL) {
   switch ($node->event_state) {
     case 'singleday';
         $times = '<div class="start">'. t('Start') .': <nobr>'. $node->start_time_format .'</nobr></div>'."\n";
-        $times .= '<div class="end">'. t('End') .': <nobr>'. $node->end_time_format .'</nobr></div>'."\n";
+        if ($node->start != $node->end) {
+          $times .= '<div class="end">'. t('End') .': <nobr>'. $node->end_time_format .'</nobr></div>'."\n";
+        }
       break;
     case 'start':
         $times = '<div class="start">'. t('Start') .': <nobr>'. $node->start_time_format .'</nobr></div>'."\n";
@@ -137,8 +141,8 @@ function theme_event_node_week($node, $module = NULL) {
 function theme_event_node_month($node, $module = NULL) {
   static $stripe, $stripe_map;
 
-  if(!$stripe_map[$node->nid]) {
-    if($stripe >= 10) {
+  if (!$stripe_map[$node->nid]) {
+    if ($stripe >= 10) {
       $stripe = 1;
     }
     else {
@@ -153,7 +157,9 @@ function theme_event_node_month($node, $module = NULL) {
   switch ($node->event_state) {
     case 'singleday';
         $times = '<div class="start">'. t('Start') .': <nobr>'. $node->start_time_format .'</nobr></div>'."\n";
-        $times .= '<div class="end">'. t('End') .': <nobr>'. $node->end_time_format .'</nobr></div>'."\n";
+        if ($node->start != $node->end) {
+          $times .= '<div class="end">'. t('End') .': <nobr>'. $node->end_time_format .'</nobr></div>'."\n";
+        }
       break;
     case 'start':
         $times = '<div class="start">'. t('Start') .': <nobr>'. $node->start_time_format .'</nobr></div>'."\n";
@@ -187,8 +193,8 @@ function theme_event_node_table($node, $module = NULL) {
   static $stripe, $stripe_map, $link_count;
   $link_count++;
 
-  if(!$stripe_map[$node->nid]) {
-    if($stripe >= 10) {
+  if (!$stripe_map[$node->nid]) {
+    if ($stripe >= 10) {
       $stripe = 1;
     }
     else {
@@ -199,7 +205,7 @@ function theme_event_node_table($node, $module = NULL) {
 
   $output .= '<div class="event tableview">'."\n";
   $output .= '<div class="stripe-'. $stripe_map[$node->nid] .'"></div>'."\n";
-  if(!$module) {
+  if (!$module) {
     $output .= '<div class="type">'. l('('. $node->event_node_title .')', 'event/'.gmdate('Y/m/d', $node->start).'/table/'.$node->type, array('title' => t('limit view to events of this type'))).'</div>'."\n";
   }
   $output .= '<div class="title">'. l($node->title, "node/$node->nid", array('title' => t('view this event'))) .'</div>'."\n";
@@ -207,7 +213,9 @@ function theme_event_node_table($node, $module = NULL) {
   switch ($node->event_state) {
     case 'singleday';
         $output .= '<div class="start">'. t('Start') .': <nobr>'. $node->start_time_format ."</nobr></div>\n";
-        $output .= '<div class="end">'. t('End') .': <nobr>'. $node->end_time_format ."</nobr></div>\n";
+        if ($node->start != $node->end) {
+          $output .= '<div class="end">'. t('End') .': <nobr>'. $node->end_time_format ."</nobr></div>\n";
+        }
       break;
     case 'start':
         $output .= '<div class="start">'. t('Start') .': <nobr>'. $node->start_time_format ."</nobr></div>\n";
@@ -221,9 +229,11 @@ function theme_event_node_table($node, $module = NULL) {
   }
 
   $output .= '<div id="info_'. $link_count .'" class="info">'."\n";
-  if($node->event_state != 'singleday') {
+  if ($node->event_state != 'singleday') {
     $output .= '<div class="start"><nobr>'. t('Start') .': '. $node->start_format .'</nobr></div>'."\n";
-    $output .= '<div class="end"><nobr>'. t('End') .': '. $node->end_format .'</nobr></div>'."\n";
+    if ($node->start != $node->end) {
+      $output .= '<div class="end"><nobr>'. t('End') .': '. $node->end_format .'</nobr></div>'."\n";
+    }
   }
   $output .= '<div class="content">'. $node->teaser .'</div></div>'."\n";
 
@@ -241,7 +251,7 @@ function theme_event_node_table($node, $module = NULL) {
  *   The day to display.
  */
 function theme_event_calendar_date_box($year, $month, $day, $view) {
-  switch($view) {
+  switch ($view) {
     case 'table':
         $output = '<div class="day">'. $month .'/'. $day .'</div>'."\n";
       break;
@@ -272,7 +282,9 @@ function theme_event_empty_day() {
  */
 function theme_event_nodeapi($node) {
   $output = '<div class="event-nodeapi"><div class="'. $node->type. '-start"><label>'. t('Start') .': </label>'. $node->start_format .'</div></div>'."\n";
-  $output .= '<div class="event-nodeapi"><div class="'. $node->type. '-end"><label>'. t('End') .': </label>'. $node->end_format .'</div></div>'."\n";
+  if ($node->start != $node->end) {
+    $output .= '<div class="event-nodeapi"><div class="'. $node->type. '-end"><label>'. t('End') .': </label>'. $node->end_format .'</div></div>'."\n";
+  }
   $output .= '<div class="event-nodeapi"><div class="'. $node->type. '-end"><label>'. t('Timezone') .': </label>'. $node->tz .'</div></div>'."\n";
   return $output;
 }
