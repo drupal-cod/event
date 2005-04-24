@@ -698,8 +698,10 @@ function event_calendar_data($year, $month, $day, $view = NULL, $types = NULL, $
     $data[$year][$month] = array();
     $days_stamp = gmmktime(0, 0, 0, $month + 1, 0, $year);
     $days = gmdate('j', $days_stamp);
-    $first = gmmktime(0, 0, 0, $month, 1, $year);
-    $last = gmmktime(23, 59, 59, $month, $days, $year);
+
+    // get GMT values from local date values for db query
+    $first = _event_mktime(0, 0, 0, $month, 1, $year);
+    $last = _event_mktime(23, 59, 59, $month, $days, $year);
 
     $day_end = gmmktime(23, 59, 59, $month, $day, $year);
 
