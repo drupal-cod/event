@@ -247,20 +247,20 @@ function event_page($year = NULL, $month = NULL, $day = NULL, $view = NULL, $typ
   switch ($view) {
     case 'day':
         // day view
-        $headertitle = t(gmdate('l', $stamp)) .' '. t(gmdate('F', $stamp)) .' '. $day .', '. $year;
+        $headertitle = t('%weekday %month %day, %year', array('%weekday' => t(gmdate('l', $stamp)), '%month' => t(gmdate('F', $stamp)), '%day' => $day, '%year' => $year));
         $rows = event_calendar_day('page', $stamp, $types, $terms);
       break;
     case 'week':
         // week view
         // setup calendar table header
         $temp = $stamp - (_event_day_of_week($stamp) * (86400));
-        $headertitle = t('Week of '. gmdate('F', $temp)) .' '.  gmdate('d', $temp) .', '. $year;
+        $headertitle = t('Week of %month %day, %year', array('%month' => t(gmdate('F', $temp)), '%day' => gmdate('d', $temp), '%year' => $year));
         $colspan = 5;
         $rows = event_calendar_week('page', $stamp, $types, $terms);
       break;
     case 'month':
         // month view
-        $headertitle = t(gmdate('F', $stamp)) .' '. $year;
+        $headertitle = t('%month %year', array('%month' => t(gmdate('F', $stamp)), '%year' => $year));
         $colspan = 5;
         $rows = event_calendar_month('page', $stamp, $types, $terms);
       break;
@@ -269,7 +269,7 @@ function event_page($year = NULL, $month = NULL, $day = NULL, $view = NULL, $typ
         // next 30 day view, $duration can be set for different ranges
         $duration = $duration ? $duration : variable_get('event_table_duration', '30');
         $endstamp = $stamp + ($duration * 86400);
-        $headertitle = t(gmdate('F', $stamp)) .' '. gmdate('d, Y', $stamp) .' - '. t(gmdate('F', $endstamp)) .' '. gmdate('d, Y', $endstamp);
+        $headertitle = t('%startmonth %startdate, %startyear - %endmonth %enddate, %endyear', array('%startmonth' => gmdate('F', $stamp), '%startdate' => gmdate('d', $stamp), '%startyear' => gmdate('Y', $stamp), '%endmonth' => t(gmdate('F', $endstamp)), '%enddate' => gmdate('Y', $endstamp), '%endyear' => gmdate('Y', $endstamp)));
         $rows = event_calendar_table('page', $stamp, $endstamp, $types, $terms);
       break;
   }
