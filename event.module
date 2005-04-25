@@ -118,7 +118,7 @@ function event_settings() {
   if (variable_get('configurable_timezones', 0)) {
     $group .= form_radios(t('Event timezone input'), 'event_timezone_input', variable_get('event_timezone_input', 'site'), array('site' => t('Use the sitewide timezone'), 'user' => t('Use the timezone of the user editing or creating the event'), 'input' => t('Allow users to set event timezones')), t('Events are saved with a timezone value. This setting allows you to determine how the timezone is determined when creating or editing an event.'));
 
-    $group .= form_radios(t('Event timezone display'), 'event_timezone_display', variable_get('event_timezone_display', 'event'), array('event' => t('Use the event\'s timezone'), 'user' => t('Use the user\'s timezone')), t('Events are saved with a timezone value. This setting allows you to determine if the event\'s timezone or the user\'s personal timezone setting is used to display the time for an event.'));
+    $group .= form_radios(t('Event timezone display'), 'event_timezone_display', variable_get('event_timezone_display', 'event'), array('event' => t("Use the event's timezone."), 'user' => t("Use the user's timezone.")), t("Events are saved with a timezone value. This setting allows you to determine if the event's timezone or the user's personal timezone setting is used to display the time for an event."));
   }
   else {
     if (variable_get('event_timezone_input', 'site') == 'user') {
@@ -126,9 +126,9 @@ function event_settings() {
     }
     variable_set('event_timezone_display', 'event');
 
-    $group .= form_radios(t('Event timezone input'), 'event_timezone_input', variable_get('event_timezone_input', 'site'), array('site' => t('Use the sitewide timezone'), 'user" disabled' => t('Use the timezone of the user editing or creating the event'), 'input' => t('Allow users to set event timezones')), t('Events are saved with a timezone value. This setting allows you to determine how the timezone is determined when creating or editing an event. You must have \'Configurable time zones\' enabled in '.l(t('site configuration'), 'admin/settings').' before you can enable user\'s timezones for this feature.'));
+    $group .= form_radios(t('Event timezone input'), 'event_timezone_input', variable_get('event_timezone_input', 'site'), array('site' => t('Use the sitewide timezone'), 'user" disabled' => t('Use the timezone of the user editing or creating the event'), 'input' => t('Allow users to set event timezones')), t("Events are saved with a timezone value. This setting allows you to determine how the timezone is determined when creating or editing an event. You must have 'Configurable time zones' enabled in %url before you can enable user's timezones for this feature.", array('%url' => l(t('site configuration')) , 'admin/settings')));
 
-    $group .= form_radios(t('Event timezone display'), 'event_timezone_display', 'event', array('event' => t('Use the event\'s timezone'), 'user' => t('Use the user\'s timezone')), t('Events are saved with a timezone value. This setting allows you to determine if the event\'s timezone or the user\'s personal timezone setting is used to display the time for an event. You must have \'Configurable time zones\' enabled in '.l(t('site configuration'), 'admin/settings').' before you can enable user\'s timezones for this feature.'), '', array('disabled' => true));
+    $group .= form_radios(t('Event timezone display'), 'event_timezone_display', 'event', array('event' => t("Use the event's timezone"), 'user' => t("Use the user's timezone")), t("Events are saved with a timezone value. This setting allows you to determine if the event's timezone or the user's personal timezone setting is used to display the time for an event. You must have 'Configurable time zones' enabled in %url before you can enable user's timezones for this feature.", array('%url' => l(t('site configuration'), 'admin/settings'))), '', array('disabled' => true));
   }
   $group .= form_radios(t('Time notation preference'), 'event_ampm', variable_get('event_ampm', '0'), array('0' => t('24h'),'1' => t('12h')), t('The time notation system used for entering event times.'));
   $output = form_group(t('General Event options'), $group);
@@ -1125,7 +1125,7 @@ function event_zonelist() {
                     'Central Australia' => 9.5,
                     'East Australia' => 10,
                     'Lord Howe Island, Australia' => 10.5,
-                    'Solomon islands, Micronesia' => 11,
+                    'Solomon Islands, Micronesia' => 11,
                     'Pacific - Norfolk Island' => 11.5,
                     'New Zealand, Marshall Islands, Fiji' => 12,
                     'Chatham Islands, New Zealand' => 12.75,
@@ -1467,7 +1467,7 @@ function event_get_types($state = NULL) {
     $types['all'] = array();
     $types['solo'] = array();
     $types['never'] = array();
-    $result = db_query('SELECT * FROM {variable} WHERE name like \'event_nodeapi_%\'');
+    $result = db_query("SELECT * FROM {variable} WHERE name like 'event_nodeapi_%'");
     while ($type = db_fetch_object($result)) {
       $types[unserialize($type->value)][] = substr($type->name, 14);
     }
@@ -1522,34 +1522,34 @@ function event_help($section) {
         return t('Lets users make events and keep calendars.');
       break;
     case 'admin/help#event':
-      return t('
+      return t("
       <h3>Background</h3>
-      <p>This version of event module implements the drupal nodeapi system. There is no native event node type as in versions previous to 4.6, but instead node types can be \'event-enabled\' through the %configure-link, the same way in which file attachments are assigned to node types with upload.module. This, combined with the dynamic content type functionality of %flexinode-link, make it possible to define almost any kind of calendar.</p>
-      <p>Node types can be assigned to general calendar views, or only on their own calendar. For example, this makes it possible to have a general calendar which shows all \'meetups\' and \'house parties\' in the same place, but perhaps have a separate calendar for \'rallies\' which only contains that type. The ability to filter calendar views by node type and taxonomy is also implemented, which allows many different possibilities for displaying content in the calendar system.</p>
+      <p>This version of event module implements the drupal nodeapi system. There is no native event node type as in versions previous to 4.6, but instead node types can be 'event-enabled' through the %configure-link, the same way in which file attachments are assigned to node types with upload.module. This, combined with the dynamic content type functionality of %flexinode-link, make it possible to define almost any kind of calendar.</p>
+      <p>Node types can be assigned to general calendar views, or only on their own calendar. For example, this makes it possible to have a general calendar which shows all 'meetups' and 'house parties' in the same place, but perhaps have a separate calendar for 'rallies' which only contains that type. The ability to filter calendar views by node type and taxonomy is also implemented, which allows many different possibilities for displaying content in the calendar system.</p>
       
-      <h3><a id="url-format"></a>Calendar display url formats</h3>
+      <h3><a id=\"url-format\"></a>Calendar display url formats</h3>
       The ability to filter calendar views by content type and taxonomy enables almost unlimited possibilities for displaying content with the calendar system. You can combine taxonomy and content type filters, the url construction scheme is currently as follows:
       <blockquote>
-      ?q=event/$year/$month/$day/$view_type/$content_type/$taxonomy_terms/$duration<br /><br />
-      <strong>$year:</strong> year value such as \'2005\'<br />
-      <strong>$month:</strong> month value with leading zeroes such as \'02\' for february<br />
-      <strong>$day:</strong> day value with leading zeroes such as \'14\'<br />
-      <strong>$view_type:</strong> type of calendar layout, values may include \'month\', \'week\', \'day\', and \'table\'<br />
-      <strong>$content_type:</strong> list of node types, separated by \'+\'. Flexinode types only require the integer value of the type. For example, to view story nodes and type flexinode-1, you would use \'story+1\'. The value \'all\' will show all types.<br />
-      <strong>$taxonomy_terms:</strong> list of term ids, seperated by \'+\'. For example to view entries assigned to the taxonomy terms with ids 4 and 9 you would use \'4+9\'. The value \'all\' will show all terms.<br />
-      <strong>$duration:</strong> number of days to display, currently only the table view obeys this setting. Eventually it may be used to specify additional duration parameters such as multiple weeks in the week view, or months in the month view.
+      ?q=event/\$year/\$month/\$day/\$view_type/\$content_type/\$taxonomy_terms/\$duration<br /><br />
+      <strong>\$year:</strong> year value such as '2005'<br />
+      <strong>\$month:</strong> month value with leading zeroes such as '02' for february<br />
+      <strong>\$day:</strong> day value with leading zeroes such as '14'<br />
+      <strong>\$view_type:</strong> type of calendar layout, values may include 'month', 'week', 'day', and 'table'<br />
+      <strong>\$content_type:</strong> list of node types, separated by '+'. Flexinode types only require the integer value of the type. For example, to view story nodes and type flexinode-1, you would use 'story+1'. The value 'all' will show all types.<br />
+      <strong>\$taxonomy_terms:</strong> list of term ids, seperated by '+'. For example to view entries assigned to the taxonomy terms with ids 4 and 9 you would use '4+9'. The value 'all' will show all terms.<br />
+      <strong>\$duration:</strong> number of days to display, currently only the table view obeys this setting. Eventually it may be used to specify additional duration parameters such as multiple weeks in the week view, or months in the month view.
       </blockquote>
       <p>There are url wrapper functions as well, which make it possible to easily create menu items to calendars by event type or taxonomy terms. This is necessary if you wish to create a link to a calendar but do not have a way to dynamically create the url based on the date, like in the menu or in a post.</p>
       <p>For links to a taxonomy filtered calendar the format is:
       <blockquote>
-      ?q=event/term/$taxonomy_terms<br /><br />
-      <strong>$taxonomy_terms:</strong> list of term ids, seperated by \'+\'. For example to view entries assigned to the taxonomy terms with ids 4 and 9 you would use \'4+9\'<br />
+      ?q=event/term/\$taxonomy_terms<br /><br />
+      <strong>\$taxonomy_terms:</strong> list of term ids, seperated by '+'. For example to view entries assigned to the taxonomy terms with ids 4 and 9 you would use '4+9'<br />
       </blockquote>
       For links to a content type filtered calendar the format is:
       <blockquote>
-      ?q=event/type/$content_type<br /><br />
-      <strong>$content_type:</strong> list of node types, separated by \'+\'. Flexinode types only require the integer value of the type. For example, to view story nodes and type flexinode-1, you would use \'story+1\'
-      </blockquote></p>',
+      ?q=event/type/\$content_type<br /><br />
+      <strong>\$content_type:</strong> list of node types, separated by '+'. Flexinode types only require the integer value of the type. For example, to view story nodes and type flexinode-1, you would use 'story+1'
+      </blockquote></p>",
       array('%configure-link' => l(t('content type management admin area'), 'admin/node/configure/types'), '%flexinode-link' => l(t('flexinode'), 'http://drupal.org/node/5737')));
       break;
   }
