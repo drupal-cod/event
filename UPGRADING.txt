@@ -1,0 +1,7 @@
+This is only relevant if you are upgrading from either Drupal 4.5 or
+CivicSpace 0.8.0.x to Drupal 4.6 or the equivalent CivicSpace version.
+
+ * Copy the file event_upgrade.php to the root directory of your Drupal installation.
+ * Login as user 1, or disable the access checking at the top of that file.
+ * Point your browser to "http://www.site.com/event_upgrade.php" and follow the
+   instructions.

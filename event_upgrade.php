@@ -297,14 +297,14 @@ function event_upgrade_info() {
   print "<li>Use this script to <strong>upgrade an existing event.module installation</strong>.  You don't need this script when installing the event.module from scratch.</li>";
   print "<li>Before doing anything, backup your database. This process will change your database and its values, and some things might get lost.</li>\n";
   print "<li>This script has only been tested on mysql databases. It may work with postgres, however it may not. If you have problems please submit a bug report on drupal.org, or better yet, a patch.</li>\n";
-  print "<li>You must have Drupal v4.6 OR Civicspace v0.8.0.3 and the equivalent flexinode (http://drupal.org/node/5737) and event modules for this script to work.";
+  print "<li>You must have Drupal v4.6 OR Civicspace v0.8.0.x and the equivalent flexinode (http://drupal.org/node/5737) and event modules for this script to work.";
   print "Check the notes below and <a href=\"event_upgrade.php?op=update\">run the database upgrade script</a>.  Don't upgrade your database twice as it may cause problems.</li>\n";
   print "<li>This script will create a flexinode called 'event' with the appropriate fields to migrate your data to. If you already have a flexinode named this, you will have two when it is done.</li>\n";
   print "<li>Go through the various administration pages to change the existing and new settings to your liking.</li>\n";
   print "</ol>";
   print "<p>Drupal event.module Notes:";
   print "<ol>";
-  print "<li><strong>If you are upgrading the from the Drupal version of event.module, you must leave the fields.inc file in the modules/event directory for the upgrade to work.</strong> Once the upgrade is finished you may remove it.</li>\n";
+  print "<li><strong>If you are upgrading the from the 4.5 Drupal version of event.module, you must leave the fields.inc file in the modules/event directory for the upgrade to work. If you removed it during the upgrade process, put it back.</strong> Once the upgrade is finished you may remove it.</li>\n";
   print "<li>Field-level permissions setup in fields.inc will not be carried over to the new events module. Field-level permissions are not implemented in the current version of flexinode.</li>\n";
   print "<li>Password fields setup in fields.inc will be translated to textfields, there is currently no password field type for flexinode.</li>\n";
   print "<li>Radios will be translated to selects, there is currently no radios field type for flexinode.</li>\n";
