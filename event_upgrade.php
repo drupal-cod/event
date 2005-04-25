@@ -161,7 +161,7 @@ function event_upgrade_drupal($ctype_id) {
   print '<code>';
   print 'ALTER TABLE event ADD KEY start (start);<br />'."\n";
   print 'ALTER TABLE event ADD end INT(10) UNSIGNED NOT NULL default \'0\';<br />'."\n";
-  print 'ALTER TABLE event ADD tz INT(11) UNSIGNED default NULL;<br />'."\n";
+  print 'ALTER TABLE event ADD tz INT(11) default NULL;<br />'."\n";
   print 'ALTER TABLE event DROP data;<br />'."\n";
   foreach($drops as $drop) {
     print 'ALTER TABLE event DROP '. $drop .';<br />'."\n";
@@ -239,7 +239,7 @@ function event_upgrade_civicspace($ctype_id) {
   print '<code>';
   print 'ALTER TABLE event ADD KEY start (start);<br />'."\n";
   print 'ALTER TABLE event ADD end INT(10) UNSIGNED NOT NULL default \'0\';<br />'."\n";
-  print 'ALTER TABLE event ADD tz INT(11) UNSIGNED default NULL;<br />'."\n";
+  print 'ALTER TABLE event ADD tz INT(11) default NULL;<br />'."\n";
   print 'ALTER TABLE event DROP galleries;<br />'."\n";
   print 'DROP TABLE event_field_data;<br />'."\n";
   print 'DROP TABLE event_item;<br />'."\n";
