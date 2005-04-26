@@ -126,7 +126,7 @@ function event_settings() {
     }
     variable_set('event_timezone_display', 'event');
 
-    $group .= form_radios(t('Event timezone input'), 'event_timezone_input', variable_get('event_timezone_input', 'site'), array('site' => t('Use the sitewide timezone'), 'user" disabled' => t('Use the timezone of the user editing or creating the event'), 'input' => t('Allow users to set event timezones')), t("Events are saved with a timezone value. This setting allows you to determine how the timezone is determined when creating or editing an event. You must have 'Configurable time zones' enabled in %url before you can enable user's timezones for this feature.", array('%url' => l(t('site configuration')) , 'admin/settings')));
+    $group .= form_radios(t('Event timezone input'), 'event_timezone_input', variable_get('event_timezone_input', 'site'), array('site' => t('Use the sitewide timezone'), 'user" disabled' => t('Use the timezone of the user editing or creating the event'), 'input' => t('Allow users to set event timezones')), t("Events are saved with a timezone value. This setting allows you to determine how the timezone is determined when creating or editing an event. You must have 'Configurable time zones' enabled in %url before you can enable user's timezones for this feature.", array('%url' => l(t('site configuration'), 'admin/settings'))));
 
     $group .= form_radios(t('Event timezone display'), 'event_timezone_display', 'event', array('event' => t("Use the event's timezone"), 'user' => t("Use the user's timezone")), t("Events are saved with a timezone value. This setting allows you to determine if the event's timezone or the user's personal timezone setting is used to display the time for an event. You must have 'Configurable time zones' enabled in %url before you can enable user's timezones for this feature.", array('%url' => l(t('site configuration'), 'admin/settings'))), '', array('disabled' => true));
   }
@@ -710,35 +710,38 @@ function event_calendar_data($year, $month, $day, $view = NULL, $types = NULL, $
 
       // we have to load these here since there is no way to pass the $view parameter to nodeapi through node_load :/
       $node->event_links = module_invoke_all('link', 'event_node_'. $view, $node, FALSE);
+
       // this array contains the loaded nodes for the month, so we dont have them stored for every day they occur
       $data[$year][$month]['nodes'][$nid->nid] = $node;
 
+      // get local timestamp (date only) value for the node's GMT timestamps
       $tz = ((variable_get('event_timezone_display', 'event') == 'user') ? $user->timezone : $node->tz);
-
       $node_start = gmmktime(0, 0, 0, _event_date('m', $node->start, $tz), _event_date('d', $node->start, $tz), _event_date('Y', $node->start, $tz));
-
       $node_end = gmmktime(0, 0, 0, _event_date('m', $node->end, $tz), _event_date('d', $node->end, $tz), _event_date('Y', $node->end, $tz));
 
-      if ($node_start == $node_end) {
+      if (($node_start == $node_end) && (gmdate('m', $node_start) == $month)) {
         $nid->event_state = 'singleday';
         $data[$year][$month][gmdate('j', $node_start)][] = $nid;
       }
       else {
+        // because $first is a local timestamp we compensate for the tz offset here so we dont have to do day value comparisons over and over below
+        $first -= ($first % 86400);
         // roll through each day the event occurs and set an entry for each
-        $first -= $node_start;
-        for ($x = ($first > $node_start ? $first : $node_start); $x <= $last; $x += 86400) {
-          if ($x == $node_end) {
-            $nid->event_state = 'end';
-            $data[$year][$month][gmdate('j', $x)][] = $nid;
-            $x = $last + 1;
-          }
-          elseif ($x == $node_start) {
-            $nid->event_state = 'start';
-            $data[$year][$month][gmdate('j', $x)][] = $nid;
-          }
-          else {
-            $nid->event_state = 'ongoing';
-            $data[$year][$month][gmdate('j', $x)][] = $nid;
+        for ($x = ($first > $node_start ? $first : $node_start); $x < $last; $x += 86400) {
+          if (gmdate('m', $x) == $month) {
+            if ($x == $node_end) {
+              $nid->event_state = 'end';
+              $data[$year][$month][gmdate('j', $x)][] = $nid;
+              $x = $last + 1;
+            }
+            elseif ($x == $node_start) {
+              $nid->event_state = 'start';
+              $data[$year][$month][gmdate('j', $x)][] = $nid;
+            }
+            else {
+              $nid->event_state = 'ongoing';
+              $data[$year][$month][gmdate('j', $x)][] = $nid;
+            }
           }
         }
       }
