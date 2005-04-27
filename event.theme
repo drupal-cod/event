@@ -287,7 +287,8 @@ function theme_event_nodeapi($node) {
   if ($node->start != $node->end) {
     $output .= '<div class="event-nodeapi"><div class="'. $node->type. '-end"><label>'. t('End') .': </label>'. $node->end_format .'</div></div>'."\n";
   }
-  $output .= '<div class="event-nodeapi"><div class="'. $node->type. '-tz"><label>'. t('Timezone') .': </label>'. $node->tz .'</div></div>'."\n";
+  $zones = event_zonelist();
+  $output .= '<div class="event-nodeapi"><div class="'. $node->type. '-tz"><label>'. t('Timezone') .': </label>'. $zones[$node->tz] .'</div></div>'."\n";
   return $output;
 }
 

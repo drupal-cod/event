@@ -345,7 +345,7 @@ function event_calendar_month($op, $stamp, $types = NULL, $terms = NULL) {
         $prev = _event_nav($stamp, 'prev', 'month', $types, $terms);
         $next = _event_nav($stamp, 'next', 'month', $types, $terms);
 
-        $headertitle = l(t(gmdate('F', $stamp)) .' '. $year, 'event/'. $year .'/'. $month .'/'. $day);
+        $headertitle = l(t(gmdate('F', $stamp)) .' '. $year, 'event/'. $year .'/'. $month .'/'. $day .'/month');
         $header = array(
           array('class' => 'prev', 'data' => $prev),
           array('class' => 'heading', 'data' => $headertitle, 'colspan' => 5),
