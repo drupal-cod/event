@@ -45,14 +45,6 @@ function theme_event_calendar_day($op, $header, $rows) {
  * @param day
  *   The day to display.
  */
- /*
-function theme_event_calendar_table($op, $header, $rows) {
-  $output = theme("table", $header, $rows);
-  print_R($rows);
-  return '<div class="event-calendar"><div class="table-view">'. $output ."</div></div>\n";
-}
-*/
-
 function theme_event_calendar_table($op, $header, $rows) {
   $output = theme("table", $header, $rows);
   return '<div class="event-calendar"><div class="table-view">'. $output ."</div></div>\n";
@@ -240,7 +232,7 @@ function theme_event_node_table($node, $module = NULL) {
   $output .= '<div class="content">'. $node->teaser .'</div></div>'."\n";
 
   $links = $node->event_links;
-  $links[] = l(t('more info'), '', array('onclick' => "popupnotes('info_". $link_count ."'); return false;", 'title' => "show detailed information for this event"));
+  $links[] = l(t('more info'), '', array('onclick' => "popupnotes('info_". $link_count ."'); return false;", 'title' => t('Show detailed information for this event.')));
   $output .= '<div class="links">'. theme('links', $links) ."\n</div>";
   $output .= '</div>'."\n";
   return $output;
@@ -255,7 +247,7 @@ function theme_event_node_table($node, $module = NULL) {
 function theme_event_calendar_date_box($year, $month, $day, $view) {
   switch ($view) {
     case 'table':
-        $output = '<div class="day">'. $month .'/'. $day .'</div>'."\n";
+        $output = '<div class="day">'. t('%month / %day', array('%month' => $month, '%day' => $day)) .'</div>'."\n";
       break;
     case 'day':
      break;
