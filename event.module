@@ -14,7 +14,7 @@ include(drupal_get_path('module', 'event') .'/event.theme');
  * @return a &lt;style&gt; tag that indicates what file browsers should import
  */
 function event_html_head() {
-  $output = '<script language="javascript" src="'. drupal_get_path('module', 'event') .'/event.js"></script>';
+  $output = '<script type="text/javascript" language="javascript" src="'. drupal_get_path('module', 'event') .'/event.js"></script>';
   return $output.'<style type="text/css">@import url('. drupal_get_path('module', 'event') .'/event.css);</style>';
 }
 
@@ -381,7 +381,7 @@ function event_calendar_month($op, $stamp, $types = NULL, $terms = NULL) {
     for ($x = $start; $x < 7; $x++) {
       $cur_day = (($week * 7) + ($x + 1) - $offset);
       $row[$x] = array(
-        'class' => strtolower("$month_name ". $weekdays[$x]['t'] . ($curstamp == $today ? ' today' : '') . ($cur_day == $day ? ' selected' : '')),
+        'class' => strtolower("$month_name ". $weekdays[$x]['day'] . ($curstamp == $today ? ' today' : '') . ($cur_day == $day ? ' selected' : '')),
         'id' => strtolower($month_name . $cur_day),
         'data' => $callback($year, $month, $cur_day, $view, $types, $terms));
       $curstamp += 86400;
@@ -429,7 +429,7 @@ function event_calendar_week($op, $stamp, $types = NULL, $terms = NULL) {
     $month_name = gmdate('M', $stamp);
 
     $row[$x] = array(
-      'class' => strtolower("$month_name ". $weekdays[$x]['t'] . ($stamp == $today ? ' today' : '') . ($cur_day == $day ? ' selected' : '')),
+      'class' => strtolower("$month_name ". $weekdays[$x]['day'] . ($stamp == $today ? ' today' : '') . ($cur_day == $day ? ' selected' : '')),
       'id' => strtolower($month_name . $cur_day),
       'data' => event_render_day($year, $month, $cur_day, 'week', $types, $terms));
     $stamp += 86400;
@@ -456,7 +456,7 @@ function event_calendar_day($op, $stamp, $types = NULL, $terms = NULL) {
   $weekdays = event_week_days();
 
   $rows[][] = array(
-    'class' => strtolower("$month_name ". $weekdays[$dow]['t'] . ($stamp == $today ? ' today' : '')),
+    'class' => strtolower("$month_name ". $weekdays[$dow]['day'] . ($stamp == $today ? ' today' : '')),
     'id' => strtolower($month_name . $day),
     'data' => event_render_day($year, $month, $day, 'day', $types, $terms),
     'colspan' => 3);
@@ -485,7 +485,7 @@ function event_calendar_table($op, $stamp, $endstamp, $types = NULL, $terms = NU
     $weekdays = event_week_days();
 
     $rows[][] = array('colspan' => 3,
-                      'class' => strtolower("$month_name ". $weekdays[$dow]['t'] . ($stamp == $today ? ' today' : '') . ($cur_day == $day ? ' selected' : '')),
+                      'class' => strtolower("$month_name ". $weekdays[$dow]['day'] . ($stamp == $today ? ' today' : '') . ($cur_day == $day ? ' selected' : '')),
                       'id' => strtolower($month_name . $cur_day),
                       'data' => event_render_day($year, $month, $cur_day, 'table', $types, $terms));
     $stamp += 86400;
@@ -594,7 +594,7 @@ function event_get_calendar($view, $nodes, $module, $title = NULL) {
                 $content .= theme('event_node_'. $view, $node, $module);
               }
               $rows[][] = array(
-                'class' => strtolower("$month_name ". $weekdays[$dow]['t'] . ($nid->stamp == $today ? ' today' : '')),
+                'class' => strtolower("$month_name ". $weekdays[$dow]['day'] . ($nid->stamp == $today ? ' today' : '')),
                 'id' => strtolower($month_name . $day),
                 'data' => $content);
               $month_name = NULL;
@@ -652,7 +652,7 @@ function event_get_calendar($view, $nodes, $module, $title = NULL) {
                 }
 
                 $row[$x] = array(
-                  'class' => strtolower("$month_name ". $weekdays[$x]['t'] . ($curstamp == $today ? ' today' : '')),
+                  'class' => strtolower("$month_name ". $weekdays[$x]['day'] . ($curstamp == $today ? ' today' : '')),
                   'id' => strtolower($month_name . $day),
                   'data' => $content);
 
@@ -1360,7 +1360,7 @@ function event_block_upcoming($limit = 6) {
 
       $ctype = module_invoke('flexinode', 'load_content_type', substr($node->type, 10));
 
-      $items[] = l($node->title, "node/$node->nid", array("title" => $node->title)). '&nbsp(' .($ctype->name ? $ctype->name : $node->type). ')<br />' ." ($timeleft)";
+      $items[] = l($node->title, "node/$node->nid", array("title" => $node->title)). '&nbsp;(' .($ctype->name ? $ctype->name : $node->type). ')<br />' ." ($timeleft)";
     }
     return theme("item_list", $items);
   }
