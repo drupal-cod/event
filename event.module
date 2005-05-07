@@ -100,6 +100,11 @@ function event_menu($may_cache) {
                      'callback' => 'event_term',
                      'access' => user_access('access content'),
                      'type' => MENU_CALLBACK);
+    $items[] = array('path' => 'event/feed',
+                     'title' => t('event rss feed'),
+                     'callback' => 'event_feed',
+                     'access' => user_access('access content'),
+                     'type' => MENU_CALLBACK);
   }
   else {
     drupal_set_html_head(event_html_head());
@@ -273,30 +278,38 @@ function event_page($year = NULL, $month = NULL, $day = NULL, $view = NULL, $typ
         $headertitle = t('%startmonth %startdate, %startyear - %endmonth %enddate, %endyear', array('%startmonth' => gmdate('F', $stamp), '%startdate' => gmdate('d', $stamp), '%startyear' => gmdate('Y', $stamp), '%endmonth' => t(gmdate('F', $endstamp)), '%enddate' => gmdate('d', $endstamp), '%endyear' => gmdate('Y', $endstamp)));
         $rows = event_calendar_table('page', $stamp, $endstamp, $types, $terms);
       break;
+    case 'feed':
+        // rss feed
+        drupal_set_header('Content-Type: text/xml; charset=utf-8');
+        $duration = $duration ? $duration : variable_get('event_table_duration', '30');
+        print event_calendar_rss($stamp, $duration, $types, $terms, $title);
+      break;
   }
 
-  // build header navigation
-  $prev = _event_nav($stamp, 'prev', $view, $types, $terms, $duration);
-  $next = _event_nav($stamp, 'next', $view, $types, $terms, $duration);
+  if($view != 'feed') {
+    // build header navigation
+    $prev = _event_nav($stamp, 'prev', $view, $types, $terms, $duration);
+    $next = _event_nav($stamp, 'next', $view, $types, $terms, $duration);
 
-  // setup calendar table header
-  $header = array(
-    array('class' => 'prev', 'data' => $prev),
-    array('class' => 'heading', 'data' => $headertitle, 'colspan' => $colspan),
-    array('class' => 'next', 'data' => $next));
+    // setup calendar table header
+    $header = array(
+      array('class' => 'prev', 'data' => $prev),
+      array('class' => 'heading', 'data' => $headertitle, 'colspan' => $colspan),
+      array('class' => 'next', 'data' => $next));
 
-  $node->day = $day;
-  $node->month = $month;
-  $node->year = $year;
-  $node->filter = ($types ? implode('+', $types) : 'all') .'/'. ($terms ? implode('+', $terms) : 'all');
+    $node->day = $day;
+    $node->month = $month;
+    $node->year = $year;
+    $node->filter = ($types ? implode('+', $types) : 'all') .'/'. ($terms ? implode('+', $terms) : 'all');
 
-  $output .= theme('event_links', array_merge(module_invoke_all('link', 'event_'. $view, $node, FALSE), $links), $view);
+    $output .= theme('event_links', array_merge(module_invoke_all('link', 'event_'. $view, $node, FALSE), $links), $view);
 
-  $output .= theme('event_calendar_'. $view, 'page', $header, $rows);
+    $output .= theme('event_calendar_'. $view, 'page', $header, $rows);
 
-  drupal_set_title(t('Events') . ($title ? ' - '. $title : ''));
-  drupal_set_breadcrumb($breadcrumbs);
-  print theme('page', $output);
+    drupal_set_title(t('Events') . ($title ? ' - '. $title : ''));
+    drupal_set_breadcrumb($breadcrumbs);
+    print theme('page', $output);
+  }
 }
 
 /**
@@ -317,6 +330,16 @@ function event_type($types = NULL, $view = NULL, $terms = NULL) {
  */
 function event_term($filter = NULL, $view = NULL) {
   drupal_goto('event/'. format_date(_event_user_time(), 'custom', 'Y/m/d') .'/'. ($view ? $view : variable_get('event_overview', 'next') .'/all/'. $filter));
+}
+
+/**
+ * Url wrapper function for rss feeds
+ *
+ * @ingroup event_callback
+ * @return redirect to the event rss feed page at current day
+ */
+function event_feed($duration = NULL) {
+  drupal_goto('event/'. format_date(_event_user_time(), 'custom', 'Y/m/d') .'/feed/all/all/'. $duration);
 }
 
 /**
@@ -494,6 +517,54 @@ function event_calendar_table($op, $stamp, $endstamp, $types = NULL, $terms = NU
   }
 
   return $rows;
+}
+
+/**
+ * Creates an rss feed of events.
+ *
+ * @ingroup event_view
+ * @param $stamp The GMT starting date for the feed.
+ * @param $duration The number of days the feeds duration is.
+ * @param $types The content types to filter the feed by.
+ * @param $terms The taxonomy term tids to filter the feed by.
+ * @param $title The filter title to append to the channel description.
+ * @return A formatted rss feed.
+ */
+function event_calendar_rss($stamp, $duration, $types = NULL, $terms = NULL, $title = NULL) {
+  global $base_url, $locale;
+
+  $endstamp = $stamp + ($duration * 86400);
+  $headertitle = t('%startmonth %startdate, %startyear - %endmonth %enddate, %endyear', array('%startmonth' => gmdate('F', $stamp), '%startdate' => gmdate('d', $stamp), '%startyear' => gmdate('Y', $stamp), '%endmonth' => t(gmdate('F', $endstamp)), '%enddate' => gmdate('d', $endstamp), '%endyear' => gmdate('Y', $endstamp)));
+
+  while ($stamp <= $endstamp) {
+    $year = gmdate('Y', $stamp);
+    $month = gmdate('m', $stamp);
+    $day = gmdate('j', $stamp);
+
+    $nodes = event_calendar_data($year, $month, $day, 'rss', $types, $terms);
+
+    if (count($nodes)) {
+      foreach ($nodes as $node) {
+        $link = url("node/$node->nid", NULL, NULL, 1);
+        // Allow modules to add additional item fields
+        $extra = node_invoke_nodeapi($node, 'rss item');
+        $extra = array_merge($extra, array(array('key' => 'pubDate', 'value' =>  date('r', $node->changed))));
+        $items .= format_rss_item($node->title, $link, $node->teaser, $extra);
+      }
+    }
+
+    $stamp += 86400;
+  }
+
+  $description = $headertitle . ($title ? ' | '. $title : '');
+
+  $output = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
+  $output .= "<!DOCTYPE rss [<!ENTITY % HTMLlat1 PUBLIC \"-//W3C//ENTITIES Latin 1 for XHTML//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml-lat1.ent\">]>\n";
+  $output .= "<rss version=\"2.0\" xml:base=\"". $base_url ."\">\n";
+  $output .= format_rss_channel(variable_get('site_name', 'drupal') . t(' - Events Feed'), $base_url . '/event/feed', $description, $items, $locale);
+  $output .= "</rss>\n";
+
+  return $output;
 }
 
 /**
@@ -1539,7 +1610,7 @@ function event_help($section) {
       <strong>\$year:</strong> year value such as '2005'<br />
       <strong>\$month:</strong> month value with leading zeroes such as '02' for february<br />
       <strong>\$day:</strong> day value with leading zeroes such as '14'<br />
-      <strong>\$view_type:</strong> type of calendar layout, values may include 'month', 'week', 'day', and 'table'<br />
+      <strong>\$view_type:</strong> type of calendar layout, values may include 'month', 'week', 'day', 'table' and 'feed' for an rss feed.<br />
       <strong>\$content_type:</strong> list of node types, separated by '+'. Flexinode types only require the integer value of the type. For example, to view story nodes and type flexinode-1, you would use 'story+1'. The value 'all' will show all types.<br />
       <strong>\$taxonomy_terms:</strong> list of term ids, seperated by '+'. For example to view entries assigned to the taxonomy terms with ids 4 and 9 you would use '4+9'. The value 'all' will show all terms.<br />
       <strong>\$duration:</strong> number of days to display, currently only the table view obeys this setting. Eventually it may be used to specify additional duration parameters such as multiple weeks in the week view, or months in the month view.
