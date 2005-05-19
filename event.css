@@ -270,3 +270,17 @@
   height: 5px;
   width: 100%;
 }
+#block-event-1 .item-list ul li a { margin-top: 8px; }
+span.event-timeleft {
+  padding-bottom: 3px;
+  text-align: right;
+  width: auto;
+  display: block;
+}
+span.event-nodetype {
+  padding: 0px 0px 0px 5px;
+  display: block;
+  width: auto;
+  text-align: right;
+  float: right;
+}

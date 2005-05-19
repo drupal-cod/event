@@ -1433,7 +1433,7 @@ function event_block_upcoming($limit = 6) {
 
       $ctype = module_invoke('flexinode', 'load_content_type', substr($node->type, 10));
 
-      $items[] = l($node->title, "node/$node->nid", array("title" => $node->title)). '&nbsp;(' .($ctype->name ? $ctype->name : $node->type). ')<br />' ." ($timeleft)";
+      $items[] = l($node->title, "node/$node->nid", array('title' => $node->title)). '<span class="event-nodetype">('. ($ctype->name ? $ctype->name : $node->type) .')</span><span class="event-timeleft">('. $timeleft .')</span>';
     }
     return theme("item_list", $items);
   }
