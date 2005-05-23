@@ -6,7 +6,7 @@
  *
  * Copy this file to the root directory of your drupal installation.
  * Login as user 1, or disable the access checking below
- * Point your browser to "http://www.site.com/event_upgrade.php" and follow the
+ * Point your browser to "http://www.site.com/update-event.php" and follow the
  * instructions.
  *
  * If you are not logged in as administrator, you will need to modify the access
@@ -22,7 +22,7 @@ if (!ini_get("safe_mode")) {
   set_time_limit(180);
 }
 
-function event_upgrade_page_header($title) {
+function update-event_page_header($title) {
   $output = "<html><head><title>$title</title>";
   $output .= <<<EOF
       <link rel="stylesheet" type="text/css" media="print" href="misc/print.css" />
@@ -36,11 +36,11 @@ EOF;
   return $output;
 }
 
-function event_upgrade_page_footer() {
+function update-event_page_footer() {
   return "</div></body></html>";
 }
 
-function event_upgrade_page() {
+function update-event_page() {
   global $user;
 
   if (isset($_POST['edit'])) {
@@ -53,7 +53,7 @@ function event_upgrade_page() {
   switch ($op) {
     case "Update":
       // make sure we have updates to run.
-      print event_upgrade_page_header("event.module database update");
+      print update-event_page_header("event.module database update");
       $links[] = "<a href=\"index.php\">main page</a>";
       $links[] = "<a href=\"index.php?q=admin\">administration pages</a>";
       print theme("item_list", $links);
@@ -61,7 +61,7 @@ function event_upgrade_page() {
       $ctype_id = db_next_id('{flexinode_ctype}');
       $vals[] = $ctype_id;
       $vals[] = 'event';
-      $vals[] = 'This is the event type setup by event_upgrade.php';
+      $vals[] = 'This is the event type setup by update-event.php';
       $vals[] = 'You can change this text by going to the <a href="admin/node/types">flexinode content configuration page</a>';
       if(!db_query("INSERT INTO {flexinode_type} (ctype_id, name, description, help) VALUES (%d, '%s', '%s', '%s')", $vals)) {
         die('unable to create new flexinode type');
@@ -69,29 +69,29 @@ function event_upgrade_page() {
 
       switch ($edit['type']) {
         case 'drupal' :
-          event_upgrade_drupal($ctype_id);
+          update-event_drupal($ctype_id);
           break;
 
         case 'civicspace' :
-          event_upgrade_civicspace($ctype_id);
+          update-event_civicspace($ctype_id);
           break;
       }
 
-      print event_upgrade_page_footer();
+      print update-event_page_footer();
       break;
     default:
       // make update form and output it.
       $types = array('drupal' => 'Drupal v4.5 event.module', 'civicspace' => 'Civicspace v0.8.0.3 event.module');
       $form = form_select('Perform updates for', 'type', '', $types, 'This defaults to the first available update since the last update you performed.');
       $form .= form_submit('Update');
-      print event_upgrade_page_header('Drupal database update');
+      print update-event_page_header('Drupal database update');
       print form($form);
-      print event_upgrade_page_footer();
+      print update-event_page_footer();
       break;
   }
 }
 
-function event_upgrade_drupal($ctype_id) {
+function update-event_drupal($ctype_id) {
   include_once 'modules/event/fields.inc';
 
   $fields = event_extra_fields();
@@ -134,7 +134,7 @@ function event_upgrade_drupal($ctype_id) {
         else {
           $value = $event->$key;
         }
-        $function = 'event_upgrade_'. $flex_fields[$def[0]] .'_insert';
+        $function = 'update-event_'. $flex_fields[$def[0]] .'_insert';
         $field->field_id = $map[$key];
         $field->nid = $event->nid;
         $function($field, $value);
@@ -146,7 +146,7 @@ function event_upgrade_drupal($ctype_id) {
     if (is_array($event->data)) {
       foreach ($event->data as $key => $value) {
         $type = $fields[$key][0];
-        $function = 'event_upgrade_'. $flex_fields[$type] .'_insert';
+        $function = 'update-event_'. $flex_fields[$type] .'_insert';
         $field->field_id = $map[$key];
         $field->nid = $event->nid;
         $function($field, $value);
@@ -169,7 +169,7 @@ function event_upgrade_drupal($ctype_id) {
   print '</code>';
 }
 
-function event_upgrade_civicspace($ctype_id) {
+function update-event_civicspace($ctype_id) {
   $flex_fields = array('password' => 'textfield',
                       'textfield' => 'textfield',
                       'textarea' => 'textarea',
@@ -214,7 +214,7 @@ function event_upgrade_civicspace($ctype_id) {
 
     $edit['label'] = $field->title;
     $edit['required'] = $field->required;
-    $options = serialize(event_upgrade_forms_options($field->options));
+    $options = serialize(update-event_forms_options($field->options));
     $edit['description'] = $field->explanation;
     $edit['weight'] = $field->weight;
 
@@ -225,7 +225,7 @@ function event_upgrade_civicspace($ctype_id) {
   while($event = db_fetch_object($events)) {
     $fields = db_query("SELECT f.*, ff.* FROM {event_field_data} f LEFT JOIN {event} e ON e.nid = f.nid LEFT JOIN {form_fields} ff ON ff.name = f.name WHERE e.nid = %d", $event->nid);
     while ($field = db_fetch_object($fields)) {
-      $function = 'event_upgrade_'. $types[$field->name] .'_insert';
+      $function = 'update-event_'. $types[$field->name] .'_insert';
       $field->field_id = $map[$field->name];
       $field->nid = $event->nid;
       $function($field, $field->data);
@@ -246,36 +246,36 @@ function event_upgrade_civicspace($ctype_id) {
   print '</code>';
 }
 
-function event_upgrade_select_insert($field, $value) {
-  $options = array_flip(event_upgrade_forms_options($field->options));
+function update-event_select_insert($field, $value) {
+  $options = array_flip(update-event_forms_options($field->options));
   db_query('INSERT INTO {flexinode_data} (nid, field_id, numeric_data) VALUES (%d, %d, %d)', $field->nid, $field->field_id, $options[$value]);
 }
 
-function event_upgrade_textarea_insert($field, $value) {
+function update-event_textarea_insert($field, $value) {
   db_query("INSERT INTO {flexinode_data} (nid, field_id, textual_data, numeric_data) VALUES (%d, %d, '%s', %d)", $field->nid, $field->field_id, $value, 0);
 }
 
-function event_upgrade_textfield_insert($field, $value) {
+function update-event_textfield_insert($field, $value) {
   db_query("INSERT INTO {flexinode_data} (nid, field_id, textual_data) VALUES (%d, %d, '%s')", $field->nid, $field->field_id, $value);
 }
 
-function event_upgrade_checkbox_insert($field, $value) {
+function update-event_checkbox_insert($field, $value) {
   db_query('INSERT INTO {flexinode_data} (nid, field_id, numeric_data) VALUES (%d, %d, %d)', $field->nid, $field->field_id, $value);
 }
 
-function event_upgrade_file_insert($field, $value) {
+function update-event_file_insert($field, $value) {
   db_query("INSERT INTO {flexinode_data} (nid, field_id, textual_data, serialized_data) VALUES (%d, %d, '%s', '%s')", $field->nid, $field->field_id, $value, '');
 }
 
-function event_upgrade_email_insert($field, $value) {
+function update-event_email_insert($field, $value) {
   db_query("INSERT INTO {flexinode_data} (nid, field_id, textual_data) VALUES (%d, %d, '%s')", $field->nid, $field->field_id, $value);
 }
 
-function event_upgrade_url_insert($field, $value) {
+function update-event_url_insert($field, $value) {
   db_query("INSERT INTO {flexinode_data} (nid, field_id, textual_data) VALUES (%d, %d, '%s')", $field->nid, $field->field_id, $value);
 }
 
-function event_upgrade_forms_options($options) {
+function update-event_forms_options($options) {
   $array = explode(';', $options);
   $options = array();
   foreach ($array as $opt) {
@@ -291,14 +291,14 @@ function event_upgrade_forms_options($options) {
   return $options;
 }
 
-function event_upgrade_info() {
-  print event_upgrade_page_header("event.module database update");
+function update-event_info() {
+  print update-event_page_header("event.module database update");
   print "<ol>\n";
   print "<li>Use this script to <strong>upgrade an existing event.module installation</strong>.  You don't need this script when installing the event.module from scratch.</li>";
   print "<li>Before doing anything, backup your database. This process will change your database and its values, and some things might get lost.</li>\n";
   print "<li>This script has only been tested on mysql databases. It may work with postgres, however it may not. If you have problems please submit a bug report on drupal.org, or better yet, a patch.</li>\n";
   print "<li>You must have Drupal v4.6 OR Civicspace v0.8.0.x and the equivalent flexinode (http://drupal.org/node/5737) and event modules for this script to work.";
-  print "Check the notes below and <a href=\"event_upgrade.php?op=update\">run the database upgrade script</a>.  Don't upgrade your database twice as it may cause problems.</li>\n";
+  print "Check the notes below and <a href=\"update-event.php?op=update\">run the database upgrade script</a>.  Don't upgrade your database twice as it may cause problems.</li>\n";
   print "<li>This script will create a flexinode called 'event' with the appropriate fields to migrate your data to. If you already have a flexinode named this, you will have two when it is done.</li>\n";
   print "<li>Go through the various administration pages to change the existing and new settings to your liking.</li>\n";
   print "</ol>";
@@ -310,7 +310,7 @@ function event_upgrade_info() {
   print "<li>Radios will be translated to selects, there is currently no radios field type for flexinode.</li>\n";
   print "</ol>";
   
-  print event_upgrade_page_footer();
+  print update-event_page_footer();
 }
 
 if (isset($_GET["op"])) {
@@ -319,15 +319,15 @@ if (isset($_GET["op"])) {
 
   // Access check:
   if (($access_check == 0) || ($user->uid == 1)) {
-    event_upgrade_page();
+    update-event_page();
   }
   else {
-    print event_upgrade_page_header("Access denied");
-    print "Access denied.  You are not authorized to access to this page.  Please log in as the user with user ID #1. If you cannot log-in, you will have to edit <code>modules/event/event_upgrade.php</code> to by-pass this access check; in that case, open <code>modules/event/event_upgrade.php</code> in a text editor and follow the instructions at the top.";
-    print event_upgrade_page_footer();
+    print update-event_page_header("Access denied");
+    print "Access denied.  You are not authorized to access to this page.  Please log in as the user with user ID #1. If you cannot log-in, you will have to edit <code>modules/event/update-event.php</code> to by-pass this access check; in that case, open <code>modules/event/update-event.php</code> in a text editor and follow the instructions at the top.";
+    print update-event_page_footer();
   }
 }
 else {
-  event_upgrade_info();
+  update-event_info();
 }
 ?>
