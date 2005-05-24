@@ -2,6 +2,7 @@
 // $Id$ 
 
 include(drupal_get_path('module', 'event') .'/event.theme');
+include(drupal_get_path('module', 'event') .'/event_timezones.inc');
 
 /**
  * @defgroup event_core Core drupal hooks
@@ -32,10 +33,10 @@ function event_link($type, $node = NULL, $teaser = FALSE) {
   switch ($type) {
     case 'node':
       if (event_enabled_state($node->type) == 'all') {
-        $links[] = l(t('calendar'), 'event/'. format_date($node->start, 'custom', 'Y/m/d'));
+        $links[] = l(t('calendar'), 'event/'. format_date($node->event_start, 'custom', 'Y/m/d'));
       }
       elseif (event_enabled_state($node->type) == 'solo') {
-        $links[] = l(t('calendar'), 'event/'. format_date($node->start, 'custom', 'Y/m/d') .'/month/'. $node->type);
+        $links[] = l(t('calendar'), 'event/'. format_date($node->event_start, 'custom', 'Y/m/d') .'/month/'. $node->type);
       }
       break;
     case 'event_month':
@@ -105,6 +106,11 @@ function event_menu($may_cache) {
                      'callback' => 'event_feed',
                      'access' => user_access('access content'),
                      'type' => MENU_CALLBACK);
+    $items[] = array('path' => 'event/dst',
+                     'title' => t('event dst view'),
+                     'callback' => 'event_dst',
+                     'access' => user_access('access content'),
+                     'type' => MENU_CALLBACK);
   }
   else {
     drupal_set_html_head(event_html_head());
@@ -123,7 +129,7 @@ function event_settings() {
   if (variable_get('configurable_timezones', 0)) {
     $group .= form_radios(t('Event timezone input'), 'event_timezone_input', variable_get('event_timezone_input', 'site'), array('site' => t('Use the sitewide timezone'), 'user' => t('Use the timezone of the user editing or creating the event'), 'input' => t('Allow users to set event timezones')), t('Events are saved with a timezone value. This setting allows you to determine how the timezone is determined when creating or editing an event.'));
 
-    $group .= form_radios(t('Event timezone display'), 'event_timezone_display', variable_get('event_timezone_display', 'event'), array('event' => t("Use the event's timezone."), 'user' => t("Use the user's timezone.")), t("Events are saved with a timezone value. This setting allows you to determine if the event's timezone or the user's personal timezone setting is used to display the time for an event."));
+    $group .= form_radios(t('Event timezone display'), 'event_timezone_display', variable_get('event_timezone_display', 'event'), array('event' => t("Use the event's timezone"), 'user' => t("Use the user's timezone"), 'site' => t('Use the sitewide timezone')), t("Events are saved with a timezone value. This setting allows you to determine if the event's timezone, the sitewide timezone, or the user's personal timezone setting is used to display the time for an event."));
   }
   else {
     if (variable_get('event_timezone_input', 'site') == 'user') {
@@ -133,9 +139,10 @@ function event_settings() {
 
     $group .= form_radios(t('Event timezone input'), 'event_timezone_input', variable_get('event_timezone_input', 'site'), array('site' => t('Use the sitewide timezone'), 'user" disabled' => t('Use the timezone of the user editing or creating the event'), 'input' => t('Allow users to set event timezones')), t("Events are saved with a timezone value. This setting allows you to determine how the timezone is determined when creating or editing an event. You must have 'Configurable time zones' enabled in %url before you can enable user's timezones for this feature.", array('%url' => l(t('site configuration'), 'admin/settings'))));
 
-    $group .= form_radios(t('Event timezone display'), 'event_timezone_display', 'event', array('event' => t("Use the event's timezone"), 'user' => t("Use the user's timezone")), t("Events are saved with a timezone value. This setting allows you to determine if the event's timezone or the user's personal timezone setting is used to display the time for an event. You must have 'Configurable time zones' enabled in %url before you can enable user's timezones for this feature.", array('%url' => l(t('site configuration'), 'admin/settings'))), '', array('disabled' => true));
+    $group .= form_radios(t('Event timezone display'), 'event_timezone_display', 'event', array('event' => t("Use the event's timezone"), 'site' => t('Use the sitewide timezone')), t("Events are saved with a timezone value. This setting allows you to determine if the event's timezone, the sitewide timezone, or the user's personal timezone setting is used to display the time for an event. You must have 'Configurable time zones' enabled in %url before you can enable user's timezones for this feature.", array('%url' => l(t('site configuration'), 'admin/settings'))));
   }
   $group .= form_radios(t('Time notation preference'), 'event_ampm', variable_get('event_ampm', '0'), array('0' => t('24h'),'1' => t('12h')), t('The time notation system used for entering event times.'));
+  $group .= form_textfield(t('Upcoming event block limit'), 'event_upcoming_limit', variable_get('event_upcoming_limit', '6'), 5, 2, t('Limit the amount of events displayed in the upcoming events block by this amount.'));
   $output = form_group(t('General Event options'), $group);
 
   $group = form_radios(t('Default overview'), 'event_overview', variable_get('event_overview', 'day'), array('day' => t('Day'), 'week' => t('Week'), 'month' => t('Month'), 'table' => t('Table')), t('The default event view to display when no format is specifically requested. This is also the view that will be displayed from the block calendar links.'));
@@ -319,7 +326,7 @@ function event_page($year = NULL, $month = NULL, $day = NULL, $view = NULL, $typ
  * @return redirect to the event page for calendar node type.
  */
 function event_type($types = NULL, $view = NULL, $terms = NULL) {
-  drupal_goto('event/'. format_date(_event_user_time(), 'custom', 'Y/m/d') .'/'. ($view ? $view : variable_get('event_overview', 'next') .'/'. $types));
+  drupal_goto('event/'. format_date(_event_user_time(), 'custom', 'Y/m/d') .'/'. ($view ? $view : variable_get('event_overview', 'next')) .'/'. $types);
 }
 
 /**
@@ -329,7 +336,7 @@ function event_type($types = NULL, $view = NULL, $terms = NULL) {
  * @return redirect to the event page for calendar taxonomy term.
  */
 function event_term($filter = NULL, $view = NULL) {
-  drupal_goto('event/'. format_date(_event_user_time(), 'custom', 'Y/m/d') .'/'. ($view ? $view : variable_get('event_overview', 'next') .'/all/'. $filter));
+  drupal_goto('event/'. format_date(_event_user_time(), 'custom', 'Y/m/d') .'/'. ($view ? $view : variable_get('event_overview', 'next')) .'/all/'. $filter);
 }
 
 /**
@@ -545,11 +552,14 @@ function event_calendar_rss($stamp, $duration, $types = NULL, $terms = NULL, $ti
 
     if (count($nodes)) {
       foreach ($nodes as $node) {
+        $body = '<div class="start">'. t('Start') .': '. $node->event_start_format .'</div>'."\n";
+        $body .= '<div class="end">'. t('End') .': '. $node->event_end_format .'</div>'."\n";
+        $body .= $node->teaser;
         $link = url("node/$node->nid", NULL, NULL, 1);
         // Allow modules to add additional item fields
         $extra = node_invoke_nodeapi($node, 'rss item');
         $extra = array_merge($extra, array(array('key' => 'pubDate', 'value' =>  date('r', $node->changed))));
-        $items .= format_rss_item($node->title, $link, $node->teaser, $extra);
+        $items .= format_rss_item($node->title, $link, $body, $extra);
       }
     }
 
@@ -578,8 +588,8 @@ function event_calendar_rss($stamp, $duration, $types = NULL, $terms = NULL, $ti
  *                "week": A week calendar.
  *                "day": A day calendar.
  *  @param $nodes – An associative array of nodes with nids for key values.
- *           Node objects must have GMT timestamp values for start ($node->start).
- *           Optionally, an end value ($node->end) and a timezone offset value
+ *           Node objects must have GMT timestamp values for start ($node->event_start).
+ *           Optionally, an end value ($node->event_end) and a timezone offset value
  *           in the same format as drupal core ($node->tz). If a node has no end
  *           value, it is rendered on only one day. If no timezone value is displayed
  *           the time is rendered with no timezone offset (GMT).
@@ -596,9 +606,9 @@ function event_get_calendar($view, $nodes, $module, $title = NULL) {
     $nid->nid = $node->nid;
 
     // $node_start and $node_end are local timestamp values
-    $node_start = gmmktime(0, 0, 0, _event_date('m', $node->start, $node->tz), _event_date('d', $node->start, $node->tz), _event_date('Y', $node->start, $node->tz));
-    if ($node->end) {
-      $node_end = gmmktime(0, 0, 0, _event_date('m', $node->end, $node->tz), _event_date('d', $node->end, $node->tz), _event_date('Y', $node->end, $node->tz));
+    $node_start = gmmktime(0, 0, 0, _event_date('m', $node->event_start, $node->start_offset), _event_date('d', $node->event_start, $node->start_offset), _event_date('Y', $node->event_start, $node->start_offset));
+    if ($node->event_end) {
+      $node_end = gmmktime(0, 0, 0, _event_date('m', $node->event_end, $node->end_offset), _event_date('d', $node->event_end, $node->end_offset), _event_date('Y', $node->event_end, $node->end_offset));
     }
     else {
       $node_end = $node_start;
@@ -776,7 +786,7 @@ function event_calendar_data($year, $month, $day, $view = NULL, $types = NULL, $
     $first = _event_mktime(0, 0, 0, $month, 1, $year);
     $last = _event_mktime(23, 59, 59, $month + 1, 0, $year);
 
-    $result = db_query(db_rewrite_sql('SELECT n.nid FROM {event} e INNER JOIN {node} n USING (nid) WHERE n.status = 1 AND ((e.start > %d AND e.start < %d) OR (e.end > %d AND e.end < %d) OR (e.start < %d AND e.end > %d)) ORDER BY e.start '), $first, $last, $first, $last, $first, $last);
+    $result = db_query(db_rewrite_sql('SELECT n.nid FROM {event} e INNER JOIN {node} n ON n.nid = e.nid WHERE n.status = 1 AND ((e.event_start > %d AND e.event_start < %d) OR (e.event_end > %d AND e.event_end < %d) OR (e.event_start < %d AND e.event_end > %d)) ORDER BY e.event_start '), $first, $last, $first, $last, $first, $last);
 
     while ($nid = db_fetch_object($result)) {
       $node = node_load(array('nid' => $nid->nid));
@@ -787,17 +797,15 @@ function event_calendar_data($year, $month, $day, $view = NULL, $types = NULL, $
       // this array contains the loaded nodes for the month, so we dont have them stored for every day they occur
       $data[$year][$month]['nodes'][$nid->nid] = $node;
 
-      // get local timestamp (date only) value for the node's GMT timestamps
-      $tz = ((variable_get('event_timezone_display', 'event') == 'user') ? $user->timezone : $node->tz);
-      $node_start = gmmktime(0, 0, 0, _event_date('m', $node->start, $tz), _event_date('d', $node->start, $tz), _event_date('Y', $node->start, $tz));
-      $node_end = gmmktime(0, 0, 0, _event_date('m', $node->end, $tz), _event_date('d', $node->end, $tz), _event_date('Y', $node->end, $tz));
+      $node_start = gmmktime(0, 0, 0, _event_date('m', $node->event_start, $node->start_offset), _event_date('d', $node->event_start, $node->start_offset), _event_date('Y', $node->event_start, $node->start_offset));
+      $node_end = gmmktime(0, 0, 0, _event_date('m', $node->event_end, $node->end_offset), _event_date('d', $node->event_end, $node->end_offset), _event_date('Y', $node->event_end, $node->end_offset));
 
       if (($node_start == $node_end) && (gmdate('m', $node_start) == $month)) {
         $nid->event_state = 'singleday';
         $data[$year][$month][gmdate('j', $node_start)][] = $nid;
       }
       else {
-        // because $first is a local timestamp we compensate for the tz offset here so we dont have to do day value comparisons over and over below
+        // because $first is a local timestamp we compensate for the tz offset here so we dont have to do repetitive day value comparisons below
         $first -= ($first % 86400);
         // roll through each day the event occurs and set an entry for each
         for ($x = ($first > $node_start ? $first : $node_start); $x < $last; $x += 86400) {
@@ -992,15 +1000,15 @@ function event_week_header() {
  *
  * @param $format The date() format to apply to the timestamp.
  * @param $timestamp The GMT timestamp value.
- * @param $timezone Timezone offset to apply to the timestamp.
+ * @param $offset Timezone offset to apply to the timestamp.
  * @ingroup event_support
  * @return gmdate() formatted date value
  */
-function _event_date($format, $timestamp, $timezone = null) {
+function _event_date($format, $timestamp, $offset = null) {
   global $user;
 
-  if (isset($timezone)) {
-    $timestamp += $timezone;
+  if (isset($offset)) {
+    $timestamp += $offset;
   }
   elseif (variable_get('configurable_timezones', 1) && $user->uid && strlen($user->timezone)) {
     $timestamp += $user->timezone;
@@ -1037,15 +1045,15 @@ function _event_day_of_week($stamp) {
  *
  * @param $format The date() format to apply to the timestamp.
  * @param $timestamp The GMT timestamp value.
- * @param $timezone Timezone offset to apply to the timestamp.
+ * @param $offset Timezone offset to apply to the timestamp.
  * @ingroup event_support
  * @return gmdate() formatted date value
  */
-function _event_mktime($hour, $minute, $second, $month, $day, $year, $timezone = NULL) {
+function _event_mktime($hour, $minute, $second, $month, $day, $year, $offset = NULL) {
   global $user;
   $timestamp = gmmktime($hour, $minute, $second, $month, $day, $year);
-  if (isset($timezone)) {
-    return $timestamp - $timezone;
+  if (isset($offset)) {
+    return $timestamp - $offset;
   }
   elseif (variable_get('configurable_timezones', 1) && $user->uid && strlen($user->timezone) && (variable_get('event_timezone_display', 'event') == 'user')) {
     return $timestamp - $user->timezone;
@@ -1060,10 +1068,10 @@ function _event_user_time() {
   global $user;
 
   if (variable_get('configurable_timezones', 1) && $user->uid && strlen($user->timezone)) {
-    return time() + $user->timezone;
+    return (time() - date("Z")) + $user->timezone;
   }
   else {
-    return time() + variable_get('date_default_timezone', 0);
+    return (time() - date("Z")) + variable_get('date_default_timezone', 0);
   }
 }
 
@@ -1085,7 +1093,7 @@ function _event_user_date() {
  * @param $prefix The value to prepend to the select element names, used for start and end times.
  * @return A set of select boxes that contain options for month, day, year, hour, and minute
  */
-function event_form_date($timestamp, $prefix = 'start', $timezone) {
+function event_form_date($timestamp, $prefix = 'start', $offset) {
   //determine settings for form's hour selector
   if (variable_get('event_ampm', '0')) {
     $hour_format = t('g');
@@ -1112,12 +1120,12 @@ function event_form_date($timestamp, $prefix = 'start', $timezone) {
   $am_pms = array('am' => t('am'), 'pm' => t('pm'));
 
   // This is a GMT timestamp, so we use our wrapper _event_date() to display values.
-  $year = _event_date('Y', $timestamp, $timezone);
-  $month = _event_date('m', $timestamp, $timezone);
-  $day = _event_date('d', $timestamp, $timezone);
-  $hour = _event_date($hour_format, $timestamp, $timezone);
-  $minute = _event_date('i', $timestamp, $timezone);
-  $am_pm = _event_date('a', $timestamp, $timezone);
+  $year = _event_date('Y', $timestamp, $offset);
+  $month = _event_date('m', $timestamp, $offset);
+  $day = _event_date('d', $timestamp, $offset);
+  $hour = _event_date($hour_format, $timestamp, $offset);
+  $minute = _event_date('i', $timestamp, $offset);
+  $am_pm = _event_date('a', $timestamp, $offset);
 
   $when = '<div class="container-inline">';
   $when .= '<div class="day">';
@@ -1147,7 +1155,8 @@ function event_form_date($timestamp, $prefix = 'start', $timezone) {
  * @param $prefix The prefix to validate and set (start and end).
  */
 function event_validate_form_date(&$node, $prefix) {
-  // Re-calculate $node->start if we have all the parameters.
+
+  // Re-calculate $node->event_start if we have all the parameters.
   if (isset($node->{$prefix . 'year'}) && isset($node->{$prefix . 'month'}) && isset($node->{$prefix . 'day'}) && isset($node->{$prefix . 'hour'}) && isset($node->{$prefix . 'minute'})) {
     $hour = $node->{$prefix . 'hour'};
     if (variable_get('event_ampm', '0')) {
@@ -1159,60 +1168,14 @@ function event_validate_form_date(&$node, $prefix) {
       }
     }
     // translate the input values to GMT and set the node property value
-    $node->$prefix = _event_mktime($hour, $node->{$prefix . 'minute'}, 0, $node->{$prefix . 'month'}, $node->{$prefix . 'day'}, $node->{$prefix . 'year'}, $node->tz);
+    $offset = event_get_offset($node->timezone, gmmktime($hour, $node->{$prefix . 'minute'}, 0, $node->{$prefix . 'month'}, $node->{$prefix . 'day'}, $node->{$prefix . 'year'}));
+    $node->{'event_'.$prefix} = _event_mktime($hour, $node->{$prefix . 'minute'}, 0, $node->{$prefix . 'month'}, $node->{$prefix . 'day'}, $node->{$prefix . 'year'}, $offset);
   }
   elseif (!$node->$prefix) {
     // Round to nearest hour:
     $now = _event_user_time();
     $node->$prefix = $now - ($now % (60 * 60));
   }
-}
-
-function event_zonelist() {
-  $timestamp = time();
-  $zonelist = array('Rawaki' => -12,
-                    'Samoa, Midway' => -11,
-                    'Hawaii, French Polynesia, Cook Island' => -10,
-                    'Iles Marquises - French Polynesia' => -9.5,
-                    'Alaska' => -9,
-                    'US Pacific' => -8,
-                    'US Mountain' => -7,
-                    'US Central' => -6,
-                    'US Eastern' => -5,
-                    'New Foundland, Venezuela, Chile' => -4,
-                    'St. John\'s, Canada, Newfoundland and Labrador' => -3.5,
-                    'Brazil, Argentina, Greenland' => -3,
-                    'Mid-Atlantic' => -2,
-                    'Azores, Cape Verda Is.' => -1,
-                    'England, Ireland, Portugal' => 0,
-                    'Central Europe' => 1,
-                    'Eastern Europe' => 2,
-                    'Moscow, Saudi Arabia' => 3,
-                    'Iran' => 3.5,
-                    'Oman' => 4,
-                    'Pakistan' => 5,
-                    'India, West Bengal' => 5.5,
-                    'Nepal, Bagmati' => 5.75,
-                    'India' => 6,
-                    'South-East Asia, Cocos Islands' => 6.5,
-                    'Indonesia, Central Russia' => 7,
-                    'China, Phillipines, Malaysia, West Australia' => 8,
-                    'Japan' => 9,
-                    'Central Australia' => 9.5,
-                    'East Australia' => 10,
-                    'Lord Howe Island, Australia' => 10.5,
-                    'Solomon Islands, Micronesia' => 11,
-                    'Pacific - Norfolk Island' => 11.5,
-                    'New Zealand, Marshall Islands, Fiji' => 12,
-                    'Chatham Islands, New Zealand' => 12.75,
-                    'Oceania, Tonga' => 13,
-                    'Pacific - Kiribati' => 14);
-  $zones = array();
-  foreach ($zonelist as $key => $offset) {
-    $zone = $offset * 3600;
-    $zones[$zone] =  $offset .': '. t($key);
-  }
-  return $zones;
 }
 
 /**
@@ -1364,7 +1327,7 @@ function event_block($op = 'list', $delta = 0) {
         switch ($delta) {
           case 0:
             $time = _event_user_date();
-            if (arg(0) == 'event') {
+            if (arg(0) == 'event' && is_numeric(arg(1))) {
               // follow event calendar
               $year = (arg(1) ? arg(1) : gmdate('Y', $time));
               $month = (arg(2) ? arg(2) : gmdate('m', $time));
@@ -1379,8 +1342,9 @@ function event_block($op = 'list', $delta = 0) {
             return $block;
           case 1:
             $block['subject'] = t('Upcoming events');
-            $block['content'] = event_block_upcoming();
-            $block['content'] .= '<div class="more-link">'. l(t('more'), 'event', array('title' => t('More events.'))) .'</div>';
+            if ($block['content'] = event_block_upcoming(variable_get('event_upcoming_limit', '6'))) {
+              $block['content'] .= '<div class="more-link">'. l(t('more'), 'event', array('title' => t('More events.'))) .'</div>';
+            }
             return $block;
         }
       }
@@ -1399,7 +1363,7 @@ function event_block_upcoming($limit = 6) {
   global $user;
   // For two hours, we display "NOW"
   $time = _event_user_time() - (2 * 60 * 60);
-  $result = db_query_range(db_rewrite_sql("SELECT n.nid, n.title, n.type, n.status, n.moderate, e.start FROM {node} n INNER JOIN {event} e USING (nid) WHERE n.status = 1 AND n.moderate = 0 AND e.start >= $time ORDER BY e.start"), 0, $limit);
+  $result = db_query_range(db_rewrite_sql("SELECT n.nid, n.title, n.type, n.status, n.moderate, e.event_start FROM {node} n INNER JOIN {event} e USING (nid) WHERE n.status = 1 AND n.moderate = 0 AND e.event_start >= $time ORDER BY e.event_start"), 0, $limit);
 
   while ($node = db_fetch_object($result)) {
     $links[] = $node;
@@ -1407,7 +1371,7 @@ function event_block_upcoming($limit = 6) {
 
   if (is_array($links) && (sizeof($links) > 0)) {
     foreach ($links as $node) {
-      $minutesleft = floor(($node->start - time()) / 60);
+      $minutesleft = floor(($node->event_start - time()) / 60);
 
       if ($minutesleft < 0) {
         $timeleft = t('NOW');
@@ -1457,18 +1421,18 @@ function event_nodeapi(&$node, $op, $arg = 0) {
       $form = '';
       if (variable_get('event_nodeapi_'. $node->type, 'never') != 'never') {
           global $user;
-          $form = form_item(t('Start'), event_form_date(($node->start ? $node->start : _event_user_time()), 'start', $node->tz), t('Start date.'));
+          $form = form_item(t('Start'), event_form_date(($node->event_start ? $node->event_start : _event_user_time()), 'start', $node->start_offset), t('Start date.'));
 
-          $form .= form_item(t('End'), event_form_date($node->end, 'end', $node->tz), t('End date.'));
+          $form .= form_item(t('End'), event_form_date(($node->event_rnd ? $node->event_end : _event_user_time()), 'end', $node->end_offset), t('End date.'));
 
           if (variable_get('event_timezone_input', 'site') == 'input') {
-            $form .= form_select(t('Time zone'), 'tz', $node->tz, event_zonelist(), t('Select the time zone this event occurs in.'));
+            $form .= form_select(t('Time zone'), 'timezone', ($node->timezone ? $node->timezone : event_timezone_map(variable_get('date_default_timezone', 0))), event_zonelist(), t('Select the time zone this event occurs in.'));
           }
           elseif (variable_get('configurable_timezones', 1) && $user->uid && strlen($user->timezone) && (variable_get('event_timezone_input', 'site') == 'user')) {
-            $form .= form_hidden('tz', $user->timezone);
+            $form .= form_hidden('timezone', event_timezone_map($user->timezone));
           }
           else {
-            $form .= form_hidden('tz', variable_get('date_default_timezone', 0));
+            $form .= form_hidden('timezone', event_timezone_map(variable_get('date_default_timezone', 0)));
           }
       }
       return $form;
@@ -1477,26 +1441,39 @@ function event_nodeapi(&$node, $op, $arg = 0) {
       if (variable_get('event_nodeapi_'. $node->type, 'never') != 'never') {
         event_validate_form_date($node, 'start');
         event_validate_form_date($node, 'end');
-        if ($node->end < $node->start) {
-          $node->end = $node->start;
+        if ($node->event_end < $node->event_start) {
+          $node->event_end = $node->event_start;
         }
-        $node->start_format = format_date($node->start, 'small', '', $node->tz);
-        $node->end_format = format_date($node->end, 'small', '', $node->tz);
+        switch (variable_get('event_timezone_display', 'event')) {
+          case 'event' :
+            $node->start_offset = event_get_offset($node->timezone, $node->event_start);
+            $node->end_offset = event_get_offset($node->timezone, $node->event_end);
+            break;
+          case 'user' :
+            global $user;
+            $node->start_offset = $node->end_offset = $user->timezone;
+            break;
+          case 'site' :
+            $node->start_offset = $node->end_offset = variable_get('date_default_timezone', 0);
+            break;
+        }
+        $node->start_format = format_date($node->event_start, 'small', '', $node->start_offset);
+        $node->end_format = format_date($node->event_end, 'small', '', $node->end_offset);
       }
       break;
 
     case 'insert':
       if (variable_get('event_nodeapi_'. $node->type, 'never') != 'never') {
-        $fields = array('nid', 'start', 'end');
-        db_query('INSERT INTO {event} (nid, start, end, tz) VALUES (%d, %d, %d, %d)', $node->nid, $node->start, $node->end, $node->tz);
+        $fields = array('nid', 'event_start', 'event_end');
+        db_query('INSERT INTO {event} (nid, event_start, event_end, timezone) VALUES (%d, %d, %d, %d)', $node->nid, $node->event_start, $node->event_end, $node->timezone);
       }
       event_set_range();
       break;
 
     case 'update':
       if (variable_get('event_nodeapi_'. $node->type, 'never') != 'never') {
-        $fields = array('start', 'end');
-        db_query('UPDATE {event} SET start = %d, end = %d, tz = %d WHERE nid = %d', $node->start, $node->end, $node->tz, $node->nid);
+        $fields = array('event_start', 'event_end');
+        db_query('UPDATE {event} SET event_start = %d, event_end = %d, timezone = %d WHERE nid = %d', $node->event_start, $node->event_end, $node->timezone, $node->nid);
       }
       event_set_range();
       break;
@@ -1510,25 +1487,44 @@ function event_nodeapi(&$node, $op, $arg = 0) {
 
     case 'load':
       if (variable_get('event_nodeapi_'. $node->type, 'never') != 'never') {
-        $object = db_fetch_object(db_query('SELECT start, end, tz FROM {event} WHERE nid = %d', $node->nid));
-        if (variable_get('event_timezone_display', 'event') == 'event') {
-          $offset = $object->tz;
+        $object = db_fetch_object(db_query('SELECT event_start, event_end, timezone FROM {event} WHERE nid = %d', $node->nid));
+        switch (variable_get('event_timezone_display', 'event')) {
+          case 'event' :
+            $start_offset = event_get_offset($object->timezone, $object->event_start);
+            $end_offset = event_get_offset($object->timezone, $object->event_end);
+            break;
+          case 'user' :
+            global $user;
+            $start_offset = $end_offset = $user->timezone;
+            break;
+          case 'site' :
+            $start_offset = $end_offset = variable_get('date_default_timezone', 0);
+            break;
         }
 
         $ctype = module_invoke('flexinode', 'load_content_type', $node->ctype_id);
 
-        return array('start' => $object->start,
-                     'end' => $object->end,
-                     'tz' => $object->tz,
-                     'start_format' => format_date($object->start, 'small', '', $offset),
-                     'end_format' => format_date($object->end, 'small', '', $offset),
-                     'start_time_format' => format_date($object->start, 'custom', (variable_get('event_ampm', '0') ? 'g:i a' : 'H:i'), $offset),
-                     'end_time_format' => format_date($object->end, 'custom', (variable_get('event_ampm', '0') ? 'g:i a' : 'H:i'), $offset),
+        return array('event_start' => $object->event_start,
+                     'event_end' => $object->event_end,
+                     'start_offset' => $start_offset,
+                     'end_offset' => $end_offset,
+                     'timezone' => $object->timezone,
+                     'start_format' => format_date($object->event_start, 'small', '', $start_offset),
+                     'end_format' => format_date($object->event_end, 'small', '', $end_offset),
+                     'start_time_format' => format_date($object->event_start, 'custom', (variable_get('event_ampm', '0') ? 'g:i a' : 'H:i'), $start_offset),
+                     'end_time_format' => format_date($object->event_end, 'custom', (variable_get('event_ampm', '0') ? 'g:i a' : 'H:i'), $end_offset),
                      'event_node_title' => ($ctype->name ? $ctype->name : $node->type));
       }
       break;
 
     case 'view':
+      if (variable_get('event_nodeapi_'. $node->type, 'never') != 'never') {
+        $node->body = theme('event_nodeapi', $node). $node->body;
+        $node->teaser = theme('event_nodeapi', $node). $node->teaser;
+      }
+      break;
+
+    case 'rss item':
       if (variable_get('event_nodeapi_'. $node->type, 'never') != 'never') {
         $node->body = theme('event_nodeapi', $node). $node->body;
         $node->teaser = theme('event_nodeapi', $node). $node->teaser;
@@ -1579,9 +1575,31 @@ function event_is_enabled($type) {
 }
 
 function event_set_range() {
-  $range = db_fetch_object(db_query('select MIN(e.start) AS start, MAX(e.end) AS end FROM {event} e'));
-  variable_set('event_range_prev', $range->start);
-  variable_set('event_range_next', $range->end);
+  $range = db_fetch_object(db_query('select MIN(e.event_start) AS event_start, MAX(e.event_end) AS event_end FROM {event} e'));
+  variable_set('event_range_prev', $range->event_start);
+  variable_set('event_range_next', $range->event_end);
+}
+
+function event_dst() {
+  $timestamp = time();
+
+  $zones = event_get_timezones();
+  foreach($zones as $key => $zone) {
+    if($zone['dst_region']) {
+      $list[$zone['dst_region']][] = $zone['timezone'] .', '. (event_is_dst($zone['dst_region'], $timestamp) ? 'In DST' : 'Not in DST') . ': '. event_get_offset($key, $timestamp);
+    }
+    else {
+      $list[$zone['dst_region']][] = $zone['timezone'] .': '. event_get_offset($key, $timestamp);
+    }
+  }
+  $regions = event_get_dst_regions();
+  foreach($list as $key => $region) {
+    $output .= theme('box', $regions[$key], theme('item_list', $region));
+  }
+
+  drupal_set_title(t('Daylight Savings Regions | GMT TIME: %date', array('%date' => gmdate('m-d-Y, H:i', $timestamp))));
+
+  print theme('page', $output);
 }
 
 /**
@@ -1590,7 +1608,6 @@ function event_set_range() {
  * @ingroup event_core
  * @param $section the page which is requesting help
  * @return the help text
- * @todo Expand this section.
  */
 function event_help($section) {
   switch ($section) {
@@ -1627,6 +1644,9 @@ function event_help($section) {
       <strong>\$content_type:</strong> list of node types, separated by '+'. Flexinode types only require the integer value of the type. For example, to view story nodes and type flexinode-1, you would use 'story+1'
       </blockquote></p>",
       array('%configure-link' => l(t('content type management admin area'), 'admin/node/configure/types'), '%flexinode-link' => l(t('flexinode'), 'http://drupal.org/node/5737')));
+      break;
+    case 'event/dst':
+        return t('This is a listing of all the event system\'s timezones, sorted by daylight savings time regions, and thier respective offsets from GMT in seconds. Timezones in the \'None\' region do not observe daylight savings time. If you believe there is an error, please first search for the locale on %timeanddate and confirm it. If there is indeed an error please submit a %bugreport on drupal.org so we can fix it.', array('%timeanddate' => l('http://timeanddate.com/worldclock/search.html', 'http://timeanddate.com/worldclock/search.html'), '%bugreport' => l('bug report', 'http://drupal.org/node/add/project_issue/event')));
       break;
   }
 }

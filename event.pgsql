@@ -3,9 +3,8 @@
 
 CREATE TABLE event (
   nid int NOT NULL default '0',
-  start int NOT NULL default '0',
-  end int NOT NULL default '0',
-  tz int NOT NULL default '0',
-  PRIMARY KEY (nid),
-  KEY start (start)
+  event_start int NOT NULL default '0',
+  event_end int NOT NULL default '0',
+  timezone varchar(100) NOT NULL default '',
+  PRIMARY KEY (nid)
 );

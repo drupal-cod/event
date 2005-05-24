@@ -1,7 +1,19 @@
-This is only relevant if you are upgrading from either Drupal 4.5 or
-CivicSpace 0.8.0.x to Drupal 4.6 or the equivalent CivicSpace version.
+There are two updates available now:
+
+1. If if you are upgrading from either Drupal 4.5 or CivicSpace 0.8.0.x to Drupal 4.6 or the equivalent CivicSpace version.
+2. If you are running the pre-daylight savings time supported 4.6 version of event. If you were running v4.6 event without
+   a event_timezones.inc file in the event directory, this is you. You can also check to see if your event table has a 'tz' field
+   instead of a 'timezone' field.
+
+To update do the following:
 
  * Copy the file update-event.php to the root directory of your Drupal installation.
  * Login as user 1, or disable the access checking at the top of that file.
  * Point your browser to "http://www.site.com/update-event.php" and follow the
    instructions.
+
+** NOTE **
+
+YOU MUST HAVE FLEXINODE INSTALLED TO UPDATE FROM A PREVIOUS VERSION OF EVENT TO v4.6
+
+Clean installs do not have this limitation, although using flexinode is strongly recommended to enhance your event module experience.

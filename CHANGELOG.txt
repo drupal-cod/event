@@ -1,3 +1,16 @@
+23. May 2005
+-----------------
+[Aaron Welch]
+- daylight savings time support added
+- database change, please run update-event.php
+- db field name changes
+- display using event timezone, user timezone, or site timezone
+- node access sql fix by thehunmonkgroup
+- empty upcoming event block patch by Cvbge
+- add setting for upcoming event block limit
+- event_type url construction bug fix by luksedj
+- add event/dst to view daylight savings time region status
+
 15. April 2005
 -----------------
 [Aaron Welch]

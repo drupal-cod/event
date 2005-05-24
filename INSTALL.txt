@@ -42,6 +42,9 @@ Installation
 
    Once a node type is enabled in this way, event will inject date input fields
    on that node type's edit form and display them on the calendar views.
+   
+   It is recommended that you install flexinode module and create event types for this purpose,
+   so you do not have to use core node types for the calendar system.
 
 Author
 ------

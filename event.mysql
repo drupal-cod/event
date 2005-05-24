@@ -1,8 +1,8 @@
 CREATE TABLE event (
   nid int(10) unsigned NOT NULL default '0',
-  end int(10) unsigned NOT NULL default '0',
-  start int(10) unsigned NOT NULL default '0',
-  tz int(11) default NULL,
+  event_start int(10) unsigned NOT NULL default '0',
+  event_end int(10) unsigned NOT NULL default '0',
+  timezone varchar(100) NOT NULL default '',
   PRIMARY KEY (nid),
-  KEY start (start)
+  KEY event_start (event_start)
 );

@@ -207,7 +207,7 @@ function theme_event_node_table($node, $module = NULL) {
   switch ($node->event_state) {
     case 'singleday';
         $output .= '<div class="start">'. t('Start') .': '. $node->start_time_format ."</div>\n";
-        if ($node->start != $node->end) {
+        if ($node->event_start != $node->event_end) {
           $output .= '<div class="end">'. t('End') .': '. $node->end_time_format ."</div>\n";
         }
       break;
@@ -225,7 +225,7 @@ function theme_event_node_table($node, $module = NULL) {
   $output .= '<div id="info_'. $link_count .'" class="info">'."\n";
   if ($node->event_state != 'singleday') {
     $output .= '<div class="start">'. t('Start') .': '. $node->start_format .'</div>'."\n";
-    if ($node->start != $node->end) {
+    if ($node->event_start != $node->event_end) {
       $output .= '<div class="end">'. t('End') .': '. $node->end_format .'</div>'."\n";
     }
   }
@@ -276,11 +276,11 @@ function theme_event_empty_day() {
  */
 function theme_event_nodeapi($node) {
   $output = '<div class="event-nodeapi"><div class="'. $node->type. '-start"><label>'. t('Start') .': </label>'. $node->start_format .'</div></div>'."\n";
-  if ($node->start != $node->end) {
+  if ($node->event_start != $node->event_end) {
     $output .= '<div class="event-nodeapi"><div class="'. $node->type. '-end"><label>'. t('End') .': </label>'. $node->end_format .'</div></div>'."\n";
   }
   $zones = event_zonelist();
-  $output .= '<div class="event-nodeapi"><div class="'. $node->type. '-tz"><label>'. t('Timezone') .': </label>'. $zones[$node->tz] .'</div></div>'."\n";
+  $output .= '<div class="event-nodeapi"><div class="'. $node->type. '-tz"><label>'. t('Timezone') .': </label>'. $zones[$node->timezone] .'</div></div>'."\n";
   return $output;
 }
 
