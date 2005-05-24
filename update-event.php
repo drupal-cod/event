@@ -110,6 +110,10 @@ function update_event_drupal($ctype_id) {
                         'checkbox' => 'checkbox',
                         'radio' => 'checkbox' );
 
+  $field_id = db_next_id('{flexinode_field}');
+  db_query("INSERT INTO {flexinode_field} (label, default_value, rows, required, show_teaser, show_table, weight, ctype_id, field_type, description, field_id) VALUES ('%s', '%s', %d, %d, %d, %d, %d, %d, '%s', '%s', %d)", 'description', '', 10, 0, 1, 1, 0, $ctype_id, 'textarea', 'description field', $field_id);
+  $map['node_body'] = $field_id;
+                        
   foreach ($fields as $key => $def) {
     $field_id = db_next_id('{flexinode_field}');
 
@@ -130,13 +134,18 @@ function update_event_drupal($ctype_id) {
 
   $events = db_query("SELECT * FROM {event} e LEFT JOIN {node} n ON n.nid = e.nid");
   while($event = db_fetch_object($events)) {
+    $field->field_id = $map['node_body'];
+    $field->nid = $event->nid;
+    $value = $event->body;
+    update_event_textarea_insert($field, $value);
+
     // first the fields with thier own db table
     foreach ($fields as $key => $def) {
       $value = NULL;
       if ($def[3]) { // Stored in separate database field
         $drops[$key] = $key;
         if ($def[0] == "select" && $def[10]) { // multi-select
-            $value = unserialize($event->$key);
+          $value = unserialize($event->$key);
         }
         else {
           $value = $event->$key;
@@ -162,6 +171,7 @@ function update_event_drupal($ctype_id) {
     print 'Transferred event: '. $event->title ."<br />\n";
   }
 
+  variable_set("event_nodeapi_flexinode-$ctype_id", 'all');
   db_query("UPDATE {node} set type='flexinode-$ctype_id' where type='event'");
 
   print '<p>Your event fields should be transferred now. If you want to confirm this is so now is a good time.<br />Please execute the following sql statements directly on the database to finish the upgrade:</p>';
@@ -228,8 +238,17 @@ function update_event_civicspace($ctype_id) {
     db_query("INSERT INTO {flexinode_field} (label, default_value, rows, required, show_teaser, show_table, weight, ctype_id, field_type, options, description, field_id) VALUES ('%s', '%s', %d, %d, %d, %d, %d, %d, '%s', '%s', '%s', %d)", $edit['label'], '', 5, $edit['required'], $edit['show_teaser'], TRUE, $edit['weight'], $ctype_id, $edit['field_type'], serialize($options), $edit['description'], $field_id);
   }
 
+  $field_id = db_next_id('{flexinode_field}');
+  db_query("INSERT INTO {flexinode_field} (label, default_value, rows, required, show_teaser, show_table, weight, ctype_id, field_type, description, field_id) VALUES ('%s', '%s', %d, %d, %d, %d, %d, %d, '%s', '%s', %d)", 'description', '', 10, 0, 1, 1, 0, $ctype_id, 'textarea', 'description field', $field_id);
+  $map['node_body'] = $field_id;
+
   $events = db_query("SELECT * FROM {event} e LEFT JOIN {node} n ON n.nid = e.nid");
   while($event = db_fetch_object($events)) {
+    $field->field_id = $map['node_body'];
+    $field->nid = $event->nid;
+    $value = $event->body;
+    update_event_textarea_insert($field, $value);
+
     $fields = db_query("SELECT f.*, ff.* FROM {event_field_data} f LEFT JOIN {event} e ON e.nid = f.nid LEFT JOIN {form_fields} ff ON ff.name = f.name WHERE e.nid = %d", $event->nid);
     while ($field = db_fetch_object($fields)) {
       $function = 'update_event_'. $types[$field->name] .'_insert';
@@ -240,6 +259,7 @@ function update_event_civicspace($ctype_id) {
     print 'Transferred event: '. $event->title ."<br />\n";
   }
 
+  variable_set("event_nodeapi_flexinode-$ctype_id", 'all');
   db_query("UPDATE {node} set type='flexinode-$ctype_id' where type='event'");
 
   print '<p>Your event fields should be transferred now. If you want to confirm this is so now is a good time.<br />Please execute the following sql statements directly on the database to finish the upgrade:</p>';

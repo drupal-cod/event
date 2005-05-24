@@ -1,5 +1,5 @@
 <?php
-
+// $Id$
 /**
  * Check if time is in Daylight Savings Time
  * 
