@@ -3,6 +3,7 @@
 
 include(drupal_get_path('module', 'event') .'/event.theme');
 include(drupal_get_path('module', 'event') .'/event_timezones.inc');
+include(drupal_get_path('module', 'event') .'/ical.inc');
 
 /**
  * @defgroup event_core Core drupal hooks
@@ -109,6 +110,11 @@ function event_menu($may_cache) {
     $items[] = array('path' => 'event/dst',
                      'title' => t('event dst view'),
                      'callback' => 'event_dst',
+                     'access' => user_access('access content'),
+                     'type' => MENU_CALLBACK);
+    $items[] = array('path' => 'event/ical',
+                     'title' => t('event ical feed'),
+                     'callback' => 'event_ical',
                      'access' => user_access('access content'),
                      'type' => MENU_CALLBACK);
   }
@@ -291,9 +297,16 @@ function event_page($year = NULL, $month = NULL, $day = NULL, $view = NULL, $typ
         $duration = $duration ? $duration : variable_get('event_table_duration', '30');
         print event_calendar_rss($stamp, $duration, $types, $terms, $title);
       break;
+    case 'ical':
+        // ical feed
+        drupal_set_header('Content-Type: text/calendar; charset=utf-8');
+        drupal_set_header('Content-Disposition: attachment; filename="calendar.ics"; ');
+        $duration = $duration ? $duration : variable_get('event_table_duration', '30');
+        print event_calendar_ical($stamp, $duration, $types, $terms, $title);
+      break;
   }
 
-  if($view != 'feed') {
+  if($view != 'feed' && $view != 'ical') {
     // build header navigation
     $prev = _event_nav($stamp, 'prev', $view, $types, $terms, $duration);
     $next = _event_nav($stamp, 'next', $view, $types, $terms, $duration);
@@ -312,6 +325,7 @@ function event_page($year = NULL, $month = NULL, $day = NULL, $view = NULL, $typ
     $output .= theme('event_links', array_merge(module_invoke_all('link', 'event_'. $view, $node, FALSE), $links), $view);
 
     $output .= theme('event_calendar_'. $view, 'page', $header, $rows);
+    $output .= theme('event_ical_link', 'event/ical/'. $node->filter);
 
     drupal_set_title(t('Events') . ($title ? ' - '. $title : ''));
     drupal_set_breadcrumb($breadcrumbs);
@@ -347,6 +361,20 @@ function event_term($filter = NULL, $view = NULL) {
  */
 function event_feed($duration = NULL) {
   drupal_goto('event/'. format_date(_event_user_time(), 'custom', 'Y/m/d') .'/feed/all/all/'. $duration);
+}
+
+/**
+ * Url wrapper function for ical feeds
+ *
+ * @ingroup event_callback
+ * @return redirect to the event ical feed page at current day
+ */
+function event_ical($duration = NULL) {
+
+  drupal_goto('event/'. format_date(_event_user_time(), 'custom', 'Y/m/d') .'/ical/all/all/'. $duration);
+
+  drupal_set_title(t('iCal support not enabled'));
+  print theme('page', $output);
 }
 
 /**
@@ -543,27 +571,25 @@ function event_calendar_rss($stamp, $duration, $types = NULL, $terms = NULL, $ti
   $endstamp = $stamp + ($duration * 86400);
   $headertitle = t('%startmonth %startdate, %startyear - %endmonth %enddate, %endyear', array('%startmonth' => gmdate('F', $stamp), '%startdate' => gmdate('d', $stamp), '%startyear' => gmdate('Y', $stamp), '%endmonth' => t(gmdate('F', $endstamp)), '%enddate' => gmdate('d', $endstamp), '%endyear' => gmdate('Y', $endstamp)));
 
-  while ($stamp <= $endstamp) {
-    $year = gmdate('Y', $stamp);
-    $month = gmdate('m', $stamp);
-    $day = gmdate('j', $stamp);
+  $result = db_query(db_rewrite_sql('SELECT n.nid FROM {event} e INNER JOIN {node} n ON n.nid = e.nid WHERE n.status = 1 AND ((e.event_start > %d AND e.event_start < %d) OR (e.event_end > %d AND e.event_end < %d) OR (e.event_start < %d AND e.event_end > %d)) ORDER BY e.event_start '), $stamp, $endstamp, $stamp, $endstamp, $stamp, $endstamp);
 
-    $nodes = event_calendar_data($year, $month, $day, 'rss', $types, $terms);
+  $nodes = array();
+  while ($nid = db_fetch_object($result)) {
+    $node = node_load(array('nid' => $nid->nid));
+    $nodes[] = $node;
+  }
 
-    if (count($nodes)) {
-      foreach ($nodes as $node) {
-        $body = '<div class="start">'. t('Start') .': '. $node->event_start_format .'</div>'."\n";
-        $body .= '<div class="end">'. t('End') .': '. $node->event_end_format .'</div>'."\n";
-        $body .= $node->teaser;
-        $link = url("node/$node->nid", NULL, NULL, 1);
-        // Allow modules to add additional item fields
-        $extra = node_invoke_nodeapi($node, 'rss item');
-        $extra = array_merge($extra, array(array('key' => 'pubDate', 'value' =>  date('r', $node->changed))));
-        $items .= format_rss_item($node->title, $link, $body, $extra);
-      }
-    }
+  $filtered = event_filter_nodes($nodes, $types, $terms);
 
-    $stamp += 86400;
+  foreach($filtered as $node) {
+    $body = '<div class="start">'. t('Start') .': '. $node->start_format .'</div>'."\n";
+    $body .= '<div class="end">'. t('End') .': '. $node->end_format .'</div>'."\n";
+    $body .= $node->teaser;
+    $link = url("node/$node->nid", NULL, NULL, 1);
+    // Allow modules to add additional item fields
+    $extra = node_invoke_nodeapi($node, 'rss item');
+    $extra = array_merge($extra, array(array('key' => 'pubDate', 'value' =>  date('r', $node->changed))));
+    $items .= format_rss_item($node->title, $link, $body, $extra);
   }
 
   $description = $headertitle . ($title ? ' | '. $title : '');
@@ -578,7 +604,54 @@ function event_calendar_rss($stamp, $duration, $types = NULL, $terms = NULL, $ti
 }
 
 /**
+ * Creates an ical feed of events.
+ *
+ * @ingroup event_view
+ * @param $stamp The GMT starting date for the feed.
+ * @param $duration The number of days the feeds duration is.
+ * @param $types The content types to filter the feed by.
+ * @param $terms The taxonomy term tids to filter the feed by.
+ * @param $title The filter title to append to the channel description.
+ * @return A formatted ical feed.
+ */
+function event_calendar_ical($stamp, $duration, $types = NULL, $terms = NULL, $title = NULL) {
+  global $base_url, $locale;
+
+  $endstamp = $stamp + ($duration * 86400);
+  $headertitle = t('%startmonth %startdate, %startyear - %endmonth %enddate, %endyear', array('%startmonth' => gmdate('F', $stamp), '%startdate' => gmdate('d', $stamp), '%startyear' => gmdate('Y', $stamp), '%endmonth' => t(gmdate('F', $endstamp)), '%enddate' => gmdate('d', $endstamp), '%endyear' => gmdate('Y', $endstamp)));
+
+  $result = db_query(db_rewrite_sql('SELECT n.nid FROM {event} e INNER JOIN {node} n ON n.nid = e.nid WHERE n.status = 1 AND ((e.event_start > %d AND e.event_start < %d) OR (e.event_end > %d AND e.event_end < %d) OR (e.event_start < %d AND e.event_end > %d)) ORDER BY e.event_start '), $stamp, $endstamp, $stamp, $endstamp, $stamp, $endstamp);
+
+  $events = array();
+  while ($nid = db_fetch_object($result)) {
+    $event = array();
+    $node = node_load(array('nid' => $nid->nid));
+    if (event_filter_node($node, $types, $terms)) {
+      $node->start = ($node->event_start - $node->start_offset);
+      $node->end = ($node->event_end - $node->end_offset);
+      // Allow modules to affect item fields
+      node_invoke_nodeapi($node, 'view');
+      node_invoke_nodeapi($node, 'ical item');
+      $event['start'] = $node->start;
+      $event['end'] = $node->end;
+      $event['location'] = $node->event_location;
+      $event['summary'] = $node->title;
+      $event['description'] = ($node->teaser ? $node->teaser : $node->body);
+      $event['uid'] = url("node/$node->nid", NULL, NULL, 1);
+      $event['url'] = url("node/$node->nid", NULL, NULL, 1);
+      $events[] = $event;
+    }
+  }
+
+  $description = $headertitle . ($title ? ' | '. $title : '');
+
+  return ical_export($events, $description);
+}
+
+/**
  * Returns a calendar in the requested format, populated with the provided nodes.
+ * This is not used internally, rather it is an API funciton for external modules
+ * to use for rendering calendars when constructing thier own event objects.
  *
  * @ingroup event_view
  *
@@ -899,6 +972,107 @@ function event_calendar_data($year, $month, $day, $view = NULL, $types = NULL, $
   }
 
   return $nodes;
+}
+
+function event_filter_node($node, $types, $terms) {
+  $event_types = event_get_types();
+
+  if (isset($types)) {
+    // content type filters set
+    if (isset($terms)) {
+      // taxonomy and content type filters set
+      if (in_array($node->type, $types) && event_taxonomy_filter($node, $terms)) {
+        // this node is the content type and taxonomy term requested
+        if (count($types) == 1 && in_array($node->type, $event_types['solo'])) {
+          // only display solo types if there is only one event type requested
+          return TRUE;
+        }
+        elseif (in_array($node->type, $event_types['all'])) {
+          return TRUE;
+        }
+      }
+    }
+    else {
+      // only content type filters
+      if (in_array($node->type, $types)) {
+        if (count($types) == 1 && in_array($node->type, $event_types['solo'])) {
+          // only display solo types if there is only one event type requested
+          return TRUE;
+        }
+        elseif (in_array($node->type, $event_types['all'])) {
+          return TRUE;
+        }
+      }
+    }
+  }
+  elseif (isset($terms)) {
+    // no types, only taxonomy filters
+    if (event_taxonomy_filter($node, $terms) && in_array($node->type, $event_types['all'])) {
+      return TRUE;
+    }
+  }
+  else {
+    // no filters set, only show events with content types states of 'all'
+    if (in_array($node->type, $event_types['all'])) {
+      RETURN TRUE;
+    }
+  }
+  return FALSE;
+}
+
+function event_filter_nodes($nodes, $types, $terms) {
+  $event_types = event_get_types();
+
+  $results = array();
+  if (isset($types)) {
+    // content type filters set
+    if (isset($terms)) {
+      // taxonomy and content type filters set
+      foreach ($nodes as $node) {
+        if (in_array($node->type, $types) && event_taxonomy_filter($node, $terms)) {
+          // this node is the content type and taxonomy term requested
+          if (count($types) == 1 && in_array($node->type, $event_types['solo'])) {
+            // only display solo types if there is only one event type requested
+            $results[] = $node;
+          }
+          elseif (in_array($node->type, $event_types['all'])) {
+            $results[] = $node;
+          }
+        }
+      }
+    }
+    else {
+      // only content type filters
+      foreach ($nodes as $node) {
+        if (in_array($node->type, $types)) {
+          if (count($types) == 1 && in_array($node->type, $event_types['solo'])) {
+            // only display solo types if there is only one event type requested
+            $results[] = $node;
+          }
+          elseif (in_array($node->type, $event_types['all'])) {
+            $results[] = $node;
+          }
+        }
+      }
+    }
+  }
+  elseif (isset($terms)) {
+    // no types, only taxonomy filters
+    foreach ($nodes as $node) {
+      if (event_taxonomy_filter($node, $terms) && in_array($node->type, $event_types['all'])) {
+        $results[] = $node;
+      }
+    }
+  }
+  else {
+    // no filters set, only show events with content types states of 'all'
+    foreach ($nodes as $node) {
+      if (in_array($node->type, $event_types['all'])) {
+        return $nodes;
+      }
+    }
+  }
+  return $results;
 }
 
 function event_taxonomy_filter($node, $terms) {
@@ -1342,9 +1516,7 @@ function event_block($op = 'list', $delta = 0) {
             return $block;
           case 1:
             $block['subject'] = t('Upcoming events');
-            if ($block['content'] = event_block_upcoming(variable_get('event_upcoming_limit', '6'))) {
-              $block['content'] .= '<div class="more-link">'. l(t('more'), 'event', array('title' => t('More events.'))) .'</div>';
-            }
+            $block['content'] = event_block_upcoming(variable_get('event_upcoming_limit', '6'));
             return $block;
         }
       }
@@ -1395,12 +1567,19 @@ function event_block_upcoming($limit = 6) {
         $timeleft = format_plural($days, '1 day', '%count days');
       }
 
+      $node->timeleft = $timeleft;
       $ctype = module_invoke('flexinode', 'load_content_type', substr($node->type, 10));
+      $node->typename = ($ctype->name ? $ctype->name : $node->type);
 
-      $items[] = l($node->title, "node/$node->nid", array('title' => $node->title)). '<span class="event-nodetype">('. ($ctype->name ? $ctype->name : $node->type) .')</span><span class="event-timeleft">('. $timeleft .')</span>';
+      $items[] = theme('event_upcoming_item', $node);
     }
-    return theme("item_list", $items);
+
+    $output = theme("event_upcoming_block", $items);
+    $output .= theme('event_ical_link', 'event/ical');
+    $output .= theme('event_more_link', 'event');
+
   }
+  return $output;
 }
 
 /**
@@ -1597,7 +1776,7 @@ function event_dst() {
     $output .= theme('box', $regions[$key], theme('item_list', $region));
   }
 
-  drupal_set_title(t('Daylight Savings Regions | GMT TIME: %date', array('%date' => gmdate('m-d-Y, H:i', $timestamp))));
+  drupal_set_title(t('Daylight Savings Regions | Current GMT: %date', array('%date' => gmdate('m-d-Y, H:i', $timestamp))));
 
   print theme('page', $output);
 }
@@ -1627,7 +1806,7 @@ function event_help($section) {
       <strong>\$year:</strong> year value such as '2005'<br />
       <strong>\$month:</strong> month value with leading zeroes such as '02' for february<br />
       <strong>\$day:</strong> day value with leading zeroes such as '14'<br />
-      <strong>\$view_type:</strong> type of calendar layout, values may include 'month', 'week', 'day', 'table' and 'feed' for an rss feed.<br />
+      <strong>\$view_type:</strong> type of calendar layout, values may include 'month', 'week', 'day', 'table', 'ical' for an ical export, and 'feed' for an rss feed.<br />
       <strong>\$content_type:</strong> list of node types, separated by '+'. Flexinode types only require the integer value of the type. For example, to view story nodes and type flexinode-1, you would use 'story+1'. The value 'all' will show all types.<br />
       <strong>\$taxonomy_terms:</strong> list of term ids, seperated by '+'. For example to view entries assigned to the taxonomy terms with ids 4 and 9 you would use '4+9'. The value 'all' will show all terms.<br />
       <strong>\$duration:</strong> number of days to display, currently only the table view obeys this setting. Eventually it may be used to specify additional duration parameters such as multiple weeks in the week view, or months in the month view.
@@ -1650,4 +1829,5 @@ function event_help($section) {
       break;
   }
 }
+
 ?>

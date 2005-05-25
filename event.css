@@ -270,7 +270,9 @@
   height: 5px;
   width: 100%;
 }
+
 #block-event-1 .item-list ul li a { margin-top: 8px; }
+
 span.event-timeleft {
   padding-bottom: 3px;
   text-align: right;
@@ -283,4 +285,7 @@ span.event-nodetype {
   width: auto;
   text-align: right;
   float: right;
+}
+.ical-link {
+  text-align: right;
 }

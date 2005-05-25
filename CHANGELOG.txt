@@ -1,3 +1,10 @@
+25. May 2005
+-----------------
+[Aaron Welch]
+- add ical export support, ical.inc is now in the event directory. thanks to rorris
+- cleanup rss and ical feed routines
+- add filter functions for individual and groups of nodes
+
 23. May 2005
 -----------------
 [Aaron Welch]
