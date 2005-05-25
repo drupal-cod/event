@@ -1423,7 +1423,7 @@ function event_nodeapi(&$node, $op, $arg = 0) {
           global $user;
           $form = form_item(t('Start'), event_form_date(($node->event_start ? $node->event_start : _event_user_time()), 'start', $node->start_offset), t('Start date.'));
 
-          $form .= form_item(t('End'), event_form_date(($node->event_rnd ? $node->event_end : _event_user_time()), 'end', $node->end_offset), t('End date.'));
+          $form .= form_item(t('End'), event_form_date(($node->event_end ? $node->event_end : _event_user_time()), 'end', $node->end_offset), t('End date.'));
 
           if (variable_get('event_timezone_input', 'site') == 'input') {
             $form .= form_select(t('Time zone'), 'timezone', ($node->timezone ? $node->timezone : event_timezone_map(variable_get('date_default_timezone', 0))), event_zonelist(), t('Select the time zone this event occurs in.'));
