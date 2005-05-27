@@ -173,12 +173,14 @@ function update_event_drupal($ctype_id) {
 
   variable_set("event_nodeapi_flexinode-$ctype_id", 'all');
   db_query("UPDATE {node} set type='flexinode-$ctype_id' where type='event'");
+  db_query("ALTER TABLE {event} ADD timezone int(10) unsigned NOT NULL default '0'");
+  db_query("ALTER TABLE {event} CHANGE start event_start INTEGER");
+  db_query("ALTER TABLE {event} ADD KEY event_start (event_start)");
+  db_query("ALTER TABLE {event} ADD event_end INT(10) UNSIGNED NOT NULL default '0'");
+  db_query("ALTER TABLE {event} ADD timezone INT(11) default NULL");
 
   print '<p>Your event fields should be transferred now. If you want to confirm this is so now is a good time.<br />Please execute the following sql statements directly on the database to finish the upgrade:</p>';
   print '<code>';
-  print 'ALTER TABLE event ADD KEY start (start);<br />'."\n";
-  print 'ALTER TABLE event ADD end INT(10) UNSIGNED NOT NULL default \'0\';<br />'."\n";
-  print 'ALTER TABLE event ADD tz INT(11) default NULL;<br />'."\n";
   print 'ALTER TABLE event DROP data;<br />'."\n";
   foreach($drops as $drop) {
     print 'ALTER TABLE event DROP '. $drop .';<br />'."\n";
@@ -261,13 +263,15 @@ function update_event_civicspace($ctype_id) {
 
   variable_set("event_nodeapi_flexinode-$ctype_id", 'all');
   db_query("UPDATE {node} set type='flexinode-$ctype_id' where type='event'");
+  db_query("ALTER TABLE {event} CHANGE start event_start INTEGER");
+  db_query("ALTER TABLE {event} ADD KEY event_start (event_start)");
+  db_query("ALTER TABLE {event} ADD event_end INT(10) UNSIGNED NOT NULL default '0'");
+  db_query("ALTER TABLE {event} ADD timezone INT(11) default NULL");
 
   print '<p>Your event fields should be transferred now. If you want to confirm this is so now is a good time.<br />Please execute the following sql statements directly on the database to finish the upgrade:</p>';
   print '<code>';
-  print 'ALTER TABLE event ADD KEY start (start);<br />'."\n";
-  print 'ALTER TABLE event ADD end INT(10) UNSIGNED NOT NULL default \'0\';<br />'."\n";
-  print 'ALTER TABLE event ADD tz INT(11) default NULL;<br />'."\n";
   print 'ALTER TABLE event DROP galleries;<br />'."\n";
+  print 'ALTER TABLE event DROP location;<br />'."\n";
   print 'DROP TABLE event_field_data;<br />'."\n";
   print 'DROP TABLE event_item;<br />'."\n";
   print '</code>';
@@ -406,6 +410,7 @@ function update_event_dst() {
   print '<p>Rename end field to event_end...</p>';
   flush();
   db_query("ALTER TABLE {event} CHANGE end event_end INTEGER");
+  db_query("ALTER TABLE {event} ADD KEY event_start (event_start)");
 
   print '<p>Migrating timezone data...</p>';
   flush();
