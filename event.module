@@ -33,10 +33,10 @@ function event_html_head() {
 function event_link($type, $node = NULL, $teaser = FALSE) {
   switch ($type) {
     case 'node':
-      if (event_enabled_state($node->type) == 'all') {
+      if (event_enabled_state($node->type) == 'all' && $node->event_info) {
         $links[] = l(t('calendar'), 'event/'. format_date($node->event_start, 'custom', 'Y/m/d'));
       }
-      elseif (event_enabled_state($node->type) == 'solo') {
+      elseif (event_enabled_state($node->type) == 'solo' && $node->event_info) {
         $links[] = l(t('calendar'), 'event/'. format_date($node->event_start, 'custom', 'Y/m/d') .'/month/'. $node->type);
       }
       break;
@@ -1600,7 +1600,9 @@ function event_nodeapi(&$node, $op, $arg = 0) {
       $form = '';
       if (variable_get('event_nodeapi_'. $node->type, 'never') != 'never') {
           global $user;
-          $form = form_item(t('Start'), event_form_date(($node->event_start ? $node->event_start : _event_user_time()), 'start', $node->start_offset), t('Start date.'));
+          $form = form_checkbox(t('Save dates and show in event calendar'), 'event_info', 1, isset($node->event_info) ? $node->event_info : 1 , t('If this option is not selected, dates will be removed and this post will not be shown in event calendar.'));
+          
+          $form .= form_item(t('Start'), event_form_date(($node->event_start ? $node->event_start : _event_user_time()), 'start', $node->start_offset), t('Start date.'));
 
           $form .= form_item(t('End'), event_form_date(($node->event_end ? $node->event_end : _event_user_time()), 'end', $node->end_offset), t('End date.'));
 
@@ -1642,7 +1644,7 @@ function event_nodeapi(&$node, $op, $arg = 0) {
       break;
 
     case 'insert':
-      if (variable_get('event_nodeapi_'. $node->type, 'never') != 'never') {
+      if (variable_get('event_nodeapi_'. $node->type, 'never') != 'never' && $node->event_info) {
         $fields = array('nid', 'event_start', 'event_end');
         db_query('INSERT INTO {event} (nid, event_start, event_end, timezone) VALUES (%d, %d, %d, %d)', $node->nid, $node->event_start, $node->event_end, $node->timezone);
       }
@@ -1652,7 +1654,17 @@ function event_nodeapi(&$node, $op, $arg = 0) {
     case 'update':
       if (variable_get('event_nodeapi_'. $node->type, 'never') != 'never') {
         $fields = array('event_start', 'event_end');
-        db_query('UPDATE {event} SET event_start = %d, event_end = %d, timezone = %d WHERE nid = %d', $node->event_start, $node->event_end, $node->timezone, $node->nid);
+        if($node->event_info) {
+          // Check whether event data was already there
+          $oldnode = node_load(array('nid' => $node->nid));
+          if($oldnode->event_info) {
+            db_query('UPDATE {event} SET event_start = %d, event_end = %d, timezone = %d WHERE nid = %d', $node->event_start, $node->event_end, $node->timezone, $node->nid);
+          } else {
+            db_query('INSERT INTO {event} (nid, event_start, event_end, timezone) VALUES (%d, %d, %d, %d)', $node->nid, $node->event_start, $node->event_end, $node->timezone);
+          }
+        } else {
+          db_query('DELETE FROM {event} WHERE nid = %d', $node->nid);
+        }
       }
       event_set_range();
       break;
@@ -1667,6 +1679,8 @@ function event_nodeapi(&$node, $op, $arg = 0) {
     case 'load':
       if (variable_get('event_nodeapi_'. $node->type, 'never') != 'never') {
         $object = db_fetch_object(db_query('SELECT event_start, event_end, timezone FROM {event} WHERE nid = %d', $node->nid));
+        // Check whether the node has event info
+        $node->event_info = $object ? 1 : 0;
         switch (variable_get('event_timezone_display', 'event')) {
           case 'event' :
             $start_offset = event_get_offset($object->timezone, $object->event_start);
@@ -1697,7 +1711,7 @@ function event_nodeapi(&$node, $op, $arg = 0) {
       break;
 
     case 'view':
-      if (variable_get('event_nodeapi_'. $node->type, 'never') != 'never') {
+      if (variable_get('event_nodeapi_'. $node->type, 'never') != 'never' && $node->event_info) {
         $node->body = theme('event_nodeapi', $node). $node->body;
         $node->teaser = theme('event_nodeapi', $node). $node->teaser;
       }
