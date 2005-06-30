@@ -165,6 +165,7 @@
 .event-calendar div.info {
   visibility: hidden;
   height: 0px;
+  overflow:hidden;
   padding-left: 3px;
 }
 
