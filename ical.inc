@@ -32,7 +32,7 @@
  */
 function ical_export($events, $calname = NULL) {
   $output .= "BEGIN:VCALENDAR\nVERSION:2.0\n";
-  $output .= "X-WR-CALNAME:" . ($calname ? $calname : variable_get('site_name', '')) . "\n";
+  $output .= 'X-WR-CALNAME:'. variable_get('site_name', '') .' | '. $calname ."\n";
   $output .= "PRODID:-//strange bird labs//Drupal iCal API//EN\n";
   foreach ($events as $uid => $event) {
     $output .= "BEGIN:VEVENT\n";

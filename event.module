@@ -627,13 +627,11 @@ function event_calendar_ical($stamp, $duration, $types = NULL, $terms = NULL, $t
     $event = array();
     $node = node_load(array('nid' => $nid->nid));
     if (event_filter_node($node, $types, $terms)) {
-      $node->start = ($node->event_start - $node->start_offset);
-      $node->end = ($node->event_end - $node->end_offset);
       // Allow modules to affect item fields
       node_invoke_nodeapi($node, 'view');
       node_invoke_nodeapi($node, 'ical item');
-      $event['start'] = $node->start;
-      $event['end'] = $node->end;
+      $event['start'] = $node->event_start;
+      $event['end'] = $node->event_end;
       $event['location'] = $node->event_location;
       $event['summary'] = $node->title;
       $event['description'] = ($node->teaser ? $node->teaser : $node->body);
