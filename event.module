@@ -133,9 +133,9 @@ function event_menu($may_cache) {
 function event_settings() {
 
   if (variable_get('configurable_timezones', 0)) {
-    $group .= form_radios(t('Event timezone input'), 'event_timezone_input', variable_get('event_timezone_input', 'site'), array('site' => t('Use the sitewide timezone'), 'user' => t('Use the timezone of the user editing or creating the event'), 'input' => t('Allow users to set event timezones')), t('Events are saved with a timezone value. This setting allows you to determine how the timezone is determined when creating or editing an event.'));
+    $group .= form_radios(t('Event time zone input'), 'event_timezone_input', variable_get('event_timezone_input', 'site'), array('site' => t('Use the sitewide time zone'), 'user' => t('Use the time zone of the user editing or creating the event'), 'input' => t('Allow users to set event time zones')), t('Events are saved with a time zone value. This setting allows you to determine how the time zone is determined when creating or editing an event.'));
 
-    $group .= form_radios(t('Event timezone display'), 'event_timezone_display', variable_get('event_timezone_display', 'event'), array('event' => t("Use the event's timezone"), 'user' => t("Use the user's timezone"), 'site' => t('Use the sitewide timezone')), t("Events are saved with a timezone value. This setting allows you to determine if the event's timezone, the sitewide timezone, or the user's personal timezone setting is used to display the time for an event."));
+    $group .= form_radios(t('Event time zone display'), 'event_timezone_display', variable_get('event_timezone_display', 'event'), array('event' => t("Use the event's time zone"), 'user' => t("Use the user's time zone"), 'site' => t('Use the sitewide time zone')), t("Events are saved with a time zone value. This setting allows you to determine if the event's time zone, the sitewide time zone, or the user's personal time zone setting is used to display the time for an event."));
   }
   else {
     if (variable_get('event_timezone_input', 'site') == 'user') {
@@ -143,9 +143,9 @@ function event_settings() {
     }
     variable_set('event_timezone_display', 'event');
 
-    $group .= form_radios(t('Event timezone input'), 'event_timezone_input', variable_get('event_timezone_input', 'site'), array('site' => t('Use the sitewide timezone'), 'user" disabled' => t('Use the timezone of the user editing or creating the event'), 'input' => t('Allow users to set event timezones')), t("Events are saved with a timezone value. This setting allows you to determine how the timezone is determined when creating or editing an event. You must have 'Configurable time zones' enabled in %url before you can enable user's timezones for this feature.", array('%url' => l(t('site configuration'), 'admin/settings'))));
+    $group .= form_radios(t('Event time zone input'), 'event_timezone_input', variable_get('event_timezone_input', 'site'), array('site' => t('Use the sitewide time zone'), 'user" disabled' => t('Use the time zone of the user editing or creating the event'), 'input' => t('Allow users to set event time zones')), t("Events are saved with a time zone value. This setting allows you to determine how the time zone is determined when creating or editing an event. You must have 'Configurable time zones' enabled in %url before you can enable user's time zones for this feature.", array('%url' => l(t('site configuration'), 'admin/settings'))));
 
-    $group .= form_radios(t('Event timezone display'), 'event_timezone_display', 'event', array('event' => t("Use the event's timezone"), 'site' => t('Use the sitewide timezone')), t("Events are saved with a timezone value. This setting allows you to determine if the event's timezone, the sitewide timezone, or the user's personal timezone setting is used to display the time for an event. You must have 'Configurable time zones' enabled in %url before you can enable user's timezones for this feature.", array('%url' => l(t('site configuration'), 'admin/settings'))));
+    $group .= form_radios(t('Event time zone display'), 'event_timezone_display', 'event', array('event' => t("Use the event's time zone"), 'site' => t('Use the sitewide time zone')), t("Events are saved with a time zone value. This setting allows you to determine if the event's time zone, the sitewide time zone, or the user's personal time zone setting is used to display the time for an event. You must have 'Configurable time zones' enabled in %url before you can enable user's time zones for this feature.", array('%url' => l(t('site configuration'), 'admin/settings'))));
   }
   $group .= form_radios(t('Time notation preference'), 'event_ampm', variable_get('event_ampm', '0'), array('0' => t('24h'),'1' => t('12h')), t('The time notation system used for entering event times.'));
   $group .= form_textfield(t('Upcoming event block limit'), 'event_upcoming_limit', variable_get('event_upcoming_limit', '6'), 5, 2, t('Limit the amount of events displayed in the upcoming events block by this amount.'));
@@ -662,10 +662,10 @@ function event_calendar_ical($stamp, $duration, $types = NULL, $terms = NULL, $t
  *                "day": A day calendar.
  *  @param $nodes – An associative array of nodes with nids for key values.
  *           Node objects must have GMT timestamp values for start ($node->event_start).
- *           Optionally, an end value ($node->event_end) and a timezone offset value
+ *           Optionally, an end value ($node->event_end) and a time zone offset value
  *           in the same format as drupal core ($node->tz). If a node has no end
- *           value, it is rendered on only one day. If no timezone value is displayed
- *           the time is rendered with no timezone offset (GMT).
+ *           value, it is rendered on only one day. If no time zone value is displayed
+ *           the time is rendered with no time zone offset (GMT).
  *  @param $module - String containing the name of the module calling the function
  *  @param $title - A string value that will be printed into the header of the calendar
  *  @return Themed calendar view of nodes
@@ -1164,17 +1164,17 @@ function event_week_header() {
 }
 
 /**
- * Formats a GMT timestamp to local date values using timezone offset supplied.
+ * Formats a GMT timestamp to local date values using time zone offset supplied.
  * All timestamp values in event nodes are GMT and translated for display here.
  *
- * Timezone settings are applied in the following order
- * 1. If supplied, timezone offset is applied
- * 2. If user timezones are enabled, user timezone offset is applied
- * 3. If neither 1 nor 2 apply, the site timezone offset is applied
+ * Time zone settings are applied in the following order
+ * 1. If supplied, time zone offset is applied
+ * 2. If user time zones are enabled, user time zone offset is applied
+ * 3. If neither 1 nor 2 apply, the site time zone offset is applied
  *
  * @param $format The date() format to apply to the timestamp.
  * @param $timestamp The GMT timestamp value.
- * @param $offset Timezone offset to apply to the timestamp.
+ * @param $offset Time zone offset to apply to the timestamp.
  * @ingroup event_support
  * @return gmdate() formatted date value
  */
@@ -1209,17 +1209,17 @@ function _event_day_of_week($stamp) {
 }
 
 /**
- * Formats local time values to GMT timestamp using timezone offset supplied.
+ * Formats local time values to GMT timestamp using time zone offset supplied.
  * All time values in the database are GMT and translated here prior to insertion.
  *
- * Timezone settings are applied in the following order:
- * 1. If supplied, timezone offset is applied
- * 2. If user timezones are enabled, user timezone offset is applied
- * 3. If neither 1 nor 2 apply, the site timezone offset is applied
+ * Time zone settings are applied in the following order:
+ * 1. If supplied, time zone offset is applied
+ * 2. If user time zones are enabled, user time zone offset is applied
+ * 3. If neither 1 nor 2 apply, the site time zone offset is applied
  *
  * @param $format The date() format to apply to the timestamp.
  * @param $timestamp The GMT timestamp value.
- * @param $offset Timezone offset to apply to the timestamp.
+ * @param $offset Time zone offset to apply to the timestamp.
  * @ingroup event_support
  * @return gmdate() formatted date value
  */
@@ -1237,7 +1237,7 @@ function _event_mktime($hour, $minute, $second, $month, $day, $year, $offset = N
   }
 }
 
-// returns a local timestamp based on the user or site timezone
+// returns a local timestamp based on the user or site time zone
 function _event_user_time() {
   global $user;
 
@@ -1249,7 +1249,7 @@ function _event_user_time() {
   }
 }
 
-// returns a local timestamp value corrected with the user or site timezone with time information set to 0
+// returns a local timestamp value corrected with the user or site time zone with time information set to 0
 function _event_user_date() {
   static $date;
   if (!$date) {
@@ -1322,7 +1322,7 @@ function event_form_date($timestamp, $prefix = 'start', $offset) {
 /**
  * Validates the start and end times in a node form submission.
  * - Changes 24 hour time to 12 hour time (if the module is configured to do this).
- *  - Adjusts times for timezone offsets.
+ *  - Adjusts times for time zone offsets.
  *
  * @ingroup event_support
  * @param $node The submitted node with form data.
@@ -1825,7 +1825,7 @@ function event_help($section) {
       array('%configure-link' => l(t('content type management admin area'), 'admin/node/configure/types'), '%flexinode-link' => l(t('flexinode'), 'http://drupal.org/node/5737')));
       break;
     case 'event/dst':
-        return t('This is a listing of all the event system\'s timezones, sorted by daylight savings time regions, and thier respective offsets from GMT in seconds. Timezones in the \'None\' region do not observe daylight savings time. If you believe there is an error, please first search for the locale on %timeanddate and confirm it. If there is indeed an error please submit a %bugreport on drupal.org so we can fix it.', array('%timeanddate' => l('http://timeanddate.com/worldclock/search.html', 'http://timeanddate.com/worldclock/search.html'), '%bugreport' => l('bug report', 'http://drupal.org/node/add/project_issue/event')));
+        return t('This is a listing of all the event system\'s time zones, sorted by daylight savings time regions, and thier respective offsets from GMT in seconds. Time zones in the \'None\' region do not observe daylight savings time. If you believe there is an error, please first search for the locale on %timeanddate and confirm it. If there is indeed an error please submit a %bugreport on drupal.org so we can fix it.', array('%timeanddate' => l('http://timeanddate.com/worldclock/search.html', 'http://timeanddate.com/worldclock/search.html'), '%bugreport' => l('bug report', 'http://drupal.org/node/add/project_issue/event')));
       break;
   }
 }
