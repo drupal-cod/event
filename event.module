@@ -1367,7 +1367,12 @@ function event_validate_form_date(&$node, $prefix) {
 function _event_nav($date, $dir, $view, $types, $terms, $duration = NULL) {
 
   // first, retrieve the stored timestamp of the first/last event
-  $range = variable_get('event_range_'. $dir, $date);
+  $range = variable_get('event_range_'. $dir, -1);
+  // If the variable isn't set, set it and try again
+  if ($range == -1) {
+    event_set_range();
+    $range = variable_get('event_range_'. $dir, $date);
+  }
 
   // if we are beyond the range of the stored events, dont display navigation
   if (($dir == 'prev' && $range < $date) || ($dir == 'next' && $range > $date)) {
