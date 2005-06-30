@@ -179,6 +179,9 @@ function update_event_drupal($ctype_id) {
   db_query("ALTER TABLE {event} ADD event_end INT(10) UNSIGNED NOT NULL default '0'");
   db_query("ALTER TABLE {event} ADD timezone INT(11) default NULL");
 
+  // Assume events end when they begin.
+  db_query("UPDATE {event} SET event_end = event_start");
+
   print '<p>Your event fields should be transferred now. If you want to confirm this is so now is a good time.<br />Please execute the following sql statements directly on the database to finish the upgrade:</p>';
   print '<code>';
   print 'ALTER TABLE event DROP data;<br />'."\n";
@@ -267,6 +270,9 @@ function update_event_civicspace($ctype_id) {
   db_query("ALTER TABLE {event} ADD KEY event_start (event_start)");
   db_query("ALTER TABLE {event} ADD event_end INT(10) UNSIGNED NOT NULL default '0'");
   db_query("ALTER TABLE {event} ADD timezone INT(11) default NULL");
+  
+  // Assume events end when they begin.
+  db_query("UPDATE {event} SET event_end = event_start");
 
   print '<p>Your event fields should be transferred now. If you want to confirm this is so now is a good time.<br />Please execute the following sql statements directly on the database to finish the upgrade:</p>';
   print '<code>';
