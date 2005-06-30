@@ -571,7 +571,7 @@ function event_calendar_rss($stamp, $duration, $types = NULL, $terms = NULL, $ti
   $endstamp = $stamp + ($duration * 86400);
   $headertitle = t('%startmonth %startdate, %startyear - %endmonth %enddate, %endyear', array('%startmonth' => gmdate('F', $stamp), '%startdate' => gmdate('d', $stamp), '%startyear' => gmdate('Y', $stamp), '%endmonth' => t(gmdate('F', $endstamp)), '%enddate' => gmdate('d', $endstamp), '%endyear' => gmdate('Y', $endstamp)));
 
-  $result = db_query(db_rewrite_sql('SELECT n.nid FROM {event} e INNER JOIN {node} n ON n.nid = e.nid WHERE n.status = 1 AND ((e.event_start > %d AND e.event_start < %d) OR (e.event_end > %d AND e.event_end < %d) OR (e.event_start < %d AND e.event_end > %d)) ORDER BY e.event_start '), $stamp, $endstamp, $stamp, $endstamp, $stamp, $endstamp);
+  $result = db_query(db_rewrite_sql('SELECT n.nid, e.event_start FROM {event} e INNER JOIN {node} n ON n.nid = e.nid WHERE n.status = 1 AND ((e.event_start > %d AND e.event_start < %d) OR (e.event_end > %d AND e.event_end < %d) OR (e.event_start < %d AND e.event_end > %d)) ORDER BY event_start '), $stamp, $endstamp, $stamp, $endstamp, $stamp, $endstamp);
 
   $nodes = array();
   while ($nid = db_fetch_object($result)) {
@@ -620,7 +620,7 @@ function event_calendar_ical($stamp, $duration, $types = NULL, $terms = NULL, $t
   $endstamp = $stamp + ($duration * 86400);
   $headertitle = t('%startmonth %startdate, %startyear - %endmonth %enddate, %endyear', array('%startmonth' => gmdate('F', $stamp), '%startdate' => gmdate('d', $stamp), '%startyear' => gmdate('Y', $stamp), '%endmonth' => t(gmdate('F', $endstamp)), '%enddate' => gmdate('d', $endstamp), '%endyear' => gmdate('Y', $endstamp)));
 
-  $result = db_query(db_rewrite_sql('SELECT n.nid FROM {event} e INNER JOIN {node} n ON n.nid = e.nid WHERE n.status = 1 AND ((e.event_start > %d AND e.event_start < %d) OR (e.event_end > %d AND e.event_end < %d) OR (e.event_start < %d AND e.event_end > %d)) ORDER BY e.event_start '), $stamp, $endstamp, $stamp, $endstamp, $stamp, $endstamp);
+  $result = db_query(db_rewrite_sql('SELECT n.nid, e.event_start FROM {event} e INNER JOIN {node} n ON n.nid = e.nid WHERE n.status = 1 AND ((e.event_start > %d AND e.event_start < %d) OR (e.event_end > %d AND e.event_end < %d) OR (e.event_start < %d AND e.event_end > %d)) ORDER BY event_start '), $stamp, $endstamp, $stamp, $endstamp, $stamp, $endstamp);
 
   $events = array();
   while ($nid = db_fetch_object($result)) {
@@ -859,7 +859,7 @@ function event_calendar_data($year, $month, $day, $view = NULL, $types = NULL, $
     $first = _event_mktime(0, 0, 0, $month, 1, $year);
     $last = _event_mktime(23, 59, 59, $month + 1, 0, $year);
 
-    $result = db_query(db_rewrite_sql('SELECT n.nid FROM {event} e INNER JOIN {node} n ON n.nid = e.nid WHERE n.status = 1 AND ((e.event_start > %d AND e.event_start < %d) OR (e.event_end > %d AND e.event_end < %d) OR (e.event_start < %d AND e.event_end > %d)) ORDER BY e.event_start '), $first, $last, $first, $last, $first, $last);
+    $result = db_query(db_rewrite_sql('SELECT n.nid, e.event_start FROM {event} e INNER JOIN {node} n ON n.nid = e.nid WHERE n.status = 1 AND ((e.event_start > %d AND e.event_start < %d) OR (e.event_end > %d AND e.event_end < %d) OR (e.event_start < %d AND e.event_end > %d)) ORDER BY event_start '), $first, $last, $first, $last, $first, $last);
 
     while ($nid = db_fetch_object($result)) {
       $node = node_load(array('nid' => $nid->nid));
@@ -1535,7 +1535,7 @@ function event_block_upcoming($limit = 6) {
   global $user;
   // For two hours, we display "NOW"
   $time = _event_user_time() - (2 * 60 * 60);
-  $result = db_query_range(db_rewrite_sql("SELECT n.nid, n.title, n.type, n.status, n.moderate, e.event_start FROM {node} n INNER JOIN {event} e USING (nid) WHERE n.status = 1 AND n.moderate = 0 AND e.event_start >= $time ORDER BY e.event_start"), 0, $limit);
+  $result = db_query_range(db_rewrite_sql("SELECT n.nid, n.title, n.type, n.status, n.moderate, e.event_start FROM {node} n INNER JOIN {event} e USING (nid) WHERE n.status = 1 AND n.moderate = 0 AND e.event_start >= $time ORDER BY event_start"), 0, $limit);
 
   while ($node = db_fetch_object($result)) {
     $links[] = $node;
