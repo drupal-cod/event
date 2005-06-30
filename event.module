@@ -1537,8 +1537,8 @@ function event_block($op = 'list', $delta = 0) {
 function event_block_upcoming($limit = 6) {
   global $user;
   // For two hours, we display "NOW"
-  $time = _event_user_time() - (2 * 60 * 60);
-  $result = db_query_range(db_rewrite_sql("SELECT n.nid, n.title, n.type, n.status, n.moderate, e.event_start FROM {node} n INNER JOIN {event} e USING (nid) WHERE n.status = 1 AND n.moderate = 0 AND e.event_start >= $time ORDER BY event_start"), 0, $limit);
+  $time = time() - (2 * 60 * 60);
+  $result = db_query_range(db_rewrite_sql("SELECT n.nid, n.title, n.type, n.status, n.moderate, e.event_start FROM {node} n INNER JOIN {event} e USING (nid) WHERE n.status = 1 AND n.moderate = 0 AND e.event_start >= %d ORDER BY event_start"), $time, 0, $limit);
 
   while ($node = db_fetch_object($result)) {
     $links[] = $node;
