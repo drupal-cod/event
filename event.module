@@ -288,7 +288,7 @@ function event_page($year = NULL, $month = NULL, $day = NULL, $view = NULL, $typ
         // next 30 day view, $duration can be set for different ranges
         $duration = $duration ? $duration : variable_get('event_table_duration', '30');
         $endstamp = $stamp + ($duration * 86400);
-        $headertitle = t('%startmonth %startdate, %startyear - %endmonth %enddate, %endyear', array('%startmonth' => gmdate('F', $stamp), '%startdate' => gmdate('d', $stamp), '%startyear' => gmdate('Y', $stamp), '%endmonth' => t(gmdate('F', $endstamp)), '%enddate' => gmdate('d', $endstamp), '%endyear' => gmdate('Y', $endstamp)));
+        $headertitle = t('%startmonth %startdate, %startyear - %endmonth %enddate, %endyear', array('%startmonth' => t(gmdate('F', $stamp)), '%startdate' => gmdate('d', $stamp), '%startyear' => gmdate('Y', $stamp), '%endmonth' => t(gmdate('F', $endstamp)), '%enddate' => gmdate('d', $endstamp), '%endyear' => gmdate('Y', $endstamp)));
         $rows = event_calendar_table('page', $stamp, $endstamp, $types, $terms);
       break;
     case 'feed':
@@ -569,7 +569,7 @@ function event_calendar_rss($stamp, $duration, $types = NULL, $terms = NULL, $ti
   global $base_url, $locale;
 
   $endstamp = $stamp + ($duration * 86400);
-  $headertitle = t('%startmonth %startdate, %startyear - %endmonth %enddate, %endyear', array('%startmonth' => gmdate('F', $stamp), '%startdate' => gmdate('d', $stamp), '%startyear' => gmdate('Y', $stamp), '%endmonth' => t(gmdate('F', $endstamp)), '%enddate' => gmdate('d', $endstamp), '%endyear' => gmdate('Y', $endstamp)));
+  $headertitle = t('%startmonth %startdate, %startyear - %endmonth %enddate, %endyear', array('%startmonth' => t(gmdate('F', $stamp)), '%startdate' => gmdate('d', $stamp), '%startyear' => gmdate('Y', $stamp), '%endmonth' => t(gmdate('F', $endstamp)), '%enddate' => gmdate('d', $endstamp), '%endyear' => gmdate('Y', $endstamp)));
 
   $result = db_query(db_rewrite_sql('SELECT n.nid, e.event_start FROM {event} e INNER JOIN {node} n ON n.nid = e.nid WHERE n.status = 1 AND ((e.event_start > %d AND e.event_start < %d) OR (e.event_end > %d AND e.event_end < %d) OR (e.event_start < %d AND e.event_end > %d)) ORDER BY event_start '), $stamp, $endstamp, $stamp, $endstamp, $stamp, $endstamp);
 
@@ -618,7 +618,7 @@ function event_calendar_ical($stamp, $duration, $types = NULL, $terms = NULL, $t
   global $base_url, $locale;
 
   $endstamp = $stamp + ($duration * 86400);
-  $headertitle = t('%startmonth %startdate, %startyear - %endmonth %enddate, %endyear', array('%startmonth' => gmdate('F', $stamp), '%startdate' => gmdate('d', $stamp), '%startyear' => gmdate('Y', $stamp), '%endmonth' => t(gmdate('F', $endstamp)), '%enddate' => gmdate('d', $endstamp), '%endyear' => gmdate('Y', $endstamp)));
+  $headertitle = t('%startmonth %startdate, %startyear - %endmonth %enddate, %endyear', array('%startmonth' => t(gmdate('F', $stamp)), '%startdate' => gmdate('d', $stamp), '%startyear' => gmdate('Y', $stamp), '%endmonth' => t(gmdate('F', $endstamp)), '%enddate' => gmdate('d', $endstamp), '%endyear' => gmdate('Y', $endstamp)));
 
   $result = db_query(db_rewrite_sql('SELECT n.nid, e.event_start FROM {event} e INNER JOIN {node} n ON n.nid = e.nid WHERE n.status = 1 AND ((e.event_start > %d AND e.event_start < %d) OR (e.event_end > %d AND e.event_end < %d) OR (e.event_start < %d AND e.event_end > %d)) ORDER BY event_start '), $stamp, $endstamp, $stamp, $endstamp, $stamp, $endstamp);
 
