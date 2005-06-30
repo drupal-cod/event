@@ -232,7 +232,7 @@ function theme_event_node_table($node, $module = NULL) {
   $output .= '<div class="content">'. $node->teaser .'</div></div>'."\n";
 
   $links = $node->event_links;
-  $links[] = l(t('more info'), '', array('onclick' => "popupnotes('info_". $link_count ."'); return false;", 'title' => t('Show detailed information for this event.')));
+  $links[] = l(t('more info'), 'node/'.$node->nid, array('onclick' => "popupnotes('info_". $link_count ."'); return false;", 'title' => t('Show detailed information for this event.')));
   $output .= '<div class="links">'. theme('links', $links) ."\n</div>";
   $output .= '</div>'."\n";
   return $output;
