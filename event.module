@@ -629,7 +629,7 @@ function event_calendar_ical($stamp, $duration, $types = NULL, $terms = NULL, $t
     $node = node_load(array('nid' => $nid->nid));
     if (event_filter_node($node, $types, $terms)) {
       // Allow modules to affect item fields
-      node_invoke_nodeapi($node, 'view');
+      node_invoke_nodeapi($node, 'view', 'ical item');
       node_invoke_nodeapi($node, 'ical item');
       $event['start'] = $node->event_start;
       $event['end'] = $node->event_end;
@@ -1715,9 +1715,11 @@ function event_nodeapi(&$node, $op, $arg = 0) {
       break;
 
     case 'view':
-      if (variable_get('event_nodeapi_'. $node->type, 'never') != 'never' && $node->event_info) {
-        $node->body = theme('event_nodeapi', $node). $node->body;
-        $node->teaser = theme('event_nodeapi', $node). $node->teaser;
+      if ($arg != 'ical item') {
+        if (variable_get('event_nodeapi_'. $node->type, 'never') != 'never' && $node->event_info) {
+          $node->body = theme('event_nodeapi', $node). $node->body;
+          $node->teaser = theme('event_nodeapi', $node). $node->teaser;
+        }
       }
       break;
 
