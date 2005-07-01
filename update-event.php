@@ -129,7 +129,7 @@ function update_event_drupal($ctype_id) {
     $edit['rows'] = $def[8];
     $edit['description'] = $def[9];
 
-    db_query("INSERT INTO {flexinode_field} (label, default_value, rows, required, show_teaser, show_table, weight, ctype_id, field_type, options, description, field_id) VALUES ('%s', '%s', %d, %d, %d, %d, %d, %d, '%s', '%s', '%s', %d)", $edit['label'], $edit['default_value'], $edit['rows'], $edit['required'], $edit['show_teaser'], TRUE, 0, $ctype_id, $edit['field_type'], serialize($options), $edit['description'], $field_id);
+    db_query("INSERT INTO {flexinode_field} (label, default_value, rows, required, show_teaser, show_table, weight, ctype_id, field_type, options, description, field_id) VALUES ('%s', '%s', %d, %d, %d, %d, %d, %d, '%s', '%s', '%s', %d)", $edit['label'], $edit['default_value'], $edit['rows'], $edit['required'], $edit['show_teaser'], TRUE, 0, $ctype_id, $edit['field_type'], $options, $edit['description'], $field_id);
   }
 
   $events = db_query("SELECT * FROM {event} e LEFT JOIN {node} n ON n.nid = e.nid");
