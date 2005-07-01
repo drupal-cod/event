@@ -151,7 +151,7 @@ function event_settings() {
   $group .= form_textfield(t('Upcoming event block limit'), 'event_upcoming_limit', variable_get('event_upcoming_limit', '6'), 5, 2, t('Limit the amount of events displayed in the upcoming events block by this amount.'));
   $output = form_group(t('General Event options'), $group);
 
-  $group = form_radios(t('Default overview'), 'event_overview', variable_get('event_overview', 'day'), array('day' => t('Day'), 'week' => t('Week'), 'month' => t('Month'), 'table' => t('Table')), t('The default event view to display when no format is specifically requested. This is also the view that will be displayed from the block calendar links.'));
+  $group = form_radios(t('Default overview'), 'event_overview', variable_get('event_overview', 'month'), array('day' => t('Day'), 'week' => t('Week'), 'month' => t('Month'), 'table' => t('Table')), t('The default event view to display when no format is specifically requested. This is also the view that will be displayed from the block calendar links.'));
   $group .= form_textfield(t('Table view default period'), 'event_table_duration', variable_get('event_table_duration', '30'), 5, 3, t('The default number of days to display in the table view. You can specify a different number of days in the url. More info on the event url format %link', array('%link' => l(t('here'), 'admin/help/event#url-format'))));
 
   if (module_exist('taxonomy')) {
