@@ -286,7 +286,8 @@ function event_page($year = NULL, $month = NULL, $day = NULL, $view = NULL, $typ
     case 'table':
         // table view
         // next 30 day view, $duration can be set for different ranges
-        $duration = $duration ? $duration : variable_get('event_table_duration', '30');
+        // but set a maximum $duration of 1 year.
+        $duration = $duration && $duration <= 366 ? $duration : variable_get('event_table_duration', '30');
         $endstamp = $stamp + ($duration * 86400);
         $headertitle = t('%startmonth %startdate, %startyear - %endmonth %enddate, %endyear', array('%startmonth' => t(gmdate('F', $stamp)), '%startdate' => gmdate('d', $stamp), '%startyear' => gmdate('Y', $stamp), '%endmonth' => t(gmdate('F', $endstamp)), '%enddate' => gmdate('d', $endstamp), '%endyear' => gmdate('Y', $endstamp)));
         $rows = event_calendar_table('page', $stamp, $endstamp, $types, $terms);
