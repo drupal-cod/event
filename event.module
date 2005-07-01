@@ -193,7 +193,7 @@ function event_page($year = NULL, $month = NULL, $day = NULL, $view = NULL, $typ
   $month = gmdate('m', $stamp);
   $day = gmdate('d', $stamp);
 
-  $view = $view ? $view : variable_get('event_overview', 'next');
+  $view = $view ? $view : variable_get('event_overview', 'month');
 
   if ($_POST['edit']['event_type_select']) {
     drupal_goto('event/'. $year .'/'. $month .'/'. $day .'/'. $view .'/'. $_POST['edit']['event_type_select'] .'/'. $tids);
@@ -340,7 +340,7 @@ function event_page($year = NULL, $month = NULL, $day = NULL, $view = NULL, $typ
  * @return redirect to the event page for calendar node type.
  */
 function event_type($types = NULL, $view = NULL, $terms = NULL) {
-  drupal_goto('event/'. format_date(_event_user_time(), 'custom', 'Y/m/d') .'/'. ($view ? $view : variable_get('event_overview', 'next')) .'/'. $types);
+  drupal_goto('event/'. format_date(_event_user_time(), 'custom', 'Y/m/d') .'/'. ($view ? $view : variable_get('event_overview', 'month')) .'/'. $types);
 }
 
 /**
@@ -350,7 +350,7 @@ function event_type($types = NULL, $view = NULL, $terms = NULL) {
  * @return redirect to the event page for calendar taxonomy term.
  */
 function event_term($filter = NULL, $view = NULL) {
-  drupal_goto('event/'. format_date(_event_user_time(), 'custom', 'Y/m/d') .'/'. ($view ? $view : variable_get('event_overview', 'next')) .'/all/'. $filter);
+  drupal_goto('event/'. format_date(_event_user_time(), 'custom', 'Y/m/d') .'/'. ($view ? $view : variable_get('event_overview', 'month')) .'/all/'. $filter);
 }
 
 /**
