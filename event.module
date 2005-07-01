@@ -359,8 +359,8 @@ function event_term($filter = NULL, $view = NULL) {
  * @ingroup event_callback
  * @return redirect to the event rss feed page at current day
  */
-function event_feed($duration = NULL) {
-  drupal_goto('event/'. format_date(_event_user_time(), 'custom', 'Y/m/d') .'/feed/all/all/'. $duration);
+function event_feed($types = 'all', $terms = 'all', $duration = NULL) {
+  drupal_goto('event/'. format_date(_event_user_time(), 'custom', 'Y/m/d') .'/feed/'. $types .'/'. $terms .'/'. $duration);
 }
 
 /**
@@ -369,9 +369,9 @@ function event_feed($duration = NULL) {
  * @ingroup event_callback
  * @return redirect to the event ical feed page at current day
  */
-function event_ical($duration = NULL) {
+function event_ical($types = 'all', $terms = 'all', $duration = NULL) {
 
-  drupal_goto('event/'. format_date(_event_user_time(), 'custom', 'Y/m/d') .'/ical/all/all/'. $duration);
+  drupal_goto('event/'. format_date(_event_user_time(), 'custom', 'Y/m/d') .'/ical/'. $types .'/'. $terms .'/'. $duration);
 
   drupal_set_title(t('iCal support not enabled'));
   print theme('page', $output);
