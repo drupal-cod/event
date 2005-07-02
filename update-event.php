@@ -173,11 +173,10 @@ function update_event_drupal($ctype_id) {
 
   variable_set("event_nodeapi_flexinode-$ctype_id", 'all');
   db_query("UPDATE {node} set type='flexinode-$ctype_id' where type='event'");
-  db_query("ALTER TABLE {event} ADD timezone int(10) unsigned NOT NULL default '0'");
+  db_query("ALTER TABLE {event} ADD timezone INT(10) NOT NULL default '0'");
   db_query("ALTER TABLE {event} CHANGE start event_start INTEGER");
   db_query("ALTER TABLE {event} ADD KEY event_start (event_start)");
   db_query("ALTER TABLE {event} ADD event_end INT(10) UNSIGNED NOT NULL default '0'");
-  db_query("ALTER TABLE {event} ADD timezone INT(11) default NULL");
 
   // Assume events end when they begin.
   db_query("UPDATE {event} SET event_end = event_start");
@@ -269,7 +268,7 @@ function update_event_civicspace($ctype_id) {
   db_query("ALTER TABLE {event} CHANGE start event_start INTEGER");
   db_query("ALTER TABLE {event} ADD KEY event_start (event_start)");
   db_query("ALTER TABLE {event} ADD event_end INT(10) UNSIGNED NOT NULL default '0'");
-  db_query("ALTER TABLE {event} ADD timezone INT(11) default NULL");
+  db_query("ALTER TABLE {event} ADD timezone INT(10) default NULL");
   
   // Assume events end when they begin.
   db_query("UPDATE {event} SET event_end = event_start");
@@ -409,7 +408,7 @@ function update_event_dst() {
 
   print '<p>Adding timezone field...</p>';
   flush();
-  db_query("ALTER TABLE {event} ADD timezone int(10) unsigned NOT NULL default '0'");
+  db_query("ALTER TABLE {event} ADD timezone INT(10) NOT NULL default '0'");
   print '<p>Rename start field to event_start...</p>';
   flush();
   db_query("ALTER TABLE {event} CHANGE start event_start INTEGER");
