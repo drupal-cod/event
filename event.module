@@ -1095,7 +1095,7 @@ function event_taxonomy_filter($node, $terms) {
  * @return The value of the day requested. If the day has events, the value will be a link to a more detailed page of that day's events.
  */
 function event_render_day_single($year, $month, $day, $view, $types, $terms) {
-  return count(event_calendar_data($year, $month, $day)) ? l($day, "event/$year/$month/$day") : $day;
+  return count(event_calendar_data($year, $month, $day)) ? l($day, "event/$year/$month/$day/day") : $day;
 }
 
 /**
