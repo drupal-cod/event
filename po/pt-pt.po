@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: event module - Portuguese from Portugal\n"
 "POT-Creation-Date: 2004-04-03 12:24+0200\n"
-"PO-Revision-Date: 2005-07-23 22:44-0000\n"
+"PO-Revision-Date: 2005-07-23 22:51-0000\n"
 "Last-Translator: Miguel Duarte <miguel.duarte@gmail.com>\n"
 "Language-Team: Miguel Duarte <miguel.duarte@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -253,7 +253,7 @@ msgstr "Filtro"
 
 #: event.module:269
 msgid "%weekday %month %day, %year"
-msgstr ""
+msgstr "%weekday, %day de %month de %year "
 
 #: event.module:276
 msgid "Week of %month %day, %year"
@@ -266,11 +266,11 @@ msgstr "%month de %year"
 #: event.module:291
 #: ;572;621
 msgid "%startmonth %startdate, %startyear - %endmonth %enddate, %endyear"
-msgstr ""
+msgstr "%startdate de %startmonth de %startyear - %enddate de %endmonth de %endyear"
 
 #: event.module:376
 msgid "iCal support not enabled"
-msgstr ""
+msgstr "Suporte iCal não activo"
 
 #: event.module:600
 msgid " - Events Feed"
@@ -313,11 +313,11 @@ msgstr "Dom"
 
 #: event.module:1271
 msgid "g"
-msgstr ""
+msgstr "g"
 
 #: event.module:1276
 msgid "H"
-msgstr ""
+msgstr "H"
 
 #: event.module:1288
 msgid "January"
@@ -421,7 +421,7 @@ msgstr ""
 
 #: event.module:1606
 msgid "Save dates and show in event calendar"
-msgstr ""
+msgstr "Gravar datas e exibir no calendário de eventos"
 
 #: event.module:1606
 msgid "If this option is not selected, dates will be removed and this post will not be shown in event calendar."
