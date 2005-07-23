@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: event module - Portuguese from Portugal\n"
 "POT-Creation-Date: 2004-04-03 12:24+0200\n"
-"PO-Revision-Date: 2005-07-23 22:33-0000\n"
+"PO-Revision-Date: 2005-07-23 22:44-0000\n"
 "Last-Translator: Miguel Duarte <miguel.duarte@gmail.com>\n"
 "Language-Team: Miguel Duarte <miguel.duarte@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -261,7 +261,7 @@ msgstr "Semana de %day de %month de %year"
 
 #: event.module:282
 msgid "%month %year"
-msgstr "%mon th %year"
+msgstr "%month de %year"
 
 #: event.module:291
 #: ;572;621
@@ -540,7 +540,7 @@ msgstr "ical"
 #: event.theme:63
 #: ;119;168;203
 msgid "limit view to events of this type"
-msgstr ""
+msgstr "limitar a vista a eventos deste tipo"
 
 #: event.theme:65
 #: ;120;169;205
@@ -558,7 +558,7 @@ msgstr "mais informação"
 
 #: event.theme:235
 msgid "Show detailed information for this event."
-msgstr ""
+msgstr "Exibir informação detalhada para este evento."
 
 #: event.theme:250
 msgid "%month / %day"
@@ -574,7 +574,7 @@ msgstr "Adicionar ao iCalendar"
 
 #: event.theme:336
 msgid "Add this calendar to your iCalendar"
-msgstr ""
+msgstr "Adicionar este calendário ao seu iCalendar"
 
 #: event.theme:347
 msgid "more"
@@ -591,11 +591,11 @@ msgstr "Nenhum"
 #: event_timezones.inc:153
 #: ;550
 msgid "Egypt"
-msgstr ""
+msgstr "Egipto"
 
 #: event_timezones.inc:154
 msgid "Namibia"
-msgstr ""
+msgstr "Namíbia"
 
 #: event_timezones.inc:155
 msgid "Asia - Former USSR"
