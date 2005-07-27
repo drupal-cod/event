@@ -16,7 +16,7 @@ include(drupal_get_path('module', 'event') .'/ical.inc');
  * @return a &lt;style&gt; tag that indicates what file browsers should import
  */
 function event_html_head() {
-  $output = '<script type="text/javascript" language="javascript" src="'. drupal_get_path('module', 'event') .'/event.js"></script>';
+  $output = '<script type="text/javascript" src="'. drupal_get_path('module', 'event') .'/event.js"></script>';
   return $output.'<style type="text/css">@import url('. drupal_get_path('module', 'event') .'/event.css);</style>';
 }
 
