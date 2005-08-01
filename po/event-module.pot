@@ -1,13 +1,13 @@
 # LANGUAGE translation of Drupal (event.module)
 # Copyright YEAR NAME <EMAIL@ADDRESS>
-# Generated from file: event.module,v 1.140 2005/06/30 15:30:08 killes
+# Generated from file: event.module,v 1.150 2005/07/27 01:10:57 killes
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2005-06-30 17:52+0200\n"
-"PO-Revision-Date: 2005-06-30 17:57+0200\n"
+"POT-Creation-Date: 2005-08-01 20:55+0200\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -15,392 +15,392 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: event.module:37;40
+#: event.module:38;41
 msgid "calendar"
 msgstr ""
 
-#: event.module:45;60;67
+#: event.module:46;61;68
 msgid "week"
 msgstr ""
 
-#: event.module:45;60;67
+#: event.module:46;61;68
 msgid "Week view"
 msgstr ""
 
-#: event.module:46;53;68
+#: event.module:47;54;69
 msgid "day"
 msgstr ""
 
-#: event.module:46;53;68
+#: event.module:47;54;69
 msgid "Day view"
 msgstr ""
 
-#: event.module:47;54;61
+#: event.module:48;55;62
 msgid "table"
 msgstr ""
 
-#: event.module:47;54;61
+#: event.module:48;55;62
 msgid "Table view"
 msgstr ""
 
-#: event.module:52;59;66
+#: event.module:53;60;67
 msgid "month"
 msgstr ""
 
-#: event.module:52;59;66
+#: event.module:53;60;67
 msgid "Month view"
 msgstr ""
 
-#: event.module:86
+#: event.module:87
 msgid "events"
 msgstr ""
 
-#: event.module:91
+#: event.module:92
 msgid "add item to calendar"
 msgstr ""
 
-#: event.module:96
+#: event.module:97
 msgid "filter by content type"
 msgstr ""
 
-#: event.module:101
+#: event.module:102
 msgid "filter by taxonomy"
 msgstr ""
 
-#: event.module:106
+#: event.module:107
 msgid "event rss feed"
 msgstr ""
 
-#: event.module:111
+#: event.module:112
 msgid "event dst view"
 msgstr ""
 
-#: event.module:116
+#: event.module:117
 msgid "event ical feed"
 msgstr ""
 
-#: event.module:136;146
+#: event.module:137;147
 msgid "Event time zone input"
 msgstr ""
 
-#: event.module:136;138;146;148
+#: event.module:137;139;147;149
 msgid "Use the sitewide time zone"
 msgstr ""
 
-#: event.module:136;146
+#: event.module:137;147
 msgid "Use the time zone of the user editing or creating the event"
 msgstr ""
 
-#: event.module:136;146
+#: event.module:137;147
 msgid "Allow users to set event time zones"
 msgstr ""
 
-#: event.module:136
+#: event.module:137
 msgid "Events are saved with a time zone value. This setting allows you to determine how the time zone is determined when creating or editing an event."
 msgstr ""
 
-#: event.module:138;148
+#: event.module:139;149
 msgid "Event time zone display"
 msgstr ""
 
-#: event.module:138;148
+#: event.module:139;149
 msgid "Use the event's time zone"
 msgstr ""
 
-#: event.module:138
+#: event.module:139
 msgid "Use the user's time zone"
 msgstr ""
 
-#: event.module:138
+#: event.module:139
 msgid "Events are saved with a time zone value. This setting allows you to determine if the event's time zone, the sitewide time zone, or the user's personal time zone setting is used to display the time for an event."
 msgstr ""
 
-#: event.module:146
+#: event.module:147
 msgid "Events are saved with a time zone value. This setting allows you to determine how the time zone is determined when creating or editing an event. You must have 'Configurable time zones' enabled in %url before you can enable user's time zones for this feature."
 msgstr ""
 
-#: event.module:146;148
+#: event.module:147;149
 msgid "site configuration"
 msgstr ""
 
-#: event.module:148
+#: event.module:149
 msgid "Events are saved with a time zone value. This setting allows you to determine if the event's time zone, the sitewide time zone, or the user's personal time zone setting is used to display the time for an event. You must have 'Configurable time zones' enabled in %url before you can enable user's time zones for this feature."
 msgstr ""
 
-#: event.module:150
+#: event.module:151
 msgid "Time notation preference"
 msgstr ""
 
-#: event.module:150
+#: event.module:151
 msgid "24h"
 msgstr ""
 
-#: event.module:150
+#: event.module:151
 msgid "12h"
 msgstr ""
 
-#: event.module:150
+#: event.module:151
 msgid "The time notation system used for entering event times."
 msgstr ""
 
-#: event.module:151
+#: event.module:152
 msgid "Upcoming event block limit"
 msgstr ""
 
-#: event.module:151
+#: event.module:152
 msgid "Limit the amount of events displayed in the upcoming events block by this amount."
 msgstr ""
 
-#: event.module:152
+#: event.module:153
 msgid "General Event options"
 msgstr ""
 
-#: event.module:154
+#: event.module:155
 msgid "Default overview"
 msgstr ""
 
-#: event.module:154
+#: event.module:155
 msgid "Day"
 msgstr ""
 
-#: event.module:154
+#: event.module:155
 msgid "Week"
 msgstr ""
 
-#: event.module:154
+#: event.module:155
 msgid "Month"
 msgstr ""
 
-#: event.module:154
+#: event.module:155
 msgid "Table"
 msgstr ""
 
-#: event.module:154
+#: event.module:155
 msgid "The default event view to display when no format is specifically requested. This is also the view that will be displayed from the block calendar links."
 msgstr ""
 
-#: event.module:155
+#: event.module:156
 msgid "Table view default period"
 msgstr ""
 
-#: event.module:155
+#: event.module:156
 msgid "The default number of days to display in the table view. You can specify a different number of days in the url. More info on the event url format %link"
 msgstr ""
 
-#: event.module:155
+#: event.module:156
 msgid "here"
 msgstr ""
 
-#: event.module:160
+#: event.module:161
 msgid "Show taxonomy filter control on calendar views"
 msgstr ""
 
-#: event.module:161
+#: event.module:162
 msgid "Only show taxonomy filter control when taxonomy filter view is requested"
 msgstr ""
 
-#: event.module:162
+#: event.module:163
 msgid "Never show taxonomy filter control"
 msgstr ""
 
-#: event.module:166
+#: event.module:167
 msgid "Show content type filter control on calendar views"
 msgstr ""
 
-#: event.module:167
+#: event.module:168
 msgid "Only show content type filter control when content type filter view is requested"
 msgstr ""
 
-#: event.module:168
+#: event.module:169
 msgid "Never show content type filter control"
 msgstr ""
 
-#: event.module:170
+#: event.module:171
 msgid "Event overview options"
 msgstr ""
 
-#: event.module:206
+#: event.module:207
 msgid "Home"
 msgstr ""
 
-#: event.module:207;330;1517
+#: event.module:208;332;1519
 msgid "Events"
 msgstr ""
 
-#: event.module:236;247
+#: event.module:237;248
 msgid "view all"
 msgstr ""
 
-#: event.module:237
+#: event.module:238
 msgid "Filter"
 msgstr ""
 
-#: event.module:269
+#: event.module:270
 msgid "%weekday %month %day, %year"
 msgstr ""
 
-#: event.module:276
+#: event.module:277
 msgid "Week of %month %day, %year"
 msgstr ""
 
-#: event.module:282
+#: event.module:283
 msgid "%month %year"
 msgstr ""
 
-#: event.module:291;572;621
+#: event.module:293;574;623
 msgid "%startmonth %startdate, %startyear - %endmonth %enddate, %endyear"
 msgstr ""
 
-#: event.module:376
+#: event.module:378
 msgid "iCal support not enabled"
 msgstr ""
 
-#: event.module:600
+#: event.module:587;1608
+msgid "Start"
+msgstr ""
+
+#: event.module:588;1610
+msgid "End"
+msgstr ""
+
+#: event.module:602
 msgid " - Events Feed"
 msgstr ""
 
-#: event.module:1138;1141
+#: event.module:1140;1143
 msgid "Mon"
 msgstr ""
 
-#: event.module:1138;1141
+#: event.module:1140;1143
 msgid "Tue"
 msgstr ""
 
-#: event.module:1138;1141
+#: event.module:1140;1143
 msgid "Wed"
 msgstr ""
 
-#: event.module:1138;1141
+#: event.module:1140;1143
 msgid "Thu"
 msgstr ""
 
-#: event.module:1138;1141
+#: event.module:1140;1143
 msgid "Fri"
 msgstr ""
 
-#: event.module:1138;1141
+#: event.module:1140;1143
 msgid "Sat"
 msgstr ""
 
-#: event.module:1138;1141
+#: event.module:1140;1143
 msgid "Sun"
 msgstr ""
 
-#: event.module:1271
+#: event.module:1273
 msgid "g"
 msgstr ""
 
-#: event.module:1276
+#: event.module:1278
 msgid "H"
 msgstr ""
 
-#: event.module:1288
+#: event.module:1290
 msgid "January"
 msgstr ""
 
-#: event.module:1288
+#: event.module:1290
 msgid "February"
 msgstr ""
 
-#: event.module:1288
+#: event.module:1290
 msgid "March"
 msgstr ""
 
-#: event.module:1288
+#: event.module:1290
 msgid "April"
 msgstr ""
 
-#: event.module:1288
+#: event.module:1290
 msgid "May"
 msgstr ""
 
-#: event.module:1288
+#: event.module:1290
 msgid "June"
 msgstr ""
 
-#: event.module:1288
+#: event.module:1290
 msgid "July"
 msgstr ""
 
-#: event.module:1288
+#: event.module:1290
 msgid "August"
 msgstr ""
 
-#: event.module:1288
+#: event.module:1290
 msgid "September"
 msgstr ""
 
-#: event.module:1288
+#: event.module:1290
 msgid "October"
 msgstr ""
 
-#: event.module:1288
+#: event.module:1290
 msgid "November"
 msgstr ""
 
-#: event.module:1288
+#: event.module:1290
 msgid "December"
 msgstr ""
 
-#: event.module:1292
+#: event.module:1294
 msgid "am"
 msgstr ""
 
-#: event.module:1292
+#: event.module:1294
 msgid "pm"
 msgstr ""
 
-#: event.module:1443
+#: event.module:1445
 msgid "Select event terms to filter by"
 msgstr ""
 
-#: event.module:1473
+#: event.module:1475
 msgid "Select event type to filter by"
 msgstr ""
 
-#: event.module:1498
+#: event.module:1500
 msgid "Calendar to browse events."
 msgstr ""
 
-#: event.module:1499
+#: event.module:1501
 msgid "List of upcoming events."
 msgstr ""
 
-#: event.module:1521
+#: event.module:1523
 msgid "Upcoming events"
 msgstr ""
 
-#: event.module:1552
+#: event.module:1554
 msgid "NOW"
 msgstr ""
 
-#: event.module:1600
+#: event.module:1602
 msgid "Show in event calendar"
 msgstr ""
 
-#: event.module:1600
+#: event.module:1602
 msgid "Never"
 msgstr ""
 
-#: event.module:1600
+#: event.module:1602
 msgid "All views"
 msgstr ""
 
-#: event.module:1600
+#: event.module:1602
 msgid "Only in views for this type"
 msgstr ""
 
-#: event.module:1600
+#: event.module:1602
 msgid "None: This content type will not be associated with the events calendar.<br />All views: This content type will be available for display on all calendar views, including with other events.<br />Only in views for this type: This content type will only appear in calendar views specific to this type and never with other events."
-msgstr ""
-
-#: event.module:1606
-msgid "Save dates and show in event calendar"
-msgstr ""
-
-#: event.module:1606
-msgid "If this option is not selected, dates will be removed and this post will not be shown in event calendar."
 msgstr ""
 
 #: event.module:1608
@@ -419,43 +419,43 @@ msgstr ""
 msgid "Select the time zone this event occurs in."
 msgstr ""
 
-#: event.module:1796
+#: event.module:1786
 msgid "Daylight Savings Regions | Current GMT: %date"
 msgstr ""
 
-#: event.module:1811
+#: event.module:1801
 msgid "Lets users make events and keep calendars."
 msgstr ""
 
-#: event.module:1814
+#: event.module:1804
 msgid "\n      <h3>Background</h3>\n      <p>This version of event module implements the drupal nodeapi system. There is no native event node type as in versions previous to 4.6, but instead node types can be 'event-enabled' through the %configure-link, the same way in which file attachments are assigned to node types with upload.module. This, combined with the dynamic content type functionality of %flexinode-link, make it possible to define almost any kind of calendar.</p>\n      <p>Node types can be assigned to general calendar views, or only on their own calendar. For example, this makes it possible to have a general calendar which shows all 'meetups' and 'house parties' in the same place, but perhaps have a separate calendar for 'rallies' which only contains that type. The ability to filter calendar views by node type and taxonomy is also implemented, which allows many different possibilities for displaying content in the calendar system.</p>\n      \n      <h3><a id=\"url-format\"></a>Calendar display url formats</h3>\n      The ability to filter calendar views by content type and taxonomy enables almost unlimited possibilities for displaying content with the calendar system. You can combine taxonomy and content type filters, the url construction scheme is currently as follows:\n      <blockquote>\n      ?q=event/$year/$month/$day/$view_type/$content_type/$taxonomy_terms/$duration<br /><br />\n      <strong>$year:</strong> year value such as '2005'<br />\n      <strong>$month:</strong> month value with leading zeroes such as '02' for february<br />\n      <strong>$day:</strong> day value with leading zeroes such as '14'<br />\n      <strong>$view_type:</strong> type of calendar layout, values may include 'month', 'week', 'day', 'table', 'ical' for an ical export, and 'feed' for an rss feed.<br />\n      <strong>$content_type:</strong> list of node types, separated by '+'. Flexinode types only require the integer value of the type. For example, to view story nodes and type flexinode-1, you would use 'story+1'. The value 'all' will show all types.<br />\n      <strong>$taxonomy_terms:</strong> list of term ids, seperated by '+'. For example to view entries assigned to the taxonomy terms with ids 4 and 9 you would use '4+9'. The value 'all' will show all terms.<br />\n      <strong>$duration:</strong> number of days to display, currently only the table view obeys this setting. Eventually it may be used to specify additional duration parameters such as multiple weeks in the week view, or months in the month view.\n      </blockquote>\n      <p>There are url wrapper functions as well, which make it possible to easily create menu items to calendars by event type or taxonomy terms. This is necessary if you wish to create a link to a calendar but do not have a way to dynamically create the url based on the date, like in the menu or in a post.</p>\n      <p>For links to a taxonomy filtered calendar the format is:\n      <blockquote>\n      ?q=event/term/$taxonomy_terms<br /><br />\n      <strong>$taxonomy_terms:</strong> list of term ids, seperated by '+'. For example to view entries assigned to the taxonomy terms with ids 4 and 9 you would use '4+9'<br />\n      </blockquote>\n      For links to a content type filtered calendar the format is:\n      <blockquote>\n      ?q=event/type/$content_type<br /><br />\n      <strong>$content_type:</strong> list of node types, separated by '+'. Flexinode types only require the integer value of the type. For example, to view story nodes and type flexinode-1, you would use 'story+1'\n      </blockquote></p>"
 msgstr ""
 
-#: event.module:1842
+#: event.module:1832
 msgid "content type management admin area"
 msgstr ""
 
-#: event.module:1842
+#: event.module:1832
 msgid "flexinode"
 msgstr ""
 
-#: event.module:1845
+#: event.module:1835
 msgid "This is a listing of all the event system's time zones, sorted by daylight savings time regions, and thier respective offsets from GMT in seconds. Time zones in the 'None' region do not observe daylight savings time. If you believe there is an error, please first search for the locale on %timeanddate and confirm it. If there is indeed an error please submit a %bugreport on drupal.org so we can fix it."
 msgstr ""
 
-#: event.module:1555
+#: event.module:1557
 msgid "1 minute"
 msgid_plural "%count minutes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: event.module:1558
+#: event.module:1560
 msgid "1 hour"
 msgid_plural "%count hours"
 msgstr[0] ""
 msgstr[1] ""
 
-#: event.module:1570
+#: event.module:1572
 msgid "1 day"
 msgid_plural "%count days"
 msgstr[0] ""
@@ -465,21 +465,6 @@ msgstr[1] ""
 msgid "event"
 msgstr ""
 
-#: event.module:585;1608 event.theme:67;103;109;153;159;209;215;227;278
-msgid "Start"
-msgstr ""
-
-#: event.module:586;1610 event.theme:69;105;112;155;162;211;218;229;280
-msgid "End"
-msgstr ""
-
-#: ical.inc:284
-msgid "iCalendar API for Events Modules"
-msgstr ""
-
-#: ical.inc:0
-msgid "ical"
-msgstr ""
 
 #: event.theme:63;119;168;203
 msgid "limit view to events of this type"
@@ -487,6 +472,14 @@ msgstr ""
 
 #: event.theme:65;120;169;205
 msgid "view this event"
+msgstr ""
+
+#: event.theme:67;103;109;153;159;209;215;227;278
+msgid "Start: "
+msgstr ""
+
+#: event.theme:69;105;112;155;162;211;218;229;280
+msgid "End: "
 msgstr ""
 
 #: event.theme:115;165;221
@@ -505,25 +498,26 @@ msgstr ""
 msgid "%month / %day"
 msgstr ""
 
-#: event.theme:283
-msgid "Timezone"
+#: event.theme:284
+msgid "Timezone: "
 msgstr ""
 
-#: event.theme:336
+#: event.theme:338
 msgid "Add to iCalendar"
 msgstr ""
 
-#: event.theme:336
+#: event.theme:338
 msgid "Add this calendar to your iCalendar"
 msgstr ""
 
-#: event.theme:347
+#: event.theme:349
 msgid "more"
 msgstr ""
 
-#: event.theme:347
+#: event.theme:349
 msgid "More events."
 msgstr ""
+
 
 #: event_timezones.inc:152
 msgid "None"
@@ -2435,5 +2429,14 @@ msgstr ""
 
 #: event_timezones.inc:715
 msgid "Pacific/French Polynesia-Marquesas Islands"
+msgstr ""
+
+
+#: ical.inc:284
+msgid "iCalendar API for Events Modules"
+msgstr ""
+
+#: ical.inc:0
+msgid "ical"
 msgstr ""
 
