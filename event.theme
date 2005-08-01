@@ -279,8 +279,10 @@ function theme_event_nodeapi($node) {
   if ($node->event_start != $node->event_end) {
     $output .= '<div class="event-nodeapi"><div class="'. $node->type. '-end"><label>'. t('End') .': </label>'. $node->end_format .'</div></div>'."\n";
   }
-  $zones = event_zonelist();
-  $output .= '<div class="event-nodeapi"><div class="'. $node->type. '-tz"><label>'. t('Timezone') .': </label>'. $zones[$node->timezone] .'</div></div>'."\n";
+  if (variable_get('configurable_timezones', 1)) {
+    $zones = event_zonelist();
+    $output .= '<div class="event-nodeapi"><div class="'. $node->type. '-tz"><label>'. t('Timezone') .': </label>'. $zones[$node->timezone] .'</div></div>'."\n";
+  }
   return $output;
 }
 
