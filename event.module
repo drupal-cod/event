@@ -46,6 +46,7 @@ function event_link($type, $node = NULL, $teaser = FALSE) {
         $links[] = l(t('week'), "event/$node->year/$node->month/$node->day/week/". $node->filter, array('title' => t('Week view')));
         $links[] = l(t('day'), "event/$node->year/$node->month/$node->day/day/". $node->filter, array('title' => t('Day view')));
         $links[] = l(t('table'), "event/$node->year/$node->month/$node->day/table/". $node->filter, array('title' => t('Table view')));
+        $links[] = l(t('list'), "event/$node->year/$node->month/$node->day/list/". $node->filter, array('title' => t('List view')));
       }
       break;
     case 'event_week':
@@ -53,6 +54,7 @@ function event_link($type, $node = NULL, $teaser = FALSE) {
         $links[] = l(t('month'), "event/$node->year/$node->month/$node->day/month/". $node->filter, array('title' => t('Month view')));
         $links[] = l(t('day'), "event/$node->year/$node->month/$node->day/day/". $node->filter, array('title' => t('Day view')));
         $links[] = l(t('table'), "event/$node->year/$node->month/$node->day/table/". $node->filter, array('title' => t('Table view')));
+        $links[] = l(t('list'), "event/$node->year/$node->month/$node->day/list/". $node->filter, array('title' => t('List view')));
       }
       break;
     case 'event_day':
@@ -60,6 +62,7 @@ function event_link($type, $node = NULL, $teaser = FALSE) {
         $links[] = l(t('month'), "event/$node->year/$node->month/$node->day/month/". $node->filter, array('title' => t('Month view')));
         $links[] = l(t('week'), "event/$node->year/$node->month/$node->day/week/". $node->filter, array('title' => t('Week view')));
         $links[] = l(t('table'), "event/$node->year/$node->month/$node->day/table/". $node->filter, array('title' => t('Table view')));
+        $links[] = l(t('list'), "event/$node->year/$node->month/$node->day/list/". $node->filter, array('title' => t('List view')));
       }
       break;
     case 'event_table':
@@ -67,6 +70,15 @@ function event_link($type, $node = NULL, $teaser = FALSE) {
         $links[] = l(t('month'), "event/$node->year/$node->month/$node->day/month/". $node->filter, array('title' => t('Month view')));
         $links[] = l(t('week'), "event/$node->year/$node->month/$node->day/week/". $node->filter, array('title' => t('Week view')));
         $links[] = l(t('day'), "event/$node->year/$node->month/$node->day/day/". $node->filter, array('title' => t('Day view')));
+        $links[] = l(t('list'), "event/$node->year/$node->month/$node->day/list/". $node->filter, array('title' => t('List view')));
+      }
+      break;
+    case 'event_list':
+      if (user_access('access content')) {
+        $links[] = l(t('month'), "event/$node->year/$node->month/$node->day/month/". $node->filter, array('title' => t('Month view')));
+        $links[] = l(t('week'), "event/$node->year/$node->month/$node->day/week/". $node->filter, array('title' => t('Week view')));
+        $links[] = l(t('day'), "event/$node->year/$node->month/$node->day/day/". $node->filter, array('title' => t('Day view')));
+        $links[] = l(t('table'), "event/$node->year/$node->month/$node->day/table/". $node->filter, array('title' => t('Table view')));
       }
       break;
   }
@@ -152,7 +164,7 @@ function event_settings() {
   $group .= form_textfield(t('Upcoming event block limit'), 'event_upcoming_limit', variable_get('event_upcoming_limit', '6'), 5, 2, t('Limit the amount of events displayed in the upcoming events block by this amount.'));
   $output = form_group(t('General Event options'), $group);
 
-  $group = form_radios(t('Default overview'), 'event_overview', variable_get('event_overview', 'month'), array('day' => t('Day'), 'week' => t('Week'), 'month' => t('Month'), 'table' => t('Table')), t('The default event view to display when no format is specifically requested. This is also the view that will be displayed from the block calendar links.'));
+  $group = form_radios(t('Default overview'), 'event_overview', variable_get('event_overview', 'month'), array('day' => t('Day'), 'week' => t('Week'), 'month' => t('Month'), 'table' => t('Table'), 'list' => t('List')), t('The default event view to display when no format is specifically requested. This is also the view that will be displayed from the block calendar links.'));
   $group .= form_textfield(t('Table view default period'), 'event_table_duration', variable_get('event_table_duration', '30'), 5, 3, t('The default number of days to display in the table view. You can specify a different number of days in the url. More info on the event url format %link', array('%link' => l(t('here'), 'admin/help/event#url-format'))));
 
   if (module_exist('taxonomy')) {
@@ -292,6 +304,15 @@ function event_page($year = NULL, $month = NULL, $day = NULL, $view = NULL, $typ
         $endstamp = $stamp + ($duration * 86400);
         $headertitle = t('%startmonth %startdate, %startyear - %endmonth %enddate, %endyear', array('%startmonth' => t(gmdate('F', $stamp)), '%startdate' => gmdate('d', $stamp), '%startyear' => gmdate('Y', $stamp), '%endmonth' => t(gmdate('F', $endstamp)), '%enddate' => gmdate('d', $endstamp), '%endyear' => gmdate('Y', $endstamp)));
         $rows = event_calendar_table('page', $stamp, $endstamp, $types, $terms);
+      break;
+    case 'list':
+        // list view
+        // next 30 day view, $duration can be set for different ranges
+        // but set a maximum $duration of 1 year.
+        $duration = $duration && $duration <= 366 ? $duration : variable_get('event_table_duration', '30');
+        $endstamp = $stamp + ($duration * 86400);
+        $headertitle = t('%startmonth %startdate, %startyear - %endmonth %enddate, %endyear', array('%startmonth' => t(gmdate('F', $stamp)), '%startdate' => gmdate('d', $stamp), '%startyear' => gmdate('Y', $stamp), '%endmonth' => t(gmdate('F', $endstamp)), '%enddate' => gmdate('d', $endstamp), '%endyear' => gmdate('Y', $endstamp)));
+        $rows = event_calendar_list('page', $stamp, $endstamp, $types, $terms);
       break;
     case 'feed':
         // rss feed
@@ -550,6 +571,34 @@ function event_calendar_table($op, $stamp, $endstamp, $types = NULL, $terms = NU
                       'class' => strtolower("$month_name ". $weekdays[$dow]['day'] . ($stamp == $today ? ' today' : '') . ($cur_day == $day ? ' selected' : '')),
                       'id' => strtolower($month_name . $cur_day),
                       'data' => event_render_day($year, $month, $cur_day, 'table', $types, $terms));
+    $stamp += 86400;
+  }
+
+  return $rows;
+}
+
+/**
+ * Creates a themed list of events.
+ *
+ * @ingroup event_view
+ * @param $start The GMT starting date for the table. 
+ * @param $end The GMT ending date for the table.
+ * @return A themed list of events.
+ */
+function event_calendar_list($op, $stamp, $endstamp, $types = NULL, $terms = NULL) {
+
+  $today = _event_user_date();
+  $rows = '';
+
+  while ($stamp <= $endstamp) {
+    $year = gmdate('Y', $stamp);
+    $month = gmdate('m', $stamp);
+    $cur_day = gmdate('j', $stamp);
+    $month_name = gmdate('M', $stamp);
+    $dow = _event_day_of_week($stamp);
+    $weekdays = event_week_days();
+
+    $rows .= event_render_day($year, $month, $cur_day, 'list', $types, $terms);
     $stamp += 86400;
   }
 
@@ -1110,17 +1159,16 @@ function event_render_day_single($year, $month, $day, $view, $types, $terms) {
  */
 function event_render_day($year, $month, $day, $view, $types, $terms) {
 
-  $output = theme('event_calendar_date_box', $year, $month, $day, $view);
-
   $nodes = event_calendar_data($year, $month, $day, $view, $types, $terms);
-
+ 
   if (count($nodes)) {
+    $output = theme('event_calendar_date_box', $year, $month, $day, $view);
     foreach ($nodes as $node) {
       $output .= theme('event_node_'. $view, $node);
     }
   }
   else {
-    $output .= theme('event_empty_day', $view);
+    $output .= theme('event_empty_day', $year, $month, $day, $view);
   }
 
   return $output;

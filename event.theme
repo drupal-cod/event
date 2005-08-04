@@ -51,6 +51,16 @@ function theme_event_calendar_table($op, $header, $rows) {
 }
 
 /**
+ * Format a calendar view
+ *
+ * @param day
+ *   The day to display.
+ */
+function theme_event_calendar_list($op, $header, $rows) {
+  return '<div class="event-calendar"><div class="list-view">'. $rows ."</div></div>\n";
+}
+
+/**
  * Format an event node for display in an expanded calendar, like a calendar page
  *
  * @param node
@@ -238,6 +248,61 @@ function theme_event_node_table($node, $module = NULL) {
   return $output;
 }
 
+function theme_event_node_list($node, $module = NULL) {
+  static $stripe, $stripe_map, $link_count;
+  $link_count++;
+
+  if (!$stripe_map[$node->nid]) {
+    if ($stripe >= 10) {
+      $stripe = 1;
+    }
+    else {
+      $stripe++;
+    }
+    $stripe_map[$node->nid] = $stripe;
+  }
+
+  $output .= '<div class="event tableview">'."\n";
+  $output .= '<div class="stripe-'. $stripe_map[$node->nid] .'"></div>'."\n";
+  if (!$module) {
+    $output .= '<div class="type">'. l('('. $node->event_node_title .')', 'event/'.gmdate('Y/m/d', $node->event_start).'/table/'.$node->type, array('title' => t('limit view to events of this type'))).'</div>'."\n";
+  }
+  $output .= '<div class="title">'. l($node->title, "node/$node->nid", array('title' => t('view this event'))) .'</div>'."\n";
+
+  switch ($node->event_state) {
+    case 'singleday';
+        $output .= '<div class="start">'. t('Start') .': '. $node->start_time_format ."</div>\n";
+        if ($node->event_start != $node->event_end) {
+          $output .= '<div class="end">'. t('End') .': '. $node->end_time_format ."</div>\n";
+        }
+      break;
+    case 'start':
+        $output .= '<div class="start">'. t('Start') .': '. $node->start_time_format ."</div>\n";
+      break;
+    case 'end':
+        $output .= '<div class="end">'. t('End') .': '. $node->end_time_format ."</div>\n";
+      break;
+    case 'ongoing':
+        $output .= '<div class="ongoing">('. t('all day') .')</div>'."\n";
+      break;
+  }
+
+  $output .= '<div id="info_'. $link_count .'" class="info">'."\n";
+  if ($node->event_state != 'singleday') {
+    $output .= '<div class="start">'. t('Start') .': '. $node->start_format .'</div>'."\n";
+    if ($node->event_start != $node->event_end) {
+      $output .= '<div class="end">'. t('End') .': '. $node->end_format .'</div>'."\n";
+    }
+  }
+  $output .= '<div class="content">'. $node->teaser .'</div></div>'."\n";
+
+  $links = $node->event_links;
+  $links[] = l(t('more info'), 'node/'.$node->nid, array('onclick' => "popupnotes('info_". $link_count ."'); return false;", 'title' => t('Show detailed information for this event.')));
+  $output .= '<div class="links">'. theme('links', $links) ."\n</div>";
+  $output .= '</div>'."\n";
+  return $output;
+}
+
 /**
  * Format an date's day box in a calendar
  *
@@ -248,6 +313,9 @@ function theme_event_calendar_date_box($year, $month, $day, $view) {
   switch ($view) {
     case 'table':
         $output = '<div class="day">'. t('%month / %day', array('%month' => $month, '%day' => $day)) .'</div>'."\n";
+      break;
+    case 'list':
+        $output = '<div class="day">'. format_date(_event_mktime(0, 0, 0, $month, $day, $year), 'custom', 'l, F j, Y') .'</div>'."\n";
       break;
     case 'day':
      break;
@@ -264,8 +332,22 @@ function theme_event_calendar_date_box($year, $month, $day, $view) {
  * @param day
  *   The day to display.
  */
-function theme_event_empty_day() {
-  return '<div class="event-empty"></div>'."\n";
+function theme_event_empty_day($year, $month, $day, $view) {
+  switch ($view) {
+    case 'table':
+        $output = '<div class="day">'. t('%month / %day', array('%month'
+=> $month, '%day' => $day)) .'</div>'."\n";
+        $output .= '<div class="event-empty"></div>'."\n";
+      break;
+    case 'day':
+    case 'list':
+     break;
+    default:
+        $output = '<div class="day">'. $day .'</div>'."\n";
+        $output .= '<div class="event-empty"></div>'."\n";
+      break;
+  }
+  return $output;
 }
 
 /**
