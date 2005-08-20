@@ -903,6 +903,9 @@ function event_calendar_data($year, $month, $day, $view = NULL, $types = NULL, $
 
   if (!is_array($data[$year][$month])) {
     $data[$year][$month] = array();
+    
+    //call the event_load function in all modules
+    module_invoke_all('event_load', $year, $month, $day, $view, $types, $terms);
 
     // get GMT values from local date values for db query
     $first = _event_mktime(0, 0, 0, $month, 1, $year);
