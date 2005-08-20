@@ -23,10 +23,12 @@ Installation
    admin >> site configuration >> modules >> event.
 
 4. You must then enable one or more node types to be used with the
-   event system. You can do this by going to admin/node/configure/types
-   and selecting a node type from the list. If the event calendar is 
-   installed properly you should see a section called 'Show in event calendar:'
-   with three options below it:
+   event system. You can enable the included event_node to have a basic
+   event type, or use flexinode to create several types.
+   You can do this by going to admin/node/configure/types and selecting
+   a node type from the list. If the event calendar is installed properly
+   you should see a section called 'Show in event calendar:' with three
+   options below it:
 
     * None: This content type will not be associated with the events calendar.
     * All views: This content type will be available for display on all calendar
@@ -43,8 +45,9 @@ Installation
    Once a node type is enabled in this way, event will inject date input fields
    on that node type's edit form and display them on the calendar views.
    
-   It is recommended that you install flexinode module and create event types for this purpose,
-   so you do not have to use core node types for the calendar system.
+   It is recommended that you either enabled the included event_node type, or
+   install flexinode module and create event types for this purpose, so you do
+   not have to use core node types for the calendar system.
 
 Author
 ------
