@@ -23,12 +23,10 @@ Installation
    admin >> site configuration >> modules >> event.
 
 4. You must then enable one or more node types to be used with the
-   event system. You can enable the included event_node to have a basic
-   event type, or use flexinode to create several types.
-   You can do this by going to admin/node/configure/types and selecting
-   a node type from the list. If the event calendar is installed properly
-   you should see a section called 'Show in event calendar:' with three
-   options below it:
+   event system. You can do this by going to admin/node/configure/types
+   and selecting a node type from the list. If the event calendar is 
+   installed properly you should see a section called 'Show in event calendar:'
+   with three options below it:
 
     * None: This content type will not be associated with the events calendar.
     * All views: This content type will be available for display on all calendar
@@ -45,33 +43,17 @@ Installation
    Once a node type is enabled in this way, event will inject date input fields
    on that node type's edit form and display them on the calendar views.
    
-   It is recommended that you either enabled the included event_node type, or
-   install flexinode module and create event types for this purpose, so you do
-   not have to use core node types for the calendar system.
+   It is recommended that you install flexinode module and create event types for this purpose,
+   so you do not have to use core node types for the calendar system.
 
 Author
 ------
 
 Kjartan Mannes <kjartan@drupal.org>
 
+Maintainer
+----------
 
-NOTE: event.module requires PHP 4.2 or higher.
+Gerhard Killesreiter <gerhard@killesreiter.de>
 
-To work around this add this to event.module:
-
-if (!function_exists('array_fill')) {
-    require_once('array_fill.func.php');
-}
-and the array_fill.func.php file:
-<?php
-// For PHP version < 4.2.0 missing the array_fill function,
-// I provide here an alternative. -Philippe
-
-function array_fill($iStart, $iLen, $vValue) {
-     $aResult = array();
-     for ($iCount = $iStart; $iCount < $iLen + $iStart; $iCount++) {
-         $aResult[$iCount] = $vValue;
-     }
-     return $aResult;
-}
-?> 
+NO TAMPERING ALLOWED 
