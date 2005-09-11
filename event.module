@@ -1590,51 +1590,55 @@ function event_block($op = 'list', $delta = 0) {
 function event_block_upcoming($limit = 6) {
   global $user;
   // For two hours, we display "NOW"
-  $time = time() - (2 * 60 * 60);
-  $result = db_query_range(db_rewrite_sql("SELECT n.nid, n.title, n.type, n.status, n.moderate, e.event_start FROM {node} n INNER JOIN {event} e USING (nid) WHERE n.status = 1 AND n.moderate = 0 AND e.event_start >= %d ORDER BY event_start"), $time, 0, $limit);
+  $time = time() - date("Z") - (2 * 60 * 60);
+  $result = db_query(db_rewrite_sql("SELECT n.nid, n.title, n.type, n.status, n.moderate, e.event_start FROM {node} n INNER JOIN {event} e USING (nid) WHERE n.status = 1 AND n.moderate = 0 AND e.event_start >= %d ORDER BY event_start"), $time);
 
-  while ($node = db_fetch_object($result)) {
-    $links[] = $node;
-  }
+  while (($node = db_fetch_object($result)) && $limit) {
 
-  if (is_array($links) && (sizeof($links) > 0)) {
-    foreach ($links as $node) {
-      $minutesleft = floor(($node->event_start - time()) / 60);
+    //call the event_edit_upcoming hook in all modules.  note that modules can prevent display of a node by setting 
+    //it's status to 0 here.
+    foreach (module_implements('event_edit_upcoming') as $module) {
+      $function = $module .'_event_edit_upcoming';
+      $function(&$node);        
+    }
+    $minutesleft = floor(($node->event_start - (time() - date("Z"))) / 60);
 
-      if ($minutesleft < 0) {
-        $timeleft = t('NOW');
+    if ($minutesleft < 0) {
+      $timeleft = t('NOW');
+    }
+    else if ($minutesleft < 60) {
+      $timeleft = format_plural($minutesleft, '1 minute', '%count minutes');
+    }
+    else if ($minutesleft >= 60 && $minutesleft < (24 * 60)) {
+      $timeleft = format_plural(floor($minutesleft / 60), '1 hour', '%count hours');
+    }
+    else if ($minutesleft >= (24 * 60)) {
+      $days = floor($minutesleft / (24 * 60));
+      // hours remainder
+      $hours = ($minutesleft % (24 * 60)) / 60;
+      // hours left in the day
+      $hours_left = ((time() / 60) % (24 * 60)) / 60;
+      // see if the remainder of hours on the event date is greater than the hours left in today, if so increase the days by one so that the days remaining mimics the date rather than how many 24 hour periods there are between now and then.
+      if ($hours>$hours_left) {
+        $days++;
       }
-      else if ($minutesleft < 60) {
-        $timeleft = format_plural($minutesleft, '1 minute', '%count minutes');
-      }
-      else if ($minutesleft >= 60 && $minutesleft < (24 * 60)) {
-        $timeleft = format_plural(floor($minutesleft / 60), '1 hour', '%count hours');
-      }
-      else if ($minutesleft >= (24 * 60)) {
-        $days = floor($minutesleft / (24 * 60));
-        // hours remainder
-        $hours = ($minutesleft % (24 * 60)) / 60;
-        // hours left in the day
-        $hours_left = ((time() / 60) % (24 * 60)) / 60;
-        // see if the remainder of hours on the event date is greater than the hours left in today, if so increase the days by one so that the days remaining mimics the date rather than how many 24 hour periods there are between now and then.
-        if ($hours>$hours_left) {
-          $days++;
-        }
-        $timeleft = format_plural($days, '1 day', '%count days');
-      }
-
-      $node->timeleft = $timeleft;
-      $ctype = module_invoke('flexinode', 'load_content_type', substr($node->type, 10));
-      $node->typename = ($ctype->name ? $ctype->name : $node->type);
-
-      $items[] = theme('event_upcoming_item', $node);
+      $timeleft = format_plural($days, '1 day', '%count days');
     }
 
-    $output = theme("event_upcoming_block", $items);
-    $output .= theme('event_ical_link', 'event/ical');
-    $output .= theme('event_more_link', 'event');
-
+    $node->timeleft = $timeleft;
+    $ctype = module_invoke('flexinode', 'load_content_type', substr($node->type, 10));
+    $node->typename = ($ctype->name ? $ctype->name : $node->type);
+    
+    if ($node->status) {
+      $items[] = theme('event_upcoming_item', $node);
+      $limit--;
+    }
   }
+
+  $output = theme("event_upcoming_block", $items);
+  $output .= theme('event_ical_link', 'event/ical');
+  $output .= theme('event_more_link', 'event');
+
   return $output;
 }
 
