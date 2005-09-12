@@ -1590,7 +1590,7 @@ function event_block($op = 'list', $delta = 0) {
 function event_block_upcoming($limit = 6) {
   global $user;
   // For two hours, we display "NOW"
-  $time = time() - date("Z") - (2 * 60 * 60);
+  $time = time() - (2 * 60 * 60);
   $result = db_query(db_rewrite_sql("SELECT n.nid, n.title, n.type, n.status, n.moderate, e.event_start FROM {node} n INNER JOIN {event} e USING (nid) WHERE n.status = 1 AND n.moderate = 0 AND e.event_start >= %d ORDER BY event_start"), $time);
 
   while (($node = db_fetch_object($result)) && $limit) {
@@ -1601,7 +1601,7 @@ function event_block_upcoming($limit = 6) {
       $function = $module .'_event_edit_upcoming';
       $function(&$node);        
     }
-    $minutesleft = floor(($node->event_start - (time() - date("Z"))) / 60);
+    $minutesleft = floor(($node->event_start - time()) / 60);
 
     if ($minutesleft < 0) {
       $timeleft = t('NOW');
