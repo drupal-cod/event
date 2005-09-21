@@ -1485,7 +1485,7 @@ function _event_get_taxonomy_control($curterm = NULL, $autosubmit = TRUE) {
       }
     }
 
-    $items['all'] = '(all)';
+    $items['all'] = t('(all)');
     foreach ($vs as $vid => $vocab) {
       $tree = taxonomy_get_tree($vid);
       foreach ($tree as $term) {
@@ -1513,7 +1513,7 @@ function _event_get_type_control($curtype = NULL, $autosubmit = TRUE) {
   if (module_exist('taxonomy')) {
     $results = event_get_types('all');
 
-    $items['all'] = '(all)';
+    $items['all'] = t('(all)');
     foreach ($results as $type) {
       if (module_hook($type, 'node_name')) {
         $items[$type] = module_invoke($type, 'node_name', $node);

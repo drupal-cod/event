@@ -438,7 +438,7 @@ function theme_event_more_link($path) {
  *   The node to render as an upcoming event
  */
 function theme_event_upcoming_item($node) {
-  return l($node->title, "node/$node->nid", array('title' => $node->title)). '<span class="event-nodetype">('. $node->typename .')</span><span class="event-timeleft">('. $node->timeleft .')</span>';
+  return l($node->title, "node/$node->nid", array('title' => $node->title)). '<span class="event-nodetype">'. t("($node->typename)") .'</span><span class="event-timeleft">('. $node->timeleft .')</span>';
 }
 
 /**
