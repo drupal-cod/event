@@ -1599,7 +1599,7 @@ function event_block_upcoming($limit = 6) {
     //it's status to 0 here.
     foreach (module_implements('event_edit_upcoming') as $module) {
       $function = $module .'_event_edit_upcoming';
-      $function(&$node);        
+      $function($node);        
     }
     $minutesleft = floor(($node->event_start - time()) / 60);
 
