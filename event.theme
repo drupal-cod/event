@@ -335,8 +335,7 @@ function theme_event_calendar_date_box($year, $month, $day, $view) {
 function theme_event_empty_day($year, $month, $day, $view) {
   switch ($view) {
     case 'table':
-        $output = '<div class="day">'. t('%month / %day', array('%month'
-=> $month, '%day' => $day)) .'</div>'."\n";
+        $output = '<div class="day">'. t('%month / %day', array('%month' => $month, '%day' => $day)) .'</div>'."\n";
         $output .= '<div class="event-empty"></div>'."\n";
       break;
     case 'day':
