@@ -1512,22 +1512,23 @@ function _event_get_taxonomy_control($curterm = NULL, $autosubmit = TRUE) {
 function _event_get_type_control($curtype = NULL, $autosubmit = TRUE) {
   if (module_exist('taxonomy')) {
     $results = event_get_types('all');
+    if (count($results) > 1) {
+      $items['all'] = t('(all)');
+      foreach ($results as $type) {
+        if (module_hook($type, 'node_name')) {
+          $items[$type] = module_invoke($type, 'node_name', $node);
+        }
+        elseif ($ctype = module_invoke('flexinode', 'load_content_type', substr($type, 10))) {
+          $items[$type] = $ctype->name;
+        }
+      }
 
-    $items['all'] = t('(all)');
-    foreach ($results as $type) {
-      if (module_hook($type, 'node_name')) {
-        $items[$type] = module_invoke($type, 'node_name', $node);
-      }
-      elseif ($ctype = module_invoke('flexinode', 'load_content_type', substr($type, 10))) {
-        $items[$type] = $ctype->name;
-      }
+      $select = form_select('', 'event_type_select', $curtype, $items, t('Select event type to filter by'), ($autosubmit ? 'onChange="this.form.submit()"' : ''));
+
+      $form = form($select);
+
+      return theme('event_filter_control', $form);
     }
-
-    $select = form_select('', 'event_type_select', $curtype, $items, t('Select event type to filter by'), ($autosubmit ? 'onChange="this.form.submit()"' : ''));
-
-    $form = form($select);
-
-    return theme('event_filter_control', $form);
   }
 }
 
