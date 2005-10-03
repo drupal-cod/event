@@ -70,7 +70,10 @@ function theme_event_calendar_list($op, $header, $rows) {
  */
 function theme_event_node_day($node, $module = NULL) {
   $output .= '<div class="event dayview">'."\n";
-  $output .= '<div class="type">'. l('('. $node->event_node_title .')', 'event/'.gmdate('Y/m/d', $node->event_start).'/day/'.$node->type, array('title' => t('limit view to events of this type'))).'</div>'."\n";
+
+  if (event_get_types('count') > 1) {
+    $output .= '<div class="type">'. l('('. $node->event_node_title .')', 'event/'.gmdate('Y/m/d', $node->event_start).'/day/'.$node->type, array('title' => t('limit view to events of this type'))).'</div>'."\n";
+  }
 
   $output .= '<div class="title">'. l($node->title, "node/$node->nid", array('title' => t('view this event'))) .'</div>'."\n";
 
@@ -126,7 +129,9 @@ function theme_event_node_week($node, $module = NULL) {
       break;
   }
 
-  $output .= '<div class="type">'. l('('. $node->event_node_title .')', 'event/'. gmdate('Y/m/d', $node->event_current_date) .'/month/'.$node->type, array('title' => t('limit view to events of this type'))).'</div>'."\n";
+  if (event_get_types('count') > 1) {
+    $output .= '<div class="type">'. l('('. $node->event_node_title .')', 'event/'. gmdate('Y/m/d', $node->event_current_date) .'/month/'.$node->type, array('title' => t('limit view to events of this type'))).'</div>'."\n";
+  }
   $output .= '<div class="title">'. l($node->title, "node/$node->nid", array('title' => t('view this event'))) .'</div>'."\n";
   $output .= $times;
   $output .= '<div class="links">'. theme('links', $node->event_links) ."\n</div>";
@@ -175,7 +180,9 @@ function theme_event_node_month($node, $module = NULL) {
         $times = '<div class="ongoing">'. t('all day') .'</div>'."\n";
       break;
   }
-  $output .= '<div class="type">'. l('('. $node->event_node_title .')', 'event/'. gmdate('Y/m/d', $node->event_current_date) .'/month/'.$node->type, array('title' => t('limit view to events of this type'))).'</div>'."\n";
+  if (event_get_types('count') > 1) {
+    $output .= '<div class="type">'. l('('. $node->event_node_title .')', 'event/'. gmdate('Y/m/d', $node->event_current_date) .'/month/'.$node->type, array('title' => t('limit view to events of this type'))).'</div>'."\n";
+  }
   $output .= '<div class="title">'. l($node->title, "node/$node->nid", array('title' => t('view this event'))) .'</div>'."\n";
   $output .= $times;
   $output .= '<div class="links">'. theme('links', $node->event_links) ."\n</div>";
@@ -209,7 +216,7 @@ function theme_event_node_table($node, $module = NULL) {
 
   $output .= '<div class="event tableview">'."\n";
   $output .= '<div class="stripe-'. $stripe_map[$node->nid] .'"></div>'."\n";
-  if (!$module) {
+  if (!$module && event_get_types('count') > 1) {
     $output .= '<div class="type">'. l('('. $node->event_node_title .')', 'event/'.gmdate('Y/m/d', $node->event_start).'/table/'.$node->type, array('title' => t('limit view to events of this type'))).'</div>'."\n";
   }
   $output .= '<div class="title">'. l($node->title, "node/$node->nid", array('title' => t('view this event'))) .'</div>'."\n";
@@ -264,7 +271,7 @@ function theme_event_node_list($node, $module = NULL) {
 
   $output .= '<div class="event tableview">'."\n";
   $output .= '<div class="stripe-'. $stripe_map[$node->nid] .'"></div>'."\n";
-  if (!$module) {
+  if (!$module && event_get_types('count') > 1) {
     $output .= '<div class="type">'. l('('. $node->event_node_title .')', 'event/'.gmdate('Y/m/d', $node->event_start).'/table/'.$node->type, array('title' => t('limit view to events of this type'))).'</div>'."\n";
   }
   $output .= '<div class="title">'. l($node->title, "node/$node->nid", array('title' => t('view this event'))) .'</div>'."\n";
