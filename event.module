@@ -551,7 +551,7 @@ function event_calendar_day($op, $stamp, $types = NULL, $terms = NULL) {
  * Creates a themed table of events.
  *
  * @ingroup event_view
- * @param $start The GMT starting date for the table. 
+ * @param $start The GMT starting date for the table.
  * @param $end The GMT ending date for the table.
  * @return A fully themed table.
  */
@@ -581,7 +581,7 @@ function event_calendar_table($op, $stamp, $endstamp, $types = NULL, $terms = NU
  * Creates a themed list of events.
  *
  * @ingroup event_view
- * @param $start The GMT starting date for the table. 
+ * @param $start The GMT starting date for the table.
  * @param $end The GMT ending date for the table.
  * @return A themed list of events.
  */
@@ -903,7 +903,7 @@ function event_calendar_data($year, $month, $day, $view = NULL, $types = NULL, $
 
   if (!is_array($data[$year][$month])) {
     $data[$year][$month] = array();
-    
+
     //call the event_load function in all modules
     module_invoke_all('event_load', $year, $month, $day, $view, $types, $terms);
 
@@ -1163,7 +1163,7 @@ function event_render_day_single($year, $month, $day, $view, $types, $terms) {
 function event_render_day($year, $month, $day, $view, $types, $terms) {
 
   $nodes = event_calendar_data($year, $month, $day, $view, $types, $terms);
- 
+
   if (count($nodes)) {
     $output = theme('event_calendar_date_box', $year, $month, $day, $view);
     foreach ($nodes as $node) {
@@ -1512,23 +1512,22 @@ function _event_get_taxonomy_control($curterm = NULL, $autosubmit = TRUE) {
 function _event_get_type_control($curtype = NULL, $autosubmit = TRUE) {
   if (module_exist('taxonomy')) {
     $results = event_get_types('all');
-    if (count($results) > 1) {
-      $items['all'] = t('(all)');
-      foreach ($results as $type) {
-        if (module_hook($type, 'node_name')) {
-          $items[$type] = module_invoke($type, 'node_name', $node);
-        }
-        elseif ($ctype = module_invoke('flexinode', 'load_content_type', substr($type, 10))) {
-          $items[$type] = $ctype->name;
-        }
+
+    $items['all'] = t('(all)');
+    foreach ($results as $type) {
+      if (module_hook($type, 'node_name')) {
+        $items[$type] = module_invoke($type, 'node_name', $node);
       }
-
-      $select = form_select('', 'event_type_select', $curtype, $items, t('Select event type to filter by'), ($autosubmit ? 'onChange="this.form.submit()"' : ''));
-
-      $form = form($select);
-
-      return theme('event_filter_control', $form);
+      elseif ($ctype = module_invoke('flexinode', 'load_content_type', substr($type, 10))) {
+        $items[$type] = $ctype->name;
+      }
     }
+
+    $select = form_select('', 'event_type_select', $curtype, $items, t('Select event type to filter by'), ($autosubmit ? 'onChange="this.form.submit()"' : ''));
+
+    $form = form($select);
+
+    return theme('event_filter_control', $form);
   }
 }
 
@@ -1596,11 +1595,11 @@ function event_block_upcoming($limit = 6) {
 
   while (($node = db_fetch_object($result)) && $limit) {
 
-    //call the event_edit_upcoming hook in all modules.  note that modules can prevent display of a node by setting 
+    //call the event_edit_upcoming hook in all modules.  note that modules can prevent display of a node by setting
     //it's status to 0 here.
     foreach (module_implements('event_edit_upcoming') as $module) {
       $function = $module .'_event_edit_upcoming';
-      $function($node);        
+      $function($node);
     }
     $minutesleft = floor(($node->event_start - time()) / 60);
 
@@ -1629,7 +1628,7 @@ function event_block_upcoming($limit = 6) {
     $node->timeleft = $timeleft;
     $ctype = module_invoke('flexinode', 'load_content_type', substr($node->type, 10));
     $node->typename = ($ctype->name ? $ctype->name : $node->type);
-    
+
     if ($node->status) {
       $items[] = theme('event_upcoming_item', $node);
       $limit--;
@@ -1861,7 +1860,7 @@ function event_help($section) {
       <h3>Background</h3>
       <p>This version of event module implements the drupal nodeapi system. There is no native event node type as in versions previous to 4.6, but instead node types can be 'event-enabled' through the %configure-link, the same way in which file attachments are assigned to node types with upload.module. This, combined with the dynamic content type functionality of %flexinode-link, make it possible to define almost any kind of calendar.</p>
       <p>Node types can be assigned to general calendar views, or only on their own calendar. For example, this makes it possible to have a general calendar which shows all 'meetups' and 'house parties' in the same place, but perhaps have a separate calendar for 'rallies' which only contains that type. The ability to filter calendar views by node type and taxonomy is also implemented, which allows many different possibilities for displaying content in the calendar system.</p>
-      
+
       <h3><a id=\"url-format\"></a>Calendar display url formats</h3>
       The ability to filter calendar views by content type and taxonomy enables almost unlimited possibilities for displaying content with the calendar system. You can combine taxonomy and content type filters, the url construction scheme is currently as follows:
       <blockquote>
