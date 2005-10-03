@@ -1784,6 +1784,7 @@ function event_get_types($state = NULL) {
     while ($type = db_fetch_object($result)) {
       $types[unserialize($type->value)][] = substr($type->name, 14);
     }
+    $types['count'] = count($types['all']) + count($types['solo']);
   }
   switch ($state) {
     case 'all':
@@ -1794,6 +1795,9 @@ function event_get_types($state = NULL) {
       break;
     case 'never':
         return $types['never'];
+      break;
+    case 'count':
+        return $types['count'];
       break;
     default:
         return $types;
