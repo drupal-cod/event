@@ -72,18 +72,20 @@ function event_form(&$node) {
   if (function_exists('taxonomy_node_form')) {
     $output .= implode('', taxonomy_node_form('event', $node));
   }
+  $form['title'] = array('#type' => 'textfield', '#title' => t('Subject'), '#default_value' => $node->title, '#size' => 60, '#maxlength' => 128, '#required' => TRUE);
+  $form['body'] = array(
+    '#type' => 'textarea', '#title' => t('Body'), '#default_value' => $node->body, '#required' => TRUE
+  );
+  $form = array_merge($form, filter_form($node->format));
 
-  $output .= form_textarea(t('Body'), 'body', $node->body, 60, 20, '', NULL, TRUE);
-  $output .= filter_form('format', $node->format);
-
-  if (!module_exist('location') || !variable_get('location_event', 0)) {
+  if (module_exist('location') || variable_get('location_event', 0)) {
 
     $output .= '<div class="container-inline">';
     $output .= form_textfield(t('Location Name'), 'location][name', $node->location['name'], 64, 64, t('e.g. a place of business, venue, meeting point'));
     $output .= "</div>\n";
   }
 
-  return $output;
+  return $form;
 }
 
 /*

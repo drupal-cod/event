@@ -22,6 +22,13 @@ function event_html_head() {
 }
 
 /**
+ * Implementation of hook_node_info().
+ */
+function event_node_info() {
+  return array('event' => array('name' => t('event'), 'base' => 'event'));
+}
+
+/**
  * Provides the links that should be displayed when viewing events.
  *
  * @ingroup event_core
@@ -145,10 +152,11 @@ function event_menu($may_cache) {
  */
 function event_settings() {
 
+  $form['event_settings_default'] = array('#type' => 'fieldset', '#title' => t('Default overview'));
   if (variable_get('configurable_timezones', 0)) {
-    $group .= form_radios(t('Event time zone input'), 'event_timezone_input', variable_get('event_timezone_input', 'site'), array('site' => t('Use the sitewide time zone'), 'user' => t('Use the time zone of the user editing or creating the event'), 'input' => t('Allow users to set event time zones')), t('Events are saved with a time zone value. This setting allows you to determine how the time zone is determined when creating or editing an event.'));
+      $form['event_settings_default']['tz_settings'] = array('#type' => 'radios', '#title' => t('Event time zone input'), '#default_value' =>  variable_get('event_timezone_input', 'site'), '#options' => array('site' => t('Use the sitewide time zone'), 'user' => t('Use the time zone of the user editing or creating the event'), 'input' => t('Allow users to set event time zones')), '#description' => t('Events are saved with a time zone value. This setting allows you to determine how the time zone is determined when creating or editing an event.'), '#required' => TRUE);
 
-    $group .= form_radios(t('Event time zone display'), 'event_timezone_display', variable_get('event_timezone_display', 'event'), array('event' => t("Use the event's time zone"), 'user' => t("Use the user's time zone"), 'site' => t('Use the sitewide time zone')), t("Events are saved with a time zone value. This setting allows you to determine if the event's time zone, the sitewide time zone, or the user's personal time zone setting is used to display the time for an event."));
+    $form['event_settings_default']['tz_display'] .= array('#type' => 'radios', '#title' => t('Event time zone display'), '#default_value' =>  variable_get('event_timezone_display', 'event'), '#options' => array('event' => t("Use the event's time zone"), 'user' => t("Use the user's time zone"), 'site' => t('Use the sitewide time zone')), '#description' => t("Events are saved with a time zone value. This setting allows you to determine if the event's time zone, the sitewide time zone, or the user's personal time zone setting is used to display the time for an event."), '#required' => TRUE);
   }
   else {
     if (variable_get('event_timezone_input', 'site') == 'user') {
@@ -156,33 +164,23 @@ function event_settings() {
     }
     variable_set('event_timezone_display', 'event');
 
-    $group .= form_radios(t('Event time zone input'), 'event_timezone_input', variable_get('event_timezone_input', 'site'), array('site' => t('Use the sitewide time zone'), 'user" disabled' => t('Use the time zone of the user editing or creating the event'), 'input' => t('Allow users to set event time zones')), t("Events are saved with a time zone value. This setting allows you to determine how the time zone is determined when creating or editing an event. You must have 'Configurable time zones' enabled in %url before you can enable user's time zones for this feature.", array('%url' => l(t('site configuration'), 'admin/settings'))));
+    $form['event_timezone_display']['tz_settings'] = array('#type' => 'radios', '#title' => t('Event time zone input'), '#default_value' => variable_get('event_timezone_input', 'site'), '#options' => array('site' => t('Use the sitewide time zone'), 'user" disabled' => t('Use the time zone of the user editing or creating the event'), 'input' => t('Allow users to set event time zones')), '#description' => t("Events are saved with a time zone value. This setting allows you to determine how the time zone is determined when creating or editing an event. You must have 'Configurable time zones' enabled in %url before you can enable user's time zones for this feature.", array('%url' => l(t('site configuration'), 'admin/settings'))), '#required' => TRUE);
 
-    $group .= form_radios(t('Event time zone display'), 'event_timezone_display', 'event', array('event' => t("Use the event's time zone"), 'site' => t('Use the sitewide time zone')), t("Events are saved with a time zone value. This setting allows you to determine if the event's time zone, the sitewide time zone, or the user's personal time zone setting is used to display the time for an event. You must have 'Configurable time zones' enabled in %url before you can enable user's time zones for this feature.", array('%url' => l(t('site configuration'), 'admin/settings'))));
+    $form['event_timezone_input']['tz_display'] .= array('#type' => 'radios', '#title' => t('Event time zone display'), '#options' => array('event' => t("Use the event's time zone"), 'site' => t('Use the sitewide time zone')), '#description' => t("Events are saved with a time zone value. This setting allows you to determine if the event's time zone, the sitewide time zone, or the user's personal time zone setting is used to display the time for an event. You must have 'Configurable time zones' enabled in %url before you can enable user's time zones for this feature.", array('%url' => l(t('site configuration'), 'admin/settings'))), '#required' => TRUE);
   }
-  $group .= form_radios(t('Time notation preference'), 'event_ampm', variable_get('event_ampm', '0'), array('0' => t('24h'),'1' => t('12h')), t('The time notation system used for entering event times.'));
-  $group .= form_textfield(t('Upcoming event block limit'), 'event_upcoming_limit', variable_get('event_upcoming_limit', '6'), 5, 2, t('Limit the amount of events displayed in the upcoming events block by this amount.'));
-  $output = form_group(t('General Event options'), $group);
+  $form['event_settings_default']['time_notation'] = array('#type' => 'radios', '#title' =>  t('Time notation preference'), '#default_value' => variable_get('event_ampm', '0'), '#options' => array('0' => t('24h'),'1' => t('12h')), '#description' => t('The time notation system used for entering event times.'), '#required' => TRUE);
+  $form['event_settings_default']['upcoming_block_limit'] = array('#type' => 'textfield', '#title' => t('Upcoming event block limit'), '#default_value' => variable_get('event_upcoming_limit', '6'), '#maxlength' => 5, '#size' => 2, '#description' => t('Limit the amount of events displayed in the upcoming events block by this amount.'));
 
-  $group = form_radios(t('Default overview'), 'event_overview', variable_get('event_overview', 'month'), array('day' => t('Day'), 'week' => t('Week'), 'month' => t('Month'), 'table' => t('Table'), 'list' => t('List')), t('The default event view to display when no format is specifically requested. This is also the view that will be displayed from the block calendar links.'));
-  $group .= form_textfield(t('Table view default period'), 'event_table_duration', variable_get('event_table_duration', '30'), 5, 3, t('The default number of days to display in the table view. You can specify a different number of days in the url. More info on the event url format %link', array('%link' => l(t('here'), 'admin/help/event#url-format'))));
+  $form['event_overview_options'] = array('#title' => 'fieldset', '#title' => t('Event overview options'));
+  $form['event_overview_options']['default'] = array('#type' => 'radios', '#title' => t('Default overview'), '#default_value' =>  variable_get('event_overview', 'month'), '#options' => array('day' => t('Day'), 'week' => t('Week'), 'month' => t('Month'), 'table' => t('Table'), 'list' => t('List')), '#description' => t('The default event view to display when no format is specifically requested. This is also the view that will be displayed from the block calendar links.'));
+  $form['event_overview_options']['table'] = array('#type' => 'textfield', '#title' => t('Table view default period'), '#default_value' => variable_get('event_table_duration', '30'), '#maxlength' =>  5, '#size' => 3, '#description' => t('The default number of days to display in the table view. You can specify a different number of days in the url. More info on the event url format %link', array('%link' => l(t('here'), 'admin/help/event#url-format'))));
 
   if (module_exist('taxonomy')) {
-    $group .= form_radios('Taxonomy filter controls', 'event_taxonomy_control',
-              variable_get('event_taxonomy_control', 'all'),
-              array('all' => t('Show taxonomy filter control on calendar views'),
-              'request' => t('Only show taxonomy filter control when taxonomy filter view is requested'),
-              'never' => t('Never show taxonomy filter control')));
+      $form['event_overview_options']['taxonomy'] = array('#type' => 'radios', '#title' => t('Taxonomy filter controls'), '#default_value' => variable_get('event_taxonomy_control', 'all'), '#options' => array('all' => t('Show taxonomy filter control on calendar views'), 'request' => t('Only show taxonomy filter control when taxonomy filter view is requested'), 'never' => t('Never show taxonomy filter control')));
   }
-  $group .= form_radios('Content type filter controls', 'event_type_control',
-            variable_get('event_type_control', 'all'),
-            array('all' => t('Show content type filter control on calendar views'),
-            'request' => t('Only show content type filter control when content type filter view is requested'),
-            'never' => t('Never show content type filter control')));
+  $form['event_overview_options']['content_control'] = array('#type' => 'radios', '#title' => t('Content type filter controls'), '#default_value' => variable_get('event_type_control', 'all'), '#options' => array('all' => t('Show content type filter control on calendar views'), 'request' => t('Only show content type filter control when content type filter view is requested'), 'never' => t('Never show content type filter control')));
 
-  $output .= form_group(t('Event overview options'), $group);
-
-  return $output;
+  return $form;
 }
 
 /**
@@ -1352,22 +1350,17 @@ function event_form_date($timestamp, $prefix = 'start', $offset) {
   $minute = _event_date('i', $timestamp, $offset);
   $am_pm = _event_date('a', $timestamp, $offset);
 
-  $when = '<div class="container-inline">';
-  $when .= '<div class="day">';
-  $when .= form_select('', $prefix .'month', $month, $months);
-  $when .= form_textfield('', $prefix .'day', $day, 2, 2);
-  $when .= ', ';
-  $when .= form_textfield('', $prefix .'year', $year, 4, 4);
-  $when .= '</div><div class="time">';
-  $when .= form_select('', $prefix .'hour', $hour, $hours);
-  $when .= ':';
-  $when .= form_select('', $prefix .'minute', $minute, $minutes);
+  $form[$prefix .'_day'] = array('#prefix' => '<div class="container-inline"><div class="day">', '#type' => 'textfield', '#default_value' => $day, '#maxlength' => 2, '#size' => 2, '#description' => t('day'), '#required' => TRUE);
+  $form[$prefix .'_month'] = array('#type' => 'select', '#default_value' => $month, '#options' => $months, '#description' => t('month'), '#required' => TRUE);
+  $form[$prefix .'_year'] = array('#type' => 'textfield', '#default_value' => $year, '#maxlength' => 4, '#size' => 4, '#description' => t('year'), '#required' => TRUE);
+  $form[$prefix .'_hour'] = array('#prefix' => '</div><div class="time">', '#type' => 'select', '#default_value' => $hour, '#options' => $hours, '#required' => TRUE, '#description' => t('hour'));
+  $form[$prefix .'_minute'] = array('#prefix' => ':', '#type' => 'select', '#default_value' => $minute, '#options' => $minutes, '#required' => TRUE, '#description' => t('minutes'));
   if (variable_get('event_ampm', '0')) {
-    $when .= form_select('', $prefix .'ampm', $am_pm, $am_pms);
+    $form[$prefix .'_ampm'] = array('#type' => 'radios', '#default_value' => $am_pm, '#options' => $am_pms, '#required' => TRUE);
   }
-  $when .= '</div></div>';
+  $form[$prefix .'_close'] = array('#type' => 'markup', '#suffix' => '</div></div>');
 
-  return $when;
+  return $form;
 }
 
 /**
@@ -1493,7 +1486,7 @@ function _event_get_taxonomy_control($curterm = NULL, $autosubmit = TRUE) {
       }
     }
 
-    $select = form_select('', 'event_term_select', $curterm, $items, t('Select event terms to filter by'), ($autosubmit ? 'onChange="this.form.submit()"' : ''));
+    $form['event_term_select'] = array('#type' => 'select', '#default_value' => $curterm, '#options' => $items, '#description' => t('Select event terms to filter by'), '#attributes' => ($autosubmit ? 'onChange="this.form.submit()"' : ''));
 
     $form = form($select);
 
@@ -1523,10 +1516,7 @@ function _event_get_type_control($curtype = NULL, $autosubmit = TRUE) {
       }
     }
 
-    $select = form_select('', 'event_type_select', $curtype, $items, t('Select event type to filter by'), ($autosubmit ? 'onChange="this.form.submit()"' : ''));
-
-    $form = form($select);
-
+    $form['event_type_select'] = array('#type' => 'select', '#default_value' => $curtype, '#options' => $items, '#description' => t('Select event type to filter by'), '#attributes' => ($autosubmit ? 'onChange="this.form.submit()"' : ''));
     return theme('event_filter_control', $form);
   }
 }
@@ -1653,26 +1643,24 @@ function event_block_upcoming($limit = 6) {
  */
 function event_nodeapi(&$node, $op, $arg = 0) {
   switch ($op) {
-     case 'settings':
-       return form_radios(t('Show in event calendar'), 'event_nodeapi_'. $node->type, variable_get('event_nodeapi_'. $node->type, 'never'), array('never' => t('Never'), 'all' => t('All views'), 'solo' => t('Only in views for this type')), t('None: This content type will not be associated with the events calendar.<br />All views: This content type will be available for display on all calendar views, including with other events.<br />Only in views for this type: This content type will only appear in calendar views specific to this type and never with other events.'));
-
-    case 'form post':
-      $form = '';
+    case 'settings':
+      return $form['event_nodeapi_'. $node->type] = array('#type' => 'radios', '#title' => t('Show in event calendar'), '#default_value' => variable_get('event_nodeapi_'. $node->type, 'never'), '#options' => array('never' => t('Never'), 'all' => t('All views'), 'solo' => t('Only in views for this type')), '#description' => t('All views: This content type will be available for display on all calendar views, including with other events.<br />Only in views for this type: This content type will only appear in calendar views specific to this type and never with other events.<br />Never: This content type will not be associated with the events calendar.'));
+    case 'form':
       if (variable_get('event_nodeapi_'. $node->type, 'never') != 'never') {
-          global $user;
-          $form = form_item(t('Start'), event_form_date(($node->event_start ? $node->event_start : _event_user_time()), 'start', $node->start_offset), t('Start date.'));
-
-          $form .= form_item(t('End'), event_form_date(($node->event_end ? $node->event_end : _event_user_time()), 'end', $node->end_offset), t('End date.'));
-
-          if (variable_get('event_timezone_input', 'site') == 'input') {
-            $form .= form_select(t('Time zone'), 'timezone', ($node->timezone ? $node->timezone : event_timezone_map(variable_get('date_default_timezone', 0))), event_zonelist(), t('Select the time zone this event occurs in.'));
-          }
-          elseif (variable_get('configurable_timezones', 1) && $user->uid && strlen($user->timezone) && (variable_get('event_timezone_input', 'site') == 'user')) {
-            $form .= form_hidden('timezone', event_timezone_map($user->timezone));
-          }
-          else {
-            $form .= form_hidden('timezone', event_timezone_map(variable_get('date_default_timezone', 0)));
-          }
+        global $user;
+        $form['event_start'] = array('#type' => 'fieldset', '#title' => t('Start'), '#description' => t('Start date.'));
+        $form['event_start']['date'] = event_form_date($node->event_start ? $node->event_start : _event_user_time(), 'start', $node->start_offset);
+        $form['event_end'] = array('#type' => 'fieldset', '#title' => t('End'), '#description' => t('End date.'));
+        $form['event_end']['date'] = event_form_date(($node->event_end ? $node->event_end : _event_user_time()), 'end', $node->end_offset);
+        if (variable_get('event_timezone_input', 'site') == 'input') {
+          $form['event_tz'] = array('#type' => 'select', '#title' => t('Time zone'), '#default_value' => ($node->timezone ? $node->timezone : event_timezone_map(variable_get('date_default_timezone', 0))), '#options' => event_zonelist(), '#description' => t('Select the time zone this event occurs in.'));
+        }
+        elseif (variable_get('configurable_timezones', 1) && $user->uid && strlen($user->timezone) && (variable_get('event_timezone_input', 'site') == 'user')) {
+          $form['event_tz'] = array('#type' => 'hidden', '#value' =>  event_timezone_map($user->timezone));
+        }
+        else {
+          $form['event_tz'] = array('#type' => 'hidden', '#value' => event_timezone_map(variable_get('date_default_timezone', 0)));
+        }
       }
       return $form;
 
