@@ -88,26 +88,6 @@ function event_form(&$node) {
   return $form;
 }
 
-/*
- * Implementation of hook_init()
- */
-function basicevent_init() {
-    if (!variable_get('event_nodeapi_event', FALSE)) {
-    variable_set('event_nodeapi_event', 'all');
-    db_query("DELETE FROM {cache}"); 
-        watchdog('regular', t('Initialized event as event bearing module'));
-    }
-
-  if (module_exist('location') && !variable_get('location_event', 0)) {
-    variable_set('location_event', 1);
-    variable_set('location_name_event', 1);
-    variable_set('location_street_event', 0);
-    variable_set('location_city_event', 0);
-    variable_set('location_province_event', 0);
-    variable_set('location_country_event', 0);
-    variable_set('location_postal_code_event', 0);
-  }
-}
 
 /** 
  * Implementation of hook_load()
