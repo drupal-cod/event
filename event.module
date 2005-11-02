@@ -1647,7 +1647,8 @@ function event_block_upcoming($limit = 6) {
 function event_nodeapi(&$node, $op, $arg = 0) {
   switch ($op) {
     case 'settings':
-      return $form['event_nodeapi_'. $node->type] = array('#type' => 'radios', '#title' => t('Show in event calendar'), '#default_value' => variable_get('event_nodeapi_'. $node->type, 'never'), '#options' => array('never' => t('Never'), 'all' => t('All views'), 'solo' => t('Only in views for this type')), '#description' => t('All views: This content type will be available for display on all calendar views, including with other events.<br />Only in views for this type: This content type will only appear in calendar views specific to this type and never with other events.<br />Never: This content type will not be associated with the events calendar.'));
+      $form['event_nodeapi_'. $node->type] = array('#type' => 'radios', '#title' => t('Show in event calendar'), '#default_value' => variable_get('event_nodeapi_'. $node->type, 'never'), '#options' => array('all' => t('All views'), 'solo' => t('Only in views for this type'), 'never' => t('Never')), '#description' => t('All views: This content type will be available for display on all calendar views, including with other events.<br />Only in views for this type: This content type will only appear in calendar views specific to this type and never with other events.<br />Never: This content type will not be associated with the events calendar.'));
+      return $form;
     case 'form':
       if (variable_get('event_nodeapi_'. $node->type, 'never') != 'never') {
         global $user;
