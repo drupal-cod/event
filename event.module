@@ -1370,9 +1370,13 @@ function event_form_date($timestamp, $prefix = 'start', $offset) {
  *
  * @ingroup event_support
  * @param $node The submitted node with form data.
- * @param $prefix The prefix to validate and set (start and end).
+ * @param $prefix The prefix to validate and set (start or end).
  */
-function event_validate_form_date(&$node, $prefix) {
+function event_validate_form_date(&$node, $prefix = '') {
+
+  if ($prefix != '') {
+    $prefix = $prefix .'_';
+  }
 
   // Re-calculate $node->event_start if we have all the parameters.
   if (isset($node->{$prefix . 'year'}) && isset($node->{$prefix . 'month'}) && isset($node->{$prefix . 'day'}) && isset($node->{$prefix . 'hour'}) && isset($node->{$prefix . 'minute'})) {
