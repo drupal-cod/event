@@ -1624,6 +1624,9 @@ function event_block_upcoming($limit = 6) {
       $limit--;
     }
   }
+  if(!$items) {
+    $items[] = t('no upcoming events available');
+  }
 
   $output = theme("event_upcoming_block", $items);
   $output .= theme('event_ical_link', 'event/ical');
