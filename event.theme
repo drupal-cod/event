@@ -65,10 +65,8 @@ function theme_event_calendar_list($op, $header, $rows) {
  *
  * @param node
  *   The node being displayed
- * @param module
- *   The name of the external module calling the function. Default: null;
  */
-function theme_event_node_day($node, $module = NULL) {
+function theme_event_node_day($node) {
   $output .= '<div class="event dayview">'."\n";
 
   if ((event_get_types('all') + event_get_types('solo')) > 1) {
@@ -92,10 +90,8 @@ function theme_event_node_day($node, $module = NULL) {
  *
  * @param node
  *   The node being displayed
- * @param module
- *   The name of the external module calling the function. Default: null;
  */
-function theme_event_node_week($node, $module = NULL) {
+function theme_event_node_week($node) {
   static $stripe, $stripe_map;
 
   if(!$stripe_map[$node->nid]) {
@@ -144,10 +140,8 @@ function theme_event_node_week($node, $module = NULL) {
  *
  * @param node
  *   The node being displayed
- * @param module
- *   The name of the external module calling the function. Default: null;
  */
-function theme_event_node_month($node, $module = NULL) {
+function theme_event_node_month($node) {
   static $stripe, $stripe_map;
 
   if (!$stripe_map[$node->nid]) {
@@ -196,11 +190,9 @@ function theme_event_node_month($node, $module = NULL) {
  *
  * @param node
  *   The node being displayed
- * @param module
- *   The name of the external module calling the function. Default: null;
  */
 
-function theme_event_node_table($node, $module = NULL) {
+function theme_event_node_table($node) {
   static $stripe, $stripe_map, $link_count;
   $link_count++;
 

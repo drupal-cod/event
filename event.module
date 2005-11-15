@@ -786,8 +786,12 @@ function event_get_calendar($view, $nodes, $module, $title = NULL) {
                 $node = $nodes[$nid->nid];
 
                 $node->event_state = $nid->event_state;
-
-                $content .= theme('event_node_'. $view, $node, $module);
+                if($output = module_invoke($module, 'event_node_'. $view, $node)) {
+                  $content .= $output;
+                }
+                else {
+                  $content .= theme('event_node_'. $view, $node);
+                }
               }
               $rows[][] = array(
                 'class' => strtolower("$month_name ". $weekdays[$dow]['day'] . ($nid->stamp == $today ? ' today' : '')),
@@ -843,7 +847,12 @@ function event_get_calendar($view, $nodes, $module, $title = NULL) {
                   foreach($days[$cur_day] as $nid) {
                     $node = $nodes[$nid->nid];
                     $node->event_state = $nid->event_state;
-                    $content .= theme('event_node_'. $view, $node, $module);
+                    if($output = module_invoke($module, 'event_node_'. $view, $node)) {
+                      $content .= $output;
+                    }
+                    else {
+                      $content .= theme('event_node_'. $view, $node);
+                    }
                   }
                 }
 
