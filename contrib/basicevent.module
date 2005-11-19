@@ -3,7 +3,7 @@
 
 /**
  * @file
- * A story-like module with event information built in.
+ * An extremly simple module to implement the event API.
  */
 
 /**
@@ -12,9 +12,41 @@
 function basicevent_help($section) {
   switch ($section) {
     case 'admin/modules#description':
-      return t('A basic event type for use with the event module.');
+      return t('A story-like node that implements the event API automatically. Depends on the event module (4.6 or later).');
     case 'node/add#event':
-      return t('An event can be given a start and end date, thus appearing in the events calendar.');
+      return t('An event is a story which can be given a start and end date, thus appearing in the events calendar.');
+  }
+}
+
+/**
+ * Implementation of hook_node_info().
+ */
+function basicevent_node_info() {
+  return array('event' => array('name' => t('event'), 'base' => 'basicevent'));
+}
+
+/**
+ * Implementation of hook_perm().
+ */
+function basicevent_perm() {
+  return array('create events', 'edit own events');
+}
+
+/**
+ * Implementation of hook_access().
+ */
+function basicevent_access($op, $node) {
+  global $user;
+  switch($op) {
+    case 'create':
+      return user_access('create events');
+      break;
+    case 'update':
+    case 'delete':
+      if (user_access('edit own events') && ($user->uid == $node->uid)) {
+        return TRUE;
+      }
+      break;
   }
 }
 
@@ -25,9 +57,7 @@ function basicevent_menu($may_cache) {
   $items = array();
 
   if ($may_cache) {
-    $items[] = array(
-      'path'   => 'node/add/event',
-      'title'  => t('event'),
+    $items[] = array('path' => 'node/add/event', 'title' => t('event'),
       'access' => user_access('create events'));
   }
 
@@ -35,51 +65,19 @@ function basicevent_menu($may_cache) {
 }
 
 /**
- * Implementation of hook_node_name().
- */
-function event_node_name($node) {
-  return t('event');
-}
-
-/**
- * Implementation of hook_perm().
- */
-function event_perm() {
-  return array('create events', 'edit own events');
-}
-
-/**
- * Implementation of hook_access().
- */
-function event_access($op, $node) {
-  global $user;
-
-  switch($op) {
-    case 'create':
-      $ret = user_access('create events');
-      break;
-    case 'update':
-    case 'delete':
-      if (user_access('edit own events') && ($user->uid == $node->uid)) {
-        $ret = TRUE;
-      }
-      break;
-  }
-  return $ret;
-}
-
-/**
  * Implementation of hook_form().
  */
-function event_form(&$node) {
-  $output = '';
-
-  if (function_exists('taxonomy_node_form')) {
-    $output .= implode('', taxonomy_node_form('event', $node));
+function basicevent_form(&$node) {
+  // warn them if this isn't set to appear in the calendar
+  if (variable_get('event_nodeapi_event', 'never') == 'never') {
+    $link = l(t('event content-type settings page'), 'admin/settings/content-types/event');
+    drupal_set_message(t('The event node is currently set to never appear in the calendar. You will not be able to set the start and end dates until an administrator changes the content-type settings. This is done using the %link.', array('%link' => $link)));
   }
 
-  $output .= form_textarea(t('Body'), 'body', $node->body, 60, 20, '', NULL, TRUE);
-  $output .= filter_form('format', $node->format);
+  $form['title'] = array('#type' => 'textfield', '#title' => t('Title'), '#default_value' => $node->title, '#size' => 60, '#maxlength' => 128, '#required' => TRUE);
+  $form['body'] = array('#type' => 'textarea', '#title' => t('Body'), '#default_value' => $node->body, '#required' => TRUE);
 
-  return $output;
+  $form = array_merge($form, filter_form($node->format));
+
+  return $form;
 }
