@@ -1648,17 +1648,26 @@ function event_block_upcoming($limit = 6) {
  * @defgroup event_nodeapi Functions for nodeapi integration
  */
 
+function event_form_alter($form_id, &$form) {
+  if (isset($form['type']) && $form['type']['#value'] .'_node_settings' == $form_id) {
+    $type = $form['type']['#value'];
+    $form['workflow']['event_nodeapi_'. $type] = array(
+      '#type' => 'radios',
+      '#title' => t('Show in event calendar'),
+      '#default_value' => variable_get('event_nodeapi_'. $type, 'never'),
+      '#options' => array('all' => t('All views'), 'solo' => t('Only in views for this type'), 'never' => t('Never')),
+      '#description' => t('All views: This content type will be available for display on all calendar views, including with other events.<br />Only in views for this type: This content type will only appear in calendar views specific to this type and never with other events.<br />Never: This content type will not be associated with the events calendar.')
+    );
+  }
+}
+
  /**
  * hook_nodeapi implementation
  *
  * @ingroup event_nodeapi
  */
 function event_nodeapi(&$node, $op, $arg = 0) {
-  if($op == 'settings') {
-      $form['event_nodeapi_'. $node->type] = array('#type' => 'radios', '#title' => t('Show in event calendar'), '#default_value' => variable_get('event_nodeapi_'. $node->type, 'never'), '#options' => array('all' => t('All views'), 'solo' => t('Only in views for this type'), 'never' => t('Never')), '#description' => t('All views: This content type will be available for display on all calendar views, including with other events.<br />Only in views for this type: This content type will only appear in calendar views specific to this type and never with other events.<br />Never: This content type will not be associated with the events calendar.'));
-      return $form;
-  }
-  elseif(variable_get('event_nodeapi_'. $node->type, 'never') != 'never') {
+  if(variable_get('event_nodeapi_'. $node->type, 'never') != 'never') {
     switch ($op) {
       case 'form':
         global $user;
