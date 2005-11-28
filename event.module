@@ -1683,7 +1683,7 @@ function event_nodeapi(&$node, $op, $arg = 0) {
           '#type' => 'fieldset',
           '#title' => t('End'),
           '#description' => t('End date.'),
-          '#weight' => -15
+          '#weight' => -14
           );
         $form['event_end']['date'] = event_form_date(($node->event_end ? $node->event_end : _event_user_time()), 'end', $node->end_offset);
 
