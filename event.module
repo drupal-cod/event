@@ -1484,7 +1484,10 @@ function _event_get_taxonomy_control($curterm = NULL, $autosubmit = TRUE) {
       }
     }
 
-    $form['event_term_select'] = array('#type' => 'select', '#default_value' => $curterm, '#options' => $items, '#description' => t('Select event terms to filter by'), '#attributes' => ($autosubmit ? 'onChange="this.form.submit()"' : ''));
+    $form['event_term_select'] = array('#type' => 'select', '#default_value' => $curterm, '#options' => $items, '#description' => t('Select event terms to filter by'));
+    if ($autosubmit) {
+      $form['event_term_select']['#attributes'] = array('onChange'=>'this.form.submit()');
+    }
 
     $form = drupal_get_form('event_taxonomy_filter', $form);
 
@@ -1514,7 +1517,10 @@ function _event_get_type_control($curtype = NULL, $autosubmit = TRUE) {
       }
     }
 
-    $form['event_type_select'] = array('#type' => 'select', '#default_value' => $curtype, '#options' => $items, '#description' => t('Select event type to filter by'), '#attributes' => ($autosubmit ? 'onChange="this.form.submit()"' : ''));
+    $form['event_type_select'] = array('#type' => 'select', '#default_value' => $curtype, '#options' => $items, '#description' => t('Select event type to filter by'));
+    if ($autosubmit) {
+      $form['event_term_select']['#attributes'] = array('onChange'=>'this.form.submit()');
+    }
 
     $form = drupal_get_form('event_type_filter', $form);
 
