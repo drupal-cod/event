@@ -1355,7 +1355,7 @@ function event_form_date($timestamp, $prefix = 'start', $offset) {
   if (variable_get('event_ampm', '0')) {
     $form[$prefix .'_ampm'] = array('#type' => 'radios', '#default_value' => $am_pm, '#options' => $am_pms, '#required' => TRUE);
   }
-  $form[$prefix .'_close'] = array('#type' => 'markup', '#suffix' => '</div></div>');
+  $form[$prefix .'_close'] = array('#type' => 'markup', '#value' => '</div></div>');
 
   return $form;
 }
