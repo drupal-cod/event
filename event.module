@@ -1588,7 +1588,7 @@ function event_block_upcoming($limit = 6) {
   global $user;
   // For two hours, we display "NOW"
   $time = time() - (2 * 60 * 60);
-  $result = db_query(db_rewrite_sql("SELECT n.nid, n.title, n.type, n.status, n.moderate, e.event_start FROM {node} n INNER JOIN {event} e USING (nid) WHERE n.status = 1 AND n.moderate = 0 AND e.event_start >= %d ORDER BY event_start"), $time);
+  $result = db_query(db_rewrite_sql("SELECT n.nid, n.title, n.type, n.status, n.moderate, e.event_start FROM {node} n INNER JOIN {event} e ON n.nid = e.nid WHERE n.status = 1 AND n.moderate = 0 AND e.event_start >= %d ORDER BY event_start"), $time);
 
   while (($node = db_fetch_object($result)) && $limit) {
 
