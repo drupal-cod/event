@@ -75,9 +75,9 @@ function theme_event_node_day($node) {
 
   $output .= '<div class="title">'. l($node->title, "node/$node->nid", array('title' => t('view this event'))) .'</div>'."\n";
 
-  $output .= '<div class="start">'. t('Start: ') . $node->start_format .'</div>'."\n";
+  $output .= '<div class="start">'. t('Start: ') . $node->start_time_format .'</div>'."\n";
   if ($node->event_start != $node->event_end) {
-    $output .= '<div class="end">'. t('End: ') . $node->end_format .'</div>'."\n";
+    $output .= '<div class="end">'. t('End: ') . $node->end_time_format .'</div>'."\n";
   }
   $output .= '<div class="content">'. $node->teaser ."</div>\n";
   $output .= '<div class="links">'. theme('links', $node->event_links) ."\n</div>";
