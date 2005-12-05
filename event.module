@@ -1733,15 +1733,19 @@ function event_nodeapi(&$node, $op, $arg = 0) {
         break;
 
       case 'insert':
-        $fields = array('nid', 'event_start', 'event_end');
         db_query('INSERT INTO {event} (nid, event_start, event_end, timezone) VALUES (%d, %d, %d, %d)', $node->nid, $node->event_start, $node->event_end, $node->timezone);
         event_set_range();
         break;
 
       case 'update':
         if (variable_get('event_nodeapi_'. $node->type, 'never') != 'never') {
-          $fields = array('event_start', 'event_end');
-          db_query('UPDATE {event} SET event_start = %d, event_end = %d, timezone = %d WHERE nid = %d', $node->event_start, $node->event_end, $node->timezone, $node->nid);
+          // While the DELETE/INSERT is less efficient than single UPDATE, the
+          // UPDATE only works if there's an existing record in the events
+          // table. I.e. if you create a node and then enable the event module,
+          // there will be no record in the event table, so the dates cannot be
+          // changed.
+          db_query('DELETE FROM {event} WHERE nid = %d', $node->nid);
+          db_query('INSERT INTO {event} (nid, event_start, event_end, timezone) VALUES (%d, %d, %d, %d)', $node->nid, $node->event_start, $node->event_end, $node->timezone);
         }
         event_set_range();
         break;
