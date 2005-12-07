@@ -186,7 +186,8 @@ function event_settings() {
  */
 
 /**
- * Displays a page containing event information.  The page layout defaults to a graphical calendar.
+ * Displays a page containing event information.  The page layout defaults to a
+ * graphical calendar.
  *
  * @ingroup event_callback
  * @return the content for the event page.
@@ -547,8 +548,11 @@ function event_calendar_day($op, $stamp, $types = NULL, $terms = NULL) {
  * Creates a themed table of events.
  *
  * @ingroup event_view
- * @param $start The GMT starting date for the table.
- * @param $end The GMT ending date for the table.
+ * @param $op 
+ * @param $stamp The timestamp
+ * @param $endstamp end of the menu
+ * @param $types limit to given event node types
+ * @param $terms limit to nodes with these 
  * @return A fully themed table.
  */
 function event_calendar_table($op, $stamp, $endstamp, $types = NULL, $terms = NULL) {
@@ -577,8 +581,11 @@ function event_calendar_table($op, $stamp, $endstamp, $types = NULL, $terms = NU
  * Creates a themed list of events.
  *
  * @ingroup event_view
- * @param $start The GMT starting date for the table.
- * @param $end The GMT ending date for the table.
+ * @param $op 
+ * @param $stamp The timestamp
+ * @param $endstamp end of the menu
+ * @param $types
+ * @param $terms
  * @return A themed list of events.
  */
 function event_calendar_list($op, $stamp, $endstamp, $types = NULL, $terms = NULL) {
@@ -915,6 +922,9 @@ function event_get_calendar($view, $nodes, $module, $title = NULL) {
  * @param $year The year the event is taking place.
  * @param $month The month the event is taking place.
  * @param $day The day the event is taking place. No leading zeroes.
+ * @param $view Who's calling this 
+ * @param $types Limit to nodes of these types
+ * @param $terms Limit to events with these taxonomy terms
  * @return An array containing all of the events taking place on the specified date, or an empty array if none exist.
  */
 function event_calendar_data($year, $month, $day, $view = NULL, $types = NULL, $terms = NULL) {
@@ -1048,6 +1058,12 @@ function event_calendar_data($year, $month, $day, $view = NULL, $types = NULL, $
   return $nodes;
 }
 
+/**
+ * @param $node
+ * @param $types
+ * @param $terms
+ * @return boolean
+ */
 function event_filter_node($node, $types, $terms) {
   $event_types = event_get_types();
 
@@ -1167,6 +1183,8 @@ function event_taxonomy_filter($node, $terms) {
  * @param $year The year the event is taking place.
  * @param $month The month the event is taking place.
  * @param $day The day the event is taking place. No leading zeroes
+ * @param $types Limit to nodes of these types
+ * @param $terms Limit to events with these taxonomy terms
  * @return The value of the day requested. If the day has events, the value will be a link to a more detailed page of that day's events.
  */
 function event_render_day_single($year, $month, $day, $view, $types, $terms) {
@@ -1180,6 +1198,8 @@ function event_render_day_single($year, $month, $day, $view, $types, $terms) {
  * @param $year The year the event is taking place.
  * @param $month The month the event is taking place.
  * @param $day The day the event is taking place. No leading zeroes.
+ * @param $types Limit to nodes of these types
+ * @param $terms Limit to events with these taxonomy terms
  * @return A string containing all of the events taking place.
  */
 function event_render_day($year, $month, $day, $view, $types, $terms) {
@@ -1274,7 +1294,11 @@ function _event_date($format, $timestamp, $offset = null) {
   return  $result;
 }
 
-// return the day of week with start of week offset applied
+/**
+ * Return the day of week with start of week offset applied
+ * @param $stamp GMT timestamp
+ * @return integer day of the week
+ */
 function _event_day_of_week($stamp) {
   $dow = gmdate('w', $stamp);
   $dow = (variable_get('date_first_day', 1) ? ($dow == 0 ? 6 : --$dow ) : $dow);
@@ -1310,7 +1334,10 @@ function _event_mktime($hour, $minute, $second, $month, $day, $year, $offset = N
   }
 }
 
-// returns a local timestamp based on the user or site time zone
+/**
+ * Returns a local timestamp based on the user or site time zone.
+ * @return integer timestamp
+ */
 function _event_user_time() {
   global $user;
 
@@ -1322,7 +1349,11 @@ function _event_user_time() {
   }
 }
 
-// returns a local timestamp value corrected with the user or site time zone with time information set to 0
+/**
+ * Returns a local timestamp (as defined by the user or site's timezone) for
+ * midnight GMT.
+ * @return integer timestamp
+ */
 function _event_user_date() {
   static $date;
   if (!$date) {
@@ -1336,9 +1367,12 @@ function _event_user_date() {
  * Constructs the time select boxes.
  *
  * @ingroup event_support
- * @param $timestamp The time already selected.  This is applicable if the user is editing an event.
- * @param $prefix The value to prepend to the select element names, used for start and end times.
- * @return A set of select boxes that contain options for month, day, year, hour, and minute
+ * @param $timestamp The time GMT timestamp of the event to use as the default
+ *   value.
+ * @param $prefix The value to prepend to the select element names ('start' or
+ *   'end').
+ * @param $offset timezone offset
+ * @return An array of form elements for month, day, year, hour, and minute
  */
 function event_form_date($timestamp, $prefix = 'start', $offset) {
   //determine settings for form's hour selector
@@ -1612,12 +1646,12 @@ function event_block($op = 'list', $delta = 0) {
 }
 
 /**
-* Creates a block that contains upcoming events.
-*
-* @ingroup event_block
-* @param $limit The number of events that can be displayed in the block.
-* @return A string containing the fully themed block.
-*/
+ * Creates a block that contains upcoming events.
+ *
+ * @ingroup event_block
+ * @param $limit The number of events that can be displayed in the block.
+ * @return A string containing the fully themed block.
+ */
 function event_block_upcoming($limit = 6) {
   global $user;
   // For two hours, we display "NOW"
@@ -1693,7 +1727,7 @@ function event_form_alter($form_id, &$form) {
   }
 }
 
- /**
+/**
  * hook_nodeapi implementation
  *
  * @ingroup event_nodeapi
@@ -1835,6 +1869,16 @@ function event_nodeapi(&$node, $op, $arg = 0) {
   }
 }
 
+/**
+ * Get an array of nodes with a given state. If no state is provided an array
+ * with all nodes keyed by state will be returned. The possible states are:
+ * 'all' Always shown in the calendar.
+ * 'solo' Only shown with nodes of its type.
+ * 'never' Never show in the calendar.
+ * 
+ * @param $state string state name
+ * @return array of node types
+ */
 function event_get_types($state = NULL) {
   static $types;
   if (!is_array($types)) {
@@ -1848,20 +1892,30 @@ function event_get_types($state = NULL) {
   }
   switch ($state) {
     case 'all':
-        return $types['all'];
+      return $types['all'];
       break;
     case 'solo':
-        return $types['solo'];
+      return $types['solo'];
       break;
     case 'never':
-        return $types['never'];
+      return $types['never'];
       break;
     default:
-        return $types;
+      return $types;
       break;
   }
 }
 
+/**
+ * Find the state of a node type. The state determines if and how those nodes
+ * will be displayed in the calendar. The state values are:
+ * 'all' Always shown in the calendar.
+ * 'solo' Only shown with nodes of its type.
+ * 'never' Never show in the calendar.
+ *
+ * @param $type node type
+ * @return state value
+ */
 function event_enabled_state($type) {
   $states = event_get_types();
   foreach ($states as $key => $state) {
@@ -1871,17 +1925,28 @@ function event_enabled_state($type) {
   }
 }
 
+/**
+ * Find out if a node type is shown in all calendars.
+ * @param $type node type
+ * @return boolean 
+ */
 function event_is_enabled($type) {
   $states = event_get_types();
   return in_array($type, $states['all']);
 }
 
+/**
+ * Update the variables the module uses to track the first and last events.
+ */
 function event_set_range() {
   $range = db_fetch_object(db_query('select MIN(e.event_start) AS event_start, MAX(e.event_end) AS event_end FROM {event} e'));
   variable_set('event_range_prev', $range->event_start);
   variable_set('event_range_next', $range->event_end);
 }
 
+/**
+ * Display a page with the timezone and daylight savings time regions.
+ */
 function event_dst() {
   $timestamp = time();
 
