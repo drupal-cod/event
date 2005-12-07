@@ -128,6 +128,16 @@ function event_menu($may_cache) {
   }
   else {
     drupal_set_html_head(event_html_head());
+    if (arg(0) == 'node' && is_numeric(arg(1))) {
+      $type = db_result(db_query("SELECT type FROM {node} WHERE nid=%d", arg(1)));
+      if (event_is_enabled($type)) {
+          $items[] = array('path' => 'node/'.arg(1).'/ical',
+                           'title' => t('event ical'),
+                           'callback' => 'event_node_ical',
+                           'access' => user_access('access content'),
+                           'type' => MENU_CALLBACK);
+      }
+    }
   }
   return $items;
 }
@@ -661,20 +671,9 @@ function event_calendar_ical($stamp, $duration, $types = NULL, $terms = NULL, $t
 
   $events = array();
   while ($nid = db_fetch_object($result)) {
-    $event = array();
     $node = node_load(array('nid' => $nid->nid));
     if (event_filter_node($node, $types, $terms)) {
-      // Allow modules to affect item fields
-      node_invoke_nodeapi($node, 'view', 'ical item');
-      node_invoke_nodeapi($node, 'ical item');
-      $event['start'] = $node->event_start;
-      $event['end'] = $node->event_end;
-      $event['location'] = $node->event_location;
-      $event['summary'] = $node->title;
-      $event['description'] = ($node->teaser ? $node->teaser : $node->body);
-      $event['uid'] = url("node/$node->nid", NULL, NULL, 1);
-      $event['url'] = url("node/$node->nid", NULL, NULL, 1);
-      $events[] = $event;
+      $events[] = _event_node_ical($node);
     }
   }
 
@@ -682,6 +681,34 @@ function event_calendar_ical($stamp, $duration, $types = NULL, $terms = NULL, $t
 
   return ical_export($events, $description);
 }
+
+/**
+ * Return an ical for a specific event
+ */
+function event_node_ical() {
+  $node = node_load(array('nid' => arg(1)));
+  $event = _event_node_ical($node);
+  drupal_set_header('Content-Type: text/calendar; charset=utf-8');
+  drupal_set_header('Content-Disposition: attachment; filename="calendar.ics"; ');
+  print ical_export(array($event), $event['summary']);
+}
+
+function _event_node_ical($node) {
+  $event = array();
+  // Allow modules to affect item fields
+  node_invoke_nodeapi($node, 'view', 'ical item');
+  node_invoke_nodeapi($node, 'ical item');
+  $event['start'] = $node->event_start;
+  $event['end'] = $node->event_end;
+  $event['location'] = $node->event_location;
+  $event['summary'] = $node->title;
+  $event['description'] = ($node->teaser ? $node->teaser : $node->body);
+  $event['uid'] = url("node/$node->nid", NULL, NULL, 1);
+  $event['url'] = url("node/$node->nid", NULL, NULL, 1);
+
+  return $event;
+}
+
 
 /**
  * Returns a calendar in the requested format, populated with the provided nodes.
@@ -1572,6 +1599,13 @@ function event_block($op = 'list', $delta = 0) {
             $block['content'] = event_block_upcoming(variable_get('event_upcoming_limit', '6'));
             return $block;
         }
+      }
+      if (event_is_enabled($node->type)) {
+        $length = strlen(ical_export(_event_node_ical($node), $node->title));
+        return array(array('key' => 'enclosure',
+                           'attributes' => array('url' => url('node/'.$node->nid .'/ical', NULL, NULL, TRUE),
+                                                 'length' => $length,
+                                                 'type' => 'text/calendar')));
       }
       break;
   }
