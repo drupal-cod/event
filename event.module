@@ -1785,9 +1785,9 @@ function event_nodeapi(&$node, $op, $teaser = NULL, $page = NULL) {
   if(variable_get('event_nodeapi_'. $node->type, 'never') != 'never') {
     switch ($op) {
       case 'validate':
-        // no break. both validate (for the preview) and submit (for the 
-        // update/insert) need a node with a formated date and event_start
-        // and event_end set.
+        // no break. both need a node with a formatted date and event_start
+        // and event_end set, 'validate' for the previewing and 'submit' for
+        // update/insert.
       case 'submit':
         event_validate_form_date($node, 'start');
         event_validate_form_date($node, 'end');
@@ -1828,9 +1828,7 @@ function event_nodeapi(&$node, $op, $teaser = NULL, $page = NULL) {
         break;
 
       case 'delete':
-        if (variable_get('event_nodeapi_'. $node->type, 'never') != 'never') {
-          db_query('DELETE FROM {event} WHERE nid = %d', $node->nid);
-        }
+        db_query('DELETE FROM {event} WHERE nid = %d', $node->nid);
         event_set_range();
         break;
 
@@ -1868,7 +1866,7 @@ function event_nodeapi(&$node, $op, $teaser = NULL, $page = NULL) {
         break;
 
       case 'view':
-        // no break, view and rss item both use the same case
+        // no break, 'view' and 'rss item' both use the same case
       case 'rss item':
         $node->body = theme('event_nodeapi', $node). $node->body;
         $node->teaser = theme('event_nodeapi', $node). $node->teaser;
