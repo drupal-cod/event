@@ -703,7 +703,6 @@ function event_node_ical() {
 function _event_node_ical($node) {
   $event = array();
   // Allow modules to affect item fields
-  node_invoke_nodeapi($node, 'view', 'ical item');
   node_invoke_nodeapi($node, 'ical item');
   $event['start'] = $node->event_start;
   $event['end'] = $node->event_end;
@@ -1715,61 +1714,64 @@ function event_block_upcoming($limit = 6) {
  */
 
 function event_form_alter($form_id, &$form) {
-  if (isset($form['type']) && $form['type']['#value'] .'_node_settings' == $form_id) {
-    $type = $form['type']['#value'];
-    $form['workflow']['event_nodeapi_'. $type] = array(
-      '#type' => 'radios',
-      '#title' => t('Show in event calendar'),
-      '#default_value' => variable_get('event_nodeapi_'. $type, 'never'),
-      '#options' => array('all' => t('All views'), 'solo' => t('Only in views for this type'), 'never' => t('Never')),
-      '#description' => t('All views: This content type will be available for display on all calendar views, including with other events.<br />Only in views for this type: This content type will only appear in calendar views specific to this type and never with other events.<br />Never: This content type will not be associated with the events calendar.')
-    );
-  }
+  global $user;
+  $type = $form['type']['#value'];
+  $node = $form['#node'];
 
-  if (isset($form['type']) && $form['type']['#value'] .'_node_form' == $form_id) {
-    $node = $form['#node'];
-
-    if (variable_get('event_nodeapi_'. $node->type, 'never') != 'never') {
-      global $user;
-      $form['event_start'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Start'),
-        '#description' => t('Start date.'),
-        '#weight' => -15
+  switch ($form_id) {
+    // node settings form
+    case $type .'_node_settings':
+      $form['workflow']['event_nodeapi_'. $type] = array(
+        '#type' => 'radios',
+        '#title' => t('Show in event calendar'),
+        '#default_value' => variable_get('event_nodeapi_'. $type, 'never'),
+        '#options' => array('all' => t('All views'), 'solo' => t('Only in views for this type'), 'never' => t('Never')),
+        '#description' => t('All views: This content type will be available for display on all calendar views, including with other events.<br />Only in views for this type: This content type will only appear in calendar views specific to this type and never with other events.<br />Never: This content type will not be associated with the events calendar.')
       );
-      $form['event_start']['date'] = event_form_date($node->event_start ? $node->event_start : _event_user_time(), 'start', $node->start_offset);
+      break;
+    // node edit form
+    case $type .'_node_form':
+      if (variable_get('event_nodeapi_'. $type, 'never') != 'never') {
+        $form['event_start'] = array(
+          '#type' => 'fieldset',
+          '#title' => t('Start'),
+          '#description' => t('Start date.'),
+          '#weight' => -15
+          );
+        $form['event_start']['date'] = event_form_date($node->event_start ? $node->event_start : _event_user_time(), 'start', $node->start_offset);
 
-      $form['event_end'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('End'),
-        '#description' => t('End date.'),
-        '#weight' => -14
-      );
-      $form['event_end']['date'] = event_form_date(($node->event_end ? $node->event_end : _event_user_time()), 'end', $node->end_offset);
-
-      if (variable_get('event_timezone_input', 'site') == 'input') {
-        $form['timezone'] = array(
-          '#type' => 'select',
-          '#title' => t('Time zone'),
-          '#default_value' => ($node->timezone ? $node->timezone : event_timezone_map(variable_get('date_default_timezone', 0))),
-          '#options' => event_zonelist(),
-          '#description' => t('Select the time zone this event occurs in.'),
+        $form['event_end'] = array(
+          '#type' => 'fieldset',
+          '#title' => t('End'),
+          '#description' => t('End date.'),
           '#weight' => -14
-        );
+          );
+        $form['event_end']['date'] = event_form_date(($node->event_end ? $node->event_end : _event_user_time()), 'end', $node->end_offset);
+
+        if (variable_get('event_timezone_input', 'site') == 'input') {
+          $form['timezone'] = array(
+            '#type' => 'select',
+            '#title' => t('Time zone'),
+            '#default_value' => ($node->timezone ? $node->timezone : event_timezone_map(variable_get('date_default_timezone', 0))),
+            '#options' => event_zonelist(),
+            '#description' => t('Select the time zone this event occurs in.'),
+            '#weight' => -13
+            );
+        }
+        elseif (variable_get('configurable_timezones', 1) && $user->uid && strlen($user->timezone) && (variable_get('event_timezone_input', 'site') == 'user')) {
+          $form['timezone'] = array(
+            '#type' => 'hidden',
+            '#value' =>  event_timezone_map($user->timezone)
+            );
+        }
+        else {
+          $form['timezone'] = array(
+            '#type' => 'hidden',
+            '#value' => event_timezone_map(variable_get('date_default_timezone', 0))
+            );
+        }
       }
-      elseif (variable_get('configurable_timezones', 1) && $user->uid && strlen($user->timezone) && (variable_get('event_timezone_input', 'site') == 'user')) {
-        $form['timezone'] = array(
-          '#type' => 'hidden',
-          '#value' =>  event_timezone_map($user->timezone)
-        );
-      }
-      else {
-        $form['timezone'] = array(
-          '#type' => 'hidden',
-          '#value' => event_timezone_map(variable_get('date_default_timezone', 0))
-        );
-      }
-    }
+      break;
   }
 }
 
@@ -1778,10 +1780,15 @@ function event_form_alter($form_id, &$form) {
  *
  * @ingroup event_nodeapi
  */
-function event_nodeapi(&$node, $op, $arg = 0) {
+function event_nodeapi(&$node, $op, $teaser = NULL, $page = NULL) {
+  // make sure it's an event enabled node
   if(variable_get('event_nodeapi_'. $node->type, 'never') != 'never') {
     switch ($op) {
-      case 'execute':
+      case 'validate':
+        // no break. both validate (for the preview) and submit (for the 
+        // update/insert) need a node with a formated date and event_start
+        // and event_end set.
+      case 'submit':
         event_validate_form_date($node, 'start');
         event_validate_form_date($node, 'end');
         if ($node->event_end < $node->event_start) {
@@ -1810,15 +1817,13 @@ function event_nodeapi(&$node, $op, $arg = 0) {
         break;
 
       case 'update':
-        if (variable_get('event_nodeapi_'. $node->type, 'never') != 'never') {
-          // While the DELETE/INSERT is less efficient than single UPDATE, the
-          // UPDATE only works if there's an existing record in the events
-          // table. I.e. if you create a node and then enable the event module,
-          // there will be no record in the event table, so the dates cannot be
-          // changed.
-          db_query('DELETE FROM {event} WHERE nid = %d', $node->nid);
-          db_query('INSERT INTO {event} (nid, event_start, event_end, timezone) VALUES (%d, %d, %d, %d)', $node->nid, $node->event_start, $node->event_end, $node->timezone);
-        }
+        // While the DELETE/INSERT is less efficient than single UPDATE, the
+        // UPDATE only works if there's an existing record in the events
+        // table. I.e. if you create a node and then enable the event module,
+        // there will be no record in the event table, so the dates cannot be
+        // changed.
+        db_query('DELETE FROM {event} WHERE nid = %d', $node->nid);
+        db_query('INSERT INTO {event} (nid, event_start, event_end, timezone) VALUES (%d, %d, %d, %d)', $node->nid, $node->event_start, $node->event_end, $node->timezone);
         event_set_range();
         break;
 
@@ -1846,25 +1851,24 @@ function event_nodeapi(&$node, $op, $arg = 0) {
         }
         $ctype = module_invoke('flexinode', 'load_content_type', $node->ctype_id);
 
-        return array('event_start' => $object->event_start,
-                     'event_end' => $object->event_end,
-                     'start_offset' => $start_offset,
-                     'end_offset' => $end_offset,
-                     'timezone' => $object->timezone,
-                     'start_format' => format_date($object->event_start, 'small', '', $start_offset),
-                     'end_format' => format_date($object->event_end, 'small', '', $end_offset),
-                     'start_time_format' => format_date($object->event_start, 'custom', (variable_get('event_ampm', '0') ? 'g:i a' : 'H:i'), $start_offset),
-                     'end_time_format' => format_date($object->event_end, 'custom', (variable_get('event_ampm', '0') ? 'g:i a' : 'H:i'), $end_offset),
-                     'event_node_title' => ($ctype->name ? $ctype->name : $node->type));
+        return array(
+          'event_start'       => $object->event_start,
+          'event_end'         => $object->event_end,
+          'timezone'          => $object->timezone,
+          'start_offset'      => $start_offset,
+          'start_format'      => format_date($object->event_start, 'small', '', $start_offset),
+          'start_time_format' => format_date($object->event_start, 'custom', (variable_get('event_ampm', '0') ? 'g:i a' : 'H:i'), $start_offset),
+          'end_offset'        => $end_offset,
+          'end_format'        => format_date($object->event_end, 'small', '', $end_offset),
+          'end_time_format'   => format_date($object->event_end, 'custom', (variable_get('event_ampm', '0') ? 'g:i a' : 'H:i'), $end_offset),
+          'event_node_title'  => ($ctype->name ? $ctype->name : $node->type));
+        break;
+
+      case 'ical item':
         break;
 
       case 'view':
-        if ($arg != 'ical item') {
-          $node->body = theme('event_nodeapi', $node). $node->body;
-          $node->teaser = theme('event_nodeapi', $node). $node->teaser;
-        }
-        break;
-
+        // no break, view and rss item both use the same case
       case 'rss item':
         $node->body = theme('event_nodeapi', $node). $node->body;
         $node->teaser = theme('event_nodeapi', $node). $node->teaser;
@@ -1879,7 +1883,7 @@ function event_nodeapi(&$node, $op, $arg = 0) {
  * 'all' Always shown in the calendar.
  * 'solo' Only shown with nodes of its type.
  * 'never' Never show in the calendar.
- * 
+ *
  * @param $state string state name
  * @return array of node types
  */
@@ -1932,7 +1936,7 @@ function event_enabled_state($type) {
 /**
  * Find out if a node type is shown in all calendars.
  * @param $type node type
- * @return boolean 
+ * @return boolean
  */
 function event_is_enabled($type) {
   $states = event_get_types();
