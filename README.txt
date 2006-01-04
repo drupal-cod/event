@@ -1,9 +1,6 @@
 This is a simple module to keep track of events and show them to users.
 Send comments to gerhard@killesreiter.de.
 
-If you are upgrading from either Drupal 4.5 or CivicSpace 0.8.0.x read
-the upgrading instructions in the file UPGRADING.txt.
-
 The event.module has the following features:
 
 - event types based on nodeapi

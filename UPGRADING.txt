@@ -7,13 +7,4 @@ There are two updates available now:
 
 To update do the following:
 
- * Copy the file update-event.php to the root directory of your Drupal installation.
- * Login as user 1, or disable the access checking at the top of that file.
- * Point your browser to "http://www.site.com/update-event.php" and follow the
-   instructions.
-
-** NOTE **
-
-YOU MUST HAVE FLEXINODE INSTALLED TO UPDATE FROM A PREVIOUS VERSION OF EVENT TO v4.6
-
-Clean installs do not have this limitation, although using flexinode is strongly recommended to enhance your event module experience.
+First upgrade to Drupal 4.6 with event 4.6 and read the upgrade.txt that comes with it.
