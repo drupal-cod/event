@@ -10,18 +10,6 @@ include(drupal_get_path('module', 'event') .'/ical.inc');
  */
 
 /**
- * Provides a link to the CSS stylesheet associated with this module.
- *
- * @ingroup event_core
- * @return a &lt;style&gt; tag that indicates what file browsers should import
- */
-function event_html_head() {
-  $output = '<script type="text/javascript" src="'. drupal_get_path('module', 'event') .'/event.js"></script>';
-  $output .= theme('stylesheet_import', drupal_get_path('module', 'event') .'/event.css','screen');
-  return $output;
-}
-
-/**
  * Provides the links that should be displayed when viewing events.
  *
  * @ingroup event_core
@@ -127,7 +115,9 @@ function event_menu($may_cache) {
                      'type' => MENU_CALLBACK);
   }
   else {
-    drupal_set_html_head(event_html_head());
+    theme_add_style(drupal_get_path('module', 'event') .'/event.css');
+    drupal_add_js(drupal_get_path('module', 'event') .'/event.js');
+    
     if (arg(0) == 'node' && is_numeric(arg(1))) {
       $type = db_result(db_query("SELECT type FROM {node} WHERE nid=%d", arg(1)));
       if (event_is_enabled($type)) {
