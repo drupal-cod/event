@@ -1,0 +1,2531 @@
+# Danish translation of Drupal (event.module)
+# Copyright 2004-2006 Morten Wulff <wulff@tem.dtu.dk>
+msgid ""
+msgstr ""
+"Project-Id-Version: Danish translation of Drupal (event.module) $Id$\n"
+"POT-Creation-Date: 2004-04-22 21:46+0200\n"
+"PO-Revision-Date: 2006-01-14 17:56+0100\n"
+"Last-Translator: Morten Wulff <wulff@tem.dtu.dk>\n"
+"Language-Team: Danish <danish@psyke.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Language: Danish\n"
+"X-Poedit-Country: DENMARK\n"
+
+#: event.module:38
+#: ;41
+msgid "calendar"
+msgstr "kalender"
+
+#: event.module:46
+#: ;61;68
+msgid "week"
+msgstr "uge"
+
+#: event.module:46
+#: ;61;68
+msgid "Week view"
+msgstr "Vis uge"
+
+#: event.module:47
+#: ;54;69
+msgid "day"
+msgstr "dag"
+
+#: event.module:47
+#: ;54;69
+msgid "Day view"
+msgstr "Vis dag"
+
+#: event.module:48
+#: ;55;62
+msgid "table"
+msgstr "tabel"
+
+#: event.module:48
+#: ;55;62
+msgid "Table view"
+msgstr "vis tabel"
+
+#: event.module:53
+#: ;60;67
+msgid "month"
+msgstr "måned"
+
+#: event.module:53
+#: ;60;67
+msgid "Month view"
+msgstr "Vis måned"
+
+#: event.module:87
+msgid "events"
+msgstr "arrangementer"
+
+#: event.module:92
+msgid "add item to calendar"
+msgstr "tilføj element til kalender"
+
+#: event.module:97
+msgid "filter by content type"
+msgstr "filtrer efter indholdstype"
+
+#: event.module:102
+msgid "filter by taxonomy"
+msgstr "filtrer efter ordforråd"
+
+#: event.module:107
+msgid "event rss feed"
+msgstr "arrangement rss kilde"
+
+#: event.module:112
+msgid "event dst view"
+msgstr "arrangement dst visning"
+
+#: event.module:117
+msgid "event ical feed"
+msgstr "arrangement ical kilde"
+
+#: event.module:137
+#: ;147
+msgid "Event time zone input"
+msgstr "Arrangement tidszone"
+
+#: event.module:137
+#: ;139;147;149
+msgid "Use the sitewide time zone"
+msgstr "Brug netstedets tidszone"
+
+#: event.module:137
+#: ;147
+msgid "Use the time zone of the user editing or creating the event"
+msgstr "Benyt brugerens tidszone når arrangementet oprettes eller redigeres"
+
+#: event.module:137
+#: ;147
+msgid "Allow users to set event time zones"
+msgstr "Tillad brugere at angive tidszone for arrangementer"
+
+#: event.module:137
+msgid "Events are saved with a time zone value. This setting allows you to determine how the time zone is determined when creating or editing an event."
+msgstr "Arrangementer knyttes til en tidszone. Her kan du angive hvordan tidszonen vælges når et arrangement oprettes eller redigeres."
+
+#: event.module:139
+#: ;149
+msgid "Event time zone display"
+msgstr "Visning af tidszone"
+
+#: event.module:139
+#: ;149
+msgid "Use the event's time zone"
+msgstr "Brug arrangementets tidszone"
+
+#: event.module:139
+msgid "Use the user's time zone"
+msgstr "Brug brugerens tidszone"
+
+#: event.module:139
+msgid "Events are saved with a time zone value. This setting allows you to determine if the event's time zone, the sitewide time zone, or the user's personal time zone setting is used to display the time for an event."
+msgstr "Arrangementer knyttes til en tidszone. Her kan du bestemme om det er arrangementets eller brugerens tidszone der bestemmer hvilket tidspunkt der vises."
+
+#: event.module:147
+msgid "Events are saved with a time zone value. This setting allows you to determine how the time zone is determined when creating or editing an event. You must have 'Configurable time zones' enabled in %url before you can enable user's time zones for this feature."
+msgstr "Arrangementer knyttes til en tidszone. Her kan du bestemme hvordan tidszonen vælges når du opretter eller redigerer et arrangement. 'Konfigurerbare tidszone' skal være aktiveret på %url hvis du ønsker at anvende brugerens tidszone."
+
+#: event.module:147
+#: ;149
+msgid "site configuration"
+msgstr "netstedets indstillinger"
+
+#: event.module:149
+msgid "Events are saved with a time zone value. This setting allows you to determine if the event's time zone, the sitewide time zone, or the user's personal time zone setting is used to display the time for an event. You must have 'Configurable time zones' enabled in %url before you can enable user's time zones for this feature."
+msgstr "Arrangementer knyttes til en tidszone. Her kan du bestemme hvordan tidszonen vælges når du opretter eller redigerer et arrangement. 'Konfigurerbare tidszone' skal være aktiveret på %url hvis du ønsker at anvende brugerens tidszone."
+
+#: event.module:151
+msgid "Time notation preference"
+msgstr "Tidsangivelse"
+
+#: event.module:151
+msgid "24h"
+msgstr "24t"
+
+#: event.module:151
+msgid "12h"
+msgstr "12t"
+
+#: event.module:151
+msgid "The time notation system used for entering event times."
+msgstr "Tidsangivelsen der bruges til at angive tidspunktee for arrangementer."
+
+#: event.module:152
+msgid "Upcoming event block limit"
+msgstr "Blokken kommende arrangementer"
+
+#: event.module:152
+msgid "Limit the amount of events displayed in the upcoming events block by this amount."
+msgstr "Begræns antallet af arrangemeter, der vises i blokken kommende arrangementer."
+
+#: event.module:153
+msgid "General Event options"
+msgstr "Generelle indstillinger"
+
+#: event.module:155
+msgid "Default overview"
+msgstr "Oversigtstype"
+
+#: event.module:155
+msgid "Day"
+msgstr "Dag"
+
+#: event.module:155
+msgid "Week"
+msgstr "Uge"
+
+#: event.module:155
+msgid "Month"
+msgstr "Måned"
+
+#: event.module:155
+msgid "Table"
+msgstr "Tabel"
+
+#: event.module:155
+msgid "The default event view to display when no format is specifically requested. This is also the view that will be displayed from the block calendar links."
+msgstr "Standard visning når brugeren ikke beder om et specifikt format. Anvendes desuden som visning for henvisninger fra kalender blokken."
+
+#: event.module:156
+msgid "Table view default period"
+msgstr "Standardperiode for tabelvisning"
+
+#: event.module:156
+msgid "The default number of days to display in the table view. You can specify a different number of days in the url. More info on the event url format %link"
+msgstr "Antal dage der vises i tabellen. Du kan angive et andet antal i URLen. Yderligere information om URL formatet %link"
+
+#: event.module:156
+msgid "here"
+msgstr "her"
+
+#: event.module:161
+msgid "Show taxonomy filter control on calendar views"
+msgstr "Vis ordforrådsfilter i kalendervisning"
+
+#: event.module:162
+msgid "Only show taxonomy filter control when taxonomy filter view is requested"
+msgstr "Vis kun ordforrådsfilter når ordforrådsvisning er aktiv"
+
+#: event.module:163
+msgid "Never show taxonomy filter control"
+msgstr "Vis aldrig ordforrådsfilter"
+
+#: event.module:167
+msgid "Show content type filter control on calendar views"
+msgstr "Vis indholdstypefilter i kalendervisning"
+
+#: event.module:168
+msgid "Only show content type filter control when content type filter view is requested"
+msgstr "Vis kun indholdstypefilter når indholdstypevisning er aktiv"
+
+#: event.module:169
+msgid "Never show content type filter control"
+msgstr "Vis aldrig indholdstypefilter"
+
+#: event.module:171
+msgid "Event overview options"
+msgstr "Indstillinger for arrangementsoversigt"
+
+#: event.module:207
+msgid "Home"
+msgstr "Forside"
+
+#: event.module:208
+#: ;332;1519
+msgid "Events"
+msgstr "Arrangementer"
+
+#: event.module:237
+#: ;248
+msgid "view all"
+msgstr "vis alle"
+
+#: event.module:238
+msgid "Filter"
+msgstr "Filter"
+
+#: event.module:270
+msgid "%weekday %month %day, %year"
+msgstr "%weekday %month %day, %year"
+
+#: event.module:277
+msgid "Week of %month %day, %year"
+msgstr "uge i %month %day, %year"
+
+#: event.module:283
+msgid "%month %year"
+msgstr "%month %year"
+
+#: event.module:293
+#: ;574;623
+msgid "%startmonth %startdate, %startyear - %endmonth %enddate, %endyear"
+msgstr "%startmonth %startdate, %startyear - %endmonth %enddate, %endyear"
+
+#: event.module:378
+msgid "iCal support not enabled"
+msgstr "iCal understøttelse ikke atkiveret"
+
+#: event.module:587
+#: ;1608
+msgid "Start"
+msgstr "Start"
+
+#: event.module:588
+#: ;1610
+msgid "End"
+msgstr "Slut"
+
+#: event.module:602
+msgid " - Events Feed"
+msgstr "arrangementskilde"
+
+#: event.module:1140
+#: ;1143
+msgid "Mon"
+msgstr "Man"
+
+#: event.module:1140
+#: ;1143
+msgid "Tue"
+msgstr "Tir"
+
+#: event.module:1140
+#: ;1143
+msgid "Wed"
+msgstr "Ons"
+
+#: event.module:1140
+#: ;1143
+msgid "Thu"
+msgstr "Tor"
+
+#: event.module:1140
+#: ;1143
+msgid "Fri"
+msgstr "Fre"
+
+#: event.module:1140
+#: ;1143
+msgid "Sat"
+msgstr "Lør"
+
+#: event.module:1140
+#: ;1143
+msgid "Sun"
+msgstr "Søn"
+
+#: event.module:1273
+msgid "g"
+msgstr "g"
+
+#: event.module:1278
+msgid "H"
+msgstr "H"
+
+#: event.module:1290
+msgid "January"
+msgstr "Januar"
+
+#: event.module:1290
+msgid "February"
+msgstr "Februar"
+
+#: event.module:1290
+msgid "March"
+msgstr "Marts"
+
+#: event.module:1290
+msgid "April"
+msgstr "April"
+
+#: event.module:1290
+msgid "May"
+msgstr "Maj"
+
+#: event.module:1290
+msgid "June"
+msgstr "Juni"
+
+#: event.module:1290
+msgid "July"
+msgstr "Juli"
+
+#: event.module:1290
+msgid "August"
+msgstr "August"
+
+#: event.module:1290
+msgid "September"
+msgstr "September"
+
+#: event.module:1290
+msgid "October"
+msgstr "Oktober"
+
+#: event.module:1290
+msgid "November"
+msgstr "November"
+
+#: event.module:1290
+msgid "December"
+msgstr "December"
+
+#: event.module:1294
+msgid "am"
+msgstr "am"
+
+#: event.module:1294
+msgid "pm"
+msgstr "pm"
+
+#: event.module:1445
+msgid "Select event terms to filter by"
+msgstr "Filtrer efter disse ord"
+
+#: event.module:1475
+msgid "Select event type to filter by"
+msgstr "Filtrer efter disse typer"
+
+#: event.module:1500
+msgid "Calendar to browse events."
+msgstr "Kalender til at gennemse arrangementer."
+
+#: event.module:1501
+msgid "List of upcoming events."
+msgstr "Kommende arrangementer."
+
+#: event.module:1523
+msgid "Upcoming events"
+msgstr "Kommende arrangementer"
+
+#: event.module:1554
+msgid "NOW"
+msgstr "NU"
+
+#: event.module:1602
+msgid "Show in event calendar"
+msgstr "Vis i kalender"
+
+#: event.module:1602
+msgid "Never"
+msgstr "Aldrig"
+
+#: event.module:1602
+msgid "All views"
+msgstr "Alle visninger"
+
+#: event.module:1602
+msgid "Only in views for this type"
+msgstr "Kun visninger af denne type"
+
+#: event.module:1602
+msgid "None: This content type will not be associated with the events calendar.<br />All views: This content type will be available for display on all calendar views, including with other events.<br />Only in views for this type: This content type will only appear in calendar views specific to this type and never with other events."
+msgstr "Ingen: Indholdstypen bliver ikke knyttet til kalenderen.<br />Alle visninger: Denne indholdstype kan vises i alle kalendervisninger, også sammen med andre arrangementer.<br />Kun visninger af denne type: Indholdstypen vises kun i kalendervisninger af denne type, og aldrig sammen med andre arrangementer."
+
+#: event.module:1608
+msgid "Start date."
+msgstr "Start dato."
+
+#: event.module:1610
+msgid "End date."
+msgstr "Slut dato."
+
+#: event.module:1613
+msgid "Time zone"
+msgstr "Tidszone"
+
+#: event.module:1613
+msgid "Select the time zone this event occurs in."
+msgstr "Angiv hvilken tidszone arrangementet afholdes i."
+
+#: event.module:1786
+msgid "Daylight Savings Regions | Current GMT: %date"
+msgstr "Regioner med sommertid | Nuværende GMT: %date"
+
+#: event.module:1801
+msgid "Lets users make events and keep calendars."
+msgstr "Gør det muligt at oprette arrangementer og vedligeholde kalendre."
+
+#: event.module:1804
+msgid ""
+"\n"
+"      <h3>Background</h3>\n"
+"      <p>This version of event module implements the drupal nodeapi system. There is no native event node type as in versions previous to 4.6, but instead node types can be 'event-enabled' through the %configure-link, the same way in which file attachments are assigned to node types with upload.module. This, combined with the dynamic content type functionality of %flexinode-link, make it possible to define almost any kind of calendar.</p>\n"
+"      <p>Node types can be assigned to general calendar views, or only on their own calendar. For example, this makes it possible to have a general calendar which shows all 'meetups' and 'house parties' in the same place, but perhaps have a separate calendar for 'rallies' which only contains that type. The ability to filter calendar views by node type and taxonomy is also implemented, which allows many different possibilities for displaying content in the calendar system.</p>\n"
+"      \n"
+"      <h3><a id=\"url-format\"></a>Calendar display url formats</h3>\n"
+"      The ability to filter calendar views by content type and taxonomy enables almost unlimited possibilities for displaying content with the calendar system. You can combine taxonomy and content type filters, the url construction scheme is currently as follows:\n"
+"      <blockquote>\n"
+"      ?q=event/$year/$month/$day/$view_type/$content_type/$taxonomy_terms/$duration<br /><br />\n"
+"      <strong>$year:</strong> year value such as '2005'<br />\n"
+"      <strong>$month:</strong> month value with leading zeroes such as '02' for february<br />\n"
+"      <strong>$day:</strong> day value with leading zeroes such as '14'<br />\n"
+"      <strong>$view_type:</strong> type of calendar layout, values may include 'month', 'week', 'day', 'table', 'ical' for an ical export, and 'feed' for an rss feed.<br />\n"
+"      <strong>$content_type:</strong> list of node types, separated by '+'. Flexinode types only require the integer value of the type. For example, to view story nodes and type flexinode-1, you would use 'story+1'. The value 'all' will show all types.<br />\n"
+"      <strong>$taxonomy_terms:</strong> list of term ids, seperated by '+'. For example to view entries assigned to the taxonomy terms with ids 4 and 9 you would use '4+9'. The value 'all' will show all terms.<br />\n"
+"      <strong>$duration:</strong> number of days to display, currently only the table view obeys this setting. Eventually it may be used to specify additional duration parameters such as multiple weeks in the week view, or months in the month view.\n"
+"      </blockquote>\n"
+"      <p>There are url wrapper functions as well, which make it possible to easily create menu items to calendars by event type or taxonomy terms. This is necessary if you wish to create a link to a calendar but do not have a way to dynamically create the url based on the date, like in the menu or in a post.</p>\n"
+"      <p>For links to a taxonomy filtered calendar the format is:\n"
+"      <blockquote>\n"
+"      ?q=event/term/$taxonomy_terms<br /><br />\n"
+"      <strong>$taxonomy_terms:</strong> list of term ids, seperated by '+'. For example to view entries assigned to the taxonomy terms with ids 4 and 9 you would use '4+9'<br />\n"
+"      </blockquote>\n"
+"      For links to a content type filtered calendar the format is:\n"
+"      <blockquote>\n"
+"      ?q=event/type/$content_type<br /><br />\n"
+"      <strong>$content_type:</strong> list of node types, separated by '+'. Flexinode types only require the integer value of the type. For example, to view story nodes and type flexinode-1, you would use 'story+1'\n"
+"      </blockquote></p>"
+msgstr ""
+"\n"
+"<h3>Baggrund</h3>\n"
+"<p>Denne version af event modulet anvender Drupal's nodeapi. Der findes ikke længere indholdselementer af typen arrangement som i versioner før 4.6. I stedet kan alle indholdselementer fremstå som arrangementer  gennem %configure-link, på samme måde som vedhæftede filer kan knyttes til forskellige indholdstyper med upload modulet. Sammen med de felksible indholdstyper fra %flexinode-link er det muligt at oprette næsten enhver tænkelig kalender.</p>\n"
+"<p>Indholdstyper kan knyttes til generelle kalenderoversigter eller til deres egen kalender. Det er derfor muligt at have en kalender der viser 'gruppemøder' og 'fester' samme sted og en kalender der kun viser 'bestyrelsesmøder'. Det er muligt at filtrere kalendervisningen efter indholdstype og ordforråd, hvilket giver mange forskellige muligheder for at vise indholdet af kalendrene.</p>\n"
+"\n"
+"<h3><a id=\"url-format\"></a>URL formater for kalendervsining</h3>\n"
+"<p>Muligheden for at filtrere kalendervisningen efter indholdstype og ordforråd giver nærmest ubegrænsede muligheder for at vis indhold fra kalendrene. URLer opbygges på nuværende tidspunt som følger:</p>\n"
+"<blockquote>\n"
+"?q=event/$år/$måned/$dag/$visningstype/$indholdstype/$ordforråd/$varighed<br /><br />\n"
+"<strong>$år:</strong> det ønskede år, f.eks. '2005'<br />\n"
+"<strong>$måned:</strong> den ønskede måned angivet med to cifre, f.eks. '02' for februar<br />\n"
+"<strong>$dag:</strong> den ønskede dag angivet med to cifre, f.eks. '14'<br />\n"
+"<strong>$visningstype:</strong> kalenderens layout, vælg en af 'month', 'week', 'day' eller 'table' (hhv. måned, uge, dag og tabel)<br />\n"
+"<strong>$indholdstype:</strong> liste af indholdstyper adskilt af '+'. Flexinode typer kræver kun typens værdi. For at vise indhold af typerne 'story' og 'flexinode-1' bruges 'story+1'. Værdien 'all' viser alle typer.<br />\n"
+"<strong>$ordforråd:</strong> liste af ord IDer adskilt af '+'. For at vise indhold knyttet til ordene med ID 4 og 9 bruges '4+9'. Værdien 'all' viser alle ord.<br />\n"
+"<strong>$varighed:</strong> antal dage der vises, påvirker kun tabelvisningen. På længere sig vil den kunne bruges til at vise flere uger i ugevisning eller flere måneder i månedsvisningen.\n"
+"</blockquote>\n"
+"<p>Der findes desuden URL funktioner der gør det nemt at oprette henvisninger fra menupunkter til kalendre sorteret efter type eller emne. Dette er nødvendigt hvis du ønsker at oprette en henvisning til en kalender men ikke har mulighed for at oprette henvisningen dynamisk baseret på datoen, som f.eks. i et menupunkt eller et indlæg.</p>\n"
+"<p>For henvisninger til kalendre filtreret efter emner er formatet:\n"
+"<blockquote>\n"
+"?q=event/term/$ordforråd<br /><br />\n"
+"<strong>$ordforråd:</strong> liste af ord IDer adskilt af '+'. For at vise indhold knyttet til ordene med ID 4 og 9 bruges '4+9'<br />\n"
+"</blockquote>\n"
+"For henvisninger til kalendre filtreret efter indholdstypen er formatet:\n"
+"<blockquote>\n"
+"?q=event/type/$indholdstype<br /><br />\n"
+"<strong>$indholdstype:</strong> liste af indholdstyper adskilt af '+'. Flexinode typer kræver kun typens værdi. For at vise indhold af typerne 'story' og 'flexinode-1' bruges 'story+1'\n"
+"</blockquote></p>"
+
+#: event.module:1832
+msgid "content type management admin area"
+msgstr "administration af indholdstyper"
+
+#: event.module:1832
+msgid "flexinode"
+msgstr "flexinode"
+
+#: event.module:1835
+msgid "This is a listing of all the event system's time zones, sorted by daylight savings time regions, and thier respective offsets from GMT in seconds. Time zones in the 'None' region do not observe daylight savings time. If you believe there is an error, please first search for the locale on %timeanddate and confirm it. If there is indeed an error please submit a %bugreport on drupal.org so we can fix it."
+msgstr "Dette er en liste af alle arrangementsystemets tidszoner sorteret efter sommertidsregioner, og deres forskydning fra GMT i sekunder. Tidszoner i regionen 'ingen' bruger ikke sommertid. Hvis du mener der er en fejl bedes du først søge efter lokaliteten på %timeanddate for at bekræfte det. Hvis der er en fejl bedes du indsende en %bugreport på drupal.org så vi ka rette det."
+
+#: event.module:1557
+msgid "1 minute"
+msgid_plural "%count minutes"
+msgstr[0] "1 minut"
+msgstr[1] "%count minutter"
+
+#: event.module:1560
+msgid "1 hour"
+msgid_plural "%count hours"
+msgstr[0] "1 time"
+msgstr[1] "%count timer"
+
+#: event.module:1572
+msgid "1 day"
+msgid_plural "%count days"
+msgstr[0] "1 dag"
+msgstr[1] "%count dage"
+
+#: event.module:0
+msgid "event"
+msgstr "arrangement"
+
+#: event.theme:63
+#: ;119;168;203
+msgid "limit view to events of this type"
+msgstr "begræns visning til arrangementer af denne type"
+
+#: event.theme:65
+#: ;120;169;205
+msgid "view this event"
+msgstr "vis dette arrangement"
+
+#: event.theme:67
+#: ;103;109;153;159;209;215;227;278
+msgid "Start: "
+msgstr "Start:"
+
+#: event.theme:69
+#: ;105;112;155;162;211;218;229;280
+msgid "End: "
+msgstr "Slut:"
+
+#: event.theme:115
+#: ;165;221
+msgid "all day"
+msgstr "hele dagen"
+
+#: event.theme:235
+msgid "more info"
+msgstr "mere information"
+
+#: event.theme:235
+msgid "Show detailed information for this event."
+msgstr "Vis detaljeret information om dette arrangement."
+
+#: event.theme:250
+msgid "%month / %day"
+msgstr "%month / %day"
+
+#: event.theme:284
+msgid "Timezone: "
+msgstr "Tidszone:"
+
+#: event.theme:338
+msgid "Add to iCalendar"
+msgstr "Tilføj til iCalendar"
+
+#: event.theme:338
+msgid "Add this calendar to your iCalendar"
+msgstr "Tilføj kalenderen til din iCalendar"
+
+#: event.theme:349
+msgid "more"
+msgstr "mere"
+
+#: event.theme:349
+msgid "More events."
+msgstr "Flere arrangementer."
+
+#: event_timezones.inc:152
+msgid "None"
+msgstr "Ingen"
+
+#: event_timezones.inc:153
+#: ;550
+msgid "Egypt"
+msgstr "Ægypten"
+
+#: event_timezones.inc:154
+msgid "Namibia"
+msgstr "Namibien"
+
+#: event_timezones.inc:155
+msgid "Asia - Former USSR"
+msgstr "Asien - tidligere USSR"
+
+#: event_timezones.inc:156
+msgid "Iraq, Syria"
+msgstr "Irak, Syrien"
+
+#: event_timezones.inc:157
+#: ;646
+msgid "Israel"
+msgstr "Israel"
+
+#: event_timezones.inc:158
+msgid "Lebanon, Kirgizstan"
+msgstr "Libanon, Kirgisistan"
+
+#: event_timezones.inc:159
+msgid "Palestine"
+msgstr "Palæstina"
+
+#: event_timezones.inc:160
+#: ;645
+msgid "Iran"
+msgstr "Iran"
+
+#: event_timezones.inc:161
+msgid "South Australia"
+msgstr "Sydaustralien"
+
+#: event_timezones.inc:162
+msgid "Australia, Tasmania"
+msgstr "Australien, Tasmanien"
+
+#: event_timezones.inc:163
+msgid "New Zealand"
+msgstr "New Zealand"
+
+#: event_timezones.inc:164
+msgid "Tonga"
+msgstr "Tonga"
+
+#: event_timezones.inc:165
+msgid "EU and other European countries"
+msgstr "EU og andre Europæiske lande"
+
+#: event_timezones.inc:166
+msgid "Russian Federation"
+msgstr "Russiske Føderation"
+
+#: event_timezones.inc:167
+msgid "North America"
+msgstr "Nordamerika"
+
+#: event_timezones.inc:168
+#: ;548
+msgid "Cuba"
+msgstr "Cuba"
+
+#: event_timezones.inc:169
+msgid "Brazil"
+msgstr "Brasilien"
+
+#: event_timezones.inc:170
+msgid "Chile"
+msgstr "Chile"
+
+#: event_timezones.inc:171
+msgid "Falklands"
+msgstr "Falklandsøerne"
+
+#: event_timezones.inc:172
+msgid "Paraguay"
+msgstr "Paraguay"
+
+#: event_timezones.inc:255
+msgid "Africa/Addis_Ababa"
+msgstr "Afrika/Addis_Ababa"
+
+#: event_timezones.inc:256
+msgid "Africa/Algiers"
+msgstr "Afrika/Algiers"
+
+#: event_timezones.inc:257
+msgid "Africa/Asmera"
+msgstr "Afrika/Asmera"
+
+#: event_timezones.inc:258
+msgid "Africa/Bangui"
+msgstr "Afrika/Bangui"
+
+#: event_timezones.inc:259
+msgid "Africa/Blantyre"
+msgstr "Afrika/Blantyre"
+
+#: event_timezones.inc:260
+msgid "Africa/Brazzaville"
+msgstr "Afrika/Brazzaville"
+
+#: event_timezones.inc:261
+msgid "Africa/Bujumbura"
+msgstr "Afrika/Bujumbura"
+
+#: event_timezones.inc:262
+msgid "Africa/Cairo"
+msgstr "Afrika/Cairo"
+
+#: event_timezones.inc:263
+msgid "Africa/Ceuta"
+msgstr "Afrika/Ceuta"
+
+#: event_timezones.inc:264
+msgid "Africa/Dar_es_Salaam"
+msgstr "Afrika/Dar_es_Salaam"
+
+#: event_timezones.inc:265
+msgid "Africa/Djibouti"
+msgstr "Afrika/Djibouti"
+
+#: event_timezones.inc:266
+msgid "Africa/Douala"
+msgstr "Afrika/Douala"
+
+#: event_timezones.inc:267
+msgid "Africa/Gaborone"
+msgstr "Afrika/Gaborone"
+
+#: event_timezones.inc:268
+msgid "Africa/Harare"
+msgstr "Afrika/Harare"
+
+#: event_timezones.inc:269
+msgid "Africa/Johannesburg"
+msgstr "Afrika/Johannesburg"
+
+#: event_timezones.inc:270
+msgid "Africa/Kampala"
+msgstr "Afrika/Kampala"
+
+#: event_timezones.inc:271
+msgid "Africa/Khartoum"
+msgstr "Afrika/Khartoum"
+
+#: event_timezones.inc:272
+msgid "Africa/Kigali"
+msgstr "Afrika/Kigali"
+
+#: event_timezones.inc:273
+msgid "Africa/Kinshasa"
+msgstr "Afrika/Kinshasa"
+
+#: event_timezones.inc:274
+msgid "Africa/Lagos"
+msgstr "Afrika/Lagos"
+
+#: event_timezones.inc:275
+msgid "Africa/Libreville"
+msgstr "Afrika/Libreville"
+
+#: event_timezones.inc:276
+msgid "Africa/Luanda"
+msgstr "Afrika/Luanda"
+
+#: event_timezones.inc:277
+msgid "Africa/Lubumbashi"
+msgstr "Afrika/Lubumbashi"
+
+#: event_timezones.inc:278
+msgid "Africa/Lusaka"
+msgstr "Afrika/Lusaka"
+
+#: event_timezones.inc:279
+msgid "Africa/Malabo"
+msgstr "Afrika/Malabo"
+
+#: event_timezones.inc:280
+msgid "Africa/Maputo"
+msgstr "Afrika/Maputo"
+
+#: event_timezones.inc:281
+msgid "Africa/Maseru"
+msgstr "Afrika/Maseru"
+
+#: event_timezones.inc:282
+msgid "Africa/Mbabane"
+msgstr "Afrika/Mbabane"
+
+#: event_timezones.inc:283
+msgid "Africa/Mogadishu"
+msgstr "Afrika/Mogadishu"
+
+#: event_timezones.inc:284
+msgid "Africa/Nairobi"
+msgstr "Afrika/Nairobi"
+
+#: event_timezones.inc:285
+msgid "Africa/Ndjamena"
+msgstr "Afrika/Ndjamena"
+
+#: event_timezones.inc:286
+msgid "Africa/Niamey"
+msgstr "Afrika/Niamey"
+
+#: event_timezones.inc:287
+msgid "Africa/Porto-Novo"
+msgstr "Afrika/Porto-Novo"
+
+#: event_timezones.inc:288
+msgid "Africa/Tripoli"
+msgstr "Afrika/Tripoli"
+
+#: event_timezones.inc:289
+msgid "Africa/Tunis"
+msgstr "Afrika/Tunis"
+
+#: event_timezones.inc:290
+msgid "Africa/Windhoek"
+msgstr "Afrika/Windhoek"
+
+#: event_timezones.inc:291
+msgid "America/Adak"
+msgstr "Amerika/Adak"
+
+#: event_timezones.inc:292
+msgid "America/Anchorage"
+msgstr "Amerika/Anchorage"
+
+#: event_timezones.inc:293
+msgid "America/Anguilla"
+msgstr "Amerika/Anguilla"
+
+#: event_timezones.inc:294
+msgid "America/Antigua"
+msgstr "Amerika/Antigua"
+
+#: event_timezones.inc:295
+msgid "America/Araguaina"
+msgstr "Amerika/Araguaina"
+
+#: event_timezones.inc:296
+msgid "America/Aruba"
+msgstr "Amerika/Aruba"
+
+#: event_timezones.inc:297
+msgid "America/Asuncion"
+msgstr "Amerika/Asuncion"
+
+#: event_timezones.inc:298
+msgid "America/Atka"
+msgstr "Amerika/Atka"
+
+#: event_timezones.inc:299
+msgid "America/Barbados"
+msgstr "Amerika/Barbados"
+
+#: event_timezones.inc:300
+msgid "America/Belem"
+msgstr "Amerika/Belem"
+
+#: event_timezones.inc:301
+msgid "America/Belize"
+msgstr "Amerika/Belize"
+
+#: event_timezones.inc:302
+msgid "America/Boa_Vista"
+msgstr "Amerika/Boa_Vista"
+
+#: event_timezones.inc:303
+msgid "America/Bogota"
+msgstr "Amerika/Bogota"
+
+#: event_timezones.inc:304
+msgid "America/Boise"
+msgstr "Amerika/Boise"
+
+#: event_timezones.inc:305
+msgid "America/Buenos_Aires"
+msgstr "Amerika/Buenos_Aires"
+
+#: event_timezones.inc:306
+msgid "America/Cambridge_Bay"
+msgstr "Amerika/Cambridge_Bay"
+
+#: event_timezones.inc:307
+msgid "America/Cancun"
+msgstr "Amerika/Cancun"
+
+#: event_timezones.inc:308
+msgid "America/Caracas"
+msgstr "Amerika/Caracas"
+
+#: event_timezones.inc:309
+msgid "America/Catamarca"
+msgstr "Amerika/Catamarca"
+
+#: event_timezones.inc:310
+msgid "America/Cayenne"
+msgstr "Amerika/Cayenne"
+
+#: event_timezones.inc:311
+msgid "America/Cayman"
+msgstr "Amerika/Cayman"
+
+#: event_timezones.inc:312
+msgid "America/Chicago"
+msgstr "Amerika/Chicago"
+
+#: event_timezones.inc:313
+msgid "America/Chihuahua"
+msgstr "Amerika/Chihuahua"
+
+#: event_timezones.inc:314
+msgid "America/Cordoba"
+msgstr "Amerika/Cordoba"
+
+#: event_timezones.inc:315
+msgid "America/Costa_Rica"
+msgstr "Amerika/Costa_Rica"
+
+#: event_timezones.inc:316
+msgid "America/Cuiaba"
+msgstr "Amerika/Cuiaba"
+
+#: event_timezones.inc:317
+msgid "America/Curacao"
+msgstr "Amerika/Curacao"
+
+#: event_timezones.inc:318
+msgid "America/Dawson"
+msgstr "Amerika/Dawson"
+
+#: event_timezones.inc:319
+msgid "America/Dawson_Creek"
+msgstr "Amerika/Dawson_Creek"
+
+#: event_timezones.inc:320
+msgid "America/Denver"
+msgstr "Amerika/Denver"
+
+#: event_timezones.inc:321
+msgid "America/Detroit"
+msgstr "Amerika/Detroit"
+
+#: event_timezones.inc:322
+msgid "America/Dominica"
+msgstr "Amerika/Dominica"
+
+#: event_timezones.inc:323
+msgid "America/Edmonton"
+msgstr "Amerika/Edmonton"
+
+#: event_timezones.inc:324
+msgid "America/Eirunepe"
+msgstr "Amerika/Eirunepe"
+
+#: event_timezones.inc:325
+msgid "America/El_Salvador"
+msgstr "Amerika/El_Salvador"
+
+#: event_timezones.inc:326
+msgid "America/Ensenada"
+msgstr "Amerika/Ensenada"
+
+#: event_timezones.inc:327
+msgid "America/Fort_Wayne"
+msgstr "Amerika/Fort_Wayne"
+
+#: event_timezones.inc:328
+msgid "America/Fortaleza"
+msgstr "Amerika/Fortaleza"
+
+#: event_timezones.inc:329
+msgid "America/Glace_Bay"
+msgstr "Amerika/Glace_Bay"
+
+#: event_timezones.inc:330
+msgid "America/Godthab"
+msgstr "Amerika/Godthab"
+
+#: event_timezones.inc:331
+msgid "America/Goose_Bay"
+msgstr "Amerika/Goose_Bay"
+
+#: event_timezones.inc:332
+msgid "America/Grand_Turk"
+msgstr "Amerika/Grand_Turk"
+
+#: event_timezones.inc:333
+msgid "America/Grenada"
+msgstr "Amerika/Grenada"
+
+#: event_timezones.inc:334
+msgid "America/Guadeloupe"
+msgstr "Amerika/Guadeloupe"
+
+#: event_timezones.inc:335
+msgid "America/Guatemala"
+msgstr "Amerika/Guatemala"
+
+#: event_timezones.inc:336
+msgid "America/Guayaquil"
+msgstr "Amerika/Guayaquil"
+
+#: event_timezones.inc:337
+msgid "America/Guyana"
+msgstr "Amerika/Guyana"
+
+#: event_timezones.inc:338
+msgid "America/Halifax"
+msgstr "Amerika/Halifax"
+
+#: event_timezones.inc:339
+msgid "America/Havana"
+msgstr "Amerika/Havana"
+
+#: event_timezones.inc:340
+msgid "America/Hermosillo"
+msgstr "Amerika/Hermosillo"
+
+#: event_timezones.inc:341
+msgid "America/Indiana/Indianapolis"
+msgstr "Amerika/Indiana/Indianapolis"
+
+#: event_timezones.inc:342
+msgid "America/Indiana/Knox"
+msgstr "Amerika/Indiana/Knox"
+
+#: event_timezones.inc:343
+msgid "America/Indiana/Marengo"
+msgstr "Amerika/Indiana/Marengo"
+
+#: event_timezones.inc:344
+msgid "America/Indiana/Vevay"
+msgstr "Amerika/Indiana/Vevay"
+
+#: event_timezones.inc:345
+msgid "America/Indianapolis"
+msgstr "Amerika/Indianapolis"
+
+#: event_timezones.inc:346
+msgid "America/Inuvik"
+msgstr "Amerika/Inuvik"
+
+#: event_timezones.inc:347
+msgid "America/Iqaluit"
+msgstr "Amerika/Iqaluit"
+
+#: event_timezones.inc:348
+msgid "America/Jamaica"
+msgstr "Amerika/Jamaica"
+
+#: event_timezones.inc:349
+msgid "America/Jujuy"
+msgstr "Amerika/Jujuy"
+
+#: event_timezones.inc:350
+msgid "America/Juneau"
+msgstr "Amerika/Juneau"
+
+#: event_timezones.inc:351
+msgid "America/Kentucky/Louisville"
+msgstr "Amerika/Kentucky/Louisville"
+
+#: event_timezones.inc:352
+msgid "America/Kentucky/Monticello"
+msgstr "Amerika/Kentucky/Monticello"
+
+#: event_timezones.inc:353
+msgid "America/Knox_IN"
+msgstr "Amerika/Knox_IN"
+
+#: event_timezones.inc:354
+msgid "America/La_Paz"
+msgstr "Amerika/La_Paz"
+
+#: event_timezones.inc:355
+msgid "America/Lima"
+msgstr "Amerika/Lima"
+
+#: event_timezones.inc:356
+msgid "America/Los_Angeles"
+msgstr "Amerika/Los_Angeles"
+
+#: event_timezones.inc:357
+msgid "America/Louisville"
+msgstr "Amerika/Louisville"
+
+#: event_timezones.inc:358
+msgid "America/Maceio"
+msgstr "Amerika/Maceio"
+
+#: event_timezones.inc:359
+msgid "America/Managua"
+msgstr "Amerika/Managua"
+
+#: event_timezones.inc:360
+msgid "America/Manaus"
+msgstr "Amerika/Manaus"
+
+#: event_timezones.inc:361
+msgid "America/Martinique"
+msgstr "Amerika/Martinique"
+
+#: event_timezones.inc:362
+msgid "America/Mazatlan"
+msgstr "Amerika/Mazatlan"
+
+#: event_timezones.inc:363
+msgid "America/Mendoza"
+msgstr "Amerika/Mendoza"
+
+#: event_timezones.inc:364
+msgid "America/Menominee"
+msgstr "Amerika/Menominee"
+
+#: event_timezones.inc:365
+msgid "America/Merida"
+msgstr "Amerika/Merida"
+
+#: event_timezones.inc:366
+msgid "America/Mexico_City"
+msgstr "Amerika/Mexico_City"
+
+#: event_timezones.inc:367
+msgid "America/Miquelon"
+msgstr "Amerika/Miquelon"
+
+#: event_timezones.inc:368
+msgid "America/Monterrey"
+msgstr "Amerika/Monterrey"
+
+#: event_timezones.inc:369
+msgid "America/Montevideo"
+msgstr "Amerika/Montevideo"
+
+#: event_timezones.inc:370
+msgid "America/Montreal"
+msgstr "Amerika/Montreal"
+
+#: event_timezones.inc:371
+msgid "America/Montserrat"
+msgstr "Amerika/Montserrat"
+
+#: event_timezones.inc:372
+msgid "America/Nassau"
+msgstr "Amerika/Nassau"
+
+#: event_timezones.inc:373
+msgid "America/New_York"
+msgstr "Amerika/New York"
+
+#: event_timezones.inc:374
+msgid "America/Nipigon"
+msgstr "Amerika/Nipigon"
+
+#: event_timezones.inc:375
+msgid "America/Nome"
+msgstr "Amerika/Nome"
+
+#: event_timezones.inc:376
+msgid "America/Noronha"
+msgstr "Amerika/Noronha"
+
+#: event_timezones.inc:377
+msgid "America/Panama"
+msgstr "Amerika/Panama"
+
+#: event_timezones.inc:378
+msgid "America/Pangnirtung"
+msgstr "Amerika/Pangnirtung"
+
+#: event_timezones.inc:379
+msgid "America/Paramaribo"
+msgstr "Amerika/Paramaribo"
+
+#: event_timezones.inc:380
+msgid "America/Phoenix"
+msgstr "Amerika/Phoenix"
+
+#: event_timezones.inc:381
+msgid "America/Port-au-Prince"
+msgstr "Amerika/Port-au-Prince"
+
+#: event_timezones.inc:382
+msgid "America/Port_of_Spain"
+msgstr "Amerika/Port_of_Spain"
+
+#: event_timezones.inc:383
+msgid "America/Porto_Acre"
+msgstr "Amerika/Porto_Acre"
+
+#: event_timezones.inc:384
+msgid "America/Porto_Velho"
+msgstr "Amerika/Porto_Velho"
+
+#: event_timezones.inc:385
+msgid "America/Puerto_Rico"
+msgstr "Amerika/Puerto_Rico"
+
+#: event_timezones.inc:386
+msgid "America/Rainy_River"
+msgstr "Amerika/Rainy_River"
+
+#: event_timezones.inc:387
+msgid "America/Rankin_Inlet"
+msgstr "Amerika/Rankin_Inlet"
+
+#: event_timezones.inc:388
+msgid "America/Recife"
+msgstr "Amerika/Recife"
+
+#: event_timezones.inc:389
+msgid "America/Regina"
+msgstr "Amerika/Regina"
+
+#: event_timezones.inc:390
+msgid "America/Rio_Branco"
+msgstr "Amerika/Rio_Branco"
+
+#: event_timezones.inc:391
+msgid "America/Rosario"
+msgstr "Amerika/Rosario"
+
+#: event_timezones.inc:392
+msgid "America/Santiago"
+msgstr "Amerika/Santiago"
+
+#: event_timezones.inc:393
+msgid "America/Santo_Domingo"
+msgstr "Amerika/Santo_Domingo"
+
+#: event_timezones.inc:394
+msgid "America/Sao_Paulo"
+msgstr "Amerika/Sao_Paulo"
+
+#: event_timezones.inc:395
+msgid "America/Scoresbysund"
+msgstr "Amerika/Scoresbysund"
+
+#: event_timezones.inc:396
+msgid "America/Shiprock"
+msgstr "Amerika/Shiprock"
+
+#: event_timezones.inc:397
+msgid "America/St_Johns"
+msgstr "Amerika/St_Johns"
+
+#: event_timezones.inc:398
+msgid "America/St_Kitts"
+msgstr "Amerika/St_Kitts"
+
+#: event_timezones.inc:399
+msgid "America/St_Lucia"
+msgstr "Amerika/St_Lucia"
+
+#: event_timezones.inc:400
+msgid "America/St_Thomas"
+msgstr "Amerika/St_Thomas"
+
+#: event_timezones.inc:401
+msgid "America/St_Vincent"
+msgstr "Amerika/St_Vincent"
+
+#: event_timezones.inc:402
+msgid "America/Swift_Current"
+msgstr "Amerika/Swift_current"
+
+#: event_timezones.inc:403
+msgid "America/Tegucigalpa"
+msgstr "Amerika/Tegucigalpa"
+
+#: event_timezones.inc:404
+msgid "America/Thule"
+msgstr "Amerika/Thule"
+
+#: event_timezones.inc:405
+msgid "America/Thunder_Bay"
+msgstr "Amerika/Thunder_Bay"
+
+#: event_timezones.inc:406
+msgid "America/Tijuana"
+msgstr "Amerika/Tijuana"
+
+#: event_timezones.inc:407
+msgid "America/Tortola"
+msgstr "Amerika/Tortola"
+
+#: event_timezones.inc:408
+msgid "America/Vancouver"
+msgstr "Amerika/Vancouver"
+
+#: event_timezones.inc:409
+msgid "America/Virgin"
+msgstr "Amerika/Virgin"
+
+#: event_timezones.inc:410
+msgid "America/Whitehorse"
+msgstr "Amerika/Whitehorse"
+
+#: event_timezones.inc:411
+msgid "America/Winnipeg"
+msgstr "Amerika/Winnipeg"
+
+#: event_timezones.inc:412
+msgid "America/Yakutat"
+msgstr "Amerika/Yakutat"
+
+#: event_timezones.inc:413
+msgid "America/Yellowknife"
+msgstr "Amerika/Yellowknife"
+
+#: event_timezones.inc:414
+msgid "Antarctica/Casey"
+msgstr "Antarktis/Casey"
+
+#: event_timezones.inc:415
+msgid "Antarctica/Davis"
+msgstr "Antarktis/Davis"
+
+#: event_timezones.inc:416
+msgid "Antarctica/DumontDUrville"
+msgstr "Antarktis/DumontDUrville"
+
+#: event_timezones.inc:417
+msgid "Antarctica/Mawson"
+msgstr "Antarktis/Mawson"
+
+#: event_timezones.inc:418
+msgid "Antarctica/McMurdo"
+msgstr "Antarktis/McMurdo"
+
+#: event_timezones.inc:419
+msgid "Antarctica/Palmer"
+msgstr "Antarktis/Palmer"
+
+#: event_timezones.inc:420
+msgid "Antarctica/South_Pole"
+msgstr "Antarktis/South_Pole"
+
+#: event_timezones.inc:421
+msgid "Antarctica/Syowa"
+msgstr "Antarktis/Syowa"
+
+#: event_timezones.inc:422
+msgid "Antarctica/Vostok"
+msgstr "Antarktis/Vostok"
+
+#: event_timezones.inc:423
+msgid "Arctic/Longyearbyen"
+msgstr "Arktis/Longyearbyen"
+
+#: event_timezones.inc:424
+msgid "Asia/Aden"
+msgstr "Asien/Aden"
+
+#: event_timezones.inc:425
+msgid "Asia/Almaty"
+msgstr "Asien/Almaty"
+
+#: event_timezones.inc:426
+msgid "Asia/Amman"
+msgstr "Asien/Amman"
+
+#: event_timezones.inc:427
+msgid "Asia/Anadyr"
+msgstr "Asien/Anadyr"
+
+#: event_timezones.inc:428
+msgid "Asia/Aqtau"
+msgstr "Asien/Aqtau"
+
+#: event_timezones.inc:429
+msgid "Asia/Aqtobe"
+msgstr "Asien/Aqtobe"
+
+#: event_timezones.inc:430
+msgid "Asia/Ashgabat"
+msgstr "Asien/Ashgabat"
+
+#: event_timezones.inc:431
+msgid "Asia/Ashkhabad"
+msgstr "Asien/Ashkhabad"
+
+#: event_timezones.inc:432
+msgid "Asia/Baghdad"
+msgstr "Asien/Baghdad"
+
+#: event_timezones.inc:433
+msgid "Asia/Bahrain"
+msgstr "Asien/Bahrain"
+
+#: event_timezones.inc:434
+msgid "Asia/Baku"
+msgstr "Asien/Baku"
+
+#: event_timezones.inc:435
+msgid "Asia/Bangkok"
+msgstr "Asien/Bangkok"
+
+#: event_timezones.inc:436
+msgid "Asia/Beirut"
+msgstr "Asien/Beirut"
+
+#: event_timezones.inc:437
+msgid "Asia/Bishkek"
+msgstr "Asien/Bishkek"
+
+#: event_timezones.inc:438
+msgid "Asia/Brunei"
+msgstr "Asien/Brunei"
+
+#: event_timezones.inc:439
+msgid "Asia/Calcutta"
+msgstr "Asien/Calcutta"
+
+#: event_timezones.inc:440
+msgid "Asia/Chungking"
+msgstr "Asien/Chungking"
+
+#: event_timezones.inc:441
+msgid "Asia/Colombo"
+msgstr "Asien/Colombo"
+
+#: event_timezones.inc:442
+msgid "Asia/Dacca"
+msgstr "Asien/Dacca"
+
+#: event_timezones.inc:443
+msgid "Asia/Damascus"
+msgstr "Asien/Damascus"
+
+#: event_timezones.inc:444
+msgid "Asia/Dhaka"
+msgstr "Asien/Dhaka"
+
+#: event_timezones.inc:445
+msgid "Asia/Dili"
+msgstr "Asien/Dili"
+
+#: event_timezones.inc:446
+msgid "Asia/Dubai"
+msgstr "Asien/Dubai"
+
+#: event_timezones.inc:447
+msgid "Asia/Dushanbe"
+msgstr "Asien/Dushanbe"
+
+#: event_timezones.inc:448
+msgid "Asia/Gaza"
+msgstr "Asien/Gaza"
+
+#: event_timezones.inc:449
+msgid "Asia/Harbin"
+msgstr "Asien/Harbin"
+
+#: event_timezones.inc:450
+msgid "Asia/Hong_Kong"
+msgstr "Asien/Hong_Kong"
+
+#: event_timezones.inc:451
+msgid "Asia/Hovd"
+msgstr "Asien/Hovd"
+
+#: event_timezones.inc:452
+msgid "Asia/Irkutsk"
+msgstr "Asien/Irkutsk"
+
+#: event_timezones.inc:453
+msgid "Asia/Istanbul"
+msgstr "Asien/Istanbul"
+
+#: event_timezones.inc:454
+msgid "Asia/Jakarta"
+msgstr "Asien/Jakarta"
+
+#: event_timezones.inc:455
+msgid "Asia/Jayapura"
+msgstr "Asien/Jayapura"
+
+#: event_timezones.inc:456
+msgid "Asia/Jerusalem"
+msgstr "Asien/Jerusalem"
+
+#: event_timezones.inc:457
+msgid "Asia/Kabul"
+msgstr "Asien/Kabul"
+
+#: event_timezones.inc:458
+msgid "Asia/Kamchatka"
+msgstr "Asien/Kamchatka"
+
+#: event_timezones.inc:459
+msgid "Asia/Karachi"
+msgstr "Asien/Karachi"
+
+#: event_timezones.inc:460
+msgid "Asia/Kashgar"
+msgstr "Asien/Kashgar"
+
+#: event_timezones.inc:461
+msgid "Asia/Katmandu"
+msgstr "Asien/Katmandu"
+
+#: event_timezones.inc:462
+msgid "Asia/Krasnoyarsk"
+msgstr "Asien/Krasnoyarsk"
+
+#: event_timezones.inc:463
+msgid "Asia/Kuala_Lumpur"
+msgstr "Asien/Kuala_Lumpur"
+
+#: event_timezones.inc:464
+msgid "Asia/Kuching"
+msgstr "Asien/Kuching"
+
+#: event_timezones.inc:465
+msgid "Asia/Kuwait"
+msgstr "Asien/Kuwait"
+
+#: event_timezones.inc:466
+msgid "Asia/Macao"
+msgstr "Asien/Macao"
+
+#: event_timezones.inc:467
+msgid "Asia/Magadan"
+msgstr "Asien/Magadan"
+
+#: event_timezones.inc:468
+msgid "Asia/Manila"
+msgstr "Asien/Manila"
+
+#: event_timezones.inc:469
+msgid "Asia/Muscat"
+msgstr "Asien/Muscat"
+
+#: event_timezones.inc:470
+msgid "Asia/Nicosia"
+msgstr "Asien/Nicosia"
+
+#: event_timezones.inc:471
+msgid "Asia/Novosibirsk"
+msgstr "Asien/Novosibirsk"
+
+#: event_timezones.inc:472
+msgid "Asia/Omsk"
+msgstr "Asien/Omsk"
+
+#: event_timezones.inc:473
+msgid "Asia/Phnom_Penh"
+msgstr "Asien/Phnom_Penh"
+
+#: event_timezones.inc:474
+msgid "Asia/Pyongyang"
+msgstr "Asien/Pyongyang"
+
+#: event_timezones.inc:475
+msgid "Asia/Qatar"
+msgstr "Asien/Qatar"
+
+#: event_timezones.inc:476
+msgid "Asia/Rangoon"
+msgstr "Asien/Rangoon"
+
+#: event_timezones.inc:477
+msgid "Asia/Riyadh"
+msgstr "Asien/Riyadh"
+
+#: event_timezones.inc:478
+msgid "Asia/Riyadh87"
+msgstr "Asien/Riyadh87"
+
+#: event_timezones.inc:479
+msgid "Asia/Riyadh88"
+msgstr "Asien/Riyadh88"
+
+#: event_timezones.inc:480
+msgid "Asia/Riyadh89"
+msgstr "Asien/Riyadh89"
+
+#: event_timezones.inc:481
+msgid "Asia/Saigon"
+msgstr "Asien/Saigon"
+
+#: event_timezones.inc:482
+msgid "Asia/Samarkand"
+msgstr "Asien/Samarkand"
+
+#: event_timezones.inc:483
+msgid "Asia/Seoul"
+msgstr "Asien/Seoul"
+
+#: event_timezones.inc:484
+msgid "Asia/Shanghai"
+msgstr "Asien/Shanghai"
+
+#: event_timezones.inc:485
+msgid "Asia/Singapore"
+msgstr "Asien/Singapore"
+
+#: event_timezones.inc:486
+msgid "Asia/Taipei"
+msgstr "Asien/Taipei"
+
+#: event_timezones.inc:487
+msgid "Asia/Tashkent"
+msgstr "Asien/Tashkent"
+
+#: event_timezones.inc:488
+msgid "Asia/Tbilisi"
+msgstr "Asien/Tbilisi"
+
+#: event_timezones.inc:489
+msgid "Asia/Tehran"
+msgstr "Asien/Tehran"
+
+#: event_timezones.inc:490
+msgid "Asia/Tel_Aviv"
+msgstr "Asien/Tel_Aviv"
+
+#: event_timezones.inc:491
+msgid "Asia/Thimbu"
+msgstr "Asien/Thimbu"
+
+#: event_timezones.inc:492
+msgid "Asia/Thimphu"
+msgstr "Asien/Thimphu"
+
+#: event_timezones.inc:493
+msgid "Asia/Tokyo"
+msgstr "Asien/Tokyo"
+
+#: event_timezones.inc:494
+msgid "Asia/Ujung_Pandang"
+msgstr "Asien/Ujung_Pandang"
+
+#: event_timezones.inc:495
+msgid "Asia/Ulaanbaatar"
+msgstr "Asien/Ulaanbaatar"
+
+#: event_timezones.inc:496
+msgid "Asia/Ulan_Bator"
+msgstr "Asien/Ulan_Bator"
+
+#: event_timezones.inc:497
+msgid "Asia/Urumqi"
+msgstr "Asien/Urumqi"
+
+#: event_timezones.inc:498
+msgid "Asia/Vientiane"
+msgstr "Asien/Vientiane"
+
+#: event_timezones.inc:499
+msgid "Asia/Vladivostok"
+msgstr "Asien/Vladivostok"
+
+#: event_timezones.inc:500
+msgid "Asia/Yakutsk"
+msgstr "Asien/Yakutsk"
+
+#: event_timezones.inc:501
+msgid "Asia/Yekaterinburg"
+msgstr "Asien/Yekaterinburg"
+
+#: event_timezones.inc:502
+msgid "Asia/Yerevan"
+msgstr "Asien/Yerevan"
+
+#: event_timezones.inc:503
+msgid "Atlantic/Azores"
+msgstr "Atlanten/Azores"
+
+#: event_timezones.inc:504
+msgid "Atlantic/Bermuda"
+msgstr "Atlanten/Bermuda"
+
+#: event_timezones.inc:505
+msgid "Atlantic/Canary"
+msgstr "Atlanten/Canary"
+
+#: event_timezones.inc:506
+msgid "Atlantic/Cape_Verde"
+msgstr "Atlanten/Cape_Verde"
+
+#: event_timezones.inc:507
+msgid "Atlantic/Faeroe"
+msgstr "Atlanten/Faeroe"
+
+#: event_timezones.inc:508
+msgid "Atlantic/Jan_Mayen"
+msgstr "Atlanten/Jan_Mayen"
+
+#: event_timezones.inc:509
+msgid "Atlantic/Madeira"
+msgstr "Atlanten/Madeira"
+
+#: event_timezones.inc:510
+msgid "Atlantic/South_Georgia"
+msgstr "Atlanten/South_Georgia"
+
+#: event_timezones.inc:511
+msgid "Atlantic/Stanley"
+msgstr "Atlanten/Stanley"
+
+#: event_timezones.inc:512
+msgid "Australia/ACT"
+msgstr "Australien/ACT"
+
+#: event_timezones.inc:513
+msgid "Australia/Adelaide"
+msgstr "Australien/Adelaide"
+
+#: event_timezones.inc:514
+msgid "Australia/Brisbane"
+msgstr "Australien/Brisbane"
+
+#: event_timezones.inc:515
+msgid "Australia/Broken_Hill"
+msgstr "Australien/Broken_Hill"
+
+#: event_timezones.inc:516
+msgid "Australia/Canberra"
+msgstr "Australien/Canberra"
+
+#: event_timezones.inc:517
+msgid "Australia/Darwin"
+msgstr "Australien/Darwin"
+
+#: event_timezones.inc:518
+msgid "Australia/Hobart"
+msgstr "Australien/Hobart"
+
+#: event_timezones.inc:519
+msgid "Australia/LHI"
+msgstr "Australien/LHI"
+
+#: event_timezones.inc:520
+msgid "Australia/Lindeman"
+msgstr "Australien/Lindeman"
+
+#: event_timezones.inc:521
+msgid "Australia/Lord_Howe"
+msgstr "Australien/Lord_Howe"
+
+#: event_timezones.inc:522
+msgid "Australia/Melbourne"
+msgstr "Australien/Melbourne"
+
+#: event_timezones.inc:523
+msgid "Australia/NSW"
+msgstr "Australien/NSW"
+
+#: event_timezones.inc:524
+msgid "Australia/North"
+msgstr "Australien/nord"
+
+#: event_timezones.inc:525
+msgid "Australia/Perth"
+msgstr "Australien/Perth"
+
+#: event_timezones.inc:526
+msgid "Australia/Queensland"
+msgstr "Australien/Queensland"
+
+#: event_timezones.inc:527
+msgid "Australia/South"
+msgstr "Australien/syd"
+
+#: event_timezones.inc:528
+msgid "Australia/Sydney"
+msgstr "Australien/Sydney"
+
+#: event_timezones.inc:529
+msgid "Australia/Tasmania"
+msgstr "Australien/Tasmania"
+
+#: event_timezones.inc:530
+msgid "Australia/Victoria"
+msgstr "Australien/Victoria"
+
+#: event_timezones.inc:531
+msgid "Australia/West"
+msgstr "Australien/West"
+
+#: event_timezones.inc:532
+msgid "Australia/Yancowinna"
+msgstr "Australien/Yancowinna"
+
+#: event_timezones.inc:533
+msgid "Brazil/Acre"
+msgstr "Brasilien/Acre"
+
+#: event_timezones.inc:534
+msgid "Brazil/DeNoronha"
+msgstr "Brasilien/DeNoronha"
+
+#: event_timezones.inc:535
+msgid "Brazil/East"
+msgstr "Brasilien/East"
+
+#: event_timezones.inc:536
+msgid "Brazil/West"
+msgstr "Brasilien/West"
+
+#: event_timezones.inc:537
+msgid "Canada/Atlantic"
+msgstr "Canada/Atlanten"
+
+#: event_timezones.inc:538
+msgid "Canada/Central"
+msgstr "Canada/Central"
+
+#: event_timezones.inc:539
+msgid "Canada/East-Saskatchewan"
+msgstr "Canada/Øst-Saskatchewan"
+
+#: event_timezones.inc:540
+msgid "Canada/Eastern"
+msgstr "Canada/Østlig"
+
+#: event_timezones.inc:541
+msgid "Canada/Mountain"
+msgstr "Canada/Bjerg"
+
+#: event_timezones.inc:542
+msgid "Canada/Newfoundland"
+msgstr "Canada/Newfoundland"
+
+#: event_timezones.inc:543
+msgid "Canada/Pacific"
+msgstr "Canada/Stillehavet"
+
+#: event_timezones.inc:544
+msgid "Canada/Saskatchewan"
+msgstr "Canada/Saskatchewan"
+
+#: event_timezones.inc:545
+msgid "Canada/Yukon"
+msgstr "Canada/Yukon"
+
+#: event_timezones.inc:546
+msgid "Chile/Continental"
+msgstr "Chile/Kontinental"
+
+#: event_timezones.inc:547
+msgid "Chile/EasterIsland"
+msgstr "Chile/Påskeøen"
+
+#: event_timezones.inc:549
+msgid "EST"
+msgstr "EST"
+
+#: event_timezones.inc:551
+msgid "Eire"
+msgstr "Irland"
+
+#: event_timezones.inc:552
+msgid "Etc/GMT+1"
+msgstr "Etc/GMT+1"
+
+#: event_timezones.inc:553
+msgid "Etc/GMT+10"
+msgstr "Etc/GMT+10"
+
+#: event_timezones.inc:554
+msgid "Etc/GMT+11"
+msgstr "Etc/GMT+11"
+
+#: event_timezones.inc:555
+msgid "Etc/GMT+12"
+msgstr "Etc/GMT+12"
+
+#: event_timezones.inc:556
+msgid "Etc/GMT+2"
+msgstr "Etc/GMT+2"
+
+#: event_timezones.inc:557
+msgid "Etc/GMT+3"
+msgstr "Etc/GMT+3"
+
+#: event_timezones.inc:558
+msgid "Etc/GMT+4"
+msgstr "Etc/GMT+4"
+
+#: event_timezones.inc:559
+msgid "Etc/GMT+5"
+msgstr "Etc/GMT+5"
+
+#: event_timezones.inc:560
+msgid "Etc/GMT+6"
+msgstr "Etc/GMT+6"
+
+#: event_timezones.inc:561
+msgid "Etc/GMT+7"
+msgstr "Etc/GMT+7"
+
+#: event_timezones.inc:562
+msgid "Etc/GMT+8"
+msgstr "Etc/GMT+8"
+
+#: event_timezones.inc:563
+msgid "Etc/GMT+9"
+msgstr "Etc/GMT+9"
+
+#: event_timezones.inc:564
+msgid "Etc/GMT"
+msgstr "Etc/GMT"
+
+#: event_timezones.inc:565
+msgid "Etc/GMT-1"
+msgstr "Etc/GMT-1"
+
+#: event_timezones.inc:566
+msgid "Etc/GMT-10"
+msgstr "Etc/GMT-10"
+
+#: event_timezones.inc:567
+msgid "Etc/GMT-11"
+msgstr "Etc/GMT-11"
+
+#: event_timezones.inc:568
+msgid "Etc/GMT-12"
+msgstr "Etc/GMT-12"
+
+#: event_timezones.inc:569
+msgid "Etc/GMT-13"
+msgstr "Etc/GMT-13"
+
+#: event_timezones.inc:570
+msgid "Etc/GMT-14"
+msgstr "Etc/GMT-14"
+
+#: event_timezones.inc:571
+msgid "Etc/GMT-2"
+msgstr "Etc/GMT-2"
+
+#: event_timezones.inc:572
+msgid "Etc/GMT-3"
+msgstr "Etc/GMT-3"
+
+#: event_timezones.inc:573
+msgid "Etc/GMT-4"
+msgstr "Etc/GMT-4"
+
+#: event_timezones.inc:574
+msgid "Etc/GMT-5"
+msgstr "Etc/GMT-5"
+
+#: event_timezones.inc:575
+msgid "Etc/GMT-6"
+msgstr "Etc/GMT-6"
+
+#: event_timezones.inc:576
+msgid "Etc/GMT-7"
+msgstr "Etc/GMT-7"
+
+#: event_timezones.inc:577
+msgid "Etc/GMT-8"
+msgstr "Etc/GMT-8"
+
+#: event_timezones.inc:578
+msgid "Etc/GMT-9"
+msgstr "Etc/GMT-9"
+
+#: event_timezones.inc:579
+msgid "Europe/Amsterdam"
+msgstr "Europa/Amsterdam"
+
+#: event_timezones.inc:580
+msgid "Europe/Andorra"
+msgstr "Europa/Andorra"
+
+#: event_timezones.inc:581
+msgid "Europe/Athens"
+msgstr "Europa/Athen"
+
+#: event_timezones.inc:582
+msgid "Europe/Belfast"
+msgstr "Europa/Belfast"
+
+#: event_timezones.inc:583
+msgid "Europe/Belgrade"
+msgstr "Europa/Beograd"
+
+#: event_timezones.inc:584
+msgid "Europe/Berlin"
+msgstr "Europa/Berlin"
+
+#: event_timezones.inc:585
+msgid "Europe/Bratislava"
+msgstr "Europa/Bratislava"
+
+#: event_timezones.inc:586
+msgid "Europe/Brussels"
+msgstr "Europa/Bruxelles"
+
+#: event_timezones.inc:587
+msgid "Europe/Bucharest"
+msgstr "Europa/Bukarest"
+
+#: event_timezones.inc:588
+msgid "Europe/Budapest"
+msgstr "Europa/Budapest"
+
+#: event_timezones.inc:589
+msgid "Europe/Chisinau"
+msgstr "Europa/Chisinau"
+
+#: event_timezones.inc:590
+msgid "Europe/Copenhagen"
+msgstr "Europa/København"
+
+#: event_timezones.inc:591
+msgid "Europe/Dublin"
+msgstr "Europa/Dublin"
+
+#: event_timezones.inc:592
+msgid "Europe/Gibraltar"
+msgstr "Europa/Gibraltar"
+
+#: event_timezones.inc:593
+msgid "Europe/Helsinki"
+msgstr "Europa/Helsinki"
+
+#: event_timezones.inc:594
+msgid "Europe/Istanbul"
+msgstr "Europa/Istanbul"
+
+#: event_timezones.inc:595
+msgid "Europe/Kaliningrad"
+msgstr "Europa/Kaliningrad"
+
+#: event_timezones.inc:596
+msgid "Europe/Kiev"
+msgstr "Europa/Kiev"
+
+#: event_timezones.inc:597
+msgid "Europe/Lisbon"
+msgstr "Europa/Lissabon"
+
+#: event_timezones.inc:598
+msgid "Europe/Ljubljana"
+msgstr "Europa/Ljubljana"
+
+#: event_timezones.inc:599
+msgid "Europe/London"
+msgstr "Europa/London"
+
+#: event_timezones.inc:600
+msgid "Europe/Luxembourg"
+msgstr "Europa/Luxembourg"
+
+#: event_timezones.inc:601
+msgid "Europe/Madrid"
+msgstr "Europa/Madrid"
+
+#: event_timezones.inc:602
+msgid "Europe/Malta"
+msgstr "Europa/Malta"
+
+#: event_timezones.inc:603
+msgid "Europe/Minsk"
+msgstr "Europa/Minsk"
+
+#: event_timezones.inc:604
+msgid "Europe/Monaco"
+msgstr "Europa/Monaco"
+
+#: event_timezones.inc:605
+msgid "Europe/Moscow"
+msgstr "Europa/Moscow"
+
+#: event_timezones.inc:606
+msgid "Europe/Nicosia"
+msgstr "Europa/Nicosia"
+
+#: event_timezones.inc:607
+msgid "Europe/Oslo"
+msgstr "Europa/Oslo"
+
+#: event_timezones.inc:608
+msgid "Europe/Paris"
+msgstr "Europa/Paris"
+
+#: event_timezones.inc:609
+msgid "Europe/Prague"
+msgstr "Europa/Prag"
+
+#: event_timezones.inc:610
+msgid "Europe/Riga"
+msgstr "Europa/Riga"
+
+#: event_timezones.inc:611
+msgid "Europe/Rome"
+msgstr "Europa/Rom"
+
+#: event_timezones.inc:612
+msgid "Europe/Samara"
+msgstr "Europa/Samara"
+
+#: event_timezones.inc:613
+msgid "Europe/San_Marino"
+msgstr "Europa/San_Marino"
+
+#: event_timezones.inc:614
+msgid "Europe/Sarajevo"
+msgstr "Europa/Sarajevo"
+
+#: event_timezones.inc:615
+msgid "Europe/Simferopol"
+msgstr "Europa/Simferopol"
+
+#: event_timezones.inc:616
+msgid "Europe/Skopje"
+msgstr "Europa/Skopje"
+
+#: event_timezones.inc:617
+msgid "Europe/Sofia"
+msgstr "Europa/Sofia"
+
+#: event_timezones.inc:618
+msgid "Europe/Stockholm"
+msgstr "Europa/Stockholm"
+
+#: event_timezones.inc:619
+msgid "Europe/Tallinn"
+msgstr "Europa/Tallinn"
+
+#: event_timezones.inc:620
+msgid "Europe/Tirane"
+msgstr "Europa/Tirana"
+
+#: event_timezones.inc:621
+msgid "Europe/Tiraspol"
+msgstr "Europa/Tiraspol"
+
+#: event_timezones.inc:622
+msgid "Europe/Uzhgorod"
+msgstr "Europa/Uzhgorod"
+
+#: event_timezones.inc:623
+msgid "Europe/Vaduz"
+msgstr "Europa/Vaduz"
+
+#: event_timezones.inc:624
+msgid "Europe/Vatican"
+msgstr "Europa/Vatikanet"
+
+#: event_timezones.inc:625
+msgid "Europe/Vienna"
+msgstr "Europa/Wien"
+
+#: event_timezones.inc:626
+msgid "Europe/Vilnius"
+msgstr "Europa/Vilnius"
+
+#: event_timezones.inc:627
+msgid "Europe/Warsaw"
+msgstr "Europa/Warszawa"
+
+#: event_timezones.inc:628
+msgid "Europe/Zagreb"
+msgstr "Europa/Zagreb"
+
+#: event_timezones.inc:629
+msgid "Europe/Zaporozhye"
+msgstr "Europa/Zaporozhye"
+
+#: event_timezones.inc:630
+msgid "Europe/Zurich"
+msgstr "Europa/Zürich"
+
+#: event_timezones.inc:631
+msgid "GB"
+msgstr "Storbrittanien"
+
+#: event_timezones.inc:632
+msgid "GB-Eire"
+msgstr "Storbrittanien-Irland"
+
+#: event_timezones.inc:633
+msgid "Hongkong"
+msgstr "Hongkong"
+
+#: event_timezones.inc:634
+msgid "Indian/Antananarivo"
+msgstr "Indien/Antananarivo"
+
+#: event_timezones.inc:635
+msgid "Indian/Chagos"
+msgstr "Indien/Chagos"
+
+#: event_timezones.inc:636
+msgid "Indian/Christmas"
+msgstr "Indien/Juleøerne"
+
+#: event_timezones.inc:637
+msgid "Indian/Cocos"
+msgstr "Indien/Cocos"
+
+#: event_timezones.inc:638
+msgid "Indian/Comoro"
+msgstr "Indien/Comoro"
+
+#: event_timezones.inc:639
+msgid "Indian/Kerguelen"
+msgstr "Indien/Kerguelen"
+
+#: event_timezones.inc:640
+msgid "Indian/Mahe"
+msgstr "Indien/Mahe"
+
+#: event_timezones.inc:641
+msgid "Indian/Maldives"
+msgstr "Indien/Maldives"
+
+#: event_timezones.inc:642
+msgid "Indian/Mauritius"
+msgstr "Indien/Mauritius"
+
+#: event_timezones.inc:643
+msgid "Indian/Mayotte"
+msgstr "Indien/Mayotte"
+
+#: event_timezones.inc:644
+msgid "Indian/Reunion"
+msgstr "Indien/Reunion"
+
+#: event_timezones.inc:647
+msgid "Jamaica"
+msgstr "Jamaica"
+
+#: event_timezones.inc:648
+msgid "Japan"
+msgstr "Japan"
+
+#: event_timezones.inc:649
+msgid "Kwajalein"
+msgstr "Kwajalein"
+
+#: event_timezones.inc:650
+msgid "Libya"
+msgstr "Libyen"
+
+#: event_timezones.inc:651
+msgid "Mexico/BajaNorte"
+msgstr "Mexico/BajaNorte"
+
+#: event_timezones.inc:652
+msgid "Mexico/BajaSur"
+msgstr "Mexico/BajaSur"
+
+#: event_timezones.inc:653
+msgid "Mexico/General"
+msgstr "Mexico/Generelt"
+
+#: event_timezones.inc:654
+msgid "Mideast/Riyadh87"
+msgstr "Mellemøsten/Riyadh87"
+
+#: event_timezones.inc:655
+msgid "Mideast/Riyadh88"
+msgstr "Mellemøsten/Riyadh88"
+
+#: event_timezones.inc:656
+msgid "Mideast/Riyadh89"
+msgstr "Mellemøsten/Riyadh89"
+
+#: event_timezones.inc:657
+msgid "NZ"
+msgstr "New Zealand"
+
+#: event_timezones.inc:658
+msgid "Navajo"
+msgstr "Navajo"
+
+#: event_timezones.inc:659
+msgid "Pacific/Apia"
+msgstr "Stillehavet/Apia"
+
+#: event_timezones.inc:660
+msgid "Pacific/Auckland"
+msgstr "Stillehavet/Auckland"
+
+#: event_timezones.inc:661
+msgid "Pacific/Chatham"
+msgstr "Stillehavet/Chatham"
+
+#: event_timezones.inc:662
+msgid "Pacific/Easter"
+msgstr "Stillehavet/Påskeøerne"
+
+#: event_timezones.inc:663
+msgid "Pacific/Efate"
+msgstr "Stillehavet/Efate"
+
+#: event_timezones.inc:664
+msgid "Pacific/Enderbury"
+msgstr "Stillehavet/Enderbury"
+
+#: event_timezones.inc:665
+msgid "Pacific/Fakaofo"
+msgstr "Stillehavet/Fakaofo"
+
+#: event_timezones.inc:666
+msgid "Pacific/Fiji"
+msgstr "Stillehavet/Fiji"
+
+#: event_timezones.inc:667
+msgid "Pacific/Funafuti"
+msgstr "Stillehavet/Funafuti"
+
+#: event_timezones.inc:668
+msgid "Pacific/Galapagos"
+msgstr "Stillehavet/Galapagos"
+
+#: event_timezones.inc:669
+msgid "Pacific/Gambier"
+msgstr "Stillehavet/Gambier"
+
+#: event_timezones.inc:670
+msgid "Pacific/Guadalcanal"
+msgstr "Stillehavet/Guadalcanal"
+
+#: event_timezones.inc:671
+msgid "Pacific/Guam"
+msgstr "Stillehavet/Guam"
+
+#: event_timezones.inc:672
+msgid "Pacific/Honolulu"
+msgstr "Stillehavet/Honolulu"
+
+#: event_timezones.inc:673
+msgid "Pacific/Johnston"
+msgstr "Stillehavet/Johnston"
+
+#: event_timezones.inc:674
+msgid "Pacific/Kiritimati"
+msgstr "Stillehavet/Kiritimati"
+
+#: event_timezones.inc:675
+msgid "Pacific/Kosrae"
+msgstr "Stillehavet/Kosrae"
+
+#: event_timezones.inc:676
+msgid "Pacific/Kwajalein"
+msgstr "Stillehavet/Kwajalein"
+
+#: event_timezones.inc:677
+msgid "Pacific/Majuro"
+msgstr "Stillehavet/Majuro"
+
+#: event_timezones.inc:678
+msgid "Pacific/Marquesas"
+msgstr "Stillehavet/Marquesas"
+
+#: event_timezones.inc:679
+msgid "Pacific/Midway"
+msgstr "Stillehavet/Midway"
+
+#: event_timezones.inc:680
+msgid "Pacific/Nauru"
+msgstr "Stillehavet/Nauru"
+
+#: event_timezones.inc:681
+msgid "Pacific/Niue"
+msgstr "Stillehavet/Niue"
+
+#: event_timezones.inc:682
+msgid "Pacific/Norfolk"
+msgstr "Stillehavet/Norfolk"
+
+#: event_timezones.inc:683
+msgid "Pacific/Noumea"
+msgstr "Stillehavet/Noumea"
+
+#: event_timezones.inc:684
+msgid "Pacific/Pago_Pago"
+msgstr "Stillehavet/Pago_Pago"
+
+#: event_timezones.inc:685
+msgid "Pacific/Palau"
+msgstr "Stillehavet/Palau"
+
+#: event_timezones.inc:686
+msgid "Pacific/Pitcairn"
+msgstr "Stillehavet/Pitcairn"
+
+#: event_timezones.inc:687
+msgid "Pacific/Ponape"
+msgstr "Stillehavet/Ponape"
+
+#: event_timezones.inc:688
+msgid "Pacific/Port_Moresby"
+msgstr "Stillehavet/Port_Moresby"
+
+#: event_timezones.inc:689
+msgid "Pacific/Rarotonga"
+msgstr "Stillehavet/Rarotonga"
+
+#: event_timezones.inc:690
+msgid "Pacific/Saipan"
+msgstr "Stillehavet/Saipan"
+
+#: event_timezones.inc:691
+msgid "Pacific/Samoa"
+msgstr "Stillehavet/Samoa"
+
+#: event_timezones.inc:692
+msgid "Pacific/Tahiti"
+msgstr "Stillehavet/Tahiti"
+
+#: event_timezones.inc:693
+msgid "Pacific/Tarawa"
+msgstr "Stillehavet/Tarawa"
+
+#: event_timezones.inc:694
+msgid "Pacific/Tongatapu"
+msgstr "Stillehavet/Tongatapu"
+
+#: event_timezones.inc:695
+msgid "Pacific/Truk"
+msgstr "Stillehavet/Truk"
+
+#: event_timezones.inc:696
+msgid "Pacific/Wake"
+msgstr "Stillehavet/Wake"
+
+#: event_timezones.inc:697
+msgid "Pacific/Wallis"
+msgstr "Stillehavet/Wallis"
+
+#: event_timezones.inc:698
+msgid "Pacific/Yap"
+msgstr "Stillehavet/Yap"
+
+#: event_timezones.inc:699
+msgid "Poland"
+msgstr "Polen"
+
+#: event_timezones.inc:700
+msgid "Portugal"
+msgstr "Portugal"
+
+#: event_timezones.inc:701
+msgid "Singapore"
+msgstr "Singapore"
+
+#: event_timezones.inc:702
+msgid "Turkey"
+msgstr "Tyrkiet"
+
+#: event_timezones.inc:703
+msgid "US/Alaska"
+msgstr "US/Alaska"
+
+#: event_timezones.inc:704
+msgid "US/Aleutian"
+msgstr "US/Aleuthan"
+
+#: event_timezones.inc:705
+msgid "US/Arizona"
+msgstr "US/Arizona"
+
+#: event_timezones.inc:706
+msgid "US/Central"
+msgstr "US/Central"
+
+#: event_timezones.inc:707
+msgid "US/East-Indiana"
+msgstr "USA/Øst-Indiana"
+
+#: event_timezones.inc:708
+msgid "US/Eastern"
+msgstr "US/Eastern"
+
+#: event_timezones.inc:709
+msgid "US/Hawaii"
+msgstr "US/Hawaii"
+
+#: event_timezones.inc:710
+msgid "US/Indiana-Starke"
+msgstr "USA/Indiana-Starke"
+
+#: event_timezones.inc:711
+msgid "US/Michigan"
+msgstr "US/Michigan"
+
+#: event_timezones.inc:712
+msgid "US/Mountain"
+msgstr "US/Mountain"
+
+#: event_timezones.inc:713
+msgid "US/Pacific"
+msgstr "US/Pacific"
+
+#: event_timezones.inc:714
+msgid "US/Samoa"
+msgstr "US/Samoa"
+
+#: event_timezones.inc:715
+msgid "Pacific/French Polynesia-Marquesas Islands"
+msgstr "Stillehavet/Fransk Polynesien"
+
+#: ical.inc:284
+msgid "iCalendar API for Events Modules"
+msgstr "iCalendar API for arrangementer"
+
+#: ical.inc:0
+msgid "ical"
+msgstr "ical"
+
