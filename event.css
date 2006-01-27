@@ -15,7 +15,6 @@
 .event-calendar th {
   color: #000;
   background: #aac;
-  font-size: 120%;
   text-align: center;
   padding: 1px 0.33em;
   border: 1px solid #242;
@@ -28,6 +27,7 @@
   margin: 0;
   padding: 0;
 }
+
 .event-calendar th.heading {
   border-width: 1px 0px;
 }
@@ -44,8 +44,12 @@
   color: #363636;
 }
 .event-calendar td a {
+  color: #222244;
   font-weight: bold;
   text-decoration: none;
+}
+.event-calendar td a:hover {
+  text-decoration: underline;
 }
 .event-calendar td.sat, .event-calendar td.sun {
   background: #fdd;
@@ -58,8 +62,6 @@
 }
 .event-calendar td.year, .event-calendar td.month {
   text-align: center;
-  font-weight: bold;
-  font-size: 1.2em;
   border-width: 1px 0px;
 }
 
@@ -67,9 +69,7 @@
 .event-calendar td.days {
   color: #cce;
   background: #224;
-  font-weight: bold;
   text-align: center;
-  padding: 1px 0.33em;
   border: 1px solid #242;
   border-width: 0 1px 1px 0;
 }
@@ -88,7 +88,6 @@
 /*  event node times for the body */
 .event-nodeapi div {
   color: #000;
-  font-weight: bold;
   padding: 0.5em 1em 0 0;
 }
 .event-nodeapi div label { color: #999; }
@@ -100,14 +99,11 @@
   border: solid 1px #555;
   text-align: left;
   margin: 0.25em 0 0.5em 0.25em;
-  font-size: 1em;
 }
 .event-calendar div.title {
   padding-left: 3px;
 }
 .event-calendar div.title a {
-  font-weight: normal;
-  font-size: 0.8em;
   color: #000;
 }
 .event-calendar div.title a:hover {
@@ -121,10 +117,9 @@
 }
 .event-calendar div.type {
   margin-left: 5px;
+  font-size: 0.8em;
 }
 .event-calendar div.type a {
-  font-weight: normal;
-  font-size: 0.8em;
   color: #00c;
 }
 .event-calendar div.type a:hover {
@@ -134,8 +129,6 @@
   padding-left: 3px;
 }
 .event-calendar div.links a {
-  font-weight: normal;
-  font-size: 0.8em;
   color: #00c;
 }
 .event-calendar div.links a:hover {
@@ -143,24 +136,23 @@
 }
 .event-calendar .start {
   font-style: normal;
-  font-size: 0.8em;
   color: #555;
   margin: 2px 0 2px 0;
   padding-left: 3px;
 }
 .event-calendar .end {
   font-style: normal;
-  font-size: 0.8em;
   color: #555;
   margin: 2px 0 2px 0;
-  padding-left: 3px;
+  padding-left: 9px;
+  font-size: 0.8em;
 }
 .event-calendar .ongoing {
   font-style: normal;
-  font-size: 0.8em;
   color: #555;
   margin: 2px 0 2px 0;
-  padding-left: 3px;
+  padding-left: 9px;
+  font-size: 0.8em;
 }
 .event-calendar div.info {
   visibility: hidden;
@@ -171,42 +163,16 @@
 
 
 /*  individual node view styles  */
-.event-calendar div.monthview {
-  width: 95px;
-}
 .event-calendar div.monthview .title {
-  line-height: 1em;
+  font-size: 0.8em;
 }
-
-.event-calendar div.weekview {
-  width: 95px;
-}
-.event-calendar div.weekview .title {
-  font-size: 1em;
-}
-
 .event-calendar div.dayview {
   width: auto;
 }
-.event-calendar div.dayview .links {
-  margin: 4px;
-  font-size: 1.1em;
-}
-.event-calendar div.dayview .title a {
-  margin: 4px;
-  font-size: 1.3em;
-}
-.event-calendar div.dayview .start, .event-calendar div.dayview .end {
-  margin-left: 14px;
-  font-size: 1em;
-}
-
 .event-calendar div.tableview {
   width: auto;
 }
 .event-calendar div.tableview .links {
-  margin: 4px;
-  font-size: 1.1em;
 }
 
 .event-calendar .event-empty {
@@ -272,7 +238,9 @@
   width: 100%;
 }
 
-#block-event-1 .item-list ul li a { margin-top: 8px; }
+#block-event-1 .item-list ul li a { 
+  margin-top: 8px; 
+}
 
 span.event-timeleft {
   padding-bottom: 3px;
