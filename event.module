@@ -1704,8 +1704,8 @@ function event_block_upcoming($limit = 6) {
 
 function event_form_alter($form_id, &$form) {
   global $user;
-  $type = $form['type']['#value'];
-  $node = $form['#node'];
+  $type = (isset($form['type']) && isset($form['type']['#value'])) ? $form['type']['#value'] : NULL;
+  $node = isset($form['#node']) ? $form['#node'] : NULL;
 
   switch ($form_id) {
     // node settings form
