@@ -619,7 +619,7 @@ function event_calendar_rss($stamp, $duration, $types = NULL, $terms = NULL, $ti
 
   $nodes = array();
   while ($nid = db_fetch_object($result)) {
-    $node = node_load(array('nid' => $nid->nid));
+    $node = node_load($nid->nid);
     $nodes[] = $node;
   }
 
@@ -667,7 +667,7 @@ function event_calendar_ical($stamp, $duration, $types = NULL, $terms = NULL, $t
 
   $events = array();
   while ($nid = db_fetch_object($result)) {
-    $node = node_load(array('nid' => $nid->nid));
+    $node = node_load($nid->nid);
     if (event_filter_node($node, $types, $terms)) {
       $events[] = _event_node_ical($node);
     }
@@ -682,7 +682,7 @@ function event_calendar_ical($stamp, $duration, $types = NULL, $terms = NULL, $t
  * Return an ical for a specific event
  */
 function event_node_ical() {
-  $node = node_load(array('nid' => arg(1)));
+  $node = node_load(arg(1));
   $event = _event_node_ical($node);
   drupal_set_header('Content-Type: text/calendar; charset=utf-8');
   drupal_set_header('Content-Disposition: attachment; filename="calendar.ics"; ');
@@ -934,7 +934,7 @@ function event_calendar_data($year, $month, $day, $view = NULL, $types = NULL, $
     $result = db_query(db_rewrite_sql('SELECT n.nid, e.event_start FROM {event} e INNER JOIN {node} n ON n.nid = e.nid WHERE n.status = 1 AND ((e.event_start > %d AND e.event_start < %d) OR (e.event_end > %d AND e.event_end < %d) OR (e.event_start < %d AND e.event_end > %d)) ORDER BY event_start '), $first, $last, $first, $last, $first, $last);
 
     while ($nid = db_fetch_object($result)) {
-      $node = node_load(array('nid' => $nid->nid));
+      $node = node_load($nid->nid);
 
       // we have to load these here since there is no way to pass the $view parameter to nodeapi through node_load :/
       $node->event_links = module_invoke_all('link', 'event_node_'. $view, $node, FALSE);
