@@ -1,0 +1,27 @@
+<?php
+
+/**
+ * Implementation of hook_help().
+ */
+function event_all_day_help($section) {
+  switch ($section) {
+    case 'admin/modules#description':
+      return('All day events');
+  }
+}
+
+function event_all_day_form_alter($form_id, &$form) {
+  $type = (isset($form['type']) && isset($form['type']['#value'])) ? $form['type']['#value'] : NULL;
+  if ($form_id == $type .'_node_form' && variable_get('event_nodeapi_'. $type, 'never') != 'never') {
+    // add all day checkbox
+    $form['event_start']['date']['start_minute_all_day'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('All day'),
+      '#default_value' => 0
+    );
+    
+    $path = drupal_get_path('module', 'event_all_day');
+    drupal_add_js($path . '/event_all_day.js');
+    // theme_add_style($path . '/event_all_day.css');
+  }
+}
