@@ -1363,48 +1363,68 @@ function _event_user_date() {
  * @return An array of form elements for month, day, year, hour, and minute
  */
 function event_form_date($timestamp, $prefix = 'start', $offset) {
-  //determine settings for form's hour selector
+  // populate drop down values...
+  // ...months
+  $months = array(1 => t('January'), t('February'), t('March'), t('April'), t('May'), t('June'), t('July'), t('August'), t('September'), t('October'), t('November'), t('December'));
+  // ...hours
   if (variable_get('event_ampm', '0')) {
     $hour_format = t('g');
-    $first_hour = 1;
-    $last_hour = 12;
+    $hours = range(1, 12);
+    $am_pms = array('am' => t('am'), 'pm' => t('pm'));
   }
   else {
     $hour_format = t('H');
-    $first_hour = 0;
-    $last_hour = 23;
+    $hours = range(0, 23);
   }
-
-  $date = getdate(gmmktime());
-  $curyear = $date['year'];
-  while ($i < 10) {
-    $years[$curyear + $i] = $curyear + $i;
-    $i++;
-  }
-
-  $months = array(1 => t('January'), t('February'), t('March'), t('April'), t('May'), t('June'), t('July'), t('August'), t('September'), t('October'), t('November'), t('December'));
-  for ($i = 1; $i <= 31; $i++) $days[$i] = $i;
-  for ($i = $first_hour; $i <= $last_hour; $i++) $hours[$i] = $i;
+  // ...minutes (with leading 0s)
   for ($i = 0; $i <= 59; $i++) $minutes[$i] = $i < 10 ? "0$i" : $i;
-  $am_pms = array('am' => t('am'), 'pm' => t('pm'));
 
-  // This is a GMT timestamp, so we use our wrapper _event_date() to display values.
-  $year = _event_date('Y', $timestamp, $offset);
-  $month = _event_date('m', $timestamp, $offset);
-  $day = _event_date('d', $timestamp, $offset);
-  $hour = _event_date($hour_format, $timestamp, $offset);
-  $minute = _event_date('i', $timestamp, $offset);
-  $am_pm = _event_date('a', $timestamp, $offset);
-
-  $form[$prefix .'_day'] = array('#prefix' => '<div class="container-inline"><div class="day">', '#type' => 'textfield', '#default_value' => $day, '#maxlength' => 2, '#size' => 2, '#description' => t('day'), '#required' => TRUE);
-  $form[$prefix .'_month'] = array('#type' => 'select', '#default_value' => $month, '#options' => $months, '#description' => t('month'), '#required' => TRUE);
-  $form[$prefix .'_year'] = array('#type' => 'textfield', '#default_value' => $year, '#maxlength' => 4, '#size' => 4, '#description' => t('year'), '#required' => TRUE);
-  $form[$prefix .'_hour'] = array('#prefix' => '</div><div class="time">', '#type' => 'select', '#default_value' => $hour, '#options' => $hours, '#required' => TRUE, '#description' => t('hour'));
-  $form[$prefix .'_minute'] = array('#prefix' => ':', '#type' => 'select', '#default_value' => $minute, '#options' => $minutes, '#required' => TRUE, '#description' => t('minutes'));
-  if (variable_get('event_ampm', '0')) {
-    $form[$prefix .'_ampm'] = array('#type' => 'radios', '#default_value' => $am_pm, '#options' => $am_pms, '#required' => TRUE);
+  // This is a GMT timestamp, so the _event_date() wrapper to display local times.
+  $form[$prefix .'_day'] = array(
+    '#prefix' => '<div class="container-inline"><div class="day">',
+    '#type' => 'textfield',
+    '#default_value' => _event_date('d', $timestamp, $offset),
+    '#maxlength' => 2,
+    '#size' => 2,
+    '#description' => t('day'),
+    '#required' => TRUE);
+  $form[$prefix .'_month'] = array(
+    '#type' => 'select',
+    '#default_value' => _event_date('m', $timestamp, $offset),
+    '#options' => $months,
+    '#description' => t('month'),
+    '#required' => TRUE);
+  $form[$prefix .'_year'] = array(
+    '#type' => 'textfield',
+    '#default_value' => _event_date('Y', $timestamp, $offset),
+    '#maxlength' => 4,
+    '#size' => 4,
+    '#description' => t('year'),
+    '#required' => TRUE);
+  $form[$prefix .'_hour'] = array(
+    '#prefix' => '</div><div class="time">',
+    '#type' => 'select',
+    '#default_value' => _event_date($hour_format, $timestamp, $offset),
+    '#options' => $hours,
+    '#required' => TRUE,
+    '#description' => t('hour'));
+  $form[$prefix .'_minute'] = array(
+    '#prefix' => ':',
+    '#type' => 'select',
+    '#default_value' => _event_date('i', $timestamp, $offset),
+    '#options' => $minutes,
+    '#required' => TRUE,
+    '#description' => t('minutes'));
+  if (isset($am_pms)) {
+    $form[$prefix .'_ampm'] = array(
+      '#type' => 'radios',
+      '#default_value' => _event_date('a', $timestamp, $offset),
+      '#options' => $am_pms,
+      '#required' => TRUE);
   }
-  $form[$prefix .'_close'] = array('#type' => 'markup', '#value' => '</div></div>');
+  $form[$prefix .'_close'] = array(
+    '#type' => 'markup',
+    '#value' => '</div></div>');
 
   return $form;
 }
