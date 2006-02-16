@@ -339,7 +339,7 @@ function event_page($year = NULL, $month = NULL, $day = NULL, $view = NULL, $typ
 
     drupal_set_title(t('Events') . ($title ? ' - '. $title : ''));
     drupal_set_breadcrumb($breadcrumbs);
-    print theme('page', $output);
+    return $output;
   }
 }
 
@@ -384,7 +384,7 @@ function event_ical($types = 'all', $terms = 'all', $duration = NULL) {
   drupal_goto('event/'. format_date(_event_user_time(), 'custom', 'Y/m/d') .'/ical/'. $types .'/'. $terms .'/'. $duration);
 
   drupal_set_title(t('iCal support not enabled'));
-  print theme('page', $output);
+  return $output;
 }
 
 /**
@@ -1961,7 +1961,7 @@ function event_dst() {
 
   drupal_set_title(t('Daylight Savings Regions | Current GMT: %date', array('%date' => gmdate('m-d-Y, H:i', $timestamp))));
 
-  print theme('page', $output);
+  return $output;
 }
 
 /**
