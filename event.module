@@ -115,9 +115,6 @@ function event_menu($may_cache) {
                      'type' => MENU_CALLBACK);
   }
   else {
-    theme_add_style(drupal_get_path('module', 'event') .'/event.css');
-    drupal_add_js(drupal_get_path('module', 'event') .'/event.js');
-    
     if (arg(0) == 'node' && is_numeric(arg(1))) {
       $type = db_result(db_query("SELECT type FROM {node} WHERE nid=%d", arg(1)));
       if (event_is_enabled($type)) {
@@ -2012,5 +2009,3 @@ function event_help($section) {
       return t('This is a listing of all the event system\'s time zones, sorted by daylight savings time regions, and thier respective offsets from GMT in seconds. Time zones in the \'None\' region do not observe daylight savings time. If you believe there is an error, please first search for the locale on %timeanddate and confirm it. If there is indeed an error please submit a %bugreport on drupal.org so we can fix it.', array('%timeanddate' => l('http://timeanddate.com/worldclock/search.html', 'http://timeanddate.com/worldclock/search.html'), '%bugreport' => l('bug report', 'http://drupal.org/node/add/project_issue/event')));
   }
 }
-
-?>

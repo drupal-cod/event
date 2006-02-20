@@ -717,4 +717,3 @@ function event_get_timezones() {
   }
   return $zones;
 }
-?>

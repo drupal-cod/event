@@ -326,5 +326,3 @@ function _ical_calcOffset($offset_str) {
   if ($sign == '-') $secs = 0 - $secs;
   return $secs;
 }
-
-?>

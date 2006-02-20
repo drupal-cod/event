@@ -1,6 +1,9 @@
 <?php
 // $Id$
 
+// Load the stylesheet
+theme('event_add_stylesheet');
+
 /**
  * @addtogroup themeable
  * @{
@@ -194,6 +197,7 @@ function theme_event_node_month($node) {
 
 function theme_event_node_table($node) {
   static $stripe, $stripe_map, $link_count;
+  drupal_add_js(drupal_get_path('module', 'event') .'/event.js');
   $link_count++;
 
   if (!$stripe_map[$node->nid]) {
@@ -249,6 +253,7 @@ function theme_event_node_table($node) {
 
 function theme_event_node_list($node, $module = NULL) {
   static $stripe, $stripe_map, $link_count;
+  drupal_add_js(drupal_get_path('module', 'event') .'/event.js');
   $link_count++;
 
   if (!$stripe_map[$node->nid]) {
@@ -261,7 +266,7 @@ function theme_event_node_list($node, $module = NULL) {
     $stripe_map[$node->nid] = $stripe;
   }
 
-  $output .= '<div class="event tableview">'."\n";
+  $output = '<div class="event tableview">'."\n";
   $output .= '<div class="stripe-'. $stripe_map[$node->nid] .'"></div>'."\n";
   if (!$module && (event_get_types('all') + event_get_types('solo')) > 1) {
     $output .= '<div class="type">'. l('('. $node->event_node_title .')', 'event/'.gmdate('Y/m/d', $node->event_start).'/table/'.$node->type, array('title' => t('limit view to events of this type'))).'</div>'."\n";
@@ -455,5 +460,11 @@ function theme_event_upcoming_block($items) {
   return $output;
 }
 
+/**
+ * Adds the event.css to the header.
+ */
+function theme_event_add_stylesheet() {
+  theme_add_style(drupal_get_path('module', 'event') .'/event.css');
+}
+
 /** @} End of addtogroup themeable */
-?>
