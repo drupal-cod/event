@@ -1,9 +1,6 @@
 <?php
 // $Id$
 
-// Load the stylesheet
-theme('event_add_stylesheet');
-
 /**
  * @addtogroup themeable
  * @{
@@ -459,12 +456,4 @@ function theme_event_upcoming_block($items) {
   $output = theme("item_list", $items);
   return $output;
 }
-
-/**
- * Adds the event.css to the header.
- */
-function theme_event_add_stylesheet() {
-  theme_add_style(drupal_get_path('module', 'event') .'/event.css');
-}
-
 /** @} End of addtogroup themeable */

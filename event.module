@@ -115,6 +115,8 @@ function event_menu($may_cache) {
                      'type' => MENU_CALLBACK);
   }
   else {
+    drupal_set_html_head(theme('stylesheet_import', base_path() . drupal_get_path('module', 'event') .'/event.css'));
+
     if (arg(0) == 'node' && is_numeric(arg(1))) {
       $type = db_result(db_query("SELECT type FROM {node} WHERE nid=%d", arg(1)));
       if (event_is_enabled($type)) {
