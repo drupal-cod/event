@@ -74,10 +74,20 @@ function basicevent_form(&$node) {
     drupal_set_message(t('The event node is currently set to never appear in the calendar. You will not be able to set the start and end dates until an administrator changes the content-type settings. This is done using the %link.', array('%link' => $link)));
   }
 
-  $form['title'] = array('#type' => 'textfield', '#title' => t('Title'), '#default_value' => $node->title, '#size' => 60, '#maxlength' => 128, '#required' => TRUE);
-  $form['body'] = array('#type' => 'textarea', '#title' => t('Body'), '#default_value' => $node->body, '#required' => TRUE);
-
-  $form = array_merge($form, filter_form($node->format));
-
+  $form['title'] = array(
+    '#type' => 'textfield', 
+    '#title' => t('Title'), 
+    '#default_value' => $node->title, 
+    '#size' => 60, 
+    '#maxlength' => 128, 
+    '#required' => TRUE
+  );
+  $form['body_filter']['body'] = array(
+    '#type' => 'textarea', 
+    '#title' => t('Body'), 
+    '#default_value' => $node->body, 
+    '#required' => TRUE
+  );
+  $form['body_filter']['format'] = filter_form($node->format);
   return $form;
 }
