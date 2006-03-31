@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: event module - Portuguese from Portugal\n"
 "POT-Creation-Date: 2004-04-03 12:24+0200\n"
-"PO-Revision-Date: 2005-07-23 22:51-0000\n"
-"Last-Translator: Miguel Duarte <miguel.duarte@gmail.com>\n"
+"PO-Revision-Date: 2006-03-31 20:34-0000\n"
+"Last-Translator: Miguel Duarte <home@miguelduarte.net>\n"
 "Language-Team: Miguel Duarte <miguel.duarte@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -13,418 +13,420 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: event.module:37
-#: ;40
+#: event.module:38
+#: ;41
 msgid "calendar"
 msgstr "calendário"
 
-#: event.module:45
-#: ;60;67
+#: event.module:46
+#: ;61;68
 msgid "week"
 msgstr "semana"
 
-#: event.module:45
-#: ;60;67
+#: event.module:46
+#: ;61;68
 msgid "Week view"
 msgstr "Vista da semana"
 
-#: event.module:46
-#: ;53;68
+#: event.module:47
+#: ;54;69
 msgid "day"
 msgstr "dia"
 
-#: event.module:46
-#: ;53;68
+#: event.module:47
+#: ;54;69
 msgid "Day view"
 msgstr "Vista do dia"
 
-#: event.module:47
-#: ;54;61
+#: event.module:48
+#: ;55;62
 msgid "table"
 msgstr "tabela"
 
-#: event.module:47
-#: ;54;61
+#: event.module:48
+#: ;55;62
 msgid "Table view"
 msgstr "Vista da tabela"
 
-#: event.module:52
-#: ;59;66
+#: event.module:53
+#: ;60;67
 msgid "month"
 msgstr "mês"
 
-#: event.module:52
-#: ;59;66
+#: event.module:53
+#: ;60;67
 msgid "Month view"
 msgstr "Vista do mês"
 
-#: event.module:86
+#: event.module:87
 msgid "events"
 msgstr "eventos"
 
-#: event.module:91
+#: event.module:92
 msgid "add item to calendar"
 msgstr "adicionar item ao calendário"
 
-#: event.module:96
+#: event.module:97
 msgid "filter by content type"
 msgstr "filtrar por tipo de conteúdo"
 
-#: event.module:101
+#: event.module:102
 msgid "filter by taxonomy"
 msgstr "filtrar por taxonomia"
 
-#: event.module:106
+#: event.module:107
 msgid "event rss feed"
 msgstr "feed rss dos eventos"
 
-#: event.module:111
+#: event.module:112
 msgid "event dst view"
 msgstr "vista dst do evento"
 
-#: event.module:116
+#: event.module:117
 msgid "event ical feed"
 msgstr "feed ical do evento"
 
-#: event.module:136
-#: ;146
+#: event.module:137
+#: ;147
 msgid "Event time zone input"
 msgstr "Fuso horário de introdução de dados no evento"
 
-#: event.module:136
-#: ;138;146;148
+#: event.module:137
+#: ;139;147;149
 msgid "Use the sitewide time zone"
 msgstr "Seleccionar o fuso horário do site"
 
-#: event.module:136
-#: ;146
+#: event.module:137
+#: ;147
 msgid "Use the time zone of the user editing or creating the event"
 msgstr ""
 
-#: event.module:136
-#: ;146
+#: event.module:137
+#: ;147
 msgid "Allow users to set event time zones"
 msgstr ""
 
-#: event.module:136
+#: event.module:137
 msgid "Events are saved with a time zone value. This setting allows you to determine how the time zone is determined when creating or editing an event."
 msgstr ""
 
-#: event.module:138
-#: ;148
+#: event.module:139
+#: ;149
 msgid "Event time zone display"
 msgstr "Exibição do fuso horário do evento"
 
-#: event.module:138
-#: ;148
+#: event.module:139
+#: ;149
 msgid "Use the event's time zone"
 msgstr "Utilizar o fuso horário do evento"
 
-#: event.module:138
+#: event.module:139
 msgid "Use the user's time zone"
 msgstr "Utilizar o fuso horário do utilizador"
 
-#: event.module:138
+#: event.module:139
 msgid "Events are saved with a time zone value. This setting allows you to determine if the event's time zone, the sitewide time zone, or the user's personal time zone setting is used to display the time for an event."
 msgstr ""
 
-#: event.module:146
+#: event.module:147
 msgid "Events are saved with a time zone value. This setting allows you to determine how the time zone is determined when creating or editing an event. You must have 'Configurable time zones' enabled in %url before you can enable user's time zones for this feature."
 msgstr ""
 
-#: event.module:146
-#: ;148
+#: event.module:147
+#: ;149
 msgid "site configuration"
 msgstr "configuração do site"
 
-#: event.module:148
+#: event.module:149
 msgid "Events are saved with a time zone value. This setting allows you to determine if the event's time zone, the sitewide time zone, or the user's personal time zone setting is used to display the time for an event. You must have 'Configurable time zones' enabled in %url before you can enable user's time zones for this feature."
 msgstr ""
 
-#: event.module:150
+#: event.module:151
 msgid "Time notation preference"
 msgstr "Preferência em termos do formato da horaPreferencia de notación temporal"
 
-#: event.module:150
+#: event.module:151
 msgid "24h"
 msgstr "24h"
 
-#: event.module:150
+#: event.module:151
 msgid "12h"
 msgstr "12h"
 
-#: event.module:150
+#: event.module:151
 msgid "The time notation system used for entering event times."
 msgstr "O sistema de formato de hora utilizado para introduzir a hora dos eventos."
 
-#: event.module:151
+#: event.module:152
 msgid "Upcoming event block limit"
 msgstr "Limite do bloco do próximo evento"
 
-#: event.module:151
+#: event.module:152
 msgid "Limit the amount of events displayed in the upcoming events block by this amount."
 msgstr ""
 
-#: event.module:152
+#: event.module:153
 msgid "General Event options"
 msgstr "Opção gerais do evento"
 
-#: event.module:154
+#: event.module:155
 msgid "Default overview"
 msgstr "Vista global"
 
-#: event.module:154
+#: event.module:155
 msgid "Day"
 msgstr "Dia"
 
-#: event.module:154
+#: event.module:155
 msgid "Week"
 msgstr "Semana"
 
-#: event.module:154
+#: event.module:155
 msgid "Month"
 msgstr "Mês"
 
-#: event.module:154
+#: event.module:155
 msgid "Table"
 msgstr "Tabela"
 
-#: event.module:154
+#: event.module:155
 msgid "The default event view to display when no format is specifically requested. This is also the view that will be displayed from the block calendar links."
 msgstr ""
 
-#: event.module:155
+#: event.module:156
 msgid "Table view default period"
-msgstr ""
+msgstr "Período por defeito da vista da tabela"
 
-#: event.module:155
+#: event.module:156
 msgid "The default number of days to display in the table view. You can specify a different number of days in the url. More info on the event url format %link"
 msgstr ""
 
-#: event.module:155
+#: event.module:156
 msgid "here"
 msgstr "aqui"
 
-#: event.module:160
+#: event.module:161
 msgid "Show taxonomy filter control on calendar views"
 msgstr ""
 
-#: event.module:161
+#: event.module:162
 msgid "Only show taxonomy filter control when taxonomy filter view is requested"
 msgstr ""
 
-#: event.module:162
+#: event.module:163
 msgid "Never show taxonomy filter control"
 msgstr ""
 
-#: event.module:166
+#: event.module:167
 msgid "Show content type filter control on calendar views"
 msgstr ""
 
-#: event.module:167
+#: event.module:168
 msgid "Only show content type filter control when content type filter view is requested"
 msgstr ""
 
-#: event.module:168
+#: event.module:169
 msgid "Never show content type filter control"
 msgstr ""
 
-#: event.module:170
+#: event.module:171
 msgid "Event overview options"
 msgstr "Opções de resumo do evento."
 
-#: event.module:206
+#: event.module:207
 msgid "Home"
 msgstr "Início"
 
-#: event.module:207
-#: ;330;1517
+#: event.module:208
+#: ;332;1519
 msgid "Events"
 msgstr "Eventos"
 
-#: event.module:236
-#: ;247
+#: event.module:237
+#: ;248
 msgid "view all"
 msgstr "exibir todos"
 
-#: event.module:237
+#: event.module:238
 msgid "Filter"
 msgstr "Filtro"
 
-#: event.module:269
+#: event.module:270
 msgid "%weekday %month %day, %year"
 msgstr "%weekday, %day de %month de %year "
 
-#: event.module:276
+#: event.module:277
 msgid "Week of %month %day, %year"
 msgstr "Semana de %day de %month de %year"
 
-#: event.module:282
+#: event.module:283
 msgid "%month %year"
 msgstr "%month de %year"
 
-#: event.module:291
-#: ;572;621
+#: event.module:293
+#: ;574;623
 msgid "%startmonth %startdate, %startyear - %endmonth %enddate, %endyear"
 msgstr "%startdate de %startmonth de %startyear - %enddate de %endmonth de %endyear"
 
-#: event.module:376
+#: event.module:378
 msgid "iCal support not enabled"
 msgstr "Suporte iCal não activo"
 
-#: event.module:600
+#: event.module:587
+#: ;1608
+msgid "Start"
+msgstr "Início"
+
+#: event.module:588
+#: ;1610
+msgid "End"
+msgstr "Fim"
+
+#: event.module:602
 msgid " - Events Feed"
 msgstr "Feed RSS dos eventos"
 
-#: event.module:1138
-#: ;1141
+#: event.module:1140
+#: ;1143
 msgid "Mon"
 msgstr "Seg"
 
-#: event.module:1138
-#: ;1141
+#: event.module:1140
+#: ;1143
 msgid "Tue"
 msgstr "Ter"
 
-#: event.module:1138
-#: ;1141
+#: event.module:1140
+#: ;1143
 msgid "Wed"
 msgstr "Qua"
 
-#: event.module:1138
-#: ;1141
+#: event.module:1140
+#: ;1143
 msgid "Thu"
 msgstr "Qui"
 
-#: event.module:1138
-#: ;1141
+#: event.module:1140
+#: ;1143
 msgid "Fri"
 msgstr "Sex"
 
-#: event.module:1138
-#: ;1141
+#: event.module:1140
+#: ;1143
 msgid "Sat"
 msgstr "Sab"
 
-#: event.module:1138
-#: ;1141
+#: event.module:1140
+#: ;1143
 msgid "Sun"
 msgstr "Dom"
 
-#: event.module:1271
+#: event.module:1273
 msgid "g"
 msgstr "g"
 
-#: event.module:1276
+#: event.module:1278
 msgid "H"
 msgstr "H"
 
-#: event.module:1288
+#: event.module:1290
 msgid "January"
 msgstr "Janeiro"
 
-#: event.module:1288
+#: event.module:1290
 msgid "February"
 msgstr "Fevereiro"
 
-#: event.module:1288
+#: event.module:1290
 msgid "March"
 msgstr "Março"
 
-#: event.module:1288
+#: event.module:1290
 msgid "April"
 msgstr "Abril"
 
-#: event.module:1288
+#: event.module:1290
 msgid "May"
 msgstr "Maio"
 
-#: event.module:1288
+#: event.module:1290
 msgid "June"
 msgstr "Junho"
 
-#: event.module:1288
+#: event.module:1290
 msgid "July"
 msgstr "Julho"
 
-#: event.module:1288
+#: event.module:1290
 msgid "August"
 msgstr "Agosto"
 
-#: event.module:1288
+#: event.module:1290
 msgid "September"
 msgstr "Setembro"
 
-#: event.module:1288
+#: event.module:1290
 msgid "October"
 msgstr "Outubro"
 
-#: event.module:1288
+#: event.module:1290
 msgid "November"
 msgstr "Novembro"
 
-#: event.module:1288
+#: event.module:1290
 msgid "December"
 msgstr "Dezembro"
 
-#: event.module:1292
+#: event.module:1294
 msgid "am"
 msgstr "manhã"
 
-#: event.module:1292
+#: event.module:1294
 msgid "pm"
 msgstr "tarde"
 
-#: event.module:1443
+#: event.module:1445
 msgid "Select event terms to filter by"
 msgstr ""
 
-#: event.module:1473
+#: event.module:1475
 msgid "Select event type to filter by"
 msgstr ""
 
-#: event.module:1498
+#: event.module:1500
 msgid "Calendar to browse events."
 msgstr "Calendário para navegar eventos."
 
-#: event.module:1499
+#: event.module:1501
 msgid "List of upcoming events."
 msgstr "Lista dos próximos eventos."
 
-#: event.module:1521
+#: event.module:1523
 msgid "Upcoming events"
 msgstr "Próximos eventos"
 
-#: event.module:1552
+#: event.module:1554
 msgid "NOW"
 msgstr "AGORA"
 
-#: event.module:1600
+#: event.module:1602
 msgid "Show in event calendar"
 msgstr "Exibir evento no calendário"
 
-#: event.module:1600
+#: event.module:1602
 msgid "Never"
 msgstr "Nunca"
 
-#: event.module:1600
+#: event.module:1602
 msgid "All views"
 msgstr "Todas as vistas"
 
-#: event.module:1600
+#: event.module:1602
 msgid "Only in views for this type"
-msgstr ""
+msgstr "Apenas em vistas deste tipo"
 
-#: event.module:1600
+#: event.module:1602
 msgid "None: This content type will not be associated with the events calendar.<br />All views: This content type will be available for display on all calendar views, including with other events.<br />Only in views for this type: This content type will only appear in calendar views specific to this type and never with other events."
-msgstr ""
-
-#: event.module:1606
-msgid "Save dates and show in event calendar"
-msgstr "Gravar datas e exibir no calendário de eventos"
-
-#: event.module:1606
-msgid "If this option is not selected, dates will be removed and this post will not be shown in event calendar."
 msgstr ""
 
 #: event.module:1608
@@ -443,15 +445,15 @@ msgstr "Fuso horário"
 msgid "Select the time zone this event occurs in."
 msgstr ""
 
-#: event.module:1796
+#: event.module:1786
 msgid "Daylight Savings Regions | Current GMT: %date"
 msgstr ""
 
-#: event.module:1811
+#: event.module:1801
 msgid "Lets users make events and keep calendars."
 msgstr "Permite aos utilizadores criar eventos e gerir os calendários."
 
-#: event.module:1814
+#: event.module:1804
 msgid ""
 "\n"
 "      <h3>Background</h3>\n"
@@ -483,31 +485,31 @@ msgid ""
 "      </blockquote></p>"
 msgstr ""
 
-#: event.module:1842
+#: event.module:1832
 msgid "content type management admin area"
 msgstr ""
 
-#: event.module:1842
+#: event.module:1832
 msgid "flexinode"
 msgstr "flexinode"
 
-#: event.module:1845
+#: event.module:1835
 msgid "This is a listing of all the event system's time zones, sorted by daylight savings time regions, and thier respective offsets from GMT in seconds. Time zones in the 'None' region do not observe daylight savings time. If you believe there is an error, please first search for the locale on %timeanddate and confirm it. If there is indeed an error please submit a %bugreport on drupal.org so we can fix it."
 msgstr ""
 
-#: event.module:1555
+#: event.module:1557
 msgid "1 minute"
 msgid_plural "%count minutes"
 msgstr[0] "1 minuto"
 msgstr[1] "%count minutos"
 
-#: event.module:1558
+#: event.module:1560
 msgid "1 hour"
 msgid_plural "%count hours"
 msgstr[0] "1 hora"
 msgstr[1] "%count horas"
 
-#: event.module:1570
+#: event.module:1572
 msgid "1 day"
 msgid_plural "%count days"
 msgstr[0] "1 dia"
@@ -516,26 +518,6 @@ msgstr[1] "%count dias"
 #: event.module:0
 msgid "event"
 msgstr "evento"
-
-#: event.module:585
-#: ;1608 event.theme:67
-#: ;103;109;153;159;209;215;227;278
-msgid "Start"
-msgstr "Início"
-
-#: event.module:586
-#: ;1610 event.theme:69
-#: ;105;112;155;162;211;218;229;280
-msgid "End"
-msgstr "Fim"
-
-#: ical.inc:284
-msgid "iCalendar API for Events Modules"
-msgstr ""
-
-#: ical.inc:0
-msgid "ical"
-msgstr "ical"
 
 #: event.theme:63
 #: ;119;168;203
@@ -546,6 +528,16 @@ msgstr "limitar a vista a eventos deste tipo"
 #: ;120;169;205
 msgid "view this event"
 msgstr "exibir este evento"
+
+#: event.theme:67
+#: ;103;109;153;159;209;215;227;278
+msgid "Start: "
+msgstr "Início:"
+
+#: event.theme:69
+#: ;105;112;155;162;211;218;229;280
+msgid "End: "
+msgstr "Fim:"
 
 #: event.theme:115
 #: ;165;221
@@ -564,23 +556,23 @@ msgstr "Exibir informação detalhada para este evento."
 msgid "%month / %day"
 msgstr "%day / %month"
 
-#: event.theme:283
-msgid "Timezone"
-msgstr "Fuso horário"
+#: event.theme:284
+msgid "Timezone: "
+msgstr "Fuso horário:"
 
-#: event.theme:336
+#: event.theme:338
 msgid "Add to iCalendar"
 msgstr "Adicionar ao iCalendar"
 
-#: event.theme:336
+#: event.theme:338
 msgid "Add this calendar to your iCalendar"
 msgstr "Adicionar este calendário ao seu iCalendar"
 
-#: event.theme:347
+#: event.theme:349
 msgid "more"
 msgstr "mais"
 
-#: event.theme:347
+#: event.theme:349
 msgid "More events."
 msgstr "Mais eventos."
 
@@ -629,7 +621,7 @@ msgstr "Austrália do Sul"
 
 #: event_timezones.inc:162
 msgid "Australia, Tasmania"
-msgstr ""
+msgstr "Austrália, Tasmania"
 
 #: event_timezones.inc:163
 msgid "New Zealand"
@@ -649,7 +641,7 @@ msgstr ""
 
 #: event_timezones.inc:167
 msgid "North America"
-msgstr ""
+msgstr "América do Norte"
 
 #: event_timezones.inc:168
 #: ;548
@@ -818,495 +810,613 @@ msgstr ""
 
 #: event_timezones.inc:291
 msgid "America/Adak"
-msgstr ""
+msgstr "América/Adak"
 
 #: event_timezones.inc:292
+#, fuzzy
 msgid "America/Anchorage"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:293
+#, fuzzy
 msgid "America/Anguilla"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:294
+#, fuzzy
 msgid "America/Antigua"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:295
+#, fuzzy
 msgid "America/Araguaina"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:296
+#, fuzzy
 msgid "America/Aruba"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:297
+#, fuzzy
 msgid "America/Asuncion"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:298
+#, fuzzy
 msgid "America/Atka"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:299
+#, fuzzy
 msgid "America/Barbados"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:300
+#, fuzzy
 msgid "America/Belem"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:301
+#, fuzzy
 msgid "America/Belize"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:302
+#, fuzzy
 msgid "America/Boa_Vista"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:303
+#, fuzzy
 msgid "America/Bogota"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:304
+#, fuzzy
 msgid "America/Boise"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:305
+#, fuzzy
 msgid "America/Buenos_Aires"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:306
+#, fuzzy
 msgid "America/Cambridge_Bay"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:307
+#, fuzzy
 msgid "America/Cancun"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:308
+#, fuzzy
 msgid "America/Caracas"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:309
+#, fuzzy
 msgid "America/Catamarca"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:310
+#, fuzzy
 msgid "America/Cayenne"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:311
+#, fuzzy
 msgid "America/Cayman"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:312
+#, fuzzy
 msgid "America/Chicago"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:313
+#, fuzzy
 msgid "America/Chihuahua"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:314
+#, fuzzy
 msgid "America/Cordoba"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:315
+#, fuzzy
 msgid "America/Costa_Rica"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:316
+#, fuzzy
 msgid "America/Cuiaba"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:317
+#, fuzzy
 msgid "America/Curacao"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:318
+#, fuzzy
 msgid "America/Dawson"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:319
+#, fuzzy
 msgid "America/Dawson_Creek"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:320
+#, fuzzy
 msgid "America/Denver"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:321
+#, fuzzy
 msgid "America/Detroit"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:322
+#, fuzzy
 msgid "America/Dominica"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:323
+#, fuzzy
 msgid "America/Edmonton"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:324
+#, fuzzy
 msgid "America/Eirunepe"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:325
+#, fuzzy
 msgid "America/El_Salvador"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:326
+#, fuzzy
 msgid "America/Ensenada"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:327
+#, fuzzy
 msgid "America/Fort_Wayne"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:328
+#, fuzzy
 msgid "America/Fortaleza"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:329
+#, fuzzy
 msgid "America/Glace_Bay"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:330
+#, fuzzy
 msgid "America/Godthab"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:331
+#, fuzzy
 msgid "America/Goose_Bay"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:332
+#, fuzzy
 msgid "America/Grand_Turk"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:333
+#, fuzzy
 msgid "America/Grenada"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:334
+#, fuzzy
 msgid "America/Guadeloupe"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:335
+#, fuzzy
 msgid "America/Guatemala"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:336
+#, fuzzy
 msgid "America/Guayaquil"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:337
+#, fuzzy
 msgid "America/Guyana"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:338
+#, fuzzy
 msgid "America/Halifax"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:339
+#, fuzzy
 msgid "America/Havana"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:340
+#, fuzzy
 msgid "America/Hermosillo"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:341
+#, fuzzy
 msgid "America/Indiana/Indianapolis"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:342
+#, fuzzy
 msgid "America/Indiana/Knox"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:343
+#, fuzzy
 msgid "America/Indiana/Marengo"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:344
+#, fuzzy
 msgid "America/Indiana/Vevay"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:345
+#, fuzzy
 msgid "America/Indianapolis"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:346
+#, fuzzy
 msgid "America/Inuvik"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:347
+#, fuzzy
 msgid "America/Iqaluit"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:348
+#, fuzzy
 msgid "America/Jamaica"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:349
+#, fuzzy
 msgid "America/Jujuy"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:350
+#, fuzzy
 msgid "America/Juneau"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:351
+#, fuzzy
 msgid "America/Kentucky/Louisville"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:352
+#, fuzzy
 msgid "America/Kentucky/Monticello"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:353
 msgid "America/Knox_IN"
 msgstr "América/Knox_IN"
 
 #: event_timezones.inc:354
+#, fuzzy
 msgid "America/La_Paz"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:355
+#, fuzzy
 msgid "America/Lima"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:356
+#, fuzzy
 msgid "America/Los_Angeles"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:357
+#, fuzzy
 msgid "America/Louisville"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:358
+#, fuzzy
 msgid "America/Maceio"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:359
+#, fuzzy
 msgid "America/Managua"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:360
+#, fuzzy
 msgid "America/Manaus"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:361
+#, fuzzy
 msgid "America/Martinique"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:362
+#, fuzzy
 msgid "America/Mazatlan"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:363
+#, fuzzy
 msgid "America/Mendoza"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:364
+#, fuzzy
 msgid "America/Menominee"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:365
+#, fuzzy
 msgid "America/Merida"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:366
+#, fuzzy
 msgid "America/Mexico_City"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:367
+#, fuzzy
 msgid "America/Miquelon"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:368
+#, fuzzy
 msgid "America/Monterrey"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:369
+#, fuzzy
 msgid "America/Montevideo"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:370
+#, fuzzy
 msgid "America/Montreal"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:371
+#, fuzzy
 msgid "America/Montserrat"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:372
+#, fuzzy
 msgid "America/Nassau"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:373
 msgid "America/New_York"
 msgstr "América/Nova Iorque"
 
 #: event_timezones.inc:374
+#, fuzzy
 msgid "America/Nipigon"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:375
+#, fuzzy
 msgid "America/Nome"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:376
+#, fuzzy
 msgid "America/Noronha"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:377
+#, fuzzy
 msgid "America/Panama"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:378
+#, fuzzy
 msgid "America/Pangnirtung"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:379
+#, fuzzy
 msgid "America/Paramaribo"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:380
+#, fuzzy
 msgid "America/Phoenix"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:381
 msgid "America/Port-au-Prince"
 msgstr ""
 
 #: event_timezones.inc:382
+#, fuzzy
 msgid "America/Port_of_Spain"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:383
+#, fuzzy
 msgid "America/Porto_Acre"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:384
+#, fuzzy
 msgid "America/Porto_Velho"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:385
+#, fuzzy
 msgid "America/Puerto_Rico"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:386
+#, fuzzy
 msgid "America/Rainy_River"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:387
+#, fuzzy
 msgid "America/Rankin_Inlet"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:388
+#, fuzzy
 msgid "America/Recife"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:389
+#, fuzzy
 msgid "America/Regina"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:390
+#, fuzzy
 msgid "America/Rio_Branco"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:391
+#, fuzzy
 msgid "America/Rosario"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:392
+#, fuzzy
 msgid "America/Santiago"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:393
+#, fuzzy
 msgid "America/Santo_Domingo"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:394
+#, fuzzy
 msgid "America/Sao_Paulo"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:395
+#, fuzzy
 msgid "America/Scoresbysund"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:396
+#, fuzzy
 msgid "America/Shiprock"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:397
+#, fuzzy
 msgid "America/St_Johns"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:398
+#, fuzzy
 msgid "America/St_Kitts"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:399
+#, fuzzy
 msgid "America/St_Lucia"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:400
+#, fuzzy
 msgid "America/St_Thomas"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:401
+#, fuzzy
 msgid "America/St_Vincent"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:402
 msgid "America/Swift_Current"
 msgstr "América/Swift_Current"
 
 #: event_timezones.inc:403
+#, fuzzy
 msgid "America/Tegucigalpa"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:404
+#, fuzzy
 msgid "America/Thule"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:405
+#, fuzzy
 msgid "America/Thunder_Bay"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:406
+#, fuzzy
 msgid "America/Tijuana"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:407
+#, fuzzy
 msgid "America/Tortola"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:408
+#, fuzzy
 msgid "America/Vancouver"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:409
+#, fuzzy
 msgid "America/Virgin"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:410
+#, fuzzy
 msgid "America/Whitehorse"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:411
+#, fuzzy
 msgid "America/Winnipeg"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:412
+#, fuzzy
 msgid "America/Yakutat"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:413
+#, fuzzy
 msgid "America/Yellowknife"
-msgstr ""
+msgstr "América/Knox_IN"
 
 #: event_timezones.inc:414
 msgid "Antarctica/Casey"
@@ -1701,88 +1811,107 @@ msgid "Atlantic/Stanley"
 msgstr ""
 
 #: event_timezones.inc:512
+#, fuzzy
 msgid "Australia/ACT"
-msgstr ""
+msgstr "Austrália/Sul"
 
 #: event_timezones.inc:513
+#, fuzzy
 msgid "Australia/Adelaide"
-msgstr ""
+msgstr "Austrália/Sul"
 
 #: event_timezones.inc:514
+#, fuzzy
 msgid "Australia/Brisbane"
-msgstr ""
+msgstr "Austrália/Sul"
 
 #: event_timezones.inc:515
 msgid "Australia/Broken_Hill"
 msgstr "Austrália/Broken_Hill"
 
 #: event_timezones.inc:516
+#, fuzzy
 msgid "Australia/Canberra"
-msgstr ""
+msgstr "Austrália/Sul"
 
 #: event_timezones.inc:517
+#, fuzzy
 msgid "Australia/Darwin"
-msgstr ""
+msgstr "Austrália/Sul"
 
 #: event_timezones.inc:518
+#, fuzzy
 msgid "Australia/Hobart"
-msgstr ""
+msgstr "Austrália/Sul"
 
 #: event_timezones.inc:519
+#, fuzzy
 msgid "Australia/LHI"
-msgstr ""
+msgstr "Austrália/Sul"
 
 #: event_timezones.inc:520
+#, fuzzy
 msgid "Australia/Lindeman"
-msgstr ""
+msgstr "Austrália/Sul"
 
 #: event_timezones.inc:521
+#, fuzzy
 msgid "Australia/Lord_Howe"
-msgstr ""
+msgstr "Austrália/Broken_Hill"
 
 #: event_timezones.inc:522
+#, fuzzy
 msgid "Australia/Melbourne"
-msgstr ""
+msgstr "Austrália/Sul"
 
 #: event_timezones.inc:523
+#, fuzzy
 msgid "Australia/NSW"
-msgstr ""
+msgstr "Austrália/Sul"
 
 #: event_timezones.inc:524
+#, fuzzy
 msgid "Australia/North"
-msgstr ""
+msgstr "Ndebele do Norte"
 
 #: event_timezones.inc:525
+#, fuzzy
 msgid "Australia/Perth"
-msgstr ""
+msgstr "Austrália/Sul"
 
 #: event_timezones.inc:526
+#, fuzzy
 msgid "Australia/Queensland"
-msgstr ""
+msgstr "Austrália/Sul"
 
 #: event_timezones.inc:527
 msgid "Australia/South"
 msgstr "Austrália/Sul"
 
 #: event_timezones.inc:528
+#, fuzzy
 msgid "Australia/Sydney"
-msgstr ""
+msgstr "Austrália/Sul"
 
 #: event_timezones.inc:529
+#, fuzzy
 msgid "Australia/Tasmania"
-msgstr ""
+msgstr "Austrália/Sul"
 
 #: event_timezones.inc:530
+#, fuzzy
 msgid "Australia/Victoria"
-msgstr ""
+msgstr "Austrália/Sul"
 
 #: event_timezones.inc:531
+#, fuzzy
 msgid "Australia/West"
-msgstr ""
+msgstr "Austrália/Sul"
 
 #: event_timezones.inc:532
+#, fuzzy
 msgid "Australia/Yancowinna"
-msgstr ""
+msgstr "Austrália/Sul"
 
 #: event_timezones.inc:533
 msgid "Brazil/Acre"
@@ -1961,212 +2090,260 @@ msgid "Etc/GMT-9"
 msgstr ""
 
 #: event_timezones.inc:579
+#, fuzzy
 msgid "Europe/Amsterdam"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:580
+#, fuzzy
 msgid "Europe/Andorra"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:581
+#, fuzzy
 msgid "Europe/Athens"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:582
+#, fuzzy
 msgid "Europe/Belfast"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:583
+#, fuzzy
 msgid "Europe/Belgrade"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:584
+#, fuzzy
 msgid "Europe/Berlin"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:585
+#, fuzzy
 msgid "Europe/Bratislava"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:586
+#, fuzzy
 msgid "Europe/Brussels"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:587
+#, fuzzy
 msgid "Europe/Bucharest"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:588
+#, fuzzy
 msgid "Europe/Budapest"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:589
+#, fuzzy
 msgid "Europe/Chisinau"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:590
+#, fuzzy
 msgid "Europe/Copenhagen"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:591
+#, fuzzy
 msgid "Europe/Dublin"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:592
+#, fuzzy
 msgid "Europe/Gibraltar"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:593
+#, fuzzy
 msgid "Europe/Helsinki"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:594
+#, fuzzy
 msgid "Europe/Istanbul"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:595
+#, fuzzy
 msgid "Europe/Kaliningrad"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:596
+#, fuzzy
 msgid "Europe/Kiev"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:597
 msgid "Europe/Lisbon"
 msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:598
+#, fuzzy
 msgid "Europe/Ljubljana"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:599
+#, fuzzy
 msgid "Europe/London"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:600
+#, fuzzy
 msgid "Europe/Luxembourg"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:601
+#, fuzzy
 msgid "Europe/Madrid"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:602
+#, fuzzy
 msgid "Europe/Malta"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:603
+#, fuzzy
 msgid "Europe/Minsk"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:604
+#, fuzzy
 msgid "Europe/Monaco"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:605
+#, fuzzy
 msgid "Europe/Moscow"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:606
+#, fuzzy
 msgid "Europe/Nicosia"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:607
+#, fuzzy
 msgid "Europe/Oslo"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:608
+#, fuzzy
 msgid "Europe/Paris"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:609
+#, fuzzy
 msgid "Europe/Prague"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:610
+#, fuzzy
 msgid "Europe/Riga"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:611
+#, fuzzy
 msgid "Europe/Rome"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:612
+#, fuzzy
 msgid "Europe/Samara"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:613
 msgid "Europe/San_Marino"
 msgstr ""
 
 #: event_timezones.inc:614
+#, fuzzy
 msgid "Europe/Sarajevo"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:615
+#, fuzzy
 msgid "Europe/Simferopol"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:616
+#, fuzzy
 msgid "Europe/Skopje"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:617
+#, fuzzy
 msgid "Europe/Sofia"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:618
+#, fuzzy
 msgid "Europe/Stockholm"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:619
+#, fuzzy
 msgid "Europe/Tallinn"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:620
+#, fuzzy
 msgid "Europe/Tirane"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:621
+#, fuzzy
 msgid "Europe/Tiraspol"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:622
+#, fuzzy
 msgid "Europe/Uzhgorod"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:623
+#, fuzzy
 msgid "Europe/Vaduz"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:624
 msgid "Europe/Vatican"
-msgstr ""
+msgstr "Europa/Vaticano"
 
 #: event_timezones.inc:625
 msgid "Europe/Vienna"
-msgstr ""
+msgstr "Europa/Viena"
 
 #: event_timezones.inc:626
+#, fuzzy
 msgid "Europe/Vilnius"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:627
+#, fuzzy
 msgid "Europe/Warsaw"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:628
+#, fuzzy
 msgid "Europe/Zagreb"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:629
+#, fuzzy
 msgid "Europe/Zaporozhye"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:630
+#, fuzzy
 msgid "Europe/Zurich"
-msgstr ""
+msgstr "Europa/Lisboa"
 
 #: event_timezones.inc:631
 msgid "GB"
@@ -2242,11 +2419,11 @@ msgstr ""
 
 #: event_timezones.inc:651
 msgid "Mexico/BajaNorte"
-msgstr ""
+msgstr "México/BajaNorte"
 
 #: event_timezones.inc:652
 msgid "Mexico/BajaSur"
-msgstr ""
+msgstr "México/BajaSur"
 
 #: event_timezones.inc:653
 msgid "Mexico/General"
@@ -2434,11 +2611,11 @@ msgstr ""
 
 #: event_timezones.inc:699
 msgid "Poland"
-msgstr ""
+msgstr "Polónia"
 
 #: event_timezones.inc:700
 msgid "Portugal"
-msgstr ""
+msgstr "Portugal"
 
 #: event_timezones.inc:701
 msgid "Singapore"
@@ -2499,4 +2676,12 @@ msgstr ""
 #: event_timezones.inc:715
 msgid "Pacific/French Polynesia-Marquesas Islands"
 msgstr ""
+
+#: ical.inc:284
+msgid "iCalendar API for Events Modules"
+msgstr ""
+
+#: ical.inc:0
+msgid "ical"
+msgstr "ical"
 
