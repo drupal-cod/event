@@ -14,10 +14,11 @@ function event_all_day_form_alter($form_id, &$form) {
   $type = (isset($form['type']) && isset($form['type']['#value'])) ? $form['type']['#value'] : NULL;
   if ($form_id == $type .'_node_form' && variable_get('event_nodeapi_'. $type, 'never') != 'never') {
     // add all day checkbox
-    $form['event_start']['date']['start_minute_all_day'] = array(
+    $form['start_minute_all_day'] = array(
       '#type' => 'checkbox',
       '#title' => t('All day'),
-      '#default_value' => 0
+      '#default_value' => 0,
+      '#weight' => -14,
     );
     
     $path = drupal_get_path('module', 'event_all_day');
