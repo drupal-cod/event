@@ -786,9 +786,10 @@ function event_get_calendar($view, $nodes, $module, $title = NULL) {
   $today = _event_user_date();
 
   foreach ($nodes as $node) {
+    $event = new stdClass();
     $node->event_links = module_invoke_all('link', 'event_node_'. $view, $node, FALSE);
     $nodes[$node->nid] = $node;
-    $nid->nid = $node->nid;
+    $event->nid = $node->nid;
 
     // $node_start and $node_end are local timestamp values
     $node_start = gmmktime(0, 0, 0, _event_date('m', $node->event_start, $node->start_offset), _event_date('d', $node->event_start, $node->start_offset), _event_date('Y', $node->event_start, $node->start_offset));
@@ -800,27 +801,27 @@ function event_get_calendar($view, $nodes, $module, $title = NULL) {
     }
 
     if ($node_start == $node_end) {
-      $nid->event_state = 'singleday';
-      $nid->stamp = $node_start;
-      $data[gmdate('Y', $node_start)][gmdate('m', $node_start)][gmdate('j', $node_start)][] = $nid;
+      $event->event_state = 'singleday';
+      $event->stamp = $node_start;
+      $data[gmdate('Y', $node_start)][gmdate('m', $node_start)][gmdate('j', $node_start)][] = $event;
     }
     else {
       // roll through each day the event occurs and set an entry for each
       for ($x = $node_start; $x <= $node_end; $x += 86400) {
         if ($x == $node_end) {
-          $nid->event_state = 'end';
-          $nid->stamp = $x;
-          $data[gmdate('Y', $x)][gmdate('m', $x)][gmdate('j', $x)][] = $nid;
+          $event->event_state = 'end';
+          $event->stamp = $x;
+          $data[gmdate('Y', $x)][gmdate('m', $x)][gmdate('j', $x)][] = $event;
         }
         elseif ($x == $node_start) {
-          $nid->event_state = 'start';
-          $nid->stamp = $x;
-          $data[gmdate('Y', $x)][gmdate('m', $x)][gmdate('j', $x)][] = $nid;
+          $event->event_state = 'start';
+          $event->stamp = $x;
+          $data[gmdate('Y', $x)][gmdate('m', $x)][gmdate('j', $x)][] = $event;
         }
         else {
-          $nid->event_state = 'ongoing';
-          $nid->stamp = $x;
-          $data[gmdate('Y', $x)][gmdate('m', $x)][gmdate('j', $x)][] = $nid;
+          $event->event_state = 'ongoing';
+          $event->stamp = $x;
+          $data[gmdate('Y', $x)][gmdate('m', $x)][gmdate('j', $x)][] = $event;
         }
       }
     }
@@ -848,16 +849,16 @@ function event_get_calendar($view, $nodes, $module, $title = NULL) {
                         'data' => $year);
           }
           foreach($months as $month => $days) {
-            foreach($days as $day => $nids) {
+            foreach($days as $day => $events) {
               $content = theme('event_calendar_date_box', $year, $month, $day, 'table');
-              foreach($nids as $nid) {
+              foreach($events as $event) {
                 if(!$month_name) {
-                  $month_name = gmdate('M', $nid->stamp);
-                  $dow = _event_day_of_week($nid->stamp);
+                  $month_name = gmdate('M', $event->stamp);
+                  $dow = _event_day_of_week($event->stamp);
                 }
-                $node = $nodes[$nid->nid];
+                $node = $nodes[$event->nid];
 
-                $node->event_state = $nid->event_state;
+                $node->event_state = $event->event_state;
                 if($output = module_invoke($module, 'event_node_'. $view, $node)) {
                   $content .= $output;
                 }
@@ -866,7 +867,7 @@ function event_get_calendar($view, $nodes, $module, $title = NULL) {
                 }
               }
               $rows[][] = array(
-                'class' => strtolower("$month_name ". $weekdays[$dow]['day'] . ($nid->stamp == $today ? ' today' : '')),
+                'class' => strtolower("$month_name ". $weekdays[$dow]['day'] . ($event->stamp == $today ? ' today' : '')),
                 'id' => strtolower($month_name . $day),
                 'data' => $content);
               $month_name = NULL;
@@ -916,9 +917,9 @@ function event_get_calendar($view, $nodes, $module, $title = NULL) {
 
                 // render nodes for the day
                 if(is_array($days[$cur_day])) {
-                  foreach($days[$cur_day] as $nid) {
-                    $node = $nodes[$nid->nid];
-                    $node->event_state = $nid->event_state;
+                  foreach($days[$cur_day] as $event) {
+                    $node = $nodes[$event->nid];
+                    $node->event_state = $event->event_state;
                     if($output = module_invoke($module, 'event_node_'. $view, $node)) {
                       $content .= $output;
                     }
