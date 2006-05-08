@@ -51,8 +51,8 @@ function ical_export($events, $calname = NULL) {
     else if ($event['start']) {
       $output .= "DTSTART;VALUE=DATE-TIME:" . gmdate("Ymd\THis\Z", $event['start']) . "\n";
     }
-    $output .= "SUMMARY:" . $event['summary'] . "\n";
-    if ($event['description']) $output .= "DESCRIPTION:" . str_replace("\n", "\n ", strip_tags($event['description'])) . "\n";
+    $output .= "SUMMARY:" . ical_escape_text($event['summary']) . "\n";
+    if ($event['description']) $output .= "DESCRIPTION:" . ical_escape_text($event['description']) . "\n";
     if ($event['url']) $output .= "URL;VALUE=URI:" . $event['url'] . "\n";
     if ($event['location']) $output .= "LOCATION:" . $event['location'] . "\n";
     $output .= "UID:" . ($event['uid'] ? $event['uid'] : $uid) . "\n";
@@ -60,6 +60,27 @@ function ical_export($events, $calname = NULL) {
   }
   $output .= "END:VCALENDAR\n";
   return $output;
+}
+
+/**
+ * Escape #text elements for safe iCal use
+ *
+ * @param $text
+ *   Text to escape
+ *
+ * @return
+ *   Escaped text
+ *
+ */
+function ical_escape_text($text) {
+  $text = strip_tags($text);
+  $text = str_replace("\"", "DQUOTE", $text);
+  $text = str_replace("\\", "\\\\", $text);
+  $text = str_replace(",", "\,", $text);
+  $text = str_replace(":", "\":\"", $text);
+  $text = str_replace(";", "\;", $text);
+  $text = str_replace("\n", "\n ", $text);
+  return $text;
 }
 
 /**                                                                                                                                                                   
