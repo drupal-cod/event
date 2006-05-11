@@ -1652,7 +1652,7 @@ function _event_get_type_control($curtype = NULL, $autosubmit = TRUE) {
       '#options' => $items,
       '#description' => t('Select event type to filter by'));
     if ($autosubmit) {
-      $form['event_term_select']['#attributes'] = array('onChange'=>'this.form.submit()');
+      $form['event_type_select']['#attributes'] = array('onChange'=>'this.form.submit()');
     }
 
     $form = drupal_get_form('event_type_filter', $form);
