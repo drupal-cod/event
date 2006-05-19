@@ -1425,12 +1425,12 @@ function event_form_date($timestamp, $prefix = 'start', $offset) {
   // ...hours
   if (variable_get('event_ampm', '0')) {
     $hour_format = t('g');
-    $hours = range(1, 12);
+    $hours = drupal_map_assoc(range(1, 12));
     $am_pms = array('am' => t('am'), 'pm' => t('pm'));
   }
   else {
     $hour_format = t('H');
-    $hours = range(0, 23);
+    $hours = drupal_map_assoc(range(0, 23));
   }
   // ...minutes (with leading 0s)
   for ($i = 0; $i <= 59; $i++) $minutes[$i] = $i < 10 ? "0$i" : $i;
