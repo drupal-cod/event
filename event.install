@@ -22,6 +22,27 @@ function event_install() {
                 PRIMARY KEY (nid));");
       break;
   }
+
+  // Enable basicevent by default
+  db_query("UPDATE {system} SET status = 1 WHERE name = 'basicevent'");
+
+  // Enable event view and location on basicevent
+  variable_set('event_nodeapi_event', 'all');
+
+  if (module_exist('location')) {
+    variable_set('location_event', 1);
+    variable_set('location_collapsible_event', 1);
+    variable_set('location_collapsed_event', 0);
+    variable_set('location_name_event', 1);
+    variable_set('location_street_event', 1);
+    variable_set('location_city_event', 1);
+    variable_set('location_province_event', 1);
+    variable_set('location_postal_code_event', 1);
+  }
+
+  // Notify of changes
+  drupal_set_message(t('Event module was successfully installed with default options. To customize event and/or location settings for events, please view the <a href="%settings">event content type settings page</a>.', array('%settings' => url('admin/settings/content-types/event'))));
+
 }
 
 function event_update_1() {
