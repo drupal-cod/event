@@ -362,6 +362,7 @@ function theme_event_nodeapi($node) {
     $output .= '<div class="event-nodeapi"><div class="'. $node->type. '-end"><label>'. t('End: ') .'</label>'. $node->end_format .'</div></div>'."\n";
   }
   if (variable_get('configurable_timezones', 1)) {
+    include(EVENT_PATH .'/event_timezones.inc');
     $zones = event_zonelist();
     $output .= '<div class="event-nodeapi"><div class="'. $node->type. '-tz"><label>'. t('Timezone: ') .'</label>'. $zones[$node->timezone] .'</div></div>'."\n";
   }

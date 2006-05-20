@@ -1,9 +1,10 @@
 <?php
 // $Id$ 
 
-include(drupal_get_path('module', 'event') .'/event.theme');
-include(drupal_get_path('module', 'event') .'/event_timezones.inc');
-include(drupal_get_path('module', 'event') .'/ical.inc');
+define('EVENT_PATH', drupal_get_path('module', 'event'));
+
+include(EVENT_PATH .'/event.theme');
+include(EVENT_PATH .'/ical.inc');
 
 /**
  * @defgroup event_core Core drupal hooks
@@ -106,7 +107,7 @@ function event_menu($may_cache) {
                      'type' => MENU_CALLBACK);
   }
   else {
-    theme_add_style(drupal_get_path('module', 'event') .'/event.css');
+    theme_add_style(EVENT_PATH .'/event.css');
 
     if (arg(0) == 'node' && is_numeric(arg(1))) {
       $type = db_result(db_query("SELECT type FROM {node} WHERE nid=%d", arg(1)));
@@ -1796,6 +1797,7 @@ function event_form_alter($form_id, &$form) {
     // node edit form
     case $type .'_node_form':
       if (variable_get('event_nodeapi_'. $type, 'never') != 'never') {
+        include(EVENT_PATH .'/event_timezones.inc');
         $form['event_start'] = array(
           '#type' => 'fieldset',
           '#title' => t('Start'),
@@ -1899,6 +1901,7 @@ function event_nodeapi(&$node, $op, $teaser = NULL, $page = NULL) {
       case 'load':
         $object = db_fetch_object(db_query('SELECT event_start, event_end, timezone FROM {event} WHERE nid = %d', $node->nid));
         switch (variable_get('event_timezone_display', 'event')) {
+          include(EVENT_PATH .'/event_timezones.inc');
           case 'event' :
             $start_offset = event_get_offset($object->timezone, $object->event_start);
             $end_offset = event_get_offset($object->timezone, $object->event_end);
@@ -2018,6 +2021,8 @@ function event_set_range() {
  * Display a page with the timezone and daylight savings time regions.
  */
 function event_dst() {
+  include(EVENT_PATH .'/event_timezones.inc');
+
   $timestamp = time();
 
   $zones = event_get_timezones();
