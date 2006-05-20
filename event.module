@@ -20,57 +20,48 @@ include(drupal_get_path('module', 'event') .'/ical.inc');
  * @return an array of links, or an empty array if no links apply for the criteria passed to this method.
  */
 function event_link($type, $node = NULL, $teaser = FALSE) {
-  switch ($type) {
-    case 'node':
-      if (event_enabled_state($node->type) == 'all') {
-        $links[] = l(t('calendar'), 'event/'. format_date($node->event_start, 'custom', 'Y/m/d'));
-      }
-      elseif (event_enabled_state($node->type) == 'solo') {
-        $links[] = l(t('calendar'), 'event/'. format_date($node->event_start, 'custom', 'Y/m/d') .'/month/'. $node->type);
-      }
-      break;
-    case 'event_month':
-      if (user_access('access content')) {
-        $links[] = l(t('week'), "event/$node->year/$node->month/$node->day/week/". $node->filter, array('title' => t('Week view')));
-        $links[] = l(t('day'), "event/$node->year/$node->month/$node->day/day/". $node->filter, array('title' => t('Day view')));
-        $links[] = l(t('table'), "event/$node->year/$node->month/$node->day/table/". $node->filter, array('title' => t('Table view')));
-        $links[] = l(t('list'), "event/$node->year/$node->month/$node->day/list/". $node->filter, array('title' => t('List view')));
-      }
-      break;
-    case 'event_week':
-      if (user_access('access content')) {
-        $links[] = l(t('month'), "event/$node->year/$node->month/$node->day/month/". $node->filter, array('title' => t('Month view')));
-        $links[] = l(t('day'), "event/$node->year/$node->month/$node->day/day/". $node->filter, array('title' => t('Day view')));
-        $links[] = l(t('table'), "event/$node->year/$node->month/$node->day/table/". $node->filter, array('title' => t('Table view')));
-        $links[] = l(t('list'), "event/$node->year/$node->month/$node->day/list/". $node->filter, array('title' => t('List view')));
-      }
-      break;
-    case 'event_day':
-      if (user_access('access content')) {
-        $links[] = l(t('month'), "event/$node->year/$node->month/$node->day/month/". $node->filter, array('title' => t('Month view')));
-        $links[] = l(t('week'), "event/$node->year/$node->month/$node->day/week/". $node->filter, array('title' => t('Week view')));
-        $links[] = l(t('table'), "event/$node->year/$node->month/$node->day/table/". $node->filter, array('title' => t('Table view')));
-        $links[] = l(t('list'), "event/$node->year/$node->month/$node->day/list/". $node->filter, array('title' => t('List view')));
-      }
-      break;
-    case 'event_table':
-      if (user_access('access content')) {
-        $links[] = l(t('month'), "event/$node->year/$node->month/$node->day/month/". $node->filter, array('title' => t('Month view')));
-        $links[] = l(t('week'), "event/$node->year/$node->month/$node->day/week/". $node->filter, array('title' => t('Week view')));
-        $links[] = l(t('day'), "event/$node->year/$node->month/$node->day/day/". $node->filter, array('title' => t('Day view')));
-        $links[] = l(t('list'), "event/$node->year/$node->month/$node->day/list/". $node->filter, array('title' => t('List view')));
-      }
-      break;
-    case 'event_list':
-      if (user_access('access content')) {
-        $links[] = l(t('month'), "event/$node->year/$node->month/$node->day/month/". $node->filter, array('title' => t('Month view')));
-        $links[] = l(t('week'), "event/$node->year/$node->month/$node->day/week/". $node->filter, array('title' => t('Week view')));
-        $links[] = l(t('day'), "event/$node->year/$node->month/$node->day/day/". $node->filter, array('title' => t('Day view')));
-        $links[] = l(t('table'), "event/$node->year/$node->month/$node->day/table/". $node->filter, array('title' => t('Table view')));
-      }
-      break;
+  $links = array();
+
+  if ($type == 'node') {
+    // node links
+    if (event_enabled_state($node->type) == 'all') {
+      $links[] = l(t('calendar'), 'event/'. format_date($node->event_start, 'custom', 'Y/m/d'));
+    }
+    elseif (event_enabled_state($node->type) == 'solo') {
+      $links[] = l(t('calendar'), 'event/'. format_date($node->event_start, 'custom', 'Y/m/d') .'/month/'. $node->type);
+    }
   }
-  return $links ? $links : array();
+  elseif (user_access('access content')) {
+    // calendar links
+    // build a full list of links...
+    $base = "event/$node->year/$node->month/$node->day/";
+    $links['month'] = l(t('month'), $base .'month/'. $node->filter, array('title' => t('Month view')));
+    $links['week']  = l(t('week'),  $base .'week/'.  $node->filter, array('title' => t('Week view')));
+    $links['day']   = l(t('day'),   $base .'day/'.   $node->filter, array('title' => t('Day view')));
+    $links['table'] = l(t('table'), $base .'table/'. $node->filter, array('title' => t('Table view')));
+    $links['list']  = l(t('list'),  $base .'list/'.  $node->filter, array('title' => t('List view')));
+    // ...then subtract out the one we're viewing.
+    switch ($type) {
+      case 'event_month':
+        unset($links['month']);
+        break;
+      case 'event_week':
+        unset($links['week']);
+        break;
+      case 'event_day':
+        unset($links['day']);
+        break;
+      case 'event_table':
+        unset($links['table']);
+        break;
+      case 'event_list':
+        unset($links['list']);
+        break;
+      default:
+        $links = array();
+    }
+  }
+  return $links;
 }
 
 /**
