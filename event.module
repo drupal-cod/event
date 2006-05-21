@@ -1797,7 +1797,7 @@ function event_form_alter($form_id, &$form) {
     // node edit form
     case $type .'_node_form':
       if (variable_get('event_nodeapi_'. $type, 'never') != 'never') {
-        include(EVENT_PATH .'/event_timezones.inc');
+        include_once(EVENT_PATH .'/event_timezones.inc');
         $form['event_start'] = array(
           '#type' => 'fieldset',
           '#title' => t('Start'),
@@ -1901,8 +1901,8 @@ function event_nodeapi(&$node, $op, $teaser = NULL, $page = NULL) {
       case 'load':
         $object = db_fetch_object(db_query('SELECT event_start, event_end, timezone FROM {event} WHERE nid = %d', $node->nid));
         switch (variable_get('event_timezone_display', 'event')) {
-          include(EVENT_PATH .'/event_timezones.inc');
           case 'event' :
+	          include_once(EVENT_PATH .'/event_timezones.inc');
             $start_offset = event_get_offset($object->timezone, $object->event_start);
             $end_offset = event_get_offset($object->timezone, $object->event_end);
             break;
@@ -2021,7 +2021,7 @@ function event_set_range() {
  * Display a page with the timezone and daylight savings time regions.
  */
 function event_dst() {
-  include(EVENT_PATH .'/event_timezones.inc');
+  include_once(EVENT_PATH .'/event_timezones.inc');
 
   $timestamp = time();
 
