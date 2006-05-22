@@ -1821,7 +1821,7 @@ function event_form_alter($form_id, &$form) {
           $form['start_date'] = array(
             '#title' => t('Start Date'),
             '#type' => 'textfield',
-            '#default_value' => date('Y-m-d H:m', $node->event_start ? $node->event_start : _event_user_time()),
+            '#default_value' => _event_date('Y-m-d H:m', $node->event_start ? $node->event_start : _event_user_time(), $node->start_offset),
             '#attributes' => array('class' => 'jscalendar'),
             '#jscalendar_ifFormat' => '%Y-%m-%d %H:%M',
             '#jscalendar_showsTime' => 'true',
@@ -1834,7 +1834,7 @@ function event_form_alter($form_id, &$form) {
           $form['end_date'] = array(
             '#title' => t('End Date'),
             '#type' => 'textfield',
-            '#default_value' => date('Y-m-d H:m', $node->event_end ? $node->event_end : _event_user_time()),
+            '#default_value' => _event_date('Y-m-d H:m', $node->event_end ? $node->event_end : _event_user_time(), $node->end_offset),
             '#attributes' => array('class' => 'jscalendar'),
             '#jscalendar_ifFormat' => '%Y-%m-%d %H:%M',
             '#jscalendar_showsTime' => 'true',
