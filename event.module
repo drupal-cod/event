@@ -1489,6 +1489,20 @@ function event_form_date($timestamp, $prefix = 'start', $offset) {
 function event_validate_form_date(&$node, $date) {
   $prefix = $date .'_';
 
+  /**
+   *  If using javascript pop-up calendar, convert input date back to individual date parts expected by the validator
+   */
+  if (module_exist('jscalendar')) {
+    $get = $prefix . 'date';
+    $this_date = $node->$get;
+    $timestamp = mktime(substr($this_date, 11, 2), substr($this_date, 14, 2), substr($this_date, 17, 2), substr($this_date, 5, 2), substr($this_date, 8, 2), substr($this_date, 0, 4));
+    $node->{$prefix . 'year'} = date('Y', $timestamp);
+    $node->{$prefix . 'month'} = date('n', $timestamp);
+    $node->{$prefix . 'day'} = date('d', $timestamp);
+    $node->{$prefix . 'hour'} = variable_get('event_ampm', '0') ? date('H', $timestamp) : date('g', $timestamp);
+    $node->{$prefix . 'minute'} = date('i', $timestamp);
+  }
+
   // If we have all the parameters, re-calculate $node->event_$date .
   if (isset($node->{$prefix . 'year'}) && isset($node->{$prefix . 'month'}) && isset($node->{$prefix . 'day'}) && isset($node->{$prefix . 'hour'}) && isset($node->{$prefix . 'minute'})) {
     $hour = $node->{$prefix . 'hour'};
@@ -1720,7 +1734,7 @@ function event_block_upcoming($limit = 6) {
   global $user;
   // For two hours, we display "NOW"
   $time = time() - (2 * 60 * 60);
-  $result = db_query(db_rewrite_sql("SELECT n.nid, n.title, n.type, n.status, n.moderate, n.changed, e.event_start FROM {node} n INNER JOIN {event} e ON n.nid = e.nid WHERE n.status = 1 AND n.moderate = 0 AND e.event_start >= %d ORDER BY event_start"), $time);
+  $result = db_query(db_rewrite_sql('SELECT n.nid, n.title, n.type, n.status, n.moderate, n.changed, e.event_start FROM {node} n INNER JOIN {event} e ON n.nid = e.nid WHERE n.status = 1 AND n.moderate = 0 AND e.event_start >= %d ORDER BY event_start'), $time);
 
   while (($node = db_fetch_object($result)) && $limit) {
 
@@ -1746,9 +1760,9 @@ function event_block_upcoming($limit = 6) {
       // hours remainder
       $hours = ($minutesleft % (24 * 60)) / 60;
       // hours left in the day
-      $hours_left = ((time() / 60) % (24 * 60)) / 60;
+      $hours_left = 24 - date('G', time());
       // see if the remainder of hours on the event date is greater than the hours left in today, if so increase the days by one so that the days remaining mimics the date rather than how many 24 hour periods there are between now and then.
-      if ($hours>$hours_left) {
+      if ($hours > $hours_left) {
         $days++;
       }
       $timeleft = format_plural($days, '1 day', '%count days');
@@ -1767,7 +1781,7 @@ function event_block_upcoming($limit = 6) {
     $items[] = t('no upcoming events available');
   }
 
-  $output = theme("event_upcoming_block", $items);
+  $output = theme('event_upcoming_block', $items);
   $output .= theme('event_ical_link', 'event/ical');
   $output .= theme('event_more_link', 'event');
 
@@ -1798,21 +1812,57 @@ function event_form_alter($form_id, &$form) {
     case $type .'_node_form':
       if (variable_get('event_nodeapi_'. $type, 'never') != 'never') {
         include_once(EVENT_PATH .'/event_timezones.inc');
-        $form['event_start'] = array(
-          '#type' => 'fieldset',
-          '#title' => t('Start'),
-          '#description' => t('Start date.'),
-          '#weight' => -15
-          );
-        $form['event_start']['date'] = event_form_date($node->event_start ? $node->event_start : _event_user_time(), 'start', $node->start_offset);
+        /**
+         *  Check to see if jscalendar is installed
+         *  If so, display it, otherwise default to normal drop-down list selectors
+         */
+        if (module_exist('jscalendar')) {
 
-        $form['event_end'] = array(
-          '#type' => 'fieldset',
-          '#title' => t('End'),
-          '#description' => t('End date.'),
-          '#weight' => -14
-          );
-        $form['event_end']['date'] = event_form_date(($node->event_end ? $node->event_end : _event_user_time()), 'end', $node->end_offset);
+          $form['start_date'] = array(
+            '#title' => t('Start Date'),
+            '#type' => 'textfield',
+            '#default_value' => date('Y-m-d H:m', $node->event_start ? $node->event_start : _event_user_time()),
+            '#attributes' => array('class' => 'jscalendar'),
+            '#jscalendar_ifFormat' => '%Y-%m-%d %H:%M',
+            '#jscalendar_showsTime' => 'true',
+            '#jscalendar_timeFormat' => variable_get('event_ampm', '0') == 0 ? '24' : '12',
+            '#size' => 19,
+            '#maxlength' => 19,
+            '#weight' => -15,
+            '#description' => t('YYYY-MM-DD HH:MM'),
+            );
+          $form['end_date'] = array(
+            '#title' => t('End Date'),
+            '#type' => 'textfield',
+            '#default_value' => date('Y-m-d H:m', $node->event_end ? $node->event_end : _event_user_time()),
+            '#attributes' => array('class' => 'jscalendar'),
+            '#jscalendar_ifFormat' => '%Y-%m-%d %H:%M',
+            '#jscalendar_showsTime' => 'true',
+            '#jscalendar_timeFormat' => variable_get('event_ampm', '0') == 0 ? '24' : '12',
+            '#size' => 19,
+            '#maxlength' => 19,
+            '#weight' => -14,
+            '#description' => t('YYYY-MM-DD HH:MM'),
+            );
+        }
+        else {
+          $form['event_start'] = array(
+            '#type' => 'fieldset',
+            '#title' => t('Start'),
+            '#description' => t('Start date.'),
+            '#weight' => -15
+            );
+          $form['event_start']['date'] = event_form_date($node->event_start ? $node->event_start : _event_user_time(), 'start', $node->start_offset);
+
+          $form['event_end'] = array(
+            '#type' => 'fieldset',
+            '#title' => t('End'),
+            '#description' => t('End date.'),
+            '#weight' => -14
+            );
+          $form['event_end']['date'] = event_form_date(($node->event_end ? $node->event_end : _event_user_time()), 'end', $node->end_offset);
+
+        }
 
         if (variable_get('event_timezone_input', 'site') == 'input') {
           $form['timezone'] = array(
