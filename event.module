@@ -26,21 +26,21 @@ function event_link($type, $node = NULL, $teaser = FALSE) {
   if ($type == 'node') {
     // node links
     if (event_enabled_state($node->type) == 'all') {
-      $links[] = l(t('calendar'), 'event/'. format_date($node->event_start, 'custom', 'Y/m/d'));
+      $links[] = array('#title' => t('calendar'), '#href' => 'event/'. format_date($node->event_start, 'custom', 'Y/m/d'));
     }
     elseif (event_enabled_state($node->type) == 'solo') {
-      $links[] = l(t('calendar'), 'event/'. format_date($node->event_start, 'custom', 'Y/m/d') .'/month/'. $node->type);
+      $links[] = array('#title' => t('calendar'), '#href' => 'event/'. format_date($node->event_start, 'custom', 'Y/m/d') .'/month/'. $node->type);
     }
   }
   elseif (user_access('access content')) {
     // calendar links
     // build a full list of links...
     $base = "event/$node->year/$node->month/$node->day/";
-    $links['month'] = l(t('month'), $base .'month/'. $node->filter, array('title' => t('Month view')));
-    $links['week']  = l(t('week'),  $base .'week/'.  $node->filter, array('title' => t('Week view')));
-    $links['day']   = l(t('day'),   $base .'day/'.   $node->filter, array('title' => t('Day view')));
-    $links['table'] = l(t('table'), $base .'table/'. $node->filter, array('title' => t('Table view')));
-    $links['list']  = l(t('list'),  $base .'list/'.  $node->filter, array('title' => t('List view')));
+    $links['month'] = array('#title' => t('month'), '#href' => $base .'month/'. $node->filter, array('title' => t('Month view')));
+    $links['week']  = array('#title' => t('week'),  '#href' => $base .'week/'.  $node->filter, array('title' => t('Week view')));
+    $links['day']   = array('#title' => t('day'),   '#href' => $base .'day/'.   $node->filter, array('title' => t('Day view')));
+    $links['table'] = array('#title' => t('table'), '#href' => $base .'table/'. $node->filter, array('title' => t('Table view')));
+    $links['list']  = array('#title' => t('list'),  '#href' => $base .'list/'.  $node->filter, array('title' => t('List view')));
     // ...then subtract out the one we're viewing.
     switch ($type) {
       case 'event_month':
