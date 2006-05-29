@@ -418,7 +418,7 @@ function theme_event_links($links, $view) {
  *   The url for the ical feed
  */
 function theme_event_ical_link($path) {
-  $ical_link = '<div class="ical-link">'. l('<img src="'. base_path() . drupal_get_path('module', 'event') .'/images/ical16x16.png" alt="'.t('Add to iCalendar').'" />', $path, array('title' => t('Add this calendar to your iCalendar')), NULL, NULL, TRUE, TRUE) .'</div>';
+  $ical_link = '<div class="ical-link">'. l('<img src="'. base_path() . drupal_get_path('module', 'event') .'/images/ical16x16.gif" alt="'.t('Add to iCalendar').'" />', $path, array('title' => t('Add this calendar to your iCalendar')), NULL, NULL, TRUE, TRUE) .'</div>';
   return preg_replace("|http://|","webcal://", $ical_link);
 }
 
