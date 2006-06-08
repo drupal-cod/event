@@ -282,7 +282,7 @@ function event_page($year = NULL, $month = NULL, $day = NULL, $view = NULL, $typ
           $filter[] = $ctype->name;
         }
       }
-      elseif ($name = module_hook($type, 'node_name')) {
+      elseif ($name = node_get_name($type)) {
         $x = module_invoke($type, 'node_name', $node);
         $temp[$x] = $type;
         $filter[] = module_invoke($type, 'node_name', $node);
@@ -1654,11 +1654,8 @@ function _event_get_type_control($curtype = NULL, $autosubmit = TRUE) {
 
     $items['all'] = t('(all)');
     foreach ($results as $type) {
-      if (module_hook($type, 'node_name')) {
-        $items[$type] = module_invoke($type, 'node_name', $node);
-      }
-      elseif ($ctype = module_invoke('flexinode', 'load_content_type', substr($type, 10))) {
-        $items[$type] = $ctype->name;
+      if($name = node_get_name($type)) {
+        $items[$type] = $name;
       }
     }
 
