@@ -115,6 +115,11 @@ function event_menu($may_cache) {
                      'callback' => 'event_ical',
                      'access' => user_access('access content'),
                      'type' => MENU_CALLBACK);
+    $items[] = array('path' => 'admin/settings/event',
+		     'title' => t('event'),
+		     'callback' => 'event_admin_settings',
+		     'access' => user_access('administer site configuration'),
+		     'type' => MENU_NORMAL_ITEM);
   }
   else {
     theme_add_style(EVENT_PATH .'/event.css');
@@ -139,7 +144,7 @@ function event_menu($may_cache) {
  * @ingroup event_core
  * @return the content for a settings page.
  */
-function event_settings() {
+function event_admin_settings() {
 
   $form['event_settings_default'] = array(
     '#type' => 'fieldset',
@@ -225,7 +230,7 @@ function event_settings() {
     '#title' => t('Content type filter controls'), '#default_value' => variable_get('event_type_control', 'all'),
     '#options' => array('all' => t('Show content type filter control on calendar views'), 'request' => t('Only show content type filter control when content type filter view is requested'), 'never' => t('Never show content type filter control')));
 
-  return $form;
+  return system_settings_form('event_admin_settings', $form);
 }
 
 /**
