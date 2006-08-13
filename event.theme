@@ -69,8 +69,10 @@ function theme_event_calendar_list($op, $header, $rows) {
 function theme_event_node_day($node) {
   $output .= '<div class="event dayview">'."\n";
 
-  if ((event_get_types('all') + event_get_types('solo')) > 1) {
-    $output .= '<div class="type">'. l('('. $node->event_node_title .')', 'event/'.gmdate('Y/m/d', $node->event_start).'/day/'.$node->type, array('title' => t('limit view to events of this type'))).'</div>'."\n";
+  if (variable_get('event_type_control', 'all') != 'never') {
+    if ((event_get_types('all') + event_get_types('solo')) > 1) {
+      $output .= '<div class="type">'. l('('. $node->event_node_title .')', 'event/'.gmdate('Y/m/d', $node->event_start).'/day/'.$node->type, array('title' => t('limit view to events of this type'))).'</div>'."\n";
+    }
   }
 
   $output .= '<div class="title">'. l($node->title, "node/$node->nid", array('title' => t('view this event'))) .'</div>'."\n";
@@ -125,8 +127,10 @@ function theme_event_node_week($node) {
       break;
   }
 
-  if ((event_get_types('all') + event_get_types('solo')) > 1) {
-    $output .= '<div class="type">'. l('('. $node->event_node_title .')', 'event/'. gmdate('Y/m/d', $node->event_current_date) .'/month/'.$node->type, array('title' => t('limit view to events of this type'))).'</div>'."\n";
+  if (variable_get('event_type_control', 'all') != 'never') {
+    if ((event_get_types('all') + event_get_types('solo')) > 1) {
+      $output .= '<div class="type">'. l('('. $node->event_node_title .')', 'event/'. gmdate('Y/m/d', $node->event_current_date) .'/month/'.$node->type, array('title' => t('limit view to events of this type'))).'</div>'."\n";
+    }
   }
   $output .= '<div class="title">'. l($node->title, "node/$node->nid", array('title' => t('view this event'))) .'</div>'."\n";
   $output .= $times;
@@ -174,8 +178,10 @@ function theme_event_node_month($node) {
         $times = '<div class="ongoing">'. t('all day') .'</div>'."\n";
       break;
   }
-  if ((event_get_types('all') + event_get_types('solo')) > 1) {
-    $output .= '<div class="type">'. l('('. $node->event_node_title .')', 'event/'. gmdate('Y/m/d', $node->event_current_date) .'/month/'.$node->type, array('title' => t('limit view to events of this type'))).'</div>'."\n";
+  if (variable_get('event_type_control', 'all') != 'never') {
+    if ((event_get_types('all') + event_get_types('solo')) > 1) {
+      $output .= '<div class="type">'. l('('. $node->event_node_title .')', 'event/'. gmdate('Y/m/d', $node->event_current_date) .'/month/'.$node->type, array('title' => t('limit view to events of this type'))).'</div>'."\n";
+    }
   }
   $output .= '<div class="title">'. l($node->title, "node/$node->nid", array('title' => t('view this event'))) .'</div>'."\n";
   $output .= $times;
@@ -209,8 +215,10 @@ function theme_event_node_table($node) {
 
   $output .= '<div class="event tableview">'."\n";
   $output .= '<div class="stripe-'. $stripe_map[$node->nid] .'"></div>'."\n";
-  if (!$module && (event_get_types('all') + event_get_types('solo')) > 1) {
-    $output .= '<div class="type">'. l('('. $node->event_node_title .')', 'event/'.gmdate('Y/m/d', $node->event_start).'/table/'.$node->type, array('title' => t('limit view to events of this type'))).'</div>'."\n";
+  if (variable_get('event_type_control', 'all') != 'never') {
+    if (!$module && (event_get_types('all') + event_get_types('solo')) > 1) {
+      $output .= '<div class="type">'. l('('. $node->event_node_title .')', 'event/'.gmdate('Y/m/d', $node->event_start).'/table/'.$node->type, array('title' => t('limit view to events of this type'))).'</div>'."\n";
+    }
   }
   $output .= '<div class="title">'. l($node->title, "node/$node->nid", array('title' => t('view this event'))) .'</div>'."\n";
 
@@ -265,8 +273,10 @@ function theme_event_node_list($node, $module = NULL) {
 
   $output = '<div class="event tableview">'."\n";
   $output .= '<div class="stripe-'. $stripe_map[$node->nid] .'"></div>'."\n";
-  if (!$module && (event_get_types('all') + event_get_types('solo')) > 1) {
-    $output .= '<div class="type">'. l('('. $node->event_node_title .')', 'event/'.gmdate('Y/m/d', $node->event_start).'/table/'.$node->type, array('title' => t('limit view to events of this type'))).'</div>'."\n";
+  if (variable_get('event_type_control', 'all') != 'never') {
+    if (!$module && (event_get_types('all') + event_get_types('solo')) > 1) {
+      $output .= '<div class="type">'. l('('. $node->event_node_title .')', 'event/'.gmdate('Y/m/d', $node->event_start).'/table/'.$node->type, array('title' => t('limit view to events of this type'))).'</div>'."\n";
+    }
   }
   $output .= '<div class="title">'. l($node->title, "node/$node->nid", array('title' => t('view this event'))) .'</div>'."\n";
 
