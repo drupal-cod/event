@@ -54,11 +54,11 @@
 .event-calendar td.sat, .event-calendar td.sun {
   background: #fdd;
 }
-.event-calendar td.today {
-  background: #f99;
-}
 .event-calendar td.selected {
   background: #99f;
+}
+.event-calendar td.today {
+  background: #f99;
 }
 .event-calendar td.year, .event-calendar td.month {
   text-align: center;
