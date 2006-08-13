@@ -1,28 +1,18 @@
-Readme
-------
-
-This is a simple module to keep track of events and show them to users.
-Send comments to kjartan@drupal.org.
-
 Requirements
 ------------
 
-This module requires Drupal 4.6 or higher.
+This module requires Drupal 4.7 or higher.
 
 Installation
 ------------
 
-1. Create the SQL tables. This depends a little on your system, but the
-   most common method is:
-     mysql -u username -ppassword drupal < event.mysql
+1. Place the event module with all its files under modules/event.
 
-2. Place the event module with all its files under modules/event.
-
-3. Enable the module in admin >> site configuration >> modules 
+2. Enable the module in admin >> site configuration >> modules 
    and set the module settings to your liking in 
    admin >> site configuration >> modules >> event.
 
-4. You must then enable one or more node types to be used with the
+3. You must then enable one or more node types to be used with the
    event system. You can do this by going to admin/node/configure/types
    and selecting a node type from the list. If the event calendar is 
    installed properly you should see a section called 'Show in event calendar:'
@@ -55,5 +45,3 @@ Maintainer
 ----------
 
 Gerhard Killesreiter <gerhard@killesreiter.de>
-
-NO TAMPERING ALLOWED 
