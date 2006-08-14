@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Event\n"
 "POT-Creation-Date: 2006-07-20 20:58-0400\n"
-"PO-Revision-Date: 2006-07-31 17:24-0400\n"
+"PO-Revision-Date: 2006-08-14 00:21-0400\n"
 "Last-Translator: Vassili Tchersky <vt@phear.org>\n"
 "Language-Team: French\n"
 "MIME-Version: 1.0\n"
@@ -695,7 +695,7 @@ msgstr "Fin"
 
 #: event.theme:367
 msgid "Timezone: "
-msgstr "Fuseau horaire"
+msgstr "Fuseau horaire : "
 
 #: event.theme:421
 msgid "Add this calendar to your iCalendar"
@@ -735,11 +735,11 @@ msgstr "voir cet événement"
 
 #: event.theme:78;112;118;162;168;219;225;237;360
 msgid "Start: "
-msgstr "Début :"
+msgstr "Début : "
 
 #: event.theme:80;114;121;164;171;221;228;239;362
 msgid "End: "
-msgstr "Fin :"
+msgstr "Fin : "
 
 #: event_timezones.inc:152
 msgid "None"
