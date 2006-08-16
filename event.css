@@ -1,10 +1,9 @@
-
 /*  event calendar table styles  */
 .event-calendar table {
   border: 1px solid #242;
   border-collapse: collapse;
   border-spacing: 0;
-  width: 100%;
+  width: 98%; /* Setting at 100% causes problem in Internet Explorer. */
   margin-bottom: 1em;
 }
 .event-calendar tr {
@@ -20,6 +19,7 @@
   border: 1px solid #242;
 }
 .event-calendar td {
+  width: 14%; /* 14% is about 1/7 of total table width */
   border: 1px solid #bbb;
   color: #777;
   text-align: right;
@@ -27,7 +27,6 @@
   margin: 0;
   padding: 0;
 }
-
 .event-calendar th.heading {
   border-width: 1px 0px;
 }
@@ -161,7 +160,6 @@
   padding-left: 3px;
 }
 
-
 /*  individual node view styles  */
 .event-calendar div.monthview .title {
   font-size: 0.8em;
@@ -174,10 +172,14 @@
 }
 .event-calendar div.tableview .links {
 }
-
 .event-calendar .event-empty {
   min-height: 6em;
 }
+/* hack to make Internet Explorer for Windows display calendar height correctly \*/
+* html .event-calendar .event-empty {
+  height: 6em;
+}
+/* end of hack */
 .container-inline .day input {
   width: auto;
   display: inline;
@@ -257,4 +259,7 @@ span.event-nodetype {
 }
 .ical-link {
   text-align: right;
+}
+.event div.form-item {
+  white-space: normal;
 }
