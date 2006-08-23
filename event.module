@@ -697,7 +697,7 @@ function event_calendar_rss($stamp, $duration, $types = NULL, $terms = NULL, $ti
   foreach($filtered as $node) {
     $body = '<div class="start">'. t('Start') .': '. $node->start_format .'</div>'."\n";
     $body .= '<div class="end">'. t('End') .': '. $node->end_format .'</div>'."\n";
-    $body .= $node->teaser;
+    $body .= check_markup($node->teaser);
     $link = url("node/$node->nid", NULL, NULL, 1);
     // Allow modules to add additional item fields
     $extra = node_invoke_nodeapi($node, 'rss item');
@@ -766,7 +766,7 @@ function _event_node_ical($node) {
   $event['end'] = $node->event_end;
   $event['location'] = $node->event_location;
   $event['summary'] = $node->title;
-  $event['description'] = ($node->teaser ? $node->teaser : $node->body);
+  $event['description'] = check_markup($node->teaser ? $node->teaser : $node->body);
   $event['uid'] = url("node/$node->nid", NULL, NULL, 1);
   $event['url'] = url("node/$node->nid", NULL, NULL, 1);
 

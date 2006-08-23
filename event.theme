@@ -81,7 +81,7 @@ function theme_event_node_day($node) {
   if ($node->event_start != $node->event_end) {
     $output .= '<div class="end">'. t('End: ') . $node->end_time_format .'</div>'."\n";
   }
-  $output .= '<div class="content">'. $node->teaser ."</div>\n";
+  $output .= '<div class="content">'. check_markup($node->teaser) ."</div>\n";
   $output .= '<div class="links">'. theme('links', $node->event_links) ."\n</div>";
   $output .= "</div>\n";
   return $output;
@@ -247,7 +247,7 @@ function theme_event_node_table($node) {
       $output .= '<div class="end">'. t('End: ') . $node->end_format .'</div>'."\n";
     }
   }
-  $output .= '<div class="content">'. $node->teaser .'</div></div>'."\n";
+  $output .= '<div class="content">'. check_markup($node->teaser) .'</div></div>'."\n";
 
   $links = $node->event_links;
   $links[] = l(t('more info'), 'node/'.$node->nid, array('onclick' => "popupnotes('info_". $link_count ."'); return false;", 'title' => t('Show detailed information for this event.')));
@@ -305,7 +305,7 @@ function theme_event_node_list($node, $module = NULL) {
       $output .= '<div class="end">'. t('End') .': '. $node->end_format .'</div>'."\n";
     }
   }
-  $output .= '<div class="content">'. $node->teaser .'</div></div>'."\n";
+  $output .= '<div class="content">'. check_markup($node->teaser) .'</div></div>'."\n";
 
   $links = $node->event_links;
   $links[] = l(t('more info'), 'node/'.$node->nid, array('onclick' => "popupnotes('info_". $link_count ."'); return false;", 'title' => t('Show detailed information for this event.')));
