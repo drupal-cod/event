@@ -51,10 +51,10 @@ function ical_export($events, $calname = NULL) {
     else if ($event['start']) {
       $output .= "DTSTART;VALUE=DATE-TIME:" . gmdate("Ymd\THis\Z", $event['start']) . "\n";
     }
-    $output .= "SUMMARY:" . ical_escape_text($event['summary']) . "\n";
-    if ($event['description']) $output .= "DESCRIPTION:" . ical_escape_text($event['description']) . "\n";
+    $output .= "SUMMARY;ENCODING=QUOTED-PRINTABLE:" . ical_quoted_printable_escaped($event['summary']) . "\n";
+    if ($event['description']) $output .= "DESCRIPTION;ENCODING=QUOTED-PRINTABLE:" . ical_quoted_printable_escaped($event['description']) . "\n";
     if ($event['url']) $output .= "URL;VALUE=URI:" . $event['url'] . "\n";
-    if ($event['location']) $output .= "LOCATION:" . $event['location'] . "\n";
+    if ($event['location']) $output .= "LOCATION;ENCODING=QUOTED-PRINTABLE:" . ical_quoted_printable_escaped($event['location']) . "\n";
     $output .= "UID:" . ($event['uid'] ? $event['uid'] : $uid) . "\n";
     $output .= "END:VEVENT\n";
   }
@@ -346,4 +346,55 @@ function _ical_calcOffset($offset_str) {
   $secs = ((int)$hours * 3600) + ((int)$mins * 60);
   if ($sign == '-') $secs = 0 - $secs;
   return $secs;
+}
+
+/**
+ *  escape ical separators in quoted-printable encoded code
+ */
+function ical_quoted_printable_escaped($string) {
+  $replace = array(";" => "\;", ":" => "\:");
+  return strtr(ical_quoted_printable_encode($string), $replace);
+}
+
+/**
+ *  encode text using quoted-printable standard
+ */
+function ical_quoted_printable_encode($text, $line_max = 76) {
+  $hex       = array('0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F');
+  $lines     = preg_split("/(?:\r\n|\r|\n)/", $text);
+  $eol       = "\r\n";
+  $linebreak = "=0D=0A";
+  $escape    = "=";
+  $output    = "";
+
+  for ($x = 0; $x < count($lines); $x++) {
+    $line     = $lines[$x];
+    $line_len = strlen($line);
+    $newline  = "";
+    for ($i = 0; $i < $line_len; $i++) {
+	  $c   = substr($line, $i, 1);
+	  $dec = ord($c);
+      // convert space at end of line
+	  if ( ($dec == 32) && ($i == ($line_len - 1)) ) {
+        $c = $escape ."20";
+	  }
+      // convert tab and special chars
+      elseif ( ($dec == 61) || ($dec < 32 ) || ($dec > 126) ) {
+        $h2 = floor($dec/16);
+        $h1 = floor($dec%16);
+        $c  = $escape . $hex["$h2"] . $hex["$h1"];
+      }
+      // see if new output line is needed
+      if ( (strlen($newline) + strlen($c)) >= $line_max ) {
+        $output .= $newline . $escape . $eol;
+        $newline = "";
+      }
+      $newline .= $c;
+    }
+    $output .= $newline;
+
+    // skip last line feed
+    if ($x < count($lines) - 1) $output .= $linebreak;
+  }
+  return trim($output);
 }
