@@ -1456,35 +1456,30 @@ function event_form_date($timestamp, $prefix = 'start', $offset) {
     '#default_value' => _event_date('d', $timestamp, $offset),
     '#maxlength' => 2,
     '#size' => 2,
-    '#description' => t('day'),
     '#required' => TRUE);
   $form[$prefix .'_month'] = array(
     '#type' => 'select',
     '#default_value' => _event_date('m', $timestamp, $offset),
     '#options' => $months,
-    '#description' => t('month'),
     '#required' => TRUE);
   $form[$prefix .'_year'] = array(
     '#type' => 'textfield',
     '#default_value' => _event_date('Y', $timestamp, $offset),
     '#maxlength' => 4,
     '#size' => 4,
-    '#description' => t('year'),
     '#required' => TRUE);
   $form[$prefix .'_hour'] = array(
-    '#prefix' => '</div><div class="time">',
+    '#prefix' => '</div>&#8212;<div class="time">',
     '#type' => 'select',
     '#default_value' => _event_date($hour_format, $timestamp, $offset),
     '#options' => $hours,
-    '#required' => TRUE,
-    '#description' => t('hour'));
+    '#required' => TRUE);
   $form[$prefix .'_minute'] = array(
     '#prefix' => ':',
     '#type' => 'select',
     '#default_value' => _event_date('i', $timestamp, $offset),
     '#options' => $minutes,
-    '#required' => TRUE,
-    '#description' => t('minutes'));
+    '#required' => TRUE);
   if (isset($am_pms)) {
     $form[$prefix .'_ampm'] = array(
       '#type' => 'radios',
@@ -1867,16 +1862,14 @@ function event_form_alter($form_id, &$form) {
         else {
           $form['event_start'] = array(
             '#type' => 'fieldset',
-            '#title' => t('Start'),
-            '#description' => t('Start date.'),
+            '#title' => t('Start date'),
             '#weight' => -15
             );
           $form['event_start']['date'] = event_form_date($node->event_start ? $node->event_start : _event_user_time(), 'start', $node->start_offset);
 
           $form['event_end'] = array(
             '#type' => 'fieldset',
-            '#title' => t('End'),
-            '#description' => t('End date.'),
+            '#title' => t('End date'),
             '#weight' => -14
             );
           $form['event_end']['date'] = event_form_date(($node->event_end ? $node->event_end : _event_user_time()), 'end', $node->end_offset);
