@@ -1516,7 +1516,7 @@ function event_validate_form_date(&$node, $date) {
     $node->{$prefix . 'year'} = date('Y', $timestamp);
     $node->{$prefix . 'month'} = date('n', $timestamp);
     $node->{$prefix . 'day'} = date('d', $timestamp);
-    $node->{$prefix . 'hour'} = variable_get('event_ampm', '0') ? date('H', $timestamp) : date('g', $timestamp);
+    $node->{$prefix . 'hour'} = variable_get('event_ampm', '0') ? date('g', $timestamp) : date('H', $timestamp);
     $node->{$prefix . 'minute'} = date('i', $timestamp);
   }
 
