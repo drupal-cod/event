@@ -6,6 +6,7 @@ The event.module has the following features:
 - event types based on nodeapi
 - four calendar views: month, day, week, and table
 - filtering of views based on content type and taxonomy
+- ical export of calendars
 
 Sponsors:
 ---------
