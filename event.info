@@ -1,6 +1,6 @@
 ; $Id$
 name = Event
 description = Calendaring API, calendar display and export
-version = 3.1
+version = VERSION
 package = Event
 
