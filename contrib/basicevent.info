@@ -1,0 +1,7 @@
+; $Id$
+
+name = "Basic event"
+description = "A story-like node that implements the event API automatically."
+version = VERSION
+package = "Event"
+dependencies = event
