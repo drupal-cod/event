@@ -29,7 +29,7 @@ function event_install() {
   // Enable event view and location on basicevent
   variable_set('event_nodeapi_event', 'all');
 
-  if (module_exist('location')) {
+  if (module_exists('location')) {
     variable_set('location_event', 1);
     variable_set('location_collapsible_event', 1);
     variable_set('location_collapsed_event', 0);
@@ -41,10 +41,32 @@ function event_install() {
   }
 
   // Notify of changes
-  drupal_set_message(t('Event module was successfully installed with default options. To customize event and/or location settings for events, please view the <a href="%settings">event content type settings page</a>.', array('%settings' => url('admin/settings/content-types/event'))));
+  drupal_set_message(t('Event module was successfully installed with default options. To customize event and/or location settings for events, please view the <a href="!settings">event content type settings page</a>.', array('!settings' => url('admin/content/types/event'))));
 
 }
 
 function event_update_1() {
   return _system_update_utf8(array('event'));
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function event_uninstall() {
+  db_query('DROP TABLE {event}');
+  variable_del('event_timezone_input');
+  variable_del('event_timezone_display');
+  variable_del('event_ampm');
+  variable_del('event_upcoming_limit');
+  variable_del('event_overview');
+  variable_del('event_table_duration');
+  variable_del('event_taxonomy_control');
+  variable_del('event_type_control');
+  variable_del('event_range_prev');
+  variable_del('event_range_next');
+  foreach (node_get_types() as $type => $info) {
+  	variable_del('event_nodeapi_'. $type);
+  }
+
+  drupal_set_message(t('Event module successfully uninstalled'));
 }
