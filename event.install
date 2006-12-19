@@ -70,3 +70,50 @@ function event_uninstall() {
 
   drupal_set_message(t('Event module successfully uninstalled'));
 }
+
+/**
+ * The database tables were altered slightly in the first few months of
+ * the 4.6 branch of the module. This update checks to see which version
+ * of the event table is installed on the site, and updates the necessary
+ * columns.
+ */
+function event_update_2() {
+  $result = db_query('SELECT * FROM {event} LIMIT 1');
+  // Special case for an empty event table.
+  if (db_num_rows($result) == 0) {
+    $ret = array();
+    db_query("DROP TABLE {event}");
+    event_install();
+
+    return $ret;
+  }
+  $fields = db_fetch_array($result);
+
+  switch ($GLOBALS['db_type']) {
+    case 'pgsql':
+      if (isset($fields['start'])) {
+        db_change_column($ret, 'event', 'start', 'event_start', 'int', array('not null' => TRUE, 'default' => 0));
+        db_change_column($ret, 'event', 'end', 'event_end', 'int', array('not null' => TRUE, 'default' => 0));
+        db_change_column($ret, 'event', 'tz', 'timezone', 'int', array('not null' => TRUE, 'default' => 0));
+        $ret[] = update_sql("DROP INDEX {event}_start_idx");
+        $ret[] = update_sql("CREATE INDEX {event}_event_start_idx ON {event}(event_start)");
+      }
+      // Necessary because of a brief period where timezone was text.
+      db_change_column($ret, 'event', 'timezone', 'timezone', 'int', array('not null' => TRUE, 'default' => 0));
+      break;
+    case 'mysql':
+    case 'mysqli':
+      if (isset($fields['start'])) {
+        $ret[] = update_sql("ALTER TABLE {event} CHANGE start event_start int(10) unsigned NOT NULL default '0'");
+        $ret[] = update_sql("ALTER TABLE {event} CHANGE end event_end int(10) unsigned NOT NULL default '0'");
+        $ret[] = update_sql("ALTER TABLE {event} CHANGE tz timezone int(10) NOT NULL default '0'");
+        $ret[] = update_sql("ALTER TABLE {event} DROP INDEX start");
+        $ret[] = update_sql("ALTER TABLE {event} ADD INDEX (event_start)");
+      }
+      // Necessary because of a brief period where timezone was varchar.
+      $ret[] = update_sql("ALTER TABLE {event} CHANGE timezone timezone int(10) NOT NULL default '0'");
+      break;
+  }
+
+  return $ret;
+}
