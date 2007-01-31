@@ -1601,7 +1601,7 @@ function _event_nav($date, $dir, $view, $types, $terms, $duration = NULL) {
         break;
       case 'month':
           // Increment by $duration*months
-          $date = gmmktime(0, 0, 0, gmdate('m', $date) + ($duration * $inc), gmdate('j', $date), gmdate('Y', $date));
+          $date = gmmktime(0, 0, 0, gmdate('m', $date) + ($duration * $inc), 1, gmdate('Y', $date));
         break;
     }
 
