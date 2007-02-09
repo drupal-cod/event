@@ -276,13 +276,12 @@ function event_page($year = NULL, $month = NULL, $day = NULL, $view = NULL, $typ
   $day = gmdate('d', $stamp);
 
   $view = $view ? $view : variable_get('event_overview', 'month');
-
-  if ($_POST['edit']['event_type_select']) {
-    drupal_goto('event/'. $year .'/'. $month .'/'. $day .'/'. $view .'/'. $_POST['edit']['event_type_select'] .'/'. $tids);
+  if (isset($_POST['event_type_select'])) {
+    drupal_goto('event/'. $year .'/'. $month .'/'. $day .'/'. $view .'/'. $_POST['event_type_select'] .'/'. $tids);
   }
 
-  if ($_POST['edit']['event_term_select']) {
-    drupal_goto('event/'. $year .'/'. $month .'/'. $day .'/'. $view .'/'. ($types ? $types : 'all') .'/'. $_POST['edit']['event_term_select']);
+  if (isset($_POST['event_term_select'])) {
+    drupal_goto('event/'. $year .'/'. $month .'/'. $day .'/'. $view .'/'. ($types ? $types : 'all') .'/'. $_POST['event_term_select']);
   }
 
   $breadcrumbs[] = l(t('Home'), NULL);
