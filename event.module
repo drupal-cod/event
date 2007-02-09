@@ -315,7 +315,7 @@ function event_page($year = NULL, $month = NULL, $day = NULL, $view = NULL, $typ
     }
 
     if (is_array($filter)) {
-      $links[] = l(t('View all'), 'event/'. $year .'/'. $month .'/'. $day .'/'. $view .'/');
+      $links['event_all'] = array('title' => t('View all'), 'href' => 'event/'. $year .'/'. $month .'/'. $day .'/'. $view .'/');
       $title =  t('Filter') .': ' .implode(', ', $filter);
       $types = $temp;
     }
@@ -326,7 +326,7 @@ function event_page($year = NULL, $month = NULL, $day = NULL, $view = NULL, $typ
 
   $terms = null;
   if ($tids && $tids != 'all') {
-    $links[] = l(t('View all'), 'event/'.$year.'/'.$month.'/'.$day.'/day');
+    $links['event_all'] = array('title' => t('View all'), 'href' => 'event/'.$year.'/'.$month.'/'.$day.'/day');
     if (preg_match('/^([0-9]+[+ ])+[0-9]+$/', $tids)) {
       // The '+' character in a query string may be parsed as ' '.
       $terms = preg_split('/[+ ]/', $tids);
