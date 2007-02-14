@@ -115,18 +115,18 @@ function event_menu($may_cache) {
                      'callback' => 'event_ical',
                      'access' => user_access('access content'),
                      'type' => MENU_CALLBACK);
-    $items[] = array('path' => 'admin/event',
+    $items[] = array('path' => 'admin/content/event',
 		     'title' => t('Events'),
 		     'callback' => 'system_admin_menu_block_page',
 		     'description' => t('Set up how your site handles events.'),
 		     'access' => user_access('administer site configuration'));
-    $items[] = array('path' => 'admin/event/timezone',
+    $items[] = array('path' => 'admin/content/event/timezone',
 		     'title' => t('Timezone handling'),
 		     'callback' => 'drupal_get_form',
 		     'callback arguments' => array('event_admin_timezone_settings'),
 		     'description' => t('Change how timezone information is saved and displayed.'),
 		     'access' => user_access('administer site configuration'));
-		$items[] = array('path' => 'admin/event/overview',
+		$items[] = array('path' => 'admin/content/event/overview',
 		     'title' => t('Event overview'),
 		     'callback' => 'drupal_get_form',
 		     'callback arguments' => array('event_admin_overview_settings'),
