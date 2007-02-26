@@ -2,7 +2,7 @@
 // $Id$
 /**
  * Check if time is in Daylight Savings Time
- * 
+ *
  * @param
  *   $region a drupal dst region code, corresponding to those from event_get_dst_regions()
  * @param
@@ -105,8 +105,15 @@ function event_is_dst($region, $timestamp) {
       $dstend = strtotime("-1 week sunday GMT", strtotime("1 november $year GMT")) + 7200;
       break;
     case 15: // Northern America (where applicable)
-      // start of DST  (where applicable) (first Sunday in April 2 am local time)
+      // start of DST  (where applicable) (first Sunday in April before 2007,
+      // after that second Sunday in March, 2 am local time)
       $dststart = strtotime("1 week sunday GMT", strtotime("1 april $year GMT")) + 7200;
+      if ($year < 2007) {
+        $dststart = strtotime("0 week sunday GMT", strtotime("1 april $year GMT")) + 7200;
+      }
+      else {
+        $dststart = strtotime("1 week sunday GMT", strtotime("1 march $year GMT")) + 7200;
+      }
       // end of DST (where applicable) (last Sunday in October 2 am local time)
       $dstend = strtotime("-1 week sunday GMT", strtotime("1 november $year GMT")) + 7200;
       break;
