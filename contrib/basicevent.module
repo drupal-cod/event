@@ -80,6 +80,7 @@ function basicevent_form(&$node) {
     '#type' => 'textarea', 
     '#title' => t('Body'), 
     '#default_value' => $node->body, 
+    '#rows' => 20,
     '#required' => TRUE
   );
   $form['body_filter']['format'] = filter_form($node->format);
