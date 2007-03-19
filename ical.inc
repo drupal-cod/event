@@ -32,10 +32,12 @@
  */
 function ical_export($events, $calname = NULL) {
   $output .= "BEGIN:VCALENDAR\nVERSION:2.0\n";
+  $output .= "METHOD:PUBLISH\n";
   $output .= 'X-WR-CALNAME:'. variable_get('site_name', '') .' | '. ical_escape_text($calname) ."\n";
   $output .= "PRODID:-//strange bird labs//Drupal iCal API//EN\n";
   foreach ($events as $uid => $event) {
     $output .= "BEGIN:VEVENT\n";
+    $output .= "DTSTAMP;VALUE=DATE:".gmdate("Ymd\THis\Z", time())."\n";
     if ($event['allday_start'] && $event['allday_end']) {
       $output .= "DTSTART;VALUE=DATE:" . $event['allday_start'] . "\n";
       $output .= "DTEND;VALUE=DATE:" . $event['allday_end'] . "\n";
