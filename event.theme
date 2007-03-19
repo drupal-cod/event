@@ -12,8 +12,8 @@
  * @param day
  *   The day to display.
  */
-function theme_event_calendar_month($op, $header, $rows) {
-  $output = theme("table", $header, $rows);
+function theme_event_calendar_month($op, $header, $rows, $attributes, $caption) {
+  $output = theme("table", $header, $rows, $attributes, $caption);
   return '<div class="event-calendar"><div class="month-view">'. $output ."</div></div>\n";
 }
 
@@ -23,8 +23,8 @@ function theme_event_calendar_month($op, $header, $rows) {
  * @param day
  *   The day to display.
  */
-function theme_event_calendar_week($op, $header, $rows) {
-  $output = theme("table", $header, $rows);
+function theme_event_calendar_week($op, $header, $rows, $attributes = array(), $caption = NULL) {
+  $output = theme("table", $header, $rows, $attributes, $caption);
   return '<div class="event-calendar"><div class="week-view">'. $output ."</div></div>\n";
 }
 
@@ -34,8 +34,8 @@ function theme_event_calendar_week($op, $header, $rows) {
  * @param day
  *   The day to display.
  */
-function theme_event_calendar_day($op, $header, $rows) {
-  $output = theme("table", $header, $rows);
+function theme_event_calendar_day($op, $header, $rows, $attributes = array(), $caption = NULL) {
+  $output = theme("table", $header, $rows, $attributes, $caption);
   return '<div class="event-calendar"><div class="day-view">'. $output ."</div></div>\n";
 }
 
@@ -45,8 +45,8 @@ function theme_event_calendar_day($op, $header, $rows) {
  * @param day
  *   The day to display.
  */
-function theme_event_calendar_table($op, $header, $rows) {
-  $output = theme("table", $header, $rows);
+function theme_event_calendar_table($op, $header, $rows, $attributes = array(), $caption = NULL) {
+  $output = theme("table", $header, $rows, $attributes, $caption);
   return '<div class="event-calendar"><div class="table-view">'. $output ."</div></div>\n";
 }
 
@@ -67,7 +67,9 @@ function theme_event_calendar_list($op, $header, $rows) {
  *   The node being displayed
  */
 function theme_event_node_day($node) {
-  $output .= '<div class="event dayview">'."\n";
+  static $zebra;
+	
+  $output .= '<div class="event dayview'. ($zebra++%2? ' odd' : '') .'">'."\n";
 
   if (variable_get('event_type_control', 'all') != 'never') {
     if ((count(event_get_types('all')) + count(event_get_types('solo'))) > 1) {

@@ -543,7 +543,7 @@ function event_get_timezones() {
                     282 => array('timezone' => t('Brazil/West'), 'offset' => '-14400', 'offset_dst' => '-14400', 'dst_region' => '0'),
                     285 => array('timezone' => t('Canada/Atlantic'), 'offset' => '-14400', 'offset_dst' => '-10800', 'dst_region' => '15'),
                     286 => array('timezone' => t('Canada/Central'), 'offset' => '-21600', 'offset_dst' => '-18000', 'dst_region' => '15'),
-                    287 => array('timezone' => t('Canada/East-Saskatchewan'), 'offset' => '-21600', 'offset_dst' => '-21600', 'dst_region' => '0'),
+                    287 => array('timezone' => t('Canada/Central-Saskatchewan'), 'offset' => '-21600', 'offset_dst' => '-21600', 'dst_region' => '0'),
                     288 => array('timezone' => t('Canada/Eastern'), 'offset' => '-18000', 'offset_dst' => '-14400', 'dst_region' => '15'),
                     289 => array('timezone' => t('Canada/Mountain'), 'offset' => '-25200', 'offset_dst' => '-21600', 'dst_region' => '15'),
                     290 => array('timezone' => t('Canada/Newfoundland'), 'offset' => '-12600', 'offset_dst' => '-9000', 'dst_region' => '15'),

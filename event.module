@@ -347,22 +347,22 @@ function event_page($year = NULL, $month = NULL, $day = NULL, $view = NULL, $typ
   switch ($view) {
     case 'day':
         // day view
-        $headertitle = t('!weekday !month !day, !year', array('!weekday' => t(gmdate('l', $stamp)), '!month' => t(gmdate('F', $stamp)), '!day' => $day, '!year' => $year));
-        $rows = event_calendar_day('page', $stamp, $types, $terms);
+        $caption = t('!weekday !month !day, !year', array('!weekday' => t(gmdate('l', $stamp)), '!month' => t(gmdate('F', $stamp)), '!day' => $day, '!year' => $year));
+        list($thead, $tbody) = event_calendar_day('page', $stamp, $types, $terms);
       break;
     case 'week':
         // week view
         // setup calendar table header
         $temp = $stamp - (_event_day_of_week($stamp) * (86400));
-        $headertitle = t('Week of !month !day, !year', array('!month' => t(gmdate('F', $temp)), '!day' => gmdate('d', $temp), '!year' => $year));
+        $caption = t('Week of !month !day, !year', array('!month' => t(gmdate('F', $temp)), '!day' => gmdate('d', $temp), '!year' => $year));
         $colspan = 5;
-        $rows = event_calendar_week('page', $stamp, $types, $terms);
+        list($thead, $tbody) = event_calendar_week('page', $stamp, $types, $terms);
       break;
     case 'month':
         // month view
-        $headertitle = t('!month !year', array('!month' => t(gmdate('F', $stamp)), '!year' => $year));
+        $caption = t('!month !year', array('!month' => t(gmdate('F', $stamp)), '!year' => $year));
         $colspan = 5;
-        $rows = event_calendar_month('page', $stamp, $types, $terms);
+        list($thead, $tbody) = event_calendar_month('page', $stamp, $types, $terms);
       break;
     case 'table':
         // table view
@@ -370,8 +370,8 @@ function event_page($year = NULL, $month = NULL, $day = NULL, $view = NULL, $typ
         // but set a maximum $duration of 1 year.
         $duration = $duration && $duration <= 366 ? $duration : variable_get('event_table_duration', '30');
         $endstamp = $stamp + ($duration * 86400);
-        $headertitle = t('!startmonth !startdate, !startyear - !endmonth !enddate, !endyear', array('!startmonth' => t(gmdate('F', $stamp)), '!startdate' => gmdate('d', $stamp), '!startyear' => gmdate('Y', $stamp), '!endmonth' => t(gmdate('F', $endstamp)), '!enddate' => gmdate('d', $endstamp), '!endyear' => gmdate('Y', $endstamp)));
-        $rows = event_calendar_table('page', $stamp, $endstamp, $types, $terms);
+        $caption = t('!startmonth !startdate, !startyear - !endmonth !enddate, !endyear', array('!startmonth' => t(gmdate('F', $stamp)), '!startdate' => gmdate('d', $stamp), '!startyear' => gmdate('Y', $stamp), '!endmonth' => t(gmdate('F', $endstamp)), '!enddate' => gmdate('d', $endstamp), '!endyear' => gmdate('Y', $endstamp)));
+        list($thead, $tbody) = event_calendar_table('page', $stamp, $endstamp, $types, $terms);
       break;
     case 'list':
         // list view
@@ -379,8 +379,8 @@ function event_page($year = NULL, $month = NULL, $day = NULL, $view = NULL, $typ
         // but set a maximum $duration of 1 year.
         $duration = $duration && $duration <= 366 ? $duration : variable_get('event_table_duration', '30');
         $endstamp = $stamp + ($duration * 86400);
-        $headertitle = t('!startmonth !startdate, !startyear - !endmonth !enddate, !endyear', array('!startmonth' => t(gmdate('F', $stamp)), '!startdate' => gmdate('d', $stamp), '!startyear' => gmdate('Y', $stamp), '!endmonth' => t(gmdate('F', $endstamp)), '!enddate' => gmdate('d', $endstamp), '!endyear' => gmdate('Y', $endstamp)));
-        $rows = event_calendar_list('page', $stamp, $endstamp, $types, $terms);
+        $caption = t('!startmonth !startdate, !startyear - !endmonth !enddate, !endyear', array('!startmonth' => t(gmdate('F', $stamp)), '!startdate' => gmdate('d', $stamp), '!startyear' => gmdate('Y', $stamp), '!endmonth' => t(gmdate('F', $endstamp)), '!enddate' => gmdate('d', $endstamp), '!endyear' => gmdate('Y', $endstamp)));
+        $tbody = event_calendar_list('page', $stamp, $endstamp, $types, $terms);
       break;
     case 'feed':
         // rss feed
@@ -403,10 +403,7 @@ function event_page($year = NULL, $month = NULL, $day = NULL, $view = NULL, $typ
     $next = _event_nav($stamp, 'next', $view, $types, $terms, $duration);
 
     // setup calendar table header
-    $header = array(
-      array('class' => 'prev', 'data' => $prev),
-      array('class' => 'heading', 'data' => $headertitle, 'colspan' => $colspan),
-      array('class' => 'next', 'data' => $next));
+    $caption = $prev .' '. $caption .' '. $next;
 
     $node->day = $day;
     $node->month = $month;
@@ -415,7 +412,7 @@ function event_page($year = NULL, $month = NULL, $day = NULL, $view = NULL, $typ
 
     $output .= theme('event_links', array_merge(module_invoke_all('link', 'event_'. $view, $node, FALSE), $links), $view);
 
-    $output .= theme('event_calendar_'. $view, 'page', $header, $rows);
+    $output .= theme('event_calendar_'. $view, 'page', $thead, $tbody, array(), $caption);
     $output .= theme('event_ical_link', 'event/ical/'. $node->filter);
 
     // Add RSS feed and icon to events page
@@ -499,15 +496,11 @@ function event_calendar_month($op, $stamp, $types = NULL, $terms = NULL) {
       break;
 
     case 'block':
-        // create navigation links
-        $prev = _event_nav($stamp, 'prev', 'month', $types, $terms);
-        $next = _event_nav($stamp, 'next', 'month', $types, $terms);
-
-        $headertitle = l(t(gmdate('F', $stamp)) .' '. $year, 'event/'. $year .'/'. $month .'/'. $day .'/month');
-        $header = array(
-          array('class' => 'prev', 'data' => $prev),
-          array('class' => 'heading', 'data' => $headertitle, 'colspan' => 5),
-          array('class' => 'next', 'data' => $next));
+        // create caption and navigation links
+        $caption = 
+          _event_nav($stamp, 'prev', 'month', $types, $terms) . ' ' .
+          l(t(gmdate('F', $stamp)) .' '. $year, 'event/'. $year .'/'. $month .'/'. $day .'/month') . ' ' .
+          _event_nav($stamp, 'next', 'month', $types, $terms);
 
         $callback = 'event_render_day_single';
         $view = 'block';
@@ -516,13 +509,15 @@ function event_calendar_month($op, $stamp, $types = NULL, $terms = NULL) {
 
   // get weekdays array and header information
   $weekdays = event_week_days();
-  $rows[] = event_week_header();
+  $thead = event_week_header();
+ 	$tbody = array();
 
   // get GMT current date value
   $today = _event_user_date();
 
   // name of the month
-  $month_name = gmdate('M', $stamp);
+  $month_name = t(gmdate('F', $stamp));
+  $month_name_abbrev = t(gmdate('M', $stamp));
 
   // timestamp of first day of month
   $curstamp = gmmktime(0, 0, 0, $month, 01, $year);
@@ -531,7 +526,7 @@ function event_calendar_month($op, $stamp, $types = NULL, $terms = NULL) {
   $lastday = gmmktime(0, 0, 0, $month, gmdate('t', $stamp), $year);
 
   // pad the first week row array to fill up days in the previous month we don't build
-  $row = array_fill(0, 6, '');
+  $row = array_fill(0, 6, array('class' => 'pad'));
   // get the day of week offset value for the first day of the month
   $start = $offset = _event_day_of_week($curstamp);
   // render the month calendar
@@ -539,8 +534,7 @@ function event_calendar_month($op, $stamp, $types = NULL, $terms = NULL) {
     for ($x = $start; $x < 7; $x++) {
       $cur_day = (($week * 7) + ($x + 1) - $offset);
       $row[$x] = array(
-        'class' => strtolower("$month_name ". $weekdays[$x]['day'] . ($curstamp == $today ? ' today' : '') . ($cur_day == $day ? ' selected' : '')),
-        'id' => strtolower($month_name . $cur_day),
+        'class' => strtolower($weekdays[$x]['day']) . " day-$cur_day" . ($curstamp == $today ? ' today' : '') . ($cur_day == $day ? ' selected' : ''),
         'data' => $callback($year, $month, $cur_day, $view, $types, $terms));
       $curstamp += 86400;
       if ($curstamp > $lastday) {
@@ -549,16 +543,16 @@ function event_calendar_month($op, $stamp, $types = NULL, $terms = NULL) {
     }
     $week++;
     $start = 0;
-    $rows[] = array_pad($row, 7, '&nbsp;');
+    $tbody[] = array_pad($row, 7, array('class' => 'pad'));
     $row = array();
   }
 
   switch ($op) {
     case 'page':
-        return $rows;
+        return array($thead, $tbody);
       break;
     case 'block':
-        return theme("event_calendar_month", $op, $header, $rows);
+        return theme("event_calendar_month", $op, $thead, $tbody, $attributes = array('class' => strtolower($month_name)), $caption);
       break;
   }
 }
@@ -572,7 +566,7 @@ function event_calendar_month($op, $stamp, $types = NULL, $terms = NULL) {
 function event_calendar_week($op, $stamp, $types = NULL, $terms = NULL) {
   // get weekdays array and header information
   $weekdays = event_week_days();
-  $rows[] = event_week_header();
+  $thead = event_week_header();
 
   // get GMT current date value
   $today = _event_user_date();
@@ -592,8 +586,8 @@ function event_calendar_week($op, $stamp, $types = NULL, $terms = NULL) {
       'data' => event_render_day($year, $month, $cur_day, 'week', $types, $terms));
     $stamp += 86400;
   }
-  $rows[] = $row;
-  return $rows;
+  $tbody[] = $row;
+  return array($thead, $tbody);
 }
 
 /**
@@ -613,13 +607,14 @@ function event_calendar_day($op, $stamp, $types = NULL, $terms = NULL) {
   $month_name = gmdate('M', $stamp);
   $weekdays = event_week_days();
 
-  $rows[][] = array(
+	$thead[] = array('data' => gmdate('D', $stamp));
+  $tbody[][] = array(
     'class' => strtolower("$month_name ". $weekdays[$dow]['day'] . ($stamp == $today ? ' today' : '')),
     'id' => strtolower($month_name . $day),
     'data' => event_render_day($year, $month, $day, 'day', $types, $terms),
     'colspan' => 3);
 
-  return $rows;
+  return array($thead, $tbody);
 }
 
 /**
@@ -636,6 +631,7 @@ function event_calendar_day($op, $stamp, $types = NULL, $terms = NULL) {
 function event_calendar_table($op, $stamp, $endstamp, $types = NULL, $terms = NULL) {
 
   $today = _event_user_date();
+	$thead[] = array('data' => '&nbsp;');
 
   while ($stamp <= $endstamp) {
     $year = gmdate('Y', $stamp);
@@ -645,14 +641,14 @@ function event_calendar_table($op, $stamp, $endstamp, $types = NULL, $terms = NU
     $dow = _event_day_of_week($stamp);
     $weekdays = event_week_days();
 
-    $rows[][] = array('colspan' => 3,
+    $tbody[][] = array('colspan' => 3,
                       'class' => strtolower("$month_name ". $weekdays[$dow]['day'] . ($stamp == $today ? ' today' : '') . ($cur_day == $day ? ' selected' : '')),
                       'id' => strtolower($month_name . $cur_day),
                       'data' => event_render_day($year, $month, $cur_day, 'table', $types, $terms));
     $stamp += 86400;
   }
 
-  return $rows;
+  return array($thead, $tbody);
 }
 
 /**
@@ -1327,8 +1323,8 @@ function event_week_header() {
   $days = event_week_days();
 
   foreach ($days as $day) {
-    $row[] = array('class' => strtolower("days ". $day['day']), 'data' => $day['t']);
-  }
+    $row[] = array('class' => strtolower($day['day']), 'data' => $day['t']);
+  }	
 
   return $row;
 }
@@ -1488,7 +1484,7 @@ function event_form_date($timestamp, $prefix = 'start', $offset) {
     '#size' => 4,
     '#required' => TRUE);
   $form[$prefix .'_hour'] = array(
-    '#prefix' => '</div>&#8212;<div class="time">',
+    '#prefix' => '</div><div class="time">&#8212;',
     '#type' => 'select',
     '#default_value' => _event_date($hour_format, $timestamp, $offset),
     '#options' => $hours,
@@ -1535,7 +1531,10 @@ function event_validate_form_date(&$node, $date) {
     $node->{$prefix . 'year'} = date('Y', $timestamp);
     $node->{$prefix . 'month'} = date('n', $timestamp);
     $node->{$prefix . 'day'} = date('d', $timestamp);
-    $node->{$prefix . 'hour'} = variable_get('event_ampm', '0') ? date('g', $timestamp) : date('H', $timestamp);
+    if (variable_get('event_ampm', '0')) {
+      $node->{$prefix . 'ampm'} = (substr($this_date, 11, 2) >= 12) ? 'pm' : 'am';
+    }
+    $node->{$prefix . 'hour'} = variable_get('event_ampm', '0') ? date('H', $timestamp) : date('g', $timestamp);
     $node->{$prefix . 'minute'} = date('i', $timestamp);
   }
 
