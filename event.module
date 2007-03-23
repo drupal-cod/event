@@ -1534,7 +1534,7 @@ function event_validate_form_date(&$node, $date) {
     if (variable_get('event_ampm', '0')) {
       $node->{$prefix . 'ampm'} = (substr($this_date, 11, 2) >= 12) ? 'pm' : 'am';
     }
-    $node->{$prefix . 'hour'} = variable_get('event_ampm', '0') ? date('H', $timestamp) : date('g', $timestamp);
+    $node->{$prefix . 'hour'} = variable_get('event_ampm', '0') ? date('g', $timestamp) : date('H', $timestamp);
     $node->{$prefix . 'minute'} = date('i', $timestamp);
   }
 
