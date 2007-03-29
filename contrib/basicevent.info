@@ -2,6 +2,6 @@
 
 name = "Basic event"
 description = "A story-like node that implements the event API automatically."
-version = VERSION
+version = "$Name$"
 package = "Event"
 dependencies = event

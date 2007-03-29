@@ -18,8 +18,11 @@
   padding: 1px 0.33em;
   border: 1px solid #242;
 }
-.event-calendar td {
+.event-calendar .month-view td,
+.event-calendar .week-view td {
   width: 14%; /* 14% is about 1/7 of total table width */
+}
+.event-calendar td {
   border: 1px solid #bbb;
   color: #777;
   text-align: right;
@@ -239,7 +242,13 @@
   height: 5px;
   width: 100%;
 }
-
+.event-calendar div.month-view table.event-block thead,
+.event-calendar div.month-view table.event-block tbody {
+  font-size: .9em;
+}
+.event-calendar div.month-view table.event-block th { 
+  font-weight: normal;
+}
 #block-event-1 .item-list ul li a { 
   margin-top: 8px; 
 }

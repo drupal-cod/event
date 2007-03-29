@@ -115,23 +115,23 @@ function event_menu($may_cache) {
                      'callback' => 'event_ical',
                      'access' => user_access('access content'),
                      'type' => MENU_CALLBACK);
-    $items[] = array('path' => 'admin/content/event',
-		     'title' => t('Events'),
-		     'callback' => 'system_admin_menu_block_page',
-		     'description' => t('Set up how your site handles events.'),
-		     'access' => user_access('administer site configuration'));
-    $items[] = array('path' => 'admin/content/event/timezone',
-		     'title' => t('Timezone handling'),
-		     'callback' => 'drupal_get_form',
-		     'callback arguments' => array('event_admin_timezone_settings'),
-		     'description' => t('Change how timezone information is saved and displayed.'),
-		     'access' => user_access('administer site configuration'));
-		$items[] = array('path' => 'admin/content/event/overview',
-		     'title' => t('Event overview'),
-		     'callback' => 'drupal_get_form',
-		     'callback arguments' => array('event_admin_overview_settings'),
-		     'description' => t('Change how event summary information is displayed.'),
-		     'access' => user_access('administer site configuration'));
+    $items[] = array('path' => 'admin/settings/event',
+                     'title' => t('Events'),
+                     'callback' => 'system_admin_menu_block_page',
+                     'description' => t('Set up how your site handles events.'),
+                     'access' => user_access('administer site configuration'));
+    $items[] = array('path' => 'admin/settings/event/timezone',
+                     'title' => t('Timezone handling'),
+                     'callback' => 'drupal_get_form',
+                     'callback arguments' => array('event_admin_timezone_settings'),
+                     'description' => t('Change how timezone information is saved and displayed.'),
+                     'access' => user_access('administer site configuration'));
+    $items[] = array('path' => 'admin/settings/event/overview',
+                     'title' => t('Event overview'),
+                     'callback' => 'drupal_get_form',
+                     'callback arguments' => array('event_admin_overview_settings'),
+                     'description' => t('Change how event summary information is displayed.'),
+                     'access' => user_access('administer site configuration'));
   }
   else {
     drupal_add_css(EVENT_PATH .'/event.css');
@@ -395,9 +395,24 @@ function event_page($year = NULL, $month = NULL, $day = NULL, $view = NULL, $typ
         $duration = $duration ? $duration : variable_get('event_table_duration', '30');
         print event_calendar_ical($stamp, $duration, $types, $terms, $title);
       break;
+    case 'block':
+        // block update
+        $time = _event_user_date();
+        if (arg(0) == 'event' && is_numeric(arg(1))) {
+          // follow event calendar
+          $year = (arg(1) ? arg(1) : gmdate('Y', $time));
+          $month = (arg(2) ? arg(2) : gmdate('m', $time));
+          $day = (arg(3) ? arg(3) : gmdate('d', $time));
+          $stamp = gmmktime(0, 0, 0, $month, $day, $year);
+        }
+        else {
+          $stamp = _event_user_date();
+        }
+        print event_calendar_month('block', $stamp);
+      break;
   }
 
-  if($view != 'feed' && $view != 'ical') {
+  if($view != 'feed' && $view != 'ical' && $view != 'block') {
     // build header navigation
     $prev = _event_nav($stamp, 'prev', $view, $types, $terms, $duration);
     $next = _event_nav($stamp, 'next', $view, $types, $terms, $duration);
@@ -490,27 +505,24 @@ function event_calendar_month($op, $stamp, $types = NULL, $terms = NULL) {
 
   switch ($op) {
     case 'page':
-        // setup callback for data population
-        $callback = 'event_render_day';
-        $view = 'month';
+      // setup callback for data population
+      $callback = 'event_render_day';
+      $view = 'month';
       break;
 
     case 'block':
-        // create caption and navigation links
-        $caption = 
-          _event_nav($stamp, 'prev', 'month', $types, $terms) . ' ' .
-          l(t(gmdate('F', $stamp)) .' '. $year, 'event/'. $year .'/'. $month .'/'. $day .'/month') . ' ' .
-          _event_nav($stamp, 'next', 'month', $types, $terms);
+      // create caption and navigation links
+      $caption = _event_nav($stamp, 'prev', 'block', $types, $terms) .' '. l(t(gmdate('F', $stamp)) .' '. $year, 'event/'. $year .'/'. $month .'/'. $day .'/month') .' '. _event_nav($stamp, 'next', 'block', $types, $terms);
 
-        $callback = 'event_render_day_single';
-        $view = 'block';
+      $callback = 'event_render_day_single';
+      $view = 'block';
       break;
   }
 
   // get weekdays array and header information
   $weekdays = event_week_days();
   $thead = event_week_header();
- 	$tbody = array();
+  $tbody = array();
 
   // get GMT current date value
   $today = _event_user_date();
@@ -549,10 +561,10 @@ function event_calendar_month($op, $stamp, $types = NULL, $terms = NULL) {
 
   switch ($op) {
     case 'page':
-        return array($thead, $tbody);
+      return array($thead, $tbody);
       break;
     case 'block':
-        return theme("event_calendar_month", $op, $thead, $tbody, $attributes = array('class' => strtolower($month_name)), $caption);
+      return theme('event_calendar_month', $op, $thead, $tbody, $attributes = array('class' => 'event-block '. strtolower($month_name)), $caption);
       break;
   }
 }
@@ -607,7 +619,7 @@ function event_calendar_day($op, $stamp, $types = NULL, $terms = NULL) {
   $month_name = gmdate('M', $stamp);
   $weekdays = event_week_days();
 
-	$thead[] = array('data' => gmdate('D', $stamp));
+  $thead[] = array('data' => gmdate('D', $stamp));
   $tbody[][] = array(
     'class' => strtolower("$month_name ". $weekdays[$dow]['day'] . ($stamp == $today ? ' today' : '')),
     'id' => strtolower($month_name . $day),
@@ -631,7 +643,7 @@ function event_calendar_day($op, $stamp, $types = NULL, $terms = NULL) {
 function event_calendar_table($op, $stamp, $endstamp, $types = NULL, $terms = NULL) {
 
   $today = _event_user_date();
-	$thead[] = array('data' => '&nbsp;');
+  $thead[] = array('data' => '&nbsp;');
 
   while ($stamp <= $endstamp) {
     $year = gmdate('Y', $stamp);
@@ -1042,16 +1054,16 @@ function event_calendar_data($year, $month, $day, $view = NULL, $types = NULL, $
           if (gmdate('m', $x) == $month) {
             if ($x == $node_end) {
               $nid->event_state = 'end';
-              $data[$year][$month][gmdate('j', $x)][] = $nid;
+              $data[$year][$month][gmdate('j', $x)][] = drupal_clone($nid);
               $x = $last + 1;
             }
             elseif ($x == $node_start) {
               $nid->event_state = 'start';
-              $data[$year][$month][gmdate('j', $x)][] = $nid;
+              $data[$year][$month][gmdate('j', $x)][] = drupal_clone($nid);
             }
             else {
               $nid->event_state = 'ongoing';
-              $data[$year][$month][gmdate('j', $x)][] = $nid;
+              $data[$year][$month][gmdate('j', $x)][] = drupal_clone($nid);
             }
           }
         }
@@ -1324,7 +1336,7 @@ function event_week_header() {
 
   foreach ($days as $day) {
     $row[] = array('class' => strtolower($day['day']), 'data' => $day['t']);
-  }	
+  }
 
   return $row;
 }
@@ -1587,6 +1599,13 @@ function _event_nav($date, $dir, $view, $types, $terms, $duration = NULL) {
     $inc = ($dir == 'prev' ? -1 : 1);
     $duration = ($duration ? $duration : 1);
 
+    // we have to separeate block navigation from normal month view
+    // what happens with $attributes if its not declared? its still passed to theme below
+    if($view == 'block') {
+      $view = 'month';
+      $attributes = array('class' => 'updateblock');
+    }
+
     switch ($view) {
       case 'day':
       case 'table':
@@ -1611,7 +1630,8 @@ function _event_nav($date, $dir, $view, $types, $terms, $duration = NULL) {
     $url[] = ($types ? implode('+', $types) : 'all');
     $url[] = ($terms ? implode('+', $terms) : 'all');
     $url[] = $duration;
-    return theme('event_nav_'. $dir, implode('/', $url));
+
+    return theme('event_nav_'. $dir, implode('/', $url), $attributes);
   }
 }
 
@@ -1751,6 +1771,8 @@ function event_block($op = 'list', $delta = 0) {
       if (user_access('access content')) {
         switch ($delta) {
           case 0:
+            drupal_add_js(drupal_get_path('module', 'event') .'/eventblock.js');
+            drupal_add_js('misc/progress.js');
             $time = _event_user_date();
             if (arg(0) == 'event' && is_numeric(arg(1))) {
               // follow event calendar
@@ -1791,52 +1813,51 @@ function event_block($op = 'list', $delta = 0) {
  */
 function event_block_upcoming($limit = 6) {
   global $user;
-  // For two hours, we display "NOW"
-  $time = time() - (2 * 60 * 60);
-  $result = db_query(db_rewrite_sql('SELECT n.nid, n.title, n.type, n.status, n.moderate, n.changed, e.event_start FROM {node} n INNER JOIN {event} e ON n.nid = e.nid WHERE n.status = 1 AND n.moderate = 0 AND e.event_start >= %d ORDER BY event_start'), $time);
 
-  while (($node = db_fetch_object($result)) && $limit) {
+  $time = time();
 
-    //call the event_edit_upcoming hook in all modules.  note that modules can prevent display of a node by setting
-    //it's status to 0 here.
+  // Lookup events currently taking place and upcoming events, up to $limit events.
+  $result = db_query(db_rewrite_sql("SELECT n.nid, n.title, n.type, n.status, n.changed, e.event_start, e.event_end FROM {node} n INNER JOIN {event} e ON n.nid = e.nid WHERE n.status = 1 AND (((e.event_start != e.event_end) AND (%d >= e.event_start AND %d < e.event_end)) OR ((e.event_start = e.event_end) AND (%d <= e.event_start + %d )) OR e.event_start >= %d) ORDER BY event_start LIMIT %d"), $time, $time, $time, (60 * 60 * 2), $time, $limit);
+  while ($node = db_fetch_object($result)) {
+    // Call the event_edit_upcoming hook in all modules. Note that modules can
+    // prevent display of a node by setting its status to 0 here.
     foreach (module_implements('event_edit_upcoming') as $module) {
       $function = $module .'_event_edit_upcoming';
       $function($node);
     }
-    $minutesleft = floor(($node->event_start - time()) / 60);
-
-    if ($minutesleft < 0) {
-      $timeleft = t('NOW');
-    }
-    else if ($minutesleft < 60) {
-      $timeleft = format_plural($minutesleft, '1 minute', '@count minutes');
-    }
-    else if ($minutesleft >= 60 && $minutesleft < (24 * 60)) {
-      $timeleft = format_plural(floor($minutesleft / 60), '1 hour', '@count hours');
-    }
-    else if ($minutesleft >= (24 * 60)) {
-      $days = floor($minutesleft / (24 * 60));
-      // hours remainder
-      $hours = ($minutesleft % (24 * 60)) / 60;
-      // hours left in the day
-      $hours_left = 24 - date('G', time());
-      // see if the remainder of hours on the event date is greater than the hours left in today, if so increase the days by one so that the days remaining mimics the date rather than how many 24 hour periods there are between now and then.
-      if ($hours > $hours_left) {
-        $days++;
-      }
-      $timeleft = format_plural($days, '1 day', '@count days');
-    }
-
-    $node->timeleft = $timeleft;
-    $ctype = module_invoke('flexinode', 'load_content_type', substr($node->type, 10));
-    $node->typename = ($ctype->name ? $ctype->name : $node->type);
 
     if ($node->status) {
+      if ($node->event_start >= $time) {
+        $minutesleft = floor(($node->event_start - $time) / 60);
+        if ($minutesleft >= 0 && $minutesleft < 60) {
+          $timeleft = format_plural($minutesleft, '1 minute', '@count minutes');
+        }
+        else if ($minutesleft >= 60 && $minutesleft < (24 * 60)) {
+          $timeleft = format_plural(floor($minutesleft / 60), '1 hour', '@count hours');
+        }
+        else if ($minutesleft >= (24 * 60)) {
+          $days = floor($minutesleft / (24 * 60));
+          // hours remainder
+          $hours = ($minutesleft % (24 * 60)) / 60;
+          // hours left in the day
+          $hours_left = 24 - date('G', time());
+          // see if the remainder of hours on the event date is greater than the hours left in today, if so increase the days by one so that the days remaining mimics the date rather than how many 24 hour periods there are between now and then.
+          if ($hours > $hours_left) {
+            $days++;
+          }
+          $timeleft = format_plural($days, '1 day', '@count days');
+        }
+      }
+      else {
+        $timeleft = t('Now');
+      }
+
+      $node->timeleft = $timeleft;
+      $node->typename = node_get_types('name', $node);
       $items[] = theme('event_upcoming_item', $node);
-      $limit--;
     }
   }
-  if(!$items) {
+  if(!count($items)) {
     $items[] = t('No upcoming events available');
   }
 
@@ -2010,7 +2031,7 @@ function event_nodeapi(&$node, $op, $teaser = NULL, $page = NULL) {
         $object = db_fetch_object(db_query('SELECT event_start, event_end, timezone FROM {event} WHERE nid = %d', $node->nid));
         switch (variable_get('event_timezone_display', 'event')) {
           case 'event' :
-	          include_once(EVENT_PATH .'/event_timezones.inc');
+            include_once(EVENT_PATH .'/event_timezones.inc');
             $start_offset = event_get_offset($object->timezone, $object->event_start);
             $end_offset = event_get_offset($object->timezone, $object->event_end);
             break;
