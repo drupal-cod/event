@@ -1,0 +1,6 @@
+; $Id$
+name = Event All Day
+description = Allows creation of all-day events.
+version = "$Name$"
+package = Event
+dependencies = event
