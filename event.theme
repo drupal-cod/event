@@ -12,7 +12,7 @@
  * @param day
  *   The day to display.
  */
-function theme_event_calendar_month($op, $header, $rows, $attributes, $caption) {
+function theme_event_calendar_month($op, $header, $rows, $attributes = array(), $caption = NULL) {
   $output = theme("table", $header, $rows, $attributes, $caption);
   return '<div class="event-calendar"><div class="month-view">'. $output ."</div></div>\n";
 }
