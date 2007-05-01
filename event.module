@@ -619,7 +619,7 @@ function event_calendar_day($op, $stamp, $types = NULL, $terms = NULL) {
   $month_name = gmdate('M', $stamp);
   $weekdays = event_week_days();
 
-  $thead[] = array('data' => gmdate('D', $stamp));
+  $thead[] = array('data' => t(gmdate('D', $stamp)));
   $tbody[][] = array(
     'class' => strtolower("$month_name ". $weekdays[$dow]['day'] . ($stamp == $today ? ' today' : '')),
     'id' => strtolower($month_name . $day),
