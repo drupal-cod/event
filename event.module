@@ -1028,7 +1028,7 @@ function event_calendar_data($year, $month, $day, $view = NULL, $types = NULL, $
     $first = _event_mktime(0, 0, 0, $month, 1, $year);
     $last = _event_mktime(23, 59, 59, $month + 1, 0, $year);
 
-    $result = db_query(db_rewrite_sql('SELECT n.nid, e.event_start FROM {node} n INNER JOIN {event} e ON n.nid = e.nid WHERE n.status = 1 AND ((e.event_start > %d AND e.event_start < %d) OR (e.event_end > %d AND e.event_end < %d) OR (e.event_start < %d AND e.event_end > %d)) ORDER BY event_start '), $first, $last, $first, $last, $first, $last);
+    $result = db_query(db_rewrite_sql('SELECT n.nid, e.event_start FROM {node} n INNER JOIN {event} e ON n.nid = e.nid WHERE n.status = 1 AND ((e.event_start >= %d AND e.event_start <= %d) OR (e.event_end >= %d AND e.event_end <= %d) OR (e.event_start <= %d AND e.event_end >= %d)) ORDER BY event_start '), $first, $last, $first, $last, $first, $last);
 
     while ($nid = db_fetch_object($result)) {
       $node = node_load($nid->nid);
