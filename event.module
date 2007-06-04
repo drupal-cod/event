@@ -1462,12 +1462,13 @@ function event_form_date($timestamp, $prefix = 'start', $offset) {
   // ...hours
   if (variable_get('event_ampm', '0')) {
     $hour_format = t('g');
-    $hours = drupal_map_assoc(range(1, 12));
+    for ($i = 1; $i <= 12; $i++) $hours[$i] = $i < 10 ? "0$i" : $i;
     $am_pms = array('am' => t('am'), 'pm' => t('pm'));
   }
   else {
     $hour_format = t('H');
-    $hours = drupal_map_assoc(range(0, 23));
+    // ...hours (with leading 0s)
+    for ($i = 0; $i <= 23; $i++) $hours[$i] = $i < 10 ? "0$i" : $i;
   }
   // ...minutes (with leading 0s)
   for ($i = 0; $i <= 59; $i++) $minutes[$i] = $i < 10 ? "0$i" : $i;
@@ -1482,12 +1483,12 @@ function event_form_date($timestamp, $prefix = 'start', $offset) {
     '#required' => TRUE);
   $form[$prefix .'_month'] = array(
     '#type' => 'select',
-    '#default_value' => _event_date('n', $timestamp, $offset),
+    '#default_value' => (int) _event_date('n', $timestamp, $offset),
     '#options' => $months,
     '#required' => TRUE);
   $form[$prefix .'_year'] = array(
     '#type' => 'textfield',
-    '#default_value' => _event_date('Y', $timestamp, $offset),
+    '#default_value' => (int) _event_date('Y', $timestamp, $offset),
     '#maxlength' => 4,
     '#size' => 4,
     '#required' => TRUE);
