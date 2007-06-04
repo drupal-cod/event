@@ -431,11 +431,7 @@ function event_page($year = NULL, $month = NULL, $day = NULL, $view = NULL, $typ
     $output .= theme('event_ical_link', 'event/ical/'. $node->filter);
 
     // Add RSS feed and icon to events page
-    drupal_add_link(array('rel' => 'alternate',
-                          'type' => 'application/rss+xml',
-                          'title' => t('RSS'),
-                          'href' => url('event/feed', NULL, NULL, TRUE)));
-    $output .= theme('feed_icon', url('event/feed'));
+    drupal_add_feed(url('event/feed', NULL, NULL, TRUE), t('Events at %site', array('%site' => variable_get('site_name', 'drupal'))));
 
     drupal_set_title(t('Events') . ($title ? ' - '. $title : ''));
     drupal_set_breadcrumb($breadcrumbs);
