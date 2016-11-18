@@ -1,0 +1,12 @@
+langcode: en
+status: true
+dependencies: {  }
+id: node-event-administrator
+label: Administrator
+weight: 2
+is_admin: true
+group_type: node
+group_bundle: event
+group_id: null
+permissions: {  }
+role_type: null
