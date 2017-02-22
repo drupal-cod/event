@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * @file
+ * Install, update, and uninstall functions for the COD Event module.
+ */
+
+
+/**
+ * Configure OG on module installation.
+ */
+function event_install() {
+  $config =\Drupal::service('config.factory')->getEditable('og.settings');
+  $config->set('groups.node.-', 'event');
+  $config->save();
+}
