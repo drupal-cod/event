@@ -2,18 +2,17 @@ langcode: en
 status: true
 dependencies:
   config:
-    - entity_browser.browser.image_browser
     - field.field.node.event.body
     - field.field.node.event.field_event_end_date
     - field.field.node.event.field_event_image
     - field.field.node.event.field_event_start_date
+    - image.style.thumbnail
     - node.type.event
   module:
     - datetime
-    - entity_browser
+    - image
     - path
     - text
-    - workbench_moderation
 id: node.event.default
 targetEntityType: node
 bundle: event
@@ -27,50 +26,53 @@ content:
       summary_rows: 3
       placeholder: ''
     third_party_settings: {  }
+    region: content
   created:
     type: datetime_timestamp
     weight: 6
     settings: {  }
     third_party_settings: {  }
+    region: content
   field_event_end_date:
     weight: 4
     settings: {  }
     third_party_settings: {  }
     type: datetime_default
+    region: content
   field_event_image:
-    type: entity_browser_file
+    type: image_image
     weight: 2
     settings:
-      entity_browser: image_browser
-      field_widget_edit: true
-      field_widget_remove: true
-      view_mode: default
       preview_image_style: thumbnail
-      open: true
-      selection_mode: selection_append
+      progress_indicator: throbber
     third_party_settings: {  }
+    region: content
   field_event_start_date:
     weight: 3
     settings: {  }
     third_party_settings: {  }
     type: datetime_default
+    region: content
   path:
     type: path
     weight: 9
     settings: {  }
     third_party_settings: {  }
+    region: content
   promote:
     type: boolean_checkbox
     settings:
       display_label: true
     weight: 7
     third_party_settings: {  }
+    region: content
   sticky:
     type: boolean_checkbox
     settings:
       display_label: true
     weight: 8
     third_party_settings: {  }
+    region: content
   title:
     type: string_textfield
     weight: 0
@@ -78,6 +80,7 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    region: content
   uid:
     type: entity_reference_autocomplete
     weight: 5
@@ -86,4 +89,5 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    region: content
 hidden: {  }
