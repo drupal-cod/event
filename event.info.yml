@@ -1,8 +1,11 @@
-name: 'event'
+name: 'Event'
 description: 'events for attending an event.'
 type: module
 core: 8.x
 dependencies:
   - field
+  - image
   - node
+  - og
+  - og_ui
 package: 'COD'

@@ -23,6 +23,8 @@
     }
   },
   "require": {
+    "drupal/og": "1.x-dev"
+
   },
   "require-dev": {
     "drupal-composer/drupal-scaffold":    "^2.0.0",
