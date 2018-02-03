@@ -14,4 +14,3 @@ entity.event_type.add_form:
   title: 'Add Event type'
   appears_on:
     - entity.event_type.collection
-

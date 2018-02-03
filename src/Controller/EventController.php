@@ -127,15 +127,31 @@ class EventController extends ControllerBase implements ContainerInjectionInterf
             $links['revert'] = [
               'title' => $this->t('Revert'),
               'url' => $has_translations ?
-              Url::fromRoute('entity.event.translation_revert', ['event' => $event->id(), 'event_revision' => $vid, 'langcode' => $langcode]) :
-              Url::fromRoute('entity.event.revision_revert', ['event' => $event->id(), 'event_revision' => $vid]),
+              Url::fromRoute('entity.event.translation_revert',
+                [
+                  'event' => $event->id(),
+                  'event_revision' => $vid,
+                  'langcode' => $langcode,
+                ]
+              ) :
+              Url::fromRoute('entity.event.revision_revert',
+                [
+                  'event' => $event->id(),
+                  'event_revision' => $vid,
+                ]
+              ),
             ];
           }
 
           if ($delete_permission) {
             $links['delete'] = [
               'title' => $this->t('Delete'),
-              'url' => Url::fromRoute('entity.event.revision_delete', ['event' => $event->id(), 'event_revision' => $vid]),
+              'url' => Url::fromRoute('entity.event.revision_delete',
+                [
+                  'event' => $event->id(),
+                  'event_revision' => $vid,
+                ]
+              ),
             ];
           }
 

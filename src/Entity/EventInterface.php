@@ -15,13 +15,13 @@ use Drupal\user\EntityOwnerInterface;
 interface EventInterface extends ContentEntityInterface, RevisionLogInterface, EntityChangedInterface, EntityOwnerInterface {
 
   // Add get/set methods for your configuration properties here.
-
   /**
    * Gets the Event name.
    *
    * @return string
    *   Name of the Event.
    */
+  
   public function getName();
 
   /**

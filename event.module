@@ -15,8 +15,8 @@ function event_help($route_name, RouteMatchInterface $route_match) {
     // Main module help for the event module.
     case 'help.page.event':
       $output = '';
-      $output .= '<h3>' . t('About') . '</h3>';
-      $output .= '<p>' . t('') . '</p>';
+      $output .= '<h3>' . t('About Event') . '</h3>';
+      $output .= '<p>' . t('Events are entities used to manage events.') . '</p>';
       return $output;
 
     default:
@@ -42,8 +42,8 @@ function event_theme() {
 }
 
 /**
-* Implements hook_theme_suggestions_HOOK().
-*/
+ * Implements hook_theme_suggestions_HOOK().
+ */
 function event_theme_suggestions_event(array $variables) {
   $suggestions = [];
   $entity = $variables['elements']['#event'];
