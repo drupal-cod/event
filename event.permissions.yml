@@ -1,0 +1,30 @@
+add event entities:
+  title: 'Create new Event entities'
+
+administer event entities:
+  title: 'Administer Event entities'
+  description: 'Allow to access the administration form to configure Event entities.'
+  restrict access: true
+
+delete event entities:
+  title: 'Delete Event entities'
+
+edit event entities:
+  title: 'Edit Event entities'
+
+view published event entities:
+  title: 'View published Event entities'
+
+view unpublished event entities:
+  title: 'View unpublished Event entities'
+
+view all event revisions:
+  title: 'View all Event revisions'
+
+revert all event revisions:
+  title: 'Revert all Event revisions'
+  description: 'Role requires permission <em>view Event revisions</em> and <em>edit rights</em> for event entities in question or <em>administer event entities</em>.'
+
+delete all event revisions:
+  title: 'Delete all revisions'
+  description: 'Role requires permission to <em>view Event revisions</em> and <em>delete rights</em> for event entities in question or <em>administer event entities</em>.'
