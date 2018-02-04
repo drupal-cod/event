@@ -1,0 +1,58 @@
+<?php
+
+/**
+ * @file
+ * Contains event.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function event_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the event module.
+    case 'help.page.event':
+      $output = '';
+      $output .= '<h3>' . t('About Event') . '</h3>';
+      $output .= '<p>' . t('Events are entities used to manage events.') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function event_theme() {
+  $theme = [];
+  $theme['event'] = [
+    'render element' => 'elements',
+    'file' => 'event.page.inc',
+    'template' => 'event',
+  ];
+  $theme['event_content_add_list'] = [
+    'render element' => 'content',
+    'variables' => ['content' => NULL],
+    'file' => 'event.page.inc',
+  ];
+  return $theme;
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function event_theme_suggestions_event(array $variables) {
+  $suggestions = [];
+  $entity = $variables['elements']['#event'];
+  $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
+
+  $suggestions[] = 'event__' . $sanitized_view_mode;
+  $suggestions[] = 'event__' . $entity->bundle();
+  $suggestions[] = 'event__' . $entity->bundle() . '__' . $sanitized_view_mode;
+  $suggestions[] = 'event__' . $entity->id();
+  $suggestions[] = 'event__' . $entity->id() . '__' . $sanitized_view_mode;
+  return $suggestions;
+}

@@ -1,11 +1,5 @@
 name: 'Event'
-description: 'events for attending an event.'
+description: 'Creates Event Entities for managing Events.'
 type: module
 core: 8.x
-dependencies:
-  - field
-  - image
-  - node
-  - og
-  - og_ui
 package: 'COD'
