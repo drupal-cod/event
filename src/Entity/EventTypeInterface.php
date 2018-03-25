@@ -9,5 +9,12 @@ use Drupal\Core\Config\Entity\ConfigEntityInterface;
  */
 interface EventTypeInterface extends ConfigEntityInterface {
 
-  // Add get/set methods for your configuration properties here.
+  /**
+   * Determines whether to enable timezone support for an entity.
+   *
+   * @return bool
+   *   TRUE if the entity has custom timezones, or FALSE to use the site timezone.
+   */
+  public function useTimezones();
+
 }

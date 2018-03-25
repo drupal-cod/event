@@ -10,3 +10,6 @@ event.event_type.*:
       label: 'Label'
     uuid:
       type: string
+    description:
+      type: text
+      label: 'Description'

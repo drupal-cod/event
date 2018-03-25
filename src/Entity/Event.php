@@ -18,7 +18,7 @@ use Drupal\user\UserInterface;
  * @ContentEntityType(
  *   id = "event",
  *   label = @Translation("Event"),
- *   bundle_label = @Translation("Event type"),
+ *   bundle_label = @Translation("Event types"),
  *   handlers = {
  *     "storage" = "Drupal\event\EventStorage",
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",

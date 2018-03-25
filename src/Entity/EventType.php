@@ -55,4 +55,19 @@ class EventType extends ConfigEntityBundleBase implements EventTypeInterface {
    */
   protected $label;
 
+
+  /**
+   * The Event type timezone.
+   *
+   * @var bool
+   */
+  protected $timezone;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function useTimezones() {
+    return $this->timezone;
+  }
+
 }

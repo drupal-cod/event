@@ -7,8 +7,9 @@ entity.event_type.add_form:
 entity.event.add_form:
   route_name: entity.event.add_page
   title: 'Add Event'
+  weight: 10
   appears_on:
-    - entity.event.collection
+    - view.events.events_page_list
 entity.event_type.add_form:
   route_name: entity.event_type.add_form
   title: 'Add Event type'
