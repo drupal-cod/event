@@ -76,7 +76,7 @@ install:
   - phpenv rehash
 
   # Let Composer do all the magic!
-  - composer install
+  - php -dmemory_limit=-1 /home/travis/.phpenv/versions/$TRAVIS_PHP_VERSION/bin/composer install
 
   # Install Standard profile.
   - cd docroot
