@@ -13,7 +13,7 @@ interface EventTypeInterface extends ConfigEntityInterface {
    * Determines whether to enable timezone support for an entity.
    *
    * @return bool
-   *   TRUE if the entity has custom timezones, or FALSE to use the site timezone.
+   *   TRUE if the entity has custom timezones, or FALSE to use site timezone.
    */
   public function useTimezones();
 

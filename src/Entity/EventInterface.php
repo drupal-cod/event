@@ -21,7 +21,6 @@ interface EventInterface extends ContentEntityInterface, RevisionLogInterface, E
    * @return string
    *   Name of the Event.
    */
-  
   public function getName();
 
   /**
