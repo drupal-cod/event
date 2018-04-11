@@ -31,7 +31,7 @@ before_install:
   - composer --version
 
   # items for phpcs
-  - export MODULE_ROOT=~/build/acquia/event
+  - export MODULE_ROOT=~/build/event
   - export PROJECT_ROOT=~/build/drupal
   - export LIGHTNING_ROOT=~/build/drupal/docroot
   - cd ~/build
@@ -74,7 +74,7 @@ install:
   - composer config repositories.drupal composer https://packages.drupal.org/8
   - composer config repositories.assets composer https://asset-packagist.org
   - composer config repositories.dev vcs https://github.com/acquia/lightning-dev
-  - composer require drupal/event:* --no-update
+  - composer require event/event:* --no-update
 
   - composer require --dev drupal/coder ^8.2@stable --no-update
   - php -dmemory_limit=-1 /home/travis/.phpenv/versions/$TRAVIS_PHP_VERSION/bin/composer update
