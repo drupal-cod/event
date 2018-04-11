@@ -1,53 +1,28 @@
 {
-  "name": "drupal/ticket",
+  "name": "drupal/event",
   "type": "drupal-module",
-  "description": "Drupal module for creating attactions at an event",
+  "description": "Drupal module for creating events",
   "keywords": ["Drupal, COD", "Events"],
-  "homepage": "https://github.com/drupal-cod/ticket",
+  "homepage": "https://github.com/drupal-cod/event",
   "license": "GPL-2.0+",
   "minimum-stability": "dev",
   "prefer-stable": true,
-  "repositories": [
-    {
+  "repositories": {
+    "drupal": {
       "type": "composer",
-      "url":  "https://packages.drupal.org/8"
+      "url": "https://packages.drupal.org/8"
+    },
+    "event": {
+      "type": "vcs",
+      "url": "https://github.com/drupal-cod/event.git"
     }
-  ],
-  "extra": {
-    "installer-paths": {
-      "docroot/core":                     ["type:drupal-core"],
-      "docroot/modules/contrib/{$name}":  ["type:drupal-module"],
-      "docroot/profiles/contrib/{$name}": ["type:drupal-profile"],
-      "docroot/themes/contrib/{$name}":   ["type:drupal-theme"],
-      "drush/contrib/{$name}":            ["type:drupal-drush"]
-    }
-  },
-  "require": {
-    "drupal/og": "1.x-dev"
-
   },
   "require-dev": {
-    "drupal-composer/drupal-scaffold":    "^2.0.0",
-    "composer/installers":                "^1.0.20",
-    "drupal/core":                        "^8.0",
-    "drush/drush":                        "^8.0",
-    "drupal/drupal-extension":            "^3.1",
-    "behat/behat":                        "^3.0",
-    "drupal/coder":                       "^8.2.8",
-    "lakion/mink-debug-extension":        "^1.0.3",
-    "phpunit/phpunit":                    "~4.8",
-    "squizlabs/php_codesniffer":          "~2",
-    "se/selenium-server-standalone":      "^2.53"
-
-  },
-  "scripts": {
-    "post-install-cmd": [
-      "mkdir -p docroot/modules/event && rsync -a . docroot/modules/event  --exclude \".idea\" --exclude bin --exclude \".git\" --exclude \".gitignore\" --exclude docroot --exclude \"*.make\" --exclude \".travis.yml\" --exclude vendor && rm -fr modules/contrib themes/contrib"
-    ],
-    "post-update-cmd": [
-      "mkdir -p docroot/modules/event && rsync -a . docroot/modules/event  --exclude \".idea\" --exclude bin --exclude \".git\" --exclude \".gitignore\" --exclude docroot --exclude \"*.make\" --exclude \".travis.yml\" --exclude vendor && rm -fr modules/contrib themes/contrib"
-    ],
-    "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
+    "drupal/diff": "*@dev",
+    "drupal/field_permissions": "^1.0@beta",
+    "drupal/entity_embed": "1.0.0-beta2",
+    "drupal/entity": "^1.0.0-beta1",
+    "drupal/entity_browser": "2.0-alpha2",
   },
   "autoload-dev": {
     "psr-4": {
